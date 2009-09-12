@@ -10,6 +10,12 @@ namespace FluentSecurity
 			return policyContainer;
 		}
 
+		public static IPolicyContainer DenyAuthenticatedAccess(this IPolicyContainer policyContainer)
+		{
+			policyContainer.AddPolicy(new DenyAuthenticatedAccessPolicy());
+			return policyContainer;
+		}
+
 		public static IPolicyContainer RequireRole(this IPolicyContainer policyContainer, params object[] roles)
 		{
 			policyContainer.AddPolicy(new RequireRolePolicy(roles));
