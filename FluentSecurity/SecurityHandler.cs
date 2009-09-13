@@ -23,7 +23,7 @@ namespace FluentSecurity
 			if (Configuration.IgnoreMissingConfiguration)
 				return;
 
-			throw new ConfigurationErrorsException("Security has not been configured for controller {0} action {1}".FormatWith(controllerName, actionName));
+			throw new ConfigurationErrorsException("Security has not been configured for controller {0}, action {1}".FormatWith(controllerName, actionName));
 		}
 	}
 }
