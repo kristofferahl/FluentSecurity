@@ -13,7 +13,7 @@ namespace FluentSecurity
 
 			builder.AppendLine().AppendLine().AppendLine("------------------------------------------------------------------------------------");
 			
-			foreach (var policyContainer in Configuration.GetPolicyContainers().OrderBy(x => x.ControllerName).OrderBy(x => x.ActionName))
+			foreach (var policyContainer in Configuration.GetPolicyContainers().OrderBy(x => x.ActionName).OrderBy(x => x.ControllerName))
 			{
 				builder.AppendFormat(
 					"{0} > {1}{2}",
