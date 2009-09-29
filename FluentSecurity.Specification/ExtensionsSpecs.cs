@@ -40,5 +40,35 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(policyContainer, Is.Null);
 		}
+		
+		[Test]
+		public void Should_return_a_container_for_controller_ActionThatDoesExist()
+		{
+			// Act
+			var policyContainer = _containers.GetContainerFor("controller", "ActionThatDoesExist");
+
+			// Assert
+			Assert.That(policyContainer, Is.Not.Null);
+		}
+		
+		[Test]
+		public void Should_return_a_container_for_Controller_actionthatdoesexist()
+		{
+			// Act
+			var policyContainer = _containers.GetContainerFor("Controller", "actionthatdoesexist");
+
+			// Assert
+			Assert.That(policyContainer, Is.Not.Null);
+		}
+		
+		[Test]
+		public void Should_return_a_container_for_controller_actionthatdoesexist()
+		{
+			// Act
+			var policyContainer = _containers.GetContainerFor("controller", "actionthatdoesexist");
+
+			// Assert
+			Assert.That(policyContainer, Is.Not.Null);
+		}
 	}
 }

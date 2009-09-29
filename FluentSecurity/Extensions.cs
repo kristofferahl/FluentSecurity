@@ -19,7 +19,7 @@ namespace FluentSecurity
 		public static IPolicyContainer GetContainerFor(this IEnumerable<IPolicyContainer> policyContainers, string controllerName, string actionName)
 		{
 			return policyContainers
-				.Where(x => x.ControllerName == controllerName && x.ActionName == actionName)
+				.Where(x => x.ControllerName.ToLower() == controllerName.ToLower() && x.ActionName.ToLower() == actionName.ToLower())
 				.SingleOrDefault();
 		}
 
