@@ -37,6 +37,12 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_when_when_controllername_is_Blog_and_actionname_is_Index()
 		{
 			// Arrange
+			Configuration.Configure(policy =>
+			{
+				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
+				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
+			});
+
 			var securityHandler = new SecurityHandler();
 
 			// Assert
