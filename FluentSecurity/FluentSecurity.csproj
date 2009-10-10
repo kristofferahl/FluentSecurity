@@ -58,6 +58,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
+    <Compile Include="Policy\IgnorePolicy.cs" />
     <Compile Include="Policy\ISecurityPolicy.cs" />
     <Compile Include="Policy\DenyAnonymousAccessPolicy.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />

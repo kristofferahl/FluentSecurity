@@ -34,13 +34,32 @@ namespace FluentSecurity.Specification.Policy
 
 	[TestFixture]
 	[Category("RequireRolePolicySpec")]
-	public class When_passing_an__array_with_one_item_to_the_constructor_of_RequireRolePolicy
+	public class When_passing_an_array_with_one_required_role_to_the_constructor_of_RequireRolePolicy
 	{
 		[Test]
-		public void Should_throw_ArgumentException()
+		public void Should_not_throw()
 		{
 			// Assert
 			Assert.DoesNotThrow(() => new RequireRolePolicy(new object[1]));
+		}
+	}
+
+	[TestFixture]
+	[Category("RequireRolePolicySpec")]
+	public class When_getting_the_required_roles_for_an_RequiredRolePolicy
+	{
+		[Test]
+		public void Should_return_null()
+		{
+			// Arrange
+			var expectedRoles = new List<object> { "Administrator", "Editor" }.ToArray();
+			var policy = new RequireRolePolicy(expectedRoles);
+
+			// Act
+			object[] rolesRequired = policy.RolesRequired;
+
+			// Assert
+			Assert.That(rolesRequired, Is.EqualTo(expectedRoles));
 		}
 	}
 

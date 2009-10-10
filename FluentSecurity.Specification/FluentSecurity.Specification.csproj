@@ -72,6 +72,7 @@
     <Compile Include="Helpers\MvcHelpers.cs" />
     <Compile Include="PolicyContainerSpec.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicySpec.cs" />
+    <Compile Include="Policy\IgnorePolicySpec.cs" />
     <Compile Include="Policy\RequireRolePolicySpec.cs" />
     <Compile Include="Policy\DenyAnonymousAccessPolicySpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
