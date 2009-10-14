@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq.Expressions;
 using System.Web.Mvc;
@@ -12,24 +13,53 @@ namespace FluentSecurity
 
 		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
 		{
-			if (_isAuthenticatedFunction == null)
-				throw new ConfigurationErrorsException("You must specify a function returning authenticationstatus before adding policies.");
+			ValidateConfiguration();
 
 			var controllerName = typeof(TController).GetControllerName();
 			var actionName = propertyExpression.GetActionName();
 
-			var existingContainer = _itemValues.GetContainerFor(controllerName, actionName);
-			if (existingContainer != null)
-				throw new ConfigurationErrorsException("A policycontainer for {0} {1} has already been added.".FormatWith(controllerName, actionName));
-
 			return AddPolicyContainerFor(controllerName, actionName);
+		}
+
+		public IConventionPolicyContainer For<TController>() where TController : Controller
+		{
+			ValidateConfiguration();
+
+			var controllerType = typeof(TController);
+			var controllerName = controllerType.GetControllerName();
+			var actionMethods = controllerType.GetActionMethods();
+
+			var policyContainers = new List<IPolicyContainer>();
+			foreach (var actionMethod in actionMethods)
+			{
+				var actionName = actionMethod.Name;
+				var policyContainer = AddPolicyContainerFor(controllerName, actionName);
+				policyContainers.Add(policyContainer);
+			}
+
+			return new ConventionPolicyContainer(policyContainers);
+		}
+
+		private void ValidateConfiguration()
+		{
+			if (_isAuthenticatedFunction == null)
+				throw new ConfigurationErrorsException("You must specify a function returning authenticationstatus before adding policies.");
 		}
 
 		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
 		{
-			var policyContainer = new PolicyContainer(controllerName, actionName, _isAuthenticatedFunction, _rolesFunction);
-			
-			_itemValues.Add(policyContainer);
+			IPolicyContainer policyContainer;
+
+			var existingContainer = _itemValues.GetContainerFor(controllerName, actionName);
+			if (existingContainer != null)
+			{
+				policyContainer = existingContainer;
+			}
+			else
+			{
+				policyContainer = new PolicyContainer(controllerName, actionName, _isAuthenticatedFunction, _rolesFunction);
+				_itemValues.Add(policyContainer);
+			}
 
 			return policyContainer;
 		}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Routing;
+﻿using System.Web.Routing;
 using FluentSecurity.SampleApplication.Controllers;
 using FluentSecurity.SampleApplication.Models;
 
@@ -58,6 +57,9 @@ namespace FluentSecurity.SampleApplication
 
 				policy.For<ExampleController>(x => x.RequireAdministratorRole()).RequireRole(UserRole.Administrator);
 				policy.For<ExampleController>(x => x.RequirePublisherRole()).RequireRole(UserRole.Publisher);
+
+				policy.For<AdminController>().RequireRole(UserRole.Administrator);
+				policy.For<AdminController>(x => x.Index()).Ignore();
 			});
 		}
 	}

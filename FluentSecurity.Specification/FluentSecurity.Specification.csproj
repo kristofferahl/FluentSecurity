@@ -61,7 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
+    <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
+    <Compile Include="Helpers\FakePolicy.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="PolicyBuilderSpec.cs" />
     <Compile Include="Helpers\Helper.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="HandleSecurityAttributeSpec.cs" />
     <Compile Include="Helpers\MvcHelpers.cs" />
     <Compile Include="PolicyContainerSpec.cs" />
+    <Compile Include="DefaultPolicyManagerSpecs.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicySpec.cs" />
     <Compile Include="Policy\IgnorePolicySpec.cs" />
     <Compile Include="Policy\RequireRolePolicySpec.cs" />

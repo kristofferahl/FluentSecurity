@@ -28,5 +28,9 @@ namespace FluentSecurity.Specification.Fakes
 		{
 			return View();
 		}
+
+		private void PrivateMethodThatDoesNothing()
+		{
+		}
 	}
 }

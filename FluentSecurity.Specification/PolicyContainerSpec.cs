@@ -130,7 +130,8 @@ namespace FluentSecurity.Specification
 			helper.Expect(x => x.GetRoles()).Return(roles).Repeat.Once();
 			helper.Replay();
 
-			var policy = MockRepository.GenerateMock<ISecurityPolicy>();
+			var mockRepository = new MockRepository();
+			var policy =  mockRepository.StrictMock<FakePolicy>();
 			policy.Expect(x => x.Enforce(isAuthenticated, roles)).Repeat.Once();
 			policy.Replay();
 

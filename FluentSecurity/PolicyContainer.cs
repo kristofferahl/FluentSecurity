@@ -23,6 +23,8 @@ namespace FluentSecurity
 			if (isAuthenticatedFunction == null)
 				throw new ArgumentNullException("isAuthenticatedFunction");
 
+			Manager = new DefaultPolicyManager();
+
 			_policies = new List<ISecurityPolicy>();
 
 			ControllerName = controllerName;
@@ -34,6 +36,7 @@ namespace FluentSecurity
 
 		public string ControllerName { get; private set; }
 		public string ActionName { get; private set; }
+		public IPolicyManager Manager { get; set; }
 
 		public void EnforcePolicies()
 		{
@@ -58,7 +61,7 @@ namespace FluentSecurity
 		{
 			VerifyPolicyDoesNotExist(securityPolicy);
 
-			_policies.Add(securityPolicy);
+			Manager.UpdatePolicies(securityPolicy, _policies);
 
 			return this;
 		}

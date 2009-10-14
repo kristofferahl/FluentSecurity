@@ -51,12 +51,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builder.cs" />
+    <Compile Include="ConventionPolicyContainer.cs" />
+    <Compile Include="ConventionPolicyContainerExtensions.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="IConventionPolicyContainer.cs" />
+    <Compile Include="IPolicyManager.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IWhatDoIHaveBuilder.cs" />
     <Compile Include="PolicyBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DefaultPolicyManager.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
     <Compile Include="Policy\IgnorePolicy.cs" />
     <Compile Include="Policy\ISecurityPolicy.cs" />

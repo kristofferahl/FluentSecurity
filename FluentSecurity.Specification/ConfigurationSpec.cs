@@ -62,20 +62,23 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationSpec")]
-	public class When_I_add_two_containers_with_the_same_controller_and_action_name
+	public class When_adding_two_containers_with_the_same_controller_and_action_name
 	{
 		[Test]
-		public void Should_throw_ConfigurationException()
+		public void Should_have_1_policycontainer()
 		{
-			// Assert
-			Assert.Throws<ConfigurationErrorsException>(() =>
+			// Act
 			Configuration.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
 				policy.For<BlogController>(x => x.Index());
 				policy.For<BlogController>(x => x.Index());
-			}));
+			});
+
+			Assert.That(Configuration.GetPolicyContainers().Count(), Is.EqualTo(1));
+			Assert.That(Configuration.GetPolicyContainers().First().ControllerName, Is.EqualTo("Blog"));
+			Assert.That(Configuration.GetPolicyContainers().First().ActionName, Is.EqualTo("Index"));
 		}
 	}
 
@@ -226,7 +229,7 @@ namespace FluentSecurity.Specification
 			var whatIHave = Configuration.WhatDoIHave();
 
 			// Assert
-			Assert.That(whatIHave.Replace("\r\n", "|").Replace("\t","%"), Is.EqualTo("Ignore missing configuration: True||------------------------------------------------------------------------------------|BlogController > DeletePost|%DenyAnonymousAccess|%RequireRole (Owner or Publisher)|BlogController > Index|%DenyAnonymousAccess|------------------------------------------------------------------------------------"));
+			Assert.That(whatIHave.Replace("\r\n", "|").Replace("\t","%"), Is.EqualTo("Ignore missing configuration: True||------------------------------------------------------------------------------------|BlogController > DeletePost|%RequireRole (Owner or Publisher)|BlogController > Index|%DenyAnonymousAccess|------------------------------------------------------------------------------------"));
 		}
 	}
 }

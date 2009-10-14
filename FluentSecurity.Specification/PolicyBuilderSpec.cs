@@ -8,7 +8,7 @@ namespace FluentSecurity.Specification
 {
 	[TestFixture]
 	[Category("PolicyBuilderSpec")]
-	public class When_adding_a_policy_for_Blog_Index
+	public class When_adding_a_policycontainter_for_Blog_Index
 	{
 		[Test]
 		public void Should_have_policycontainer_for_Blog_Index()
@@ -28,7 +28,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicyBuilderSpec")]
-	public class When_adding_a_policy_for_Blog_Index_and_AddPost
+	public class When_adding_a_policycontainter_for_Blog_Index_and_AddPost
 	{
 		[Test]
 		public void Should_have_policycontainer_for_Blog_Index_and_AddPost()
@@ -50,7 +50,54 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicyBuilderSpec")]
-	public class When_removing_a_policy_for_Blog_AddPost
+	public class When_adding_a_conventionpolicycontainter_for_the_Blog_controller
+	{
+		private PolicyBuilder _builder;
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_builder = new PolicyBuilder();
+			_builder.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+		}
+
+		private void Because()
+		{
+			_builder.For<BlogController>();
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_all_actions()
+		{
+			// Arrange
+			const string expectedControllerName = "Blog";
+
+			// Act
+			Because();
+
+			// Assert
+			Assert.That(_builder.GetContainerFor(expectedControllerName, "Index"), Is.Not.Null);
+			Assert.That(_builder.GetContainerFor(expectedControllerName, "ListPosts"), Is.Not.Null);
+			Assert.That(_builder.GetContainerFor(expectedControllerName, "AddPost"), Is.Not.Null);
+			Assert.That(_builder.GetContainerFor(expectedControllerName, "EditPost"), Is.Not.Null);
+			Assert.That(_builder.GetContainerFor(expectedControllerName, "DeletePost"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_5_policycontainers()
+		{
+			// Act
+			Because();
+
+			// Assert
+			Assert.That(_builder.ToList().Count, Is.EqualTo(5));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyBuilderSpec")]
+	public class When_removing_policies_for_Blog_AddPost
 	{
 		private PolicyBuilder _builder;
 		private IPolicyContainer _addPostPolicyContainer;
