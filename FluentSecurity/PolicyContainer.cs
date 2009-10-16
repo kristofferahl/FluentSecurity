@@ -59,20 +59,9 @@ namespace FluentSecurity
 
 		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
 		{
-			VerifyPolicyDoesNotExist(securityPolicy);
-
 			Manager.UpdatePolicies(securityPolicy, _policies);
 
 			return this;
-		}
-
-		private void VerifyPolicyDoesNotExist(ISecurityPolicy newPolicy)
-		{
-			foreach (var policy in _policies)
-			{
-				if (policy.GetType().Equals(newPolicy.GetType()))
-					throw new InvalidOperationException("You may only specify a policy of type {0} once".FormatWith(newPolicy.GetType().Name));
-			}
 		}
 
 		public IEnumerable<ISecurityPolicy> GetPolicies()

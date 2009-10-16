@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Fakes;
 using FluentSecurity.Specification.Helpers;
@@ -63,17 +64,18 @@ namespace FluentSecurity.Specification
 	public class When_adding_two_policies_of_the_same_type_to_a_policycontainer
 	{
 		[Test]
-		public void Should_throw_InvalidOperationException()
+		public void Should_have_1_policy()
 		{
 			// Arrange
 			var policyContainer = new PolicyContainer("X", "X", StaticHelper.IsAuthenticatedReturnsFalse, null);
 			
-			// Act & Assert
-			Assert.Throws<InvalidOperationException>(() =>
-				policyContainer
+			// Act
+			policyContainer
 					.AddPolicy(new DenyAnonymousAccessPolicy())
-					.AddPolicy(new DenyAnonymousAccessPolicy())
-			);
+					.AddPolicy(new DenyAnonymousAccessPolicy());
+
+			// Assert
+			Assert.That(policyContainer.GetPolicies().Count(), Is.EqualTo(1));
 		}
 	}
 
