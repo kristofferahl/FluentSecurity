@@ -5,6 +5,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity", "FluentSec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.Specification", "FluentSecurity.Specification\FluentSecurity.Specification.csproj", "{2CB0499B-C0F7-4207-B5BC-1EDB207D9308}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.TestHelper", "FluentSecurity.TestHelper\FluentSecurity.TestHelper.csproj", "{F8E43851-6455-48F4-96DE-C3CB3E189123}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.TestHelper.Specification", "FluentSecurity.TestHelper.Specification\FluentSecurity.TestHelper.Specification.csproj", "{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplication", "FluentSecurity.SampleApplication\FluentSecurity.SampleApplication.csproj", "{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +25,18 @@ Global
 		{2CB0499B-C0F7-4207-B5BC-1EDB207D9308}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CB0499B-C0F7-4207-B5BC-1EDB207D9308}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CB0499B-C0F7-4207-B5BC-1EDB207D9308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8E43851-6455-48F4-96DE-C3CB3E189123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8E43851-6455-48F4-96DE-C3CB3E189123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8E43851-6455-48F4-96DE-C3CB3E189123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8E43851-6455-48F4-96DE-C3CB3E189123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

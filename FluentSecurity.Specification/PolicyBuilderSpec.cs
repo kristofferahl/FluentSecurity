@@ -64,7 +64,7 @@ namespace FluentSecurity.Specification
 
 		private void Because()
 		{
-			_builder.For<BlogController>();
+			_builder.For<BlogController>().Ignore();
 		}
 
 		[Test]

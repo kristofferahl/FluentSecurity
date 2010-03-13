@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using System.Web.Mvc;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -28,7 +27,7 @@ namespace FluentSecurity
 		///<summary>
 		/// Gets the controller name for the specified controller type
 		///</summary>
-		internal static string GetControllerName(this Type controllerType)
+		public static string GetControllerName(this Type controllerType)
 		{
 			return controllerType.Name.Replace("Controller", string.Empty);
 		}
@@ -36,7 +35,7 @@ namespace FluentSecurity
 		/// <summary>
 		/// Gets actionmethods for the specified controller type
 		/// </summary>
-		internal static MethodInfo[] GetActionMethods(this Type controllerType)
+		public static MethodInfo[] GetActionMethods(this Type controllerType)
 		{
 			return controllerType.GetMethods(
 				BindingFlags.Public |
@@ -47,7 +46,7 @@ namespace FluentSecurity
 		///<summary>
 		/// Gets the action name for the specified action expression
 		///</summary>
-		internal static string GetActionName(this LambdaExpression actionExpression)
+		public static string GetActionName(this LambdaExpression actionExpression)
 		{
 			return ((MethodCallExpression)actionExpression.Body).Method.Name;
 		}
