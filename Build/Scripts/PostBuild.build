@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project name="PostBuild" default="PostBuild">
+	<target name="PostBuild" description="Performing postbuild tasks (NAnt)">
+		<echo message="Performing postbuild asks (NAnt)" />
+		
+		<property name="nunit.console" value="NUnit\nunit-console.exe"/>
+		<property name="nunit.build.dependenciesdir" value="..\..\Dependencies\"/>
+		<property name="nunit.build.outputdir" value="..\Output\"/>
+		<property name="nunit.build.reportsdir" value="..\Reports\"/>
+
+		<echo message="Running all tests in ${nunit.build.outputdir}" />
+		<echo message="Output reports to ${nunit.build.reportsdir}" />
+		
+		<foreach item="File" property="filename">
+			<in>
+				<items>
+					<include name="${nunit.build.outputdir}*.Specification.dll" />
+				</items>
+			</in>
+			<do>
+				<echo message="*************************************************" />
+				<echo message="Running tests in ${path::get-file-name(filename)}" />
+				<echo message="*************************************************" />
+				
+				<exec program="${nunit.console}" basedir="${nunit.build.dependenciesdir}">
+					<arg value="${filename}" />
+					<arg value="/xml=${nunit.build.reportsdir}${path::get-file-name-without-extension(filename)}-Results.xml" />
+				</exec>
+				
+				<echo message="" />
+				<echo message="" />
+			</do>
+		</foreach>
+		
+	</target>
+</project>

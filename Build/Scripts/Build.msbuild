@@ -1,0 +1,26 @@
+<Project DefaultTargets="PreBuild;Build;PostBuild;" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<Platform>AnyCPU</Platform>
+		<SchemaVersion>2.0</SchemaVersion>
+		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+		<DebugSymbols>false</DebugSymbols>
+		<NAntExecutable>..\..\Dependencies\NAnt\NAnt.exe</NAntExecutable>
+		<SolutionDir>..\..\</SolutionDir>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectToBuild Include="$(SolutionDir)FluentSecurity.Specification\FluentSecurity.Specification.csproj"/>
+		<ProjectToBuild Include="$(SolutionDir)FluentSecurity.TestHelper.Specification\FluentSecurity.TestHelper.Specification.csproj"/>
+	</ItemGroup>
+	
+	<Target Name="PreBuild">
+		<Exec Command="$(NAntExecutable) -buildfile:PreBuild.build"/>
+	</Target>
+	
+	<Target Name="Build" DependsOnTargets="PreBuild">
+		<MSBuild Projects="@(ProjectToBuild)" Targets="Rebuild;" Properties="Configuration=Release;" />
+	</Target>
+
+	<Target Name="PostBuild" DependsOnTargets="Build">
+		<Exec Command="$(NAntExecutable) -buildfile:PostBuild.build"/>
+	</Target>
+</Project>
