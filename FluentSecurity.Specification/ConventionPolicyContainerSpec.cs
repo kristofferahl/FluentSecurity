@@ -38,9 +38,9 @@ namespace FluentSecurity.Specification
 			// Arrange
 			var policyContainers = new List<IPolicyContainer>()
 				{
-					new PolicyContainer("Admin", "Index", StaticHelper.IsAuthenticatedReturnsTrue, null),
-					new PolicyContainer("Admin", "ListPosts", StaticHelper.IsAuthenticatedReturnsTrue, null),
-					new PolicyContainer("Admin", "AddPost", StaticHelper.IsAuthenticatedReturnsTrue, null),
+					TestDataFactory.CreateValidPolicyContainer("Admin", "Index"),
+					TestDataFactory.CreateValidPolicyContainer("Admin", "ListPosts"),
+					TestDataFactory.CreateValidPolicyContainer("Admin", "AddPost")
 				};
 
 			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);

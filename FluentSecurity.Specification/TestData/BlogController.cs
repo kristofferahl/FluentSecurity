@@ -19,12 +19,22 @@ namespace FluentSecurity.Specification.TestData
 			return View();
 		}
 
-		public ActionResult EditPost()
+		public ActionResult AddPost(PostForm postForm)
 		{
 			return View();
 		}
 
-		public ActionResult DeletePost()
+		public ActionResult EditPost(int postId)
+		{
+			return View();
+		}
+
+		public ActionResult EditPost(PostForm postForm)
+		{
+			return View();
+		}
+
+		public ActionResult DeletePost(int posdId)
 		{
 			return View();
 		}

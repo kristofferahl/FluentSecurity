@@ -13,13 +13,29 @@ namespace FluentSecurity.Specification
 {
 	[TestFixture]
 	[Category("PolicyContainerSpec")]
-	public class When_I_create_a_new_policycontainer
+	public class When_I_create_an_invalid_policycontainer
 	{
+		private string _validControllerName;
+		private string _validActionName;
+		private Func<bool> _validIsAuthenticatedFunction;
+		private Func<object[]> _validRolesFunction;
+		private IPolicyManager _validPolicyManager;
+
+		[SetUp]
+		public void SetUp()
+		{
+			_validControllerName = TestDataFactory.ValidControllerName;
+			_validActionName = TestDataFactory.ValidActionName;
+			_validIsAuthenticatedFunction = TestDataFactory.ValidIsAuthenticatedFunction;
+			_validRolesFunction = TestDataFactory.ValidRolesFunction;
+			_validPolicyManager = TestDataFactory.CreateValidPolicyManager();
+		}
+
 		[Test]
 		public void Should_throw_ArgumentException_when_the_controllername_is_null()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(null, "X", StaticHelper.IsAuthenticatedReturnsFalse, null)
+				new PolicyContainer(null, _validActionName, _validIsAuthenticatedFunction, _validRolesFunction, _validPolicyManager)
 			);
 		}
 
@@ -27,7 +43,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_controllername_is_empty()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(string.Empty, "X", StaticHelper.IsAuthenticatedReturnsFalse, null)
+				new PolicyContainer(string.Empty, _validActionName, _validIsAuthenticatedFunction, _validRolesFunction, _validPolicyManager)
 			);
 		}
 
@@ -35,7 +51,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_actionname_is_null()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer("X", null, StaticHelper.IsAuthenticatedReturnsFalse, null)
+				new PolicyContainer(_validControllerName, null, _validIsAuthenticatedFunction, _validRolesFunction, _validPolicyManager)
 			);
 		}
 
@@ -43,7 +59,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_actionname_is_empty()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer("X", string.Empty, StaticHelper.IsAuthenticatedReturnsFalse, null)
+				new PolicyContainer(_validControllerName, string.Empty, _validIsAuthenticatedFunction, _validRolesFunction, _validPolicyManager)
 			);
 		}
 
@@ -55,28 +71,104 @@ namespace FluentSecurity.Specification
 			
 			// Act & Assert
 			Assert.Throws<ArgumentNullException>(() =>
-				new PolicyContainer("X", "X", isAuthenticatedFunction, null)
+				new PolicyContainer(_validControllerName, _validActionName, isAuthenticatedFunction, _validRolesFunction, _validPolicyManager)
 			);
 		}
+
+		[Test]
+		public void Should_throw_ArgumentException_when_policy_manager_is_null()
+		{
+			// Arrange
+			const IPolicyManager policyManager = null;
+
+			// Act & Assert
+			Assert.Throws<ArgumentNullException>(() =>
+				new PolicyContainer(_validControllerName, _validActionName, _validIsAuthenticatedFunction, _validRolesFunction, policyManager)
+			);
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerSpec")]
+	public class When_I_create_a_valid_PolicyContainer
+	{
+		private IPolicyManager _expectedPolicyManager = new DefaultPolicyManager();
+		private string _expectedControllerName = "SomeController";
+		private string _expectedActionName = "SomeAction";
+
+		[SetUp]
+		public void SetUp()
+		{
+			_expectedControllerName = TestDataFactory.ValidControllerName;
+			_expectedActionName = TestDataFactory.ValidActionName;
+			_expectedPolicyManager = TestDataFactory.CreateValidPolicyManager();
+		}
+
+		private IPolicyContainer Because()
+		{
+			return new PolicyContainer(_expectedControllerName, _expectedActionName, TestDataFactory.ValidIsAuthenticatedFunction, TestDataFactory.ValidRolesFunction, _expectedPolicyManager);
+		}
+
+		[Test]
+		public void Should_have_controller_name_set_to_SomeController()
+		{
+			// Act
+			var policyContainer = Because();
+
+			// Assert
+			Assert.That(policyContainer.ControllerName, Is.EqualTo(_expectedControllerName));
+		}
+
+		[Test]
+		public void Should_have_action_name_set_to_SomeAction()
+		{
+			// Act
+			var policyContainer = Because();
+
+			// Assert
+			Assert.That(policyContainer.ActionName, Is.EqualTo(_expectedActionName));
+		}
+
+		[Test]
+		public void Should_have_Manager_set_to_DefaultPolicyManager()
+		{
+			// Act
+			var policyContainer = Because();
+
+			// Assert
+			Assert.That(policyContainer.Manager, Is.EqualTo(_expectedPolicyManager));
+		}
+
 	}
 
 	[TestFixture]
 	[Category("PolicContainerExtensionsSpec")]
 	public class When_adding_two_policies_of_the_same_type_to_a_policycontainer
 	{
+		private PolicyContainer _policyContainer;
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_policyContainer = TestDataFactory.CreateValidPolicyContainer();
+		}
+
+		private void Because()
+		{
+			_policyContainer
+				.AddPolicy(new DenyAnonymousAccessPolicy())
+				.AddPolicy(new DenyAnonymousAccessPolicy());
+		}
+
 		[Test]
 		public void Should_have_1_policy()
 		{
-			// Arrange
-			var policyContainer = new PolicyContainer("X", "X", StaticHelper.IsAuthenticatedReturnsFalse, null);
-			
 			// Act
-			policyContainer
-					.AddPolicy(new DenyAnonymousAccessPolicy())
-					.AddPolicy(new DenyAnonymousAccessPolicy());
+			Because();
 
 			// Assert
-			Assert.That(policyContainer.GetPolicies().Count(), Is.EqualTo(1));
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(1));
 		}
 	}
 
@@ -92,7 +184,7 @@ namespace FluentSecurity.Specification
 			helper.Expect(x => x.IsAuthenticatedReturnsTrue()).Return(true).Repeat.Once();
 			helper.Replay();
 
-			var policyContainer = new PolicyContainer("X", "X", helper.IsAuthenticatedReturnsTrue, null);
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, helper.IsAuthenticatedReturnsTrue, TestDataFactory.ValidRolesFunction, TestDataFactory.CreateValidPolicyManager());
 			policyContainer.AddPolicy(new DenyAnonymousAccessPolicy());
 
 			// Act
@@ -111,7 +203,7 @@ namespace FluentSecurity.Specification
 			helper.Expect(x => x.GetRoles()).Return(new List<object> { UserRole.Owner }.ToArray()).Repeat.Once();
 			helper.Replay();
 
-			var policyContainer = new PolicyContainer("X", "X", helper.IsAuthenticatedReturnsTrue, helper.GetRoles);
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, helper.IsAuthenticatedReturnsTrue, helper.GetRoles, TestDataFactory.CreateValidPolicyManager());
 			policyContainer.AddPolicy(new DenyAnonymousAccessPolicy());
 
 			// Act
@@ -138,7 +230,7 @@ namespace FluentSecurity.Specification
 			policy.Expect(x => x.Enforce(isAuthenticated, roles)).Repeat.Once();
 			policy.Replay();
 
-			var policyContainer = new PolicyContainer("X", "X", helper.IsAuthenticatedReturnsTrue, helper.GetRoles);
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, helper.IsAuthenticatedReturnsTrue, helper.GetRoles, TestDataFactory.CreateValidPolicyManager());
 			policyContainer.AddPolicy(policy);
 
 			// Act
@@ -152,7 +244,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ConfigurationErrorsException_when_a_container_has_no_policies()
 		{
 			// Arrange
-			var policyContainer = new PolicyContainer("X", "X", StaticHelper.IsAuthenticatedReturnsTrue, StaticHelper.GetRolesExcludingOwner);
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 
 			// Act & Assert
 			Assert.Throws<ConfigurationErrorsException>(policyContainer.EnforcePolicies);

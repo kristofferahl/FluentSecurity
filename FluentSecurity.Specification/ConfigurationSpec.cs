@@ -14,6 +14,8 @@ namespace FluentSecurity.Specification
 	public class When_I_configure_security_for_Blog_Index_and_Blog_AddPost
  	{
 		private IEnumerable<IPolicyContainer> _policyContainers;
+		private DefaultPolicyManager _defaultPolicyManager;
+		private IPolicyManager _fakePolicyManager;
 		const string ControllerName = "Blog";
 		const string IndexActionName = "Index";
 		const string AddPostActionName = "AddPost";
@@ -21,12 +23,20 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
+			// Arrange
+			_defaultPolicyManager = TestDataFactory.CreateValidPolicyManager();
+			_fakePolicyManager = TestDataFactory.CreateFakePolicyManager();
+
 			// Act
 			Configuration.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
+				
+				policy.SetCurrentPolicyManager(_defaultPolicyManager);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
+				
+				policy.SetCurrentPolicyManager(_fakePolicyManager);
 				policy.For<BlogController>(x => x.AddPost()).RequireRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
@@ -47,6 +57,7 @@ namespace FluentSecurity.Specification
 			Assert.That(container.ActionName, Is.EqualTo(IndexActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
 			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
+			Assert.That(container.Manager, Is.EqualTo(_defaultPolicyManager));
 		}
 
 		[Test]
@@ -57,6 +68,7 @@ namespace FluentSecurity.Specification
 			Assert.That(container.ActionName, Is.EqualTo(AddPostActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
 			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(container.Manager, Is.EqualTo(_fakePolicyManager));
 		}
  	}
 
@@ -221,7 +233,7 @@ namespace FluentSecurity.Specification
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.IgnoreMissingConfiguration();
-				policy.For<BlogController>(x => x.DeletePost()).DenyAnonymousAccess().RequireRole(UserRole.Owner, UserRole.Publisher);
+				policy.For<BlogController>(x => x.DeletePost(0)).DenyAnonymousAccess().RequireRole(UserRole.Owner, UserRole.Publisher);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
 

@@ -7,8 +7,9 @@ namespace FluentSecurity
 	{
 		string ControllerName { get; }
 		string ActionName { get; }
-		void EnforcePolicies();
+		IPolicyManager Manager { get; }
 		IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy);
 		IEnumerable<ISecurityPolicy> GetPolicies();
+		void EnforcePolicies();
 	}
 }

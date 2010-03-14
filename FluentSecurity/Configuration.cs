@@ -6,9 +6,9 @@ namespace FluentSecurity
 {
 	public static class Configuration
 	{
-		private static IWhatDoIHaveBuilder WhatDoIHaveBuilder;
+		private static readonly IWhatDoIHaveBuilder WhatDoIHaveBuilder;
 		private static readonly IList<IPolicyContainer> PolicyContainers;
-		private static bool IsConfigured;
+		private static bool _isConfigured;
 
 		static Configuration()
 		{
@@ -29,18 +29,18 @@ namespace FluentSecurity
 			}
 
 			IgnoreMissingConfiguration = builder.ShouldIgnoreMissingConfiguration;
-			IsConfigured = true;
+			_isConfigured = true;
 		}
 
 		public static void Reset()
 		{
 			PolicyContainers.Clear();
-			IsConfigured = false;
+			_isConfigured = false;
 		}
 
 		public static IEnumerable<IPolicyContainer> GetPolicyContainers()
 		{
-			if (IsConfigured == false)
+			if (_isConfigured == false)
 				throw new InvalidOperationException("You must configure security before calling GetPolicyContainers");
 
 			return new ReadOnlyCollection<IPolicyContainer>(PolicyContainers);

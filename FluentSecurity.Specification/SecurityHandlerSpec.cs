@@ -99,7 +99,7 @@ namespace FluentSecurity.Specification
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesIncludingOwner);
-				policy.For<BlogController>(x => x.DeletePost()).RequireRole(UserRole.Owner);
+				policy.For<BlogController>(x => x.DeletePost(0)).RequireRole(UserRole.Owner);
 			});
 
 			var securityHandler = new SecurityHandler();
@@ -116,7 +116,7 @@ namespace FluentSecurity.Specification
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
-				policy.For<BlogController>(x => x.DeletePost()).RequireRole(UserRole.Owner);
+				policy.For<BlogController>(x => x.DeletePost(0)).RequireRole(UserRole.Owner);
 			});
 
 			var securityHandler = new SecurityHandler();
@@ -133,7 +133,7 @@ namespace FluentSecurity.Specification
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
-				policy.For<BlogController>(x => x.DeletePost()).RequireRole(UserRole.Owner);
+				policy.For<BlogController>(x => x.DeletePost(0)).RequireRole(UserRole.Owner);
 			});
 
 			var securityHandler = new SecurityHandler();

@@ -21,8 +21,23 @@ namespace FluentSecurity.Specification
 			builder.For<BlogController>(x => x.Index());
 
 			// Assert
-			Assert.That(builder.GetContainerFor("Blog", "Index"), Is.Not.Null);
+			var policyContainer = builder.GetContainerFor("Blog", "Index");
+			Assert.That(policyContainer, Is.Not.Null);
 			Assert.That(builder.ToList().Count, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Should_have_PolicyManager_set_to_PolicyManager()
+		{
+			// Arrange
+			var builder = TestDataFactory.CreateValidPolicyBuilder();
+
+			// Act
+			builder.For<BlogController>(x => x.Index());
+
+			// Assert
+			var policyContainer = builder.GetContainerFor("Blog", "Index");
+			Assert.That(policyContainer.Manager, Is.EqualTo(builder.PolicyManager));
 		}
 	}
 
@@ -64,7 +79,7 @@ namespace FluentSecurity.Specification
 
 		private void Because()
 		{
-			_builder.For<BlogController>().Ignore();
+			_builder.For<BlogController>().DenyAnonymousAccess();
 		}
 
 		[Test]
@@ -150,17 +165,33 @@ namespace FluentSecurity.Specification
 	[Category("PolicyBuilderSpec")]
 	public class When_creating_a_new_PolicyBuilder
 	{
-		[Test]
-		public void Should_not_cotain_any_policycontainers()
+		private static PolicyBuilder Because()
 		{
-			// Arrange
-			var builder = new PolicyBuilder();
+			return new PolicyBuilder();
+		}
 
+		[Test]
+		public void Should_not_contain_any_policycontainers()
+		{
 			// Act
-			var containers = builder.Count();
+			var builder = Because();
 
 			// Assert
+			var containers = builder.Count();
 			Assert.That(containers, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Should_have_PolicyManager_set_to_DefaultPolicyManager()
+		{
+			// Arrange
+			var expectedPolicyManagerType = typeof(DefaultPolicyManager);
+
+			// Act
+			var builder = Because();
+
+			// Assert
+			Assert.That(builder.PolicyManager, Is.TypeOf(expectedPolicyManagerType));
 		}
 	}
 
@@ -191,6 +222,40 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.Throws<ArgumentNullException>(() => builder.GetRolesFrom(null));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyBuilderSpec")]
+	public class When_I_set_policy_manager_to_null
+	{
+		[Test]
+		public void Should_throw_ArgumentNullException()
+		{
+			// Arrange
+			var builder = new PolicyBuilder();
+
+			// Assert
+			Assert.Throws<ArgumentNullException>(() => builder.SetCurrentPolicyManager(null));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyBuilderSpec")]
+	public class When_I_set_policy_manager_to_instance_of_DefaultPolicyManager
+	{
+		[Test]
+		public void Should_have_policy_manager_set_to_instance_of_DefaultPolicyManager()
+		{
+			// Arrange
+			var expectedPolicyManager = new DefaultPolicyManager();
+			var builder = new PolicyBuilder();
+
+			// Act
+			builder.SetCurrentPolicyManager(expectedPolicyManager);
+
+			// Assert
+			Assert.That(builder.PolicyManager, Is.EqualTo(expectedPolicyManager));
 		}
 	}
 }

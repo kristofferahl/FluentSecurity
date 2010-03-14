@@ -14,7 +14,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_a_DenyAnonymousAccessPolicy()
 		{
 			// Arrange
-			var policyContainer = new PolicyContainer("C", "A", StaticHelper.IsAuthenticatedReturnsFalse, null);
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 
 			// Act
 			policyContainer.DenyAnonymousAccess();
@@ -33,7 +33,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_a_DenyAuthenticatedAccessPolicy()
 		{
 			// Arrange
-			var policyContainer = new PolicyContainer("C", "A", StaticHelper.IsAuthenticatedReturnsFalse, null);
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 
 			// Act
 			policyContainer.DenyAuthenticatedAccess();
@@ -52,7 +52,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_a_RequireRolePolicy()
 		{
 			// Arrange
-			var policyContainer = new PolicyContainer("C", "A", StaticHelper.IsAuthenticatedReturnsFalse, null);
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 
 			// Act
 			policyContainer.RequireRole(UserRole.Writer);
@@ -71,7 +71,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_a_IgnorePolicy()
 		{
 			// Arrange
-			var policyContainer = new PolicyContainer("C", "A", StaticHelper.IsAuthenticatedReturnsFalse, null);
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 
 			// Act
 			policyContainer.Ignore();

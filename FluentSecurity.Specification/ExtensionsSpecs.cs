@@ -16,9 +16,9 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			_containers = new Collection<IPolicyContainer>
-				{
-					new PolicyContainer("Controller", "ActionThatDoesExist", StaticHelper.IsAuthenticatedReturnsFalse, null),
-				};
+			{
+				TestDataFactory.CreateValidPolicyContainer("Controller", "ActionThatDoesExist")
+			};
 		}
 
 		[Test]

@@ -86,7 +86,7 @@ namespace FluentSecurity.Specification
 			// Arrange
 			_policyContainers = new List<IPolicyContainer>
 			{
-				new PolicyContainer("C", "A", StaticHelper.IsAuthenticatedReturnsFalse, null)
+				TestDataFactory.CreateValidPolicyContainer()
 			};
 			_conventionPolicyContainer = new ConventionPolicyContainer(_policyContainers);
 		}

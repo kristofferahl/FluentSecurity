@@ -11,6 +11,11 @@ namespace FluentSecurity
 		private Func<bool> _isAuthenticatedFunction;
 		private Func<object[]> _rolesFunction;
 
+		public PolicyBuilder()
+		{
+			PolicyManager = new DefaultPolicyManager();
+		}
+
 		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
 		{
 			ValidateConfiguration();
@@ -57,17 +62,17 @@ namespace FluentSecurity
 			}
 			else
 			{
-				policyContainer = new PolicyContainer(controllerName, actionName, _isAuthenticatedFunction, _rolesFunction);
+				policyContainer = new PolicyContainer(controllerName, actionName, _isAuthenticatedFunction, _rolesFunction, PolicyManager);
 				_itemValues.Add(policyContainer);
 			}
 
 			return policyContainer;
 		}
 
-		public void RemovePoliciesFor<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
+		public void RemovePoliciesFor<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
 		{
 			var controllerName = typeof(TController).GetControllerName();
-			var actionName = propertyExpression.GetActionName();
+			var actionName = actionExpression.GetActionName();
 
 			var policyContainer = _itemValues.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
@@ -100,6 +105,16 @@ namespace FluentSecurity
 			ShouldIgnoreMissingConfiguration = true;
 		}
 
+		public void SetCurrentPolicyManager(IPolicyManager policyManager)
+		{
+			if (policyManager == null)
+				throw new ArgumentNullException("policyManager", "Policymanager must not be null!");
+			
+			PolicyManager = policyManager;
+		}
+
 		public bool ShouldIgnoreMissingConfiguration { get; private set; }
+
+		public IPolicyManager PolicyManager { get; private set; }
 	}
 }
