@@ -69,7 +69,7 @@
     <Compile Include="TestData\FakePolicy.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="PolicyBuilderSpec.cs" />
-    <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="TestData\MockedHelper.cs" />
     <Compile Include="ConfigurationSpec.cs" />
     <Compile Include="TestData\BlogController.cs" />
     <Compile Include="TestData\PostForm.cs" />

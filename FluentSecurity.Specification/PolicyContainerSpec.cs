@@ -180,7 +180,7 @@ namespace FluentSecurity.Specification
 		public void Should_invoke_the_isautheticated_function()
 		{
 			// Arrange
-			var helper = MockRepository.GenerateMock<Helper>();
+			var helper = MockRepository.GenerateMock<MockedHelper>();
 			helper.Expect(x => x.IsAuthenticatedReturnsTrue()).Return(true).Repeat.Once();
 			helper.Replay();
 
@@ -198,7 +198,7 @@ namespace FluentSecurity.Specification
 		public void Should_invoke_the_roles_function()
 		{
 			// Arrange
-			var helper = MockRepository.GenerateMock<Helper>();
+			var helper = MockRepository.GenerateMock<MockedHelper>();
 			helper.Expect(x => x.IsAuthenticatedReturnsTrue()).Return(true).Repeat.Once();
 			helper.Expect(x => x.GetRoles()).Return(new List<object> { UserRole.Owner }.ToArray()).Repeat.Once();
 			helper.Replay();
@@ -220,7 +220,7 @@ namespace FluentSecurity.Specification
 			var roles = new List<object> { UserRole.Owner }.ToArray();
 			const bool isAuthenticated = true;
 
-			var helper = MockRepository.GenerateMock<Helper>();
+			var helper = MockRepository.GenerateMock<MockedHelper>();
 			helper.Expect(x => x.IsAuthenticatedReturnsTrue()).Return(isAuthenticated).Repeat.Once();
 			helper.Expect(x => x.GetRoles()).Return(roles).Repeat.Once();
 			helper.Replay();
