@@ -1,7 +1,7 @@
 using System.Linq;
 using FluentSecurity.Policy;
-using FluentSecurity.Specification.Fakes;
 using FluentSecurity.Specification.Helpers;
+using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification

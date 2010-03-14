@@ -1,6 +1,6 @@
 using FluentSecurity.Policy;
 
-namespace FluentSecurity.Specification.Helpers
+namespace FluentSecurity.Specification.Fakes
 {
 	public class FakePolicy : IgnorePolicy, ISecurityPolicy
 	{

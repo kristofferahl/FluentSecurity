@@ -64,13 +64,13 @@
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
-    <Compile Include="Helpers\FakePolicy.cs" />
+    <Compile Include="TestData\FakePolicy.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="PolicyBuilderSpec.cs" />
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="ConfigurationSpec.cs" />
-    <Compile Include="Fakes\BlogController.cs" />
-    <Compile Include="Fakes\UserRole.cs" />
+    <Compile Include="TestData\BlogController.cs" />
+    <Compile Include="TestData\UserRole.cs" />
     <Compile Include="HandleSecurityAttributeSpec.cs" />
     <Compile Include="Helpers\MvcHelpers.cs" />
     <Compile Include="PolicyContainerSpec.cs" />

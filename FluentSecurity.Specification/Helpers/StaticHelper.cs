@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
-using FluentSecurity.Specification.Fakes;
+using FluentSecurity.Specification.TestData;
 
 namespace FluentSecurity.Specification.Helpers
 {

@@ -1,4 +1,4 @@
-namespace FluentSecurity.Specification.Fakes
+namespace FluentSecurity.Specification.TestData
 {
 	public enum UserRole
 	{

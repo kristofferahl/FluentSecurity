@@ -1,6 +1,6 @@
 using System.Web.Mvc;
 
-namespace FluentSecurity.Specification.Fakes
+namespace FluentSecurity.Specification.TestData
 {
 	public class BlogController : SecureController
 	{

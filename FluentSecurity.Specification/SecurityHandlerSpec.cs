@@ -1,8 +1,8 @@
 using System;
 using System.Configuration;
 using System.Security;
-using FluentSecurity.Specification.Fakes;
 using FluentSecurity.Specification.Helpers;
+using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification
