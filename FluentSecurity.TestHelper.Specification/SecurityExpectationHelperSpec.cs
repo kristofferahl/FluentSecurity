@@ -7,11 +7,18 @@ namespace FluentSecurity.TestHelper.Specification
 	[Category("SecurityExpectationHelperSpec")]
 	public class When_calling_expect_for_SampleController_Index_with_helper : SecurityExpectationHelper
 	{
+		private ISecurityConfiguration _securityConfiguration;
+
+		protected override ISecurityConfiguration ConfigurationToTest()
+		{
+			return _securityConfiguration;
+		}
+
 		[Test]
 		public void Should_throw_when_policy_containers_is_null()
 		{
 			// Arrange
-			PolicyContainers = null;
+			_securityConfiguration = null;
 
 			// Act & Assert
 			Assert.Throws<AssertionException>(() => Expect<SampleController>(x => x.Index()));
@@ -21,7 +28,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_return_1_expectation_when_policy_containers_has_been_set()
 		{
 			// Arrange
-			PolicyContainers = FluentSecurityFactory.CreatePolicyContainers();
+			_securityConfiguration = FluentSecurityFactory.CreateSecurityConfiguration();
 
 			// Act
 			var expectations = Expect<SampleController>(x => x.Index());
@@ -35,11 +42,18 @@ namespace FluentSecurity.TestHelper.Specification
 	[Category("SecurityExpectationHelperSpec")]
 	public class When_calling_expect_for_SampleController_with_helper : SecurityExpectationHelper
 	{
+		private ISecurityConfiguration _securityConfiguration;
+
+		protected override ISecurityConfiguration ConfigurationToTest()
+		{
+			return _securityConfiguration;
+		}
+
 		[Test]
 		public void Should_throw_when_policy_containers_is_null()
 		{
 			// Arrange
-			PolicyContainers = null;
+			_securityConfiguration = null;
 
 			// Act & Assert
 			Assert.Throws<AssertionException>(() => Expect<SampleController>());
@@ -49,7 +63,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_return_4_expectations_when_policy_containers_has_been_set()
 		{
 			// Arrange
-			PolicyContainers = FluentSecurityFactory.CreatePolicyContainers();
+			_securityConfiguration = FluentSecurityFactory.CreateSecurityConfiguration();
 
 			// Act
 			var expectations = Expect<SampleController>();
@@ -63,11 +77,18 @@ namespace FluentSecurity.TestHelper.Specification
 	[Category("SecurityExpectationHelperSpec")]
 	public class When_calling_expect_for_Index_with_helper_of_SampleController : SecurityExpectationHelper<SampleController>
 	{
+		private ISecurityConfiguration _securityConfiguration;
+
+		protected override ISecurityConfiguration ConfigurationToTest()
+		{
+			return _securityConfiguration;
+		}
+
 		[Test]
 		public void Should_throw_when_policy_containers_is_null()
 		{
 			// Arrange
-			PolicyContainers = null;
+			_securityConfiguration = null;
 
 			// Act & Assert
 			Assert.Throws<AssertionException>(() => Expect(x => x.Index()));
@@ -77,7 +98,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_return_expectations_when_policy_containers_has_been_set()
 		{
 			// Arrange
-			PolicyContainers = FluentSecurityFactory.CreatePolicyContainers();
+			_securityConfiguration = FluentSecurityFactory.CreateSecurityConfiguration();
 
 			// Act
 			var expectations = Expect(x => x.Index());
@@ -91,11 +112,18 @@ namespace FluentSecurity.TestHelper.Specification
 	[Category("SecurityExpectationHelperSpec")]
 	public class When_calling_expect_with_helper_of_SampleController : SecurityExpectationHelper<SampleController>
 	{
+		private ISecurityConfiguration _securityConfiguration;
+
+		protected override ISecurityConfiguration ConfigurationToTest()
+		{
+			return _securityConfiguration;
+		}
+
 		[Test]
 		public void Should_throw_when_policy_containers_is_null()
 		{
 			// Arrange
-			PolicyContainers = null;
+			_securityConfiguration = null;
 
 			// Act & Assert
 			Assert.Throws<AssertionException>(() => Expect());
@@ -105,7 +133,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_return_expectations_when_policy_containers_has_been_set()
 		{
 			// Arrange
-			PolicyContainers = FluentSecurityFactory.CreatePolicyContainers();
+			_securityConfiguration = FluentSecurityFactory.CreateSecurityConfiguration();
 
 			// Act
 			var expectations = Expect();

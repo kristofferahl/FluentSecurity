@@ -6,11 +6,16 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 	{
 		public static IEnumerable<IPolicyContainer> CreatePolicyContainers()
 		{
+			return CreateSecurityConfiguration().PolicyContainers;
+		}
+
+		public static ISecurityConfiguration CreateSecurityConfiguration()
+		{
 			FluentSecurity.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
 				configuration.IgnoreMissingConfiguration();
-				
+
 				configuration.For<SampleController>(x => x.Index()).DenyAuthenticatedAccess();
 				configuration.For<SampleController>(x => x.List()).DenyAnonymousAccess();
 				configuration.For<SampleController>(x => x.New()).RequireRole("Editor").AddPolicy(new DenyInternetExplorerPolicy());
@@ -18,7 +23,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				configuration.For<IgnoreController>().Ignore();
 			});
 
-			return FluentSecurity.CurrentConfiguration.PolicyContainers;
+			return FluentSecurity.CurrentConfiguration;
 		}
 	}
 }

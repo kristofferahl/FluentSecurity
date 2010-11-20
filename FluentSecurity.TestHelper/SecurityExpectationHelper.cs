@@ -21,18 +21,24 @@ namespace FluentSecurity.TestHelper
 
 	public abstract class SecurityExpectationHelper
 	{
-		protected IEnumerable<IPolicyContainer> PolicyContainers { get; set; }
+		protected abstract ISecurityConfiguration ConfigurationToTest();
 
 		protected PolicyExpectations Expect<TController>(Expression<Func<TController, ActionResult>> actionExpression) where TController : IController
 		{
-			if (PolicyContainers == null) throw new AssertionException("The property PolicyContainers must not be null! Did you forget to set the property?");
-			return PolicyContainers.Expect(actionExpression);
+			var configurationToTest = ConfigurationToTest();
+			if (configurationToTest == null) throw new AssertionException("The configuration to test must not be null!");
+			var policyContainers = configurationToTest.PolicyContainers;
+			if (policyContainers == null) throw new AssertionException("The property PolicyContainers must not be null!");
+			return policyContainers.Expect(actionExpression);
 		}
 
 		protected PolicyExpectations Expect<TController>() where TController : IController
 		{
-			if (PolicyContainers == null) throw new AssertionException("The property PolicyContainers must not be null! Did you forget to set the property?");
-			return PolicyContainers.Expect<TController>();
+			var configurationToTest = ConfigurationToTest();
+			if (configurationToTest == null) throw new AssertionException("The configuration to test must not be null!");
+			var policyContainers = configurationToTest.PolicyContainers;
+			if (policyContainers == null) throw new AssertionException("The property PolicyContainers must not be null!");
+			return policyContainers.Expect<TController>();
 		}
 	}
 }
