@@ -9,9 +9,7 @@ namespace FluentSecurity.SampleApplication.Helpers
 	{
 		public static bool ActionIsAllowedForUser(string controllerName, string actionName)
 		{
-			var policyContainer = Configuration.GetPolicyContainers()
-				.Where(x => x.ControllerName == controllerName && x.ActionName == actionName).SingleOrDefault();
-		
+			var policyContainer = FluentSecurity.CurrentConfiguration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
 				try
@@ -23,7 +21,6 @@ namespace FluentSecurity.SampleApplication.Helpers
 					return false;
 				}
 			}
-
 			return true;
 		}
 

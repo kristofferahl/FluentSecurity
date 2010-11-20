@@ -50,17 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Builder.cs" />
+    <Compile Include="ConfigurationExpression.cs" />
     <Compile Include="ConventionPolicyContainer.cs" />
     <Compile Include="ConventionPolicyContainerExtensions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IConventionPolicyContainer.cs" />
+    <Compile Include="ISecurityConfiguration.cs" />
     <Compile Include="IPolicyManager.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IWhatDoIHaveBuilder.cs" />
-    <Compile Include="PolicyBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="SecurityConfiguration.cs" />
     <Compile Include="DefaultPolicyManager.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
     <Compile Include="Policy\IgnorePolicy.cs" />
@@ -68,9 +71,8 @@
     <Compile Include="Policy\DenyAnonymousAccessPolicy.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />
     <Compile Include="IPolicyContainer.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="FluentSecurity.cs" />
     <Compile Include="Policy\RequireRolePolicy.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecureController.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainer.cs" />

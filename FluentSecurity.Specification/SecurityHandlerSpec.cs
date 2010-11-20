@@ -11,6 +11,12 @@ namespace FluentSecurity.Specification
 	[Category("SecurityHandlerSpec")]
 	public class When_handling_security
 	{
+		[SetUp]
+		public void SetUp()
+		{
+			FluentSecurity.Reset();
+		}
+
 		[Test]
 		public void Should_throw_ArgumentException_when_controllername_is_null_or_empty()
 		{
@@ -37,7 +43,7 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_when_when_controllername_is_Blog_and_actionname_is_Index()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
@@ -54,11 +60,17 @@ namespace FluentSecurity.Specification
 	[Category("SecurityHandlerSpec")]
 	public class When_handling_security_for_a_controlleraction_with_DenyAnonymousAccess
 	{
+		[SetUp]
+		public void SetUp()
+		{
+			FluentSecurity.Reset();
+		}
+
 		[Test]
 		public void Should_not_throw_exception_when_the_user_is_authenticated()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
@@ -74,7 +86,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_SecurityException_when_the_user_is_anonymous()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
@@ -91,11 +103,17 @@ namespace FluentSecurity.Specification
 	[Category("SecurityHandlerSpec")]
 	public class When_handling_security_for_a_controlleraction_with_RequireRole_Owner
 	{
+		[SetUp]
+		public void SetUp()
+		{
+			FluentSecurity.Reset();
+		}
+
 		[Test]
 		public void Should_not_throw_exception_when_the_user_is_authenticated_with_role_Owner()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesIncludingOwner);
@@ -112,7 +130,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_SecurityException_when_the_user_is_anonymous()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
@@ -129,7 +147,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_SecurityException_when_the_user_does_not_have_the_role_Owner()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
@@ -147,15 +165,21 @@ namespace FluentSecurity.Specification
 	[Category("SecurityHandlerSpec")]
 	public class When_handling_security_for_a_controller_and_action_that_has_no_container
 	{
+		[SetUp]
+		public void SetUp()
+		{
+			FluentSecurity.Reset();
+		}
+
 		[Test]
 		public void Should_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_false()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
-			});	
+			});
 
 			var securityHandler = new SecurityHandler();
 
@@ -167,7 +191,7 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_true()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.IgnoreMissingConfiguration();

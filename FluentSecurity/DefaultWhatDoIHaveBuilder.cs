@@ -5,15 +5,15 @@ namespace FluentSecurity
 {
 	public class DefaultWhatDoIHaveBuilder : IWhatDoIHaveBuilder
 	{
-		public string WhatDoIHave()
+		public string WhatDoIHave(ConfigurationExpression configurationExpression)
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendFormat("Ignore missing configuration: {0}", Configuration.IgnoreMissingConfiguration);
+			builder.AppendFormat("Ignore missing configuration: {0}", configurationExpression.ShouldIgnoreMissingConfiguration);
 
 			builder.AppendLine().AppendLine().AppendLine("------------------------------------------------------------------------------------");
-			
-			foreach (var policyContainer in Configuration.GetPolicyContainers().OrderBy(x => x.ActionName).OrderBy(x => x.ControllerName))
+
+			foreach (var policyContainer in configurationExpression.OrderBy(x => x.ActionName).OrderBy(x => x.ControllerName))
 			{
 				builder.AppendFormat(
 					"{0} > {1}{2}",

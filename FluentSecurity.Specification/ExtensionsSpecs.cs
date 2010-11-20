@@ -16,9 +16,9 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			_containers = new Collection<IPolicyContainer>
-			{
-				TestDataFactory.CreateValidPolicyContainer("Controller", "ActionThatDoesExist")
-			};
+            {
+            	TestDataFactory.CreateValidPolicyContainer("Controller", "ActionThatDoesExist")
+            };
 		}
 
 		[Test]
@@ -40,7 +40,7 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(policyContainer, Is.Null);
 		}
-		
+
 		[Test]
 		public void Should_return_a_container_for_controller_ActionThatDoesExist()
 		{
@@ -50,7 +50,7 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(policyContainer, Is.Not.Null);
 		}
-		
+
 		[Test]
 		public void Should_return_a_container_for_Controller_actionthatdoesexist()
 		{
@@ -60,7 +60,7 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(policyContainer, Is.Not.Null);
 		}
-		
+
 		[Test]
 		public void Should_return_a_container_for_controller_actionthatdoesexist()
 		{

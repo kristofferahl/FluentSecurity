@@ -61,6 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
@@ -68,9 +72,9 @@
     <Compile Include="Helpers\TestDataFactory.cs" />
     <Compile Include="TestData\FakePolicy.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
-    <Compile Include="PolicyBuilderSpec.cs" />
+    <Compile Include="SecurityConfigurationSpec.cs" />
     <Compile Include="TestData\MockedHelper.cs" />
-    <Compile Include="ConfigurationSpec.cs" />
+    <Compile Include="FluentSecuritySpec.cs" />
     <Compile Include="TestData\BlogController.cs" />
     <Compile Include="TestData\PostForm.cs" />
     <Compile Include="TestData\UserRole.cs" />
@@ -82,7 +86,6 @@
     <Compile Include="Policy\IgnorePolicySpec.cs" />
     <Compile Include="Policy\RequireRolePolicySpec.cs" />
     <Compile Include="Policy\DenyAnonymousAccessPolicySpec.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\StaticHelper.cs" />
     <Compile Include="SecureControllerSpec.cs" />
     <Compile Include="SecurityHandlerSpec.cs" />

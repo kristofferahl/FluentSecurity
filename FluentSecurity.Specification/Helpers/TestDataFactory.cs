@@ -31,11 +31,17 @@ namespace FluentSecurity.Specification.Helpers
 				CreateValidPolicyManager());
 		}
 
-		public static PolicyBuilder CreateValidPolicyBuilder()
+		public static SecurityConfiguration CreateValidSecurityConfiguration()
 		{
-			var builder = new PolicyBuilder();
-			builder.GetAuthenticationStatusFrom(ValidIsAuthenticatedFunction);
+			var builder = new SecurityConfiguration();
 			return builder;
+		}
+
+		public static ConfigurationExpression CreateValidConfigurationExpression()
+		{
+			var configurationExpression = new ConfigurationExpression();
+			configurationExpression.GetAuthenticationStatusFrom(ValidIsAuthenticatedFunction);
+			return configurationExpression;
 		}
 
 		public static DefaultPolicyManager CreateValidPolicyManager()

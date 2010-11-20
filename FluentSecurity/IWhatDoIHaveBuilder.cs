@@ -2,6 +2,6 @@ namespace FluentSecurity
 {
 	public interface IWhatDoIHaveBuilder
 	{
-		string WhatDoIHave();
+		string WhatDoIHave(ConfigurationExpression configurationExpression);
 	}
 }

@@ -50,10 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="PolicyExpectationsExtensionsTester.cs" />
     <Compile Include="PolicyExpectationsSpec.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityExpectationHelperSpec.cs" />
     <Compile Include="TestData\IgnoreController.cs" />
     <Compile Include="TestData\DenyInternetExplorerPolicy.cs" />

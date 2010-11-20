@@ -6,14 +6,15 @@ using System.Web.Mvc;
 
 namespace FluentSecurity
 {
-	public class PolicyBuilder : Builder<IPolicyContainer>
+	public class ConfigurationExpression : Builder<IPolicyContainer>
 	{
 		private Func<bool> _isAuthenticatedFunction;
 		private Func<object[]> _rolesFunction;
 
-		public PolicyBuilder()
+		public ConfigurationExpression()
 		{
 			PolicyManager = new DefaultPolicyManager();
+			WhatDoIHaveBuilder = new DefaultWhatDoIHaveBuilder();
 		}
 
 		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
@@ -108,13 +109,23 @@ namespace FluentSecurity
 		public void SetCurrentPolicyManager(IPolicyManager policyManager)
 		{
 			if (policyManager == null)
-				throw new ArgumentNullException("policyManager", "Policymanager must not be null!");
+				throw new ArgumentNullException("policyManager");
 			
 			PolicyManager = policyManager;
+		}
+
+		public void SetWhatDoIHaveBuilder(IWhatDoIHaveBuilder whatDoIHaveBuilder)
+		{
+			if (whatDoIHaveBuilder == null)
+				throw new ArgumentNullException("whatDoIHaveBuilder");
+
+			WhatDoIHaveBuilder = whatDoIHaveBuilder;
 		}
 
 		public bool ShouldIgnoreMissingConfiguration { get; private set; }
 
 		public IPolicyManager PolicyManager { get; private set; }
+
+		public IWhatDoIHaveBuilder WhatDoIHaveBuilder { get; private set; }
 	}
 }

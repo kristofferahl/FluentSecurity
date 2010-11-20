@@ -13,14 +13,16 @@ namespace FluentSecurity
 			if (actionName.IsNullOrEmpty())
 				throw new ArgumentException("Actionname must not be null or empty", "actionName");
 
-			var policyContainer = Configuration.GetPolicyContainers().GetContainerFor(controllerName, actionName);
+			var configuration = FluentSecurity.CurrentConfiguration;
+			
+			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
 				policyContainer.EnforcePolicies();
 				return;
 			}
 
-			if (Configuration.IgnoreMissingConfiguration)
+			if (configuration.IgnoreMissingConfiguration)
 				return;
 
 			throw new ConfigurationErrorsException("Security has not been configured for controller {0}, action {1}".FormatWith(controllerName, actionName));

@@ -23,6 +23,7 @@
 				<echo message="*************************************************" />
 				
 				<exec program="${nunit.console}" basedir="${nunit.build.dependenciesdir}">
+					<arg value="/nologo" />
 					<arg value="${filename}" />
 					<arg value="/xml=${nunit.build.reportsdir}${path::get-file-name-without-extension(filename)}-Results.xml" />
 				</exec>

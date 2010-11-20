@@ -41,25 +41,25 @@ namespace FluentSecurity.SampleApplication
 
 		public static void SetupFluentSecurity()
 		{
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(configuration =>
 			{
-				policy.GetAuthenticationStatusFrom(Helpers.SecurityHelper.UserIsAuthenticated);
-				policy.GetRolesFrom(Helpers.SecurityHelper.UserRoles);
+				configuration.GetAuthenticationStatusFrom(Helpers.SecurityHelper.UserIsAuthenticated);
+				configuration.GetRolesFrom(Helpers.SecurityHelper.UserRoles);
 
-				policy.IgnoreMissingConfiguration();
+				configuration.IgnoreMissingConfiguration();
 
-				policy.For<AccountController>(x => x.LogInAsAdministrator()).DenyAuthenticatedAccess();
-				policy.For<AccountController>(x => x.LogInAsPublisher()).DenyAuthenticatedAccess();
-				policy.For<AccountController>(x => x.LogOut()).DenyAnonymousAccess();
+				configuration.For<AccountController>(x => x.LogInAsAdministrator()).DenyAuthenticatedAccess();
+				configuration.For<AccountController>(x => x.LogInAsPublisher()).DenyAuthenticatedAccess();
+				configuration.For<AccountController>(x => x.LogOut()).DenyAnonymousAccess();
 
-				policy.For<ExampleController>(x => x.DenyAnonymousAccess()).DenyAnonymousAccess();
-				policy.For<ExampleController>(x => x.DenyAuthenticatedAccess()).DenyAuthenticatedAccess();
+				configuration.For<ExampleController>(x => x.DenyAnonymousAccess()).DenyAnonymousAccess();
+				configuration.For<ExampleController>(x => x.DenyAuthenticatedAccess()).DenyAuthenticatedAccess();
 
-				policy.For<ExampleController>(x => x.RequireAdministratorRole()).RequireRole(UserRole.Administrator);
-				policy.For<ExampleController>(x => x.RequirePublisherRole()).RequireRole(UserRole.Publisher);
+				configuration.For<ExampleController>(x => x.RequireAdministratorRole()).RequireRole(UserRole.Administrator);
+				configuration.For<ExampleController>(x => x.RequirePublisherRole()).RequireRole(UserRole.Publisher);
 
-				policy.For<AdminController>().RequireRole(UserRole.Administrator);
-				policy.For<AdminController>(x => x.Index()).Ignore();
+				configuration.For<AdminController>().RequireRole(UserRole.Administrator);
+				configuration.For<AdminController>(x => x.Index()).Ignore();
 			});
 		}
 	}

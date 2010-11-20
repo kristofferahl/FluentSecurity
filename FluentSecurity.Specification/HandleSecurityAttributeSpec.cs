@@ -13,7 +13,7 @@ namespace FluentSecurity.Specification
 		public void Should_call_HandleSecurityFor_with_the_controllername_Blog_and_actionname_Index()
 		{
 			// Arrange
-			Configuration.Configure(policy =>
+			FluentSecurity.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
@@ -24,7 +24,7 @@ namespace FluentSecurity.Specification
 			securityHandler.Replay();
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler);
-            var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
+			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
 
 			// Act
 			handleSecurityAttribute.OnActionExecuting(filterContext);
