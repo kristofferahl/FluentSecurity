@@ -12,7 +12,7 @@ namespace FluentSecurity
 		private readonly Func<bool> _isAuthenticatedFunction;
 		private readonly Func<object[]> _rolesFunction;
 
-		public PolicyContainer(string controllerName, string actionName, Func<bool> isAuthenticatedFunction, Func<object[]> rolesFunction, IPolicyManager policyManager)
+		public PolicyContainer(string controllerName, string actionName, Func<bool> isAuthenticatedFunction, Func<object[]> rolesFunction, IPolicyAppender policyAppender)
 		{
 			if (controllerName.IsNullOrEmpty())
 				throw new ArgumentException("Controllername must not be null or empty!", "controllerName");
@@ -23,8 +23,8 @@ namespace FluentSecurity
 			if (isAuthenticatedFunction == null)
 				throw new ArgumentNullException("isAuthenticatedFunction");
 
-			if (policyManager == null)
-				throw new ArgumentNullException("policyManager");
+			if (policyAppender == null)
+				throw new ArgumentNullException("policyAppender");
 
 			_policies = new List<ISecurityPolicy>();
 
@@ -34,12 +34,12 @@ namespace FluentSecurity
 			_isAuthenticatedFunction = isAuthenticatedFunction;
 			_rolesFunction = rolesFunction;
 
-			Manager = policyManager;
+			PolicyAppender = policyAppender;
 		}
 
 		public string ControllerName { get; private set; }
 		public string ActionName { get; private set; }
-		public IPolicyManager Manager { get; private set; }
+		public IPolicyAppender PolicyAppender { get; private set; }
 
 		public void EnforcePolicies()
 		{
@@ -62,7 +62,7 @@ namespace FluentSecurity
 
 		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
 		{
-			Manager.UpdatePolicies(securityPolicy, _policies);
+			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
 
 			return this;
 		}

@@ -3,7 +3,7 @@ using FluentSecurity.Policy;
 
 namespace FluentSecurity.Specification.TestData
 {
-	public class FakePolicyManager : IPolicyManager
+	public class FakePolicyAppender : IPolicyAppender
 	{
 		public void UpdatePolicies(ISecurityPolicy securityPolicyToAdd, IList<ISecurityPolicy> policies)
 		{

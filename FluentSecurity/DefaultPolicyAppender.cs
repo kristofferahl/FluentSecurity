@@ -4,7 +4,7 @@ using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
-	public class DefaultPolicyManager : IPolicyManager
+	public class DefaultPolicyAppender : IPolicyAppender
 	{
 		public void UpdatePolicies(ISecurityPolicy securityPolicyToAdd, IList<ISecurityPolicy> policies)
 		{

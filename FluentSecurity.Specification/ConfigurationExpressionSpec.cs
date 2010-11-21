@@ -28,16 +28,16 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_PolicyManager_set_to_DefaultPolicyManager()
+		public void Should_have_PolicyAppender_set_to_DefaultPolicyAppender()
 		{
 			// Arrange
-			var expectedPolicyManagerType = typeof(DefaultPolicyManager);
+			var expectedPolicyAppenderType = typeof(DefaultPolicyAppender);
 
 			// Act
 			var builder = Because();
 
 			// Assert
-			Assert.That(builder.PolicyManager, Is.TypeOf(expectedPolicyManagerType));
+			Assert.That(builder.PolicyAppender, Is.TypeOf(expectedPolicyAppenderType));
 		}
 	}
 
@@ -73,14 +73,14 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_PolicyManager_set_to_PolicyManager()
+		public void Should_have_PolicyAppender_set_to_PolicyAppender()
 		{
 			// Act
 			Because();
 
 			// Assert
 			var policyContainer = _configurationExpression.GetContainerFor("Blog", "Index");
-			Assert.That(policyContainer.Manager, Is.EqualTo(_configurationExpression.PolicyManager));
+			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(_configurationExpression.PolicyAppender));
 		}
 	}
 
@@ -267,7 +267,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_I_set_policymanager_to_null
+	public class When_I_set_policyappender_to_null
 	{
 		[Test]
 		public void Should_throw_ArgumentNullException()
@@ -276,7 +276,7 @@ namespace FluentSecurity.Specification
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
 
 			// Assert
-			Assert.Throws<ArgumentNullException>(() => configurationExpression.SetCurrentPolicyManager(null));
+			Assert.Throws<ArgumentNullException>(() => configurationExpression.SetPolicyAppender(null));
 		}
 	}
 
@@ -297,20 +297,20 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_I_set_policymanager_to_instance_of_DefaultPolicyManager
+	public class When_I_set_policyappender_to_instance_of_DefaultPolicyAppender
 	{
 		[Test]
-		public void Should_have_policymanager_set_to_instance_of_DefaultPolicyManager()
+		public void Should_have_policyappender_set_to_instance_of_DefaultPolicyAppender()
 		{
 			// Arrange
-			var expectedPolicyManager = new DefaultPolicyManager();
+			var expectedPolicyAppender = new DefaultPolicyAppender();
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
 
 			// Act
-			configurationExpression.SetCurrentPolicyManager(expectedPolicyManager);
+			configurationExpression.SetPolicyAppender(expectedPolicyAppender);
 
 			// Assert
-			Assert.That(configurationExpression.PolicyManager, Is.EqualTo(expectedPolicyManager));
+			Assert.That(configurationExpression.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
 		}
 	}
 

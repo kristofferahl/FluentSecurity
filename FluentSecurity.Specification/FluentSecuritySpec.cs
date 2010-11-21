@@ -122,8 +122,8 @@ namespace FluentSecurity.Specification
 	public class When_I_configure_fluent_security_for_Blog_Index_and_Blog_AddPost
 	{
 		private IEnumerable<IPolicyContainer> _policyContainers;
-		private DefaultPolicyManager _defaultPolicyManager;
-		private IPolicyManager _fakePolicyManager;
+		private DefaultPolicyAppender _defaultPolicyAppender;
+		private IPolicyAppender _fakePolicyAppender;
 		const string ControllerName = "Blog";
 		const string IndexActionName = "Index";
 		const string AddPostActionName = "AddPost";
@@ -132,8 +132,8 @@ namespace FluentSecurity.Specification
 		public void SetUp()
 		{
 			// Arrange
-			_defaultPolicyManager = TestDataFactory.CreateValidPolicyManager();
-			_fakePolicyManager = TestDataFactory.CreateFakePolicyManager();
+			_defaultPolicyAppender = TestDataFactory.CreateValidPolicyAppender();
+			_fakePolicyAppender = TestDataFactory.CreateFakePolicyAppender();
 
 			FluentSecurity.Reset();
 
@@ -143,10 +143,10 @@ namespace FluentSecurity.Specification
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
 
-				configuration.SetCurrentPolicyManager(_defaultPolicyManager);
+				configuration.SetPolicyAppender(_defaultPolicyAppender);
 				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 
-				configuration.SetCurrentPolicyManager(_fakePolicyManager);
+				configuration.SetPolicyAppender(_fakePolicyAppender);
 				configuration.For<BlogController>(x => x.AddPost()).RequireRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
@@ -167,7 +167,7 @@ namespace FluentSecurity.Specification
 			Assert.That(container.ActionName, Is.EqualTo(IndexActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
 			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
-			Assert.That(container.Manager, Is.EqualTo(_defaultPolicyManager));
+			Assert.That(container.PolicyAppender, Is.EqualTo(_defaultPolicyAppender));
 		}
 
 		[Test]
@@ -178,7 +178,7 @@ namespace FluentSecurity.Specification
 			Assert.That(container.ActionName, Is.EqualTo(AddPostActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
 			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(RequireRolePolicy)));
-			Assert.That(container.Manager, Is.EqualTo(_fakePolicyManager));
+			Assert.That(container.PolicyAppender, Is.EqualTo(_fakePolicyAppender));
 		}
 	}
 

@@ -18,7 +18,7 @@ namespace FluentSecurity.Specification.Helpers
 				ValidActionName,
 				ValidIsAuthenticatedFunction,
 				ValidRolesFunction,
-				CreateValidPolicyManager());
+				CreateValidPolicyAppender());
 		}
 
 		public static PolicyContainer CreateValidPolicyContainer(string controllerName, string actionName)
@@ -28,7 +28,7 @@ namespace FluentSecurity.Specification.Helpers
 				actionName ?? ValidActionName,
 				ValidIsAuthenticatedFunction,
 				ValidRolesFunction,
-				CreateValidPolicyManager());
+				CreateValidPolicyAppender());
 		}
 
 		public static SecurityConfiguration CreateValidSecurityConfiguration()
@@ -44,14 +44,14 @@ namespace FluentSecurity.Specification.Helpers
 			return configurationExpression;
 		}
 
-		public static DefaultPolicyManager CreateValidPolicyManager()
+		public static DefaultPolicyAppender CreateValidPolicyAppender()
 		{
-			return new DefaultPolicyManager();
+			return new DefaultPolicyAppender();
 		}
 
-		public static IPolicyManager CreateFakePolicyManager()
+		public static IPolicyAppender CreateFakePolicyAppender()
 		{
-			return new FakePolicyManager();
+			return new FakePolicyAppender();
 		}
 	}
 }

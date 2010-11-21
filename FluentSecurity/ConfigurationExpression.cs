@@ -13,7 +13,7 @@ namespace FluentSecurity
 
 		public ConfigurationExpression()
 		{
-			PolicyManager = new DefaultPolicyManager();
+			PolicyAppender = new DefaultPolicyAppender();
 			WhatDoIHaveBuilder = new DefaultWhatDoIHaveBuilder();
 		}
 
@@ -63,7 +63,7 @@ namespace FluentSecurity
 			}
 			else
 			{
-				policyContainer = new PolicyContainer(controllerName, actionName, _isAuthenticatedFunction, _rolesFunction, PolicyManager);
+				policyContainer = new PolicyContainer(controllerName, actionName, _isAuthenticatedFunction, _rolesFunction, PolicyAppender);
 				_itemValues.Add(policyContainer);
 			}
 
@@ -106,12 +106,12 @@ namespace FluentSecurity
 			ShouldIgnoreMissingConfiguration = true;
 		}
 
-		public void SetCurrentPolicyManager(IPolicyManager policyManager)
+		public void SetPolicyAppender(IPolicyAppender policyAppender)
 		{
-			if (policyManager == null)
-				throw new ArgumentNullException("policyManager");
+			if (policyAppender == null)
+				throw new ArgumentNullException("policyAppender");
 			
-			PolicyManager = policyManager;
+			PolicyAppender = policyAppender;
 		}
 
 		public void SetWhatDoIHaveBuilder(IWhatDoIHaveBuilder whatDoIHaveBuilder)
@@ -124,7 +124,7 @@ namespace FluentSecurity
 
 		public bool ShouldIgnoreMissingConfiguration { get; private set; }
 
-		public IPolicyManager PolicyManager { get; private set; }
+		public IPolicyAppender PolicyAppender { get; private set; }
 
 		public IWhatDoIHaveBuilder WhatDoIHaveBuilder { get; private set; }
 	}

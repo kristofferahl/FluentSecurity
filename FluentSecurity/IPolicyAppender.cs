@@ -3,7 +3,7 @@ using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
-	public interface IPolicyManager
+	public interface IPolicyAppender
 	{
 		void UpdatePolicies(ISecurityPolicy securityPolicyToAdd, IList<ISecurityPolicy> policies);
 	}

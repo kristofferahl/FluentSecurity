@@ -36,13 +36,13 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_throw_when_getting_policymanager()
+		public void Should_throw_when_getting_policyappender()
 		{
 			// Act
 			var builder = Because();
 
 			// Assert
-			Assert.Throws<InvalidOperationException>(() => { var x = builder.PolicyManager; });
+			Assert.Throws<InvalidOperationException>(() => { var x = builder.PolicyAppender; });
 		}
 
 		[Test]
@@ -105,16 +105,16 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_PolicyManager_set_to_DefaultPolicyManager()
+		public void Should_have_PolicyAppender_set_to_DefaultPolicyAppender()
 		{
 			// Arrange
-			var expectedPolicyManagerType = typeof(DefaultPolicyManager);
+			var expectedPolicyAppenderType = typeof(DefaultPolicyAppender);
 
 			// Act
 			Because();
 
 			// Assert
-			Assert.That(_securityConfiguration.PolicyManager, Is.TypeOf(expectedPolicyManagerType));
+			Assert.That(_securityConfiguration.PolicyAppender, Is.TypeOf(expectedPolicyAppenderType));
 		}
 
 		[Test]
@@ -197,13 +197,13 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_throw_when_getting_policymanager()
+		public void Should_throw_when_getting_policyappender()
 		{
 			// Act
 			Because();
 
 			// Assert
-			Assert.Throws<InvalidOperationException>(() => { var x = _securityConfiguration.PolicyManager; });
+			Assert.Throws<InvalidOperationException>(() => { var x = _securityConfiguration.PolicyAppender; });
 		}
 
 		[Test]

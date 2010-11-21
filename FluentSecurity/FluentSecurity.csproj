@@ -60,11 +60,11 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="IConventionPolicyContainer.cs" />
     <Compile Include="ISecurityConfiguration.cs" />
-    <Compile Include="IPolicyManager.cs" />
+    <Compile Include="IPolicyAppender.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IWhatDoIHaveBuilder.cs" />
     <Compile Include="SecurityConfiguration.cs" />
-    <Compile Include="DefaultPolicyManager.cs" />
+    <Compile Include="DefaultPolicyAppender.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
     <Compile Include="Policy\IgnorePolicy.cs" />
     <Compile Include="Policy\ISecurityPolicy.cs" />

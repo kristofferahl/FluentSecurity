@@ -10,7 +10,7 @@ namespace FluentSecurity
 		string WhatDoIHave();
 		IEnumerable<IPolicyContainer> PolicyContainers { get; }
 		bool IgnoreMissingConfiguration { get; }
-		IPolicyManager PolicyManager { get; }
+		IPolicyAppender PolicyAppender { get; }
 		IWhatDoIHaveBuilder WhatDoIHaveBuilder { get; }
 	}
 }

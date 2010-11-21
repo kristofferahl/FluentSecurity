@@ -51,12 +51,12 @@ namespace FluentSecurity
 			}
 		}
 
-		public IPolicyManager PolicyManager
+		public IPolicyAppender PolicyAppender
 		{
 			get
 			{
 				EnsureConfigured();
-				return _configuration.PolicyManager;
+				return _configuration.PolicyAppender;
 			}
 		}
 

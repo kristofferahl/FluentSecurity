@@ -6,18 +6,18 @@ using NUnit.Framework;
 namespace FluentSecurity.Specification
 {
 	[TestFixture]
-	[Category("DefaultPolicyManagerSpecs")]
+	[Category("DefaultPolicyAppenderSpec")]
 	public class When_updating_policies
 	{
 		[Test]
 		public void Should_throw_ArgumentNullException_when_policy_to_add_is_null()
 		{
 			// Arrange
-			var policyManager = new DefaultPolicyManager();
+			var policyAppender = new DefaultPolicyAppender();
 
 			// Act & Assert
 			Assert.Throws<ArgumentNullException>(() =>
-				policyManager.UpdatePolicies(null, new List<ISecurityPolicy>())
+				policyAppender.UpdatePolicies(null, new List<ISecurityPolicy>())
 			);
 		}
 
@@ -25,18 +25,18 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentNullException_when_policies_is_null()
 		{
 			// Arrange
-			var policyManager = new DefaultPolicyManager();
+			var policyAppender = new DefaultPolicyAppender();
 			
 			// Act & Assert
 			Assert.Throws<ArgumentNullException>(() =>
-				policyManager.UpdatePolicies(new IgnorePolicy(), null)
+				policyAppender.UpdatePolicies(new IgnorePolicy(), null)
 			);
 		}
 	}
 
 	[TestFixture]
-	[Category("DefaultPolicyManagerSpecs")]
-	public class When_updating_policies_with_an_IgnorePolicy : with_DefaultPolicyManager
+	[Category("DefaultPolicyAppenderSpec")]
+	public class When_updating_policies_with_an_IgnorePolicy : with_DefaultPolicyAppender
 	{
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
 		private IgnorePolicy _ignorePolicy;
@@ -51,16 +51,16 @@ namespace FluentSecurity.Specification
 			_denyAnonymousAccessPolicy = new DenyAnonymousAccessPolicy();
 			_ignorePolicy = new IgnorePolicy();
 			_policies = new List<ISecurityPolicy>
-				{
-					_denyAnonymousAccessPolicy
-				};
+			{
+				_denyAnonymousAccessPolicy
+			};
 		}
 
 		[Test]
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			_policyManager.UpdatePolicies(_ignorePolicy, _policies);
+			PolicyAppender.UpdatePolicies(_ignorePolicy, _policies);
 
 			// Assert
 			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.False);
@@ -71,7 +71,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_ignorepolicy()
 		{
 			// Act
-			_policyManager.UpdatePolicies(_ignorePolicy, _policies);
+			PolicyAppender.UpdatePolicies(_ignorePolicy, _policies);
 
 			// Assert
 			Assert.That(_policies.Contains(_ignorePolicy), Is.True);
@@ -79,8 +79,8 @@ namespace FluentSecurity.Specification
 	}
 
 	[TestFixture]
-	[Category("DefaultPolicyManagerSpecs")]
-	public class When_updating_policies_with_a_DenyAnonymousAccessPolicy : with_DefaultPolicyManager
+	[Category("DefaultPolicyAppenderSpec")]
+	public class When_updating_policies_with_a_DenyAnonymousAccessPolicy : with_DefaultPolicyAppender
 	{
 		private DenyAuthenticatedAccessPolicy _denyAuthenticatedAccessPolicy;
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
@@ -104,7 +104,7 @@ namespace FluentSecurity.Specification
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			_policyManager.UpdatePolicies(_denyAnonymousAccessPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_denyAnonymousAccessPolicy, _policies);
 
 			// Assert
 			Assert.That(_policies.Contains(_denyAuthenticatedAccessPolicy), Is.False);
@@ -115,7 +115,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_DenyAnonymousAccessPolicy()
 		{
 			// Act
-			_policyManager.UpdatePolicies(_denyAnonymousAccessPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_denyAnonymousAccessPolicy, _policies);
 
 			// Assert
 			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.True);
@@ -123,8 +123,8 @@ namespace FluentSecurity.Specification
 	}
 
     [TestFixture]
-	[Category("DefaultPolicyManagerSpecs")]
-	public class When_updating_policies_with_a_DenyAuthenticatedAccessPolicy : with_DefaultPolicyManager
+	[Category("DefaultPolicyAppenderSpec")]
+	public class When_updating_policies_with_a_DenyAuthenticatedAccessPolicy : with_DefaultPolicyAppender
 	{
 		private DenyAuthenticatedAccessPolicy _denyAuthenticatedAccessPolicy;
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
@@ -148,7 +148,7 @@ namespace FluentSecurity.Specification
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			_policyManager.UpdatePolicies(_denyAuthenticatedAccessPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_denyAuthenticatedAccessPolicy, _policies);
 
 			// Assert
 			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.False);
@@ -159,7 +159,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_DenyAuthenticatedAccessPolicy()
 		{
 			// Act
-			_policyManager.UpdatePolicies(_denyAuthenticatedAccessPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_denyAuthenticatedAccessPolicy, _policies);
 
 			// Assert
 			Assert.That(_policies.Contains(_denyAuthenticatedAccessPolicy), Is.True);
@@ -167,8 +167,8 @@ namespace FluentSecurity.Specification
 	}
 
 	[TestFixture]
-	[Category("DefaultPolicyManagerSpecs")]
-	public class When_updating_policies_with_a_RequireRolePolicy : with_DefaultPolicyManager
+	[Category("DefaultPolicyAppenderSpec")]
+	public class When_updating_policies_with_a_RequireRolePolicy : with_DefaultPolicyAppender
 	{
 		private RequireRolePolicy _requireRolePolicy;
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
@@ -192,7 +192,7 @@ namespace FluentSecurity.Specification
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			_policyManager.UpdatePolicies(_requireRolePolicy, _policies);
+			PolicyAppender.UpdatePolicies(_requireRolePolicy, _policies);
 
 			// Assert
 			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.False);
@@ -203,21 +203,21 @@ namespace FluentSecurity.Specification
 		public void Should_add_RequireRolePolicy()
 		{
 			// Act
-			_policyManager.UpdatePolicies(_requireRolePolicy, _policies);
+			PolicyAppender.UpdatePolicies(_requireRolePolicy, _policies);
 
 			// Assert
 			Assert.That(_policies.Contains(_requireRolePolicy), Is.True);
 		}
 	}
 
-	public abstract class with_DefaultPolicyManager
+	public abstract class with_DefaultPolicyAppender
 	{
-		protected IPolicyManager _policyManager;
+		protected IPolicyAppender PolicyAppender;
 
 		[SetUp]
 		public virtual void SetUp()
 		{
-			_policyManager = new DefaultPolicyManager();
+			PolicyAppender = new DefaultPolicyAppender();
 		}
 	}
 }
