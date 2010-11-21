@@ -24,7 +24,7 @@ namespace FluentSecurity.SampleApplication
 				configuration.For<ExampleController>(x => x.RequireAdministratorRole()).RequireRole(UserRole.Administrator);
 				configuration.For<ExampleController>(x => x.RequirePublisherRole()).RequireRole(UserRole.Publisher);
 
-				configuration.For<AdminController>().RequireRole(UserRole.Administrator);
+				configuration.For<AdminController>().AddPolicy(new AdministratorPolicy());
 				configuration.For<AdminController>(x => x.Index()).Ignore();
 			});
 			return FluentSecurity.CurrentConfiguration;

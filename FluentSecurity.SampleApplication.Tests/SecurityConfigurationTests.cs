@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using FluentSecurity.Policy;
 using FluentSecurity.SampleApplication.Controllers;
+using FluentSecurity.SampleApplication.Models;
 using FluentSecurity.TestHelper;
 using NUnit.Framework;
 
@@ -24,15 +26,13 @@ namespace FluentSecurity.SampleApplication.Tests
 			Expect<ExampleController>(x => x.DenyAnonymousAccess()).Has<DenyAnonymousAccessPolicy>();
 			Expect<ExampleController>(x => x.DenyAuthenticatedAccess()).Has<DenyAuthenticatedAccessPolicy>();
 
-			Expect<ExampleController>(x => x.RequireAdministratorRole()).Has<RequireRolePolicy>();
-			Expect<ExampleController>(x => x.RequirePublisherRole()).Has<RequireRolePolicy>();
+			Expect<ExampleController>(x => x.RequireAdministratorRole()).Has(new RequireRolePolicy(new List<object> { UserRole.Administrator }.ToArray()));
+			Expect<ExampleController>(x => x.RequirePublisherRole()).Has(new RequireRolePolicy(new List<object> { UserRole.Publisher }.ToArray()));
 
-			Expect<AdminController>(x => x.Add()).Has<RequireRolePolicy>();
-			Expect<AdminController>(x => x.Edit()).Has<RequireRolePolicy>();
-			Expect<AdminController>(x => x.Delete()).Has<RequireRolePolicy>();
-			Expect<AdminController>(x => x.Index())
-				.Has<IgnorePolicy>()
-				.DoesNotHave<RequireRolePolicy>();
+			Expect<AdminController>(x => x.Add()).Has<AdministratorPolicy>();
+			Expect<AdminController>(x => x.Edit()).Has<AdministratorPolicy>();
+			Expect<AdminController>(x => x.Delete()).Has<AdministratorPolicy>();
+			Expect<AdminController>(x => x.Index()).Has<IgnorePolicy>().DoesNotHave<AdministratorPolicy>();
 		}
 	}
 

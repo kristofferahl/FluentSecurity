@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using FluentSecurity.Policy;
 using NUnit.Framework;
@@ -53,6 +52,42 @@ namespace FluentSecurity.TestHelper.Specification
 
 	[TestFixture]
 	[Category("PolicyExpectationsExtensionsTester")]
+	public class When_calling_has_with_instance_for_SampleController_New
+	{
+		private PolicyExpectations _policyExpectations;
+		private RequireRolePolicy _expectedPolicy;
+		private RequireRolePolicy _unexpectedPolicy;
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_policyExpectations = new PolicyExpectations(TestData.FluentSecurityFactory.CreatePolicyContainers());
+			_policyExpectations.For("Sample", "New");
+			_expectedPolicy = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
+			_unexpectedPolicy = new RequireRolePolicy(new List<object> { "Writer" }.ToArray());
+		}
+
+		[Test]
+		public void Should_return_policy_expectations_for_RequireRolePolicy_with_role_Editor()
+		{
+			// Act
+			var expectations = _policyExpectations.Has(_expectedPolicy);
+
+			// Assert
+			Assert.That(expectations, Is.EqualTo(_policyExpectations));
+		}
+
+		[Test]
+		public void Should_throw_for_RequireRolePolicy_with_role_Writer()
+		{
+			// Act & Assert
+			Assert.Throws<AssertionException>(() => _policyExpectations.Has(_unexpectedPolicy));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyExpectationsExtensionsTester")]
 	public class When_calling_does_not_have_for_SampleController_Index
 	{
 		private PolicyExpectations _policyExpectations;
@@ -100,6 +135,42 @@ namespace FluentSecurity.TestHelper.Specification
 
 			// Assert
 			Assert.That(expectations, Is.EqualTo(_policyExpectations));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyExpectationsExtensionsTester")]
+	public class When_calling_does_not_have_with_instance_for_SampleController_New
+	{
+		private PolicyExpectations _policyExpectations;
+		private RequireRolePolicy _expectedPolicy;
+		private RequireRolePolicy _unexpectedPolicy;
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_policyExpectations = new PolicyExpectations(TestData.FluentSecurityFactory.CreatePolicyContainers());
+			_policyExpectations.For("Sample", "New");
+			_expectedPolicy = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
+			_unexpectedPolicy = new RequireRolePolicy(new List<object> { "Writer" }.ToArray());
+		}
+
+		[Test]
+		public void Should_return_policy_expectations_for_RequireRolePolicy_with_role_Writer()
+		{
+			// Act
+			var expectations = _policyExpectations.DoesNotHave(_unexpectedPolicy);
+
+			// Assert
+			Assert.That(expectations, Is.EqualTo(_policyExpectations));
+		}
+
+		[Test]
+		public void Should_throw_for_RequireRolePolicy_with_role_Editor()
+		{
+			// Act & Assert
+			Assert.Throws<AssertionException>(() => _policyExpectations.DoesNotHave(_expectedPolicy));
 		}
 	}
 

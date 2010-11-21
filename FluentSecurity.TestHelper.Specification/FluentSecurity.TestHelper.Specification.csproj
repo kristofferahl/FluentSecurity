@@ -63,6 +63,10 @@
     <Compile Include="TestData\SampleController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FluentSecurity.Specification\FluentSecurity.Specification.csproj">
+      <Project>{2CB0499B-C0F7-4207-B5BC-1EDB207D9308}</Project>
+      <Name>FluentSecurity.Specification</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FluentSecurity.TestHelper\FluentSecurity.TestHelper.csproj">
       <Project>{F8E43851-6455-48F4-96DE-C3CB3E189123}</Project>
       <Name>FluentSecurity.TestHelper</Name>

@@ -111,4 +111,33 @@ namespace FluentSecurity.Specification.Policy
 			Assert.DoesNotThrow(() => policy.Enforce(authenticated, roles.ToArray()));
 		}
 	}
+
+	[TestFixture]
+	[Category("RequireRolePolicySpec")]
+	public class When_comparing_RequireRolePolicy
+	{
+		[Test]
+		public void Should_be_equal()
+		{
+			var instance1 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
+			var instance2 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
+			Assert.That(instance1.Equals(instance2), Is.True);
+
+			var instance3 = new RequireRolePolicy(new List<object> { UserRole.Writer }.ToArray());
+			var instance4 = new RequireRolePolicy(new List<object> { UserRole.Writer }.ToArray());
+			Assert.That(instance3.Equals(instance4), Is.True);
+		}
+
+		[Test]
+		public void Should_not_be_equal()
+		{
+			var instance1 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
+			var instance2 = new RequireRolePolicy(new List<object> { "Writer" }.ToArray());
+			Assert.That(instance1.Equals(instance2), Is.False);
+
+			var instance3 = new RequireRolePolicy(new List<object> { UserRole.Publisher }.ToArray());
+			var instance4 = new RequireRolePolicy(new List<object> { UserRole.Owner }.ToArray());
+			Assert.That(instance3.Equals(instance4), Is.False);
+		}
+	}
 }

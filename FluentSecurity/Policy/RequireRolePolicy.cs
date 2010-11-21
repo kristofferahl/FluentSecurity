@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Security;
 
 namespace FluentSecurity.Policy
@@ -45,6 +48,23 @@ namespace FluentSecurity.Policy
 		public object[] RolesRequired
 		{
 			get { return _requiredRoles; }
+		}
+
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as RequireRolePolicy);
+		}
+
+		public bool Equals(RequireRolePolicy other)
+		{
+			if (ReferenceEquals(null, other)) return false;
+			if (RolesRequired.Count() != other.RolesRequired.Count()) return false;
+			return RolesRequired.All(role => other.RolesRequired.Contains(role));
+		}
+
+		public override int GetHashCode()
+		{
+			return (_requiredRoles != null ? _requiredRoles.GetHashCode() : 0);
 		}
 	}
 }
