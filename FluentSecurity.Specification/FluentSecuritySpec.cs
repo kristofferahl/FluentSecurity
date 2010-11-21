@@ -138,16 +138,16 @@ namespace FluentSecurity.Specification
 			FluentSecurity.Reset();
 
 			// Act
-			FluentSecurity.Configure(policy =>
+			FluentSecurity.Configure(configuration =>
 			{
-				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
-				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
+				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
 
-				policy.SetCurrentPolicyManager(_defaultPolicyManager);
-				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
+				configuration.SetCurrentPolicyManager(_defaultPolicyManager);
+				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 
-				policy.SetCurrentPolicyManager(_fakePolicyManager);
-				policy.For<BlogController>(x => x.AddPost()).RequireRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
+				configuration.SetCurrentPolicyManager(_fakePolicyManager);
+				configuration.For<BlogController>(x => x.AddPost()).RequireRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
 			_policyContainers = FluentSecurity.CurrentConfiguration.PolicyContainers;
@@ -192,12 +192,12 @@ namespace FluentSecurity.Specification
 			FluentSecurity.Reset();
 
 			// Act
-			FluentSecurity.Configure(policy =>
+			FluentSecurity.Configure(configuration =>
 			{
-				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
-				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
-				policy.For<BlogController>(x => x.Index());
-				policy.For<BlogController>(x => x.Index());
+				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
+				configuration.For<BlogController>(x => x.Index());
+				configuration.For<BlogController>(x => x.Index());
 			});
 
 			Assert.That(FluentSecurity.CurrentConfiguration.PolicyContainers.Count(), Is.EqualTo(1));
@@ -221,12 +221,12 @@ namespace FluentSecurity.Specification
 			FluentSecurity.Reset();
 
 			// Act
-			FluentSecurity.Configure(policy =>
+			FluentSecurity.Configure(configuration =>
 			{
-				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
-				policy.For<BlogController>(x => x.Index());
-				policy.For<BlogController>(x => x.AddPost());
-				policy.RemovePoliciesFor<BlogController>(x => x.Index());
+				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+				configuration.For<BlogController>(x => x.Index());
+				configuration.For<BlogController>(x => x.AddPost());
+				configuration.RemovePoliciesFor<BlogController>(x => x.Index());
 			});
 
 			_policyContainers = FluentSecurity.CurrentConfiguration.PolicyContainers;
