@@ -64,7 +64,18 @@ namespace FluentSecurity.Policy
 
 		public override int GetHashCode()
 		{
-			return (_requiredRoles != null ? _requiredRoles.GetHashCode() : 0);
+			unchecked
+			{
+				var hash = 17;
+				if (RolesRequired != null)
+				{
+					hash = RolesRequired.Aggregate(
+						hash,
+						(current, role) => current * 23 + ((role != null) ? role.GetHashCode() : 0)
+						);
+				}
+				return hash;
+			}
 		}
 	}
 }

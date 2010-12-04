@@ -50,6 +50,15 @@ namespace FluentSecurity
 		{
 			return ((MethodCallExpression)actionExpression.Body).Method.Name;
 		}
+		
+		/// <summary>
+		/// Performs an action on each item
+		/// </summary>
+		public static void Each<T>(this IEnumerable<T> items, Action<T> action)
+		{
+			foreach (var item in items)
+				action(item);
+		}
 
 		/// <summary>
 		/// Returns true if the value is null or empty
