@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Security;
 
 namespace FluentSecurity.Policy
@@ -10,7 +8,7 @@ namespace FluentSecurity.Policy
 	{
 		private readonly object[] _requiredRoles;
 
-		public RequireRolePolicy(object[] requiredRoles)
+		public RequireRolePolicy(params object[] requiredRoles)
 		{
 			if (requiredRoles == null)
 				throw new ArgumentException("Required roles must not be null");

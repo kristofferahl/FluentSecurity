@@ -180,7 +180,7 @@ namespace FluentSecurity.Specification
 			base.SetUp();
 
 			// Arrange
-			_requireRolePolicy = new RequireRolePolicy(new List<object> { "Administrator" }.ToArray());
+			_requireRolePolicy = new RequireRolePolicy("Administrator");
 			_denyAnonymousAccessPolicy = new DenyAnonymousAccessPolicy();
 			_policies = new List<ISecurityPolicy>
 				{

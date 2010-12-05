@@ -49,14 +49,14 @@ namespace FluentSecurity.Specification.Policy
 	public class When_getting_the_required_roles_for_an_RequiredRolePolicy
 	{
 		[Test]
-		public void Should_return_null()
+		public void Should_return_expected_roles()
 		{
 			// Arrange
 			var expectedRoles = new List<object> { "Administrator", "Editor" }.ToArray();
 			var policy = new RequireRolePolicy(expectedRoles);
 
 			// Act
-			object[] rolesRequired = policy.RolesRequired;
+			var rolesRequired = policy.RolesRequired;
 
 			// Assert
 			Assert.That(rolesRequired, Is.EqualTo(expectedRoles));
@@ -119,36 +119,36 @@ namespace FluentSecurity.Specification.Policy
 		[Test]
 		public void Should_be_equal()
 		{
-			var instance1 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
-			var instance2 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
+			var instance1 = new RequireRolePolicy("Editor");
+			var instance2 = new RequireRolePolicy("Editor");
 			Assert.That(instance1.Equals(instance2), Is.True);
 
-			var instance3 = new RequireRolePolicy(new List<object> { UserRole.Writer }.ToArray());
-			var instance4 = new RequireRolePolicy(new List<object> { UserRole.Writer }.ToArray());
+			var instance3 = new RequireRolePolicy(UserRole.Writer);
+			var instance4 = new RequireRolePolicy(UserRole.Writer);
 			Assert.That(instance3.Equals(instance4), Is.True);
 		}
 
 		[Test]
 		public void Should_not_be_equal_when_roles_differ()
 		{
-			var instance1 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
-			var instance2 = new RequireRolePolicy(new List<object> { "Writer" }.ToArray());
+			var instance1 = new RequireRolePolicy("Editor");
+			var instance2 = new RequireRolePolicy("Writer");
 			Assert.That(instance1.Equals(instance2), Is.False);
 
-			var instance3 = new RequireRolePolicy(new List<object> { UserRole.Publisher }.ToArray());
-			var instance4 = new RequireRolePolicy(new List<object> { UserRole.Owner }.ToArray());
+			var instance3 = new RequireRolePolicy(UserRole.Publisher);
+			var instance4 = new RequireRolePolicy(UserRole.Owner);
 			Assert.That(instance3.Equals(instance4), Is.False);
 		}
 
 		[Test]
 		public void Should_not_be_equal_when_roles_count_differ()
 		{
-			var instance1 = new RequireRolePolicy(new List<object> { "Editor", "Writer" }.ToArray());
-			var instance2 = new RequireRolePolicy(new List<object> { "Writer" }.ToArray());
+			var instance1 = new RequireRolePolicy("Editor", "Writer");
+			var instance2 = new RequireRolePolicy("Writer");
 			Assert.That(instance1.Equals(instance2), Is.False);
 
-			var instance3 = new RequireRolePolicy(new List<object> { UserRole.Owner, UserRole.Writer, UserRole.Publisher }.ToArray());
-			var instance4 = new RequireRolePolicy(new List<object> { UserRole.Owner }.ToArray());
+			var instance3 = new RequireRolePolicy(UserRole.Owner, UserRole.Writer, UserRole.Publisher);
+			var instance4 = new RequireRolePolicy(UserRole.Owner);
 			Assert.That(instance3.Equals(instance4), Is.False);
 		}
 	}
@@ -160,36 +160,36 @@ namespace FluentSecurity.Specification.Policy
 		[Test]
 		public void Should_be_the_same()
 		{
-			var instance1 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
-			var instance2 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
+			var instance1 = new RequireRolePolicy("Editor");
+			var instance2 = new RequireRolePolicy("Editor");
 			Assert.That(instance1.GetHashCode(), Is.EqualTo(instance2.GetHashCode()));
 
-			var instance3 = new RequireRolePolicy(new List<object> { UserRole.Writer }.ToArray());
-			var instance4 = new RequireRolePolicy(new List<object> { UserRole.Writer }.ToArray());
+			var instance3 = new RequireRolePolicy(UserRole.Writer);
+			var instance4 = new RequireRolePolicy(UserRole.Writer);
 			Assert.That(instance3.GetHashCode(), Is.EqualTo(instance4.GetHashCode()));
 		}
 
 		[Test]
 		public void Should_not_be_the_same_when_roles_differ()
 		{
-			var instance1 = new RequireRolePolicy(new List<object> { "Editor" }.ToArray());
-			var instance2 = new RequireRolePolicy(new List<object> { "Writer" }.ToArray());
+			var instance1 = new RequireRolePolicy("Editor");
+			var instance2 = new RequireRolePolicy("Writer");
 			Assert.That(instance1.GetHashCode(), Is.Not.EqualTo(instance2.GetHashCode()));
 
-			var instance3 = new RequireRolePolicy(new List<object> { UserRole.Publisher }.ToArray());
-			var instance4 = new RequireRolePolicy(new List<object> { UserRole.Owner }.ToArray());
+			var instance3 = new RequireRolePolicy(UserRole.Publisher);
+			var instance4 = new RequireRolePolicy(UserRole.Owner);
 			Assert.That(instance3.GetHashCode(), Is.Not.EqualTo(instance4.GetHashCode()));
 		}
 
 		[Test]
 		public void Should_not_be_the_same_when_roles_count_differ()
 		{
-			var instance1 = new RequireRolePolicy(new List<object> { "Editor", "Writer" }.ToArray());
-			var instance2 = new RequireRolePolicy(new List<object> { "Writer" }.ToArray());
+			var instance1 = new RequireRolePolicy("Editor", "Writer");
+			var instance2 = new RequireRolePolicy("Writer");
 			Assert.That(instance1.GetHashCode(), Is.Not.EqualTo(instance2.GetHashCode()));
 
-			var instance3 = new RequireRolePolicy(new List<object> { UserRole.Owner, UserRole.Writer, UserRole.Publisher }.ToArray());
-			var instance4 = new RequireRolePolicy(new List<object> { UserRole.Owner }.ToArray());
+			var instance3 = new RequireRolePolicy(UserRole.Owner, UserRole.Writer, UserRole.Publisher);
+			var instance4 = new RequireRolePolicy(UserRole.Owner);
 			Assert.That(instance3.GetHashCode(), Is.Not.EqualTo(instance4.GetHashCode()));
 		}
 	}
