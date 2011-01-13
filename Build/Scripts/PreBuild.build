@@ -6,6 +6,13 @@
 	<target name="PreBuild" description="Performing prebuild tasks (NAnt)">
 		<echo message="Performing prebuild tasks (NAnt)" />
 		
+		<echo message="Cleaning up output directory" />
+		<delete>
+			<fileset>
+				<include name="..\..\Build\Output\**.*" />
+			</fileset>
+		</delete>
+		
 		<echo message="Cleaning up reports directory" />
 		<delete>
 			<fileset>

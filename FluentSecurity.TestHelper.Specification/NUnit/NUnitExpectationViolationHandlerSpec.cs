@@ -1,6 +1,7 @@
+using FluentSecurity.TestHelper.NUnit;
 using NUnit.Framework;
 
-namespace FluentSecurity.TestHelper.Specification
+namespace FluentSecurity.TestHelper.Specification.NUnit
 {
 	[TestFixture]
 	[Category("NUnitExpectationViolationHandlerSpec")]

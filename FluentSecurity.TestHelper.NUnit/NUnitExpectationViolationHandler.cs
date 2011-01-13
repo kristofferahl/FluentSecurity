@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
 
-namespace FluentSecurity.TestHelper
+namespace FluentSecurity.TestHelper.NUnit
 {
-	// TODO: Move to it's own assembly
 	public class NUnitExpectationViolationHandler : IExpectationViolationHandler
 	{
 		public ExpectationResult Handle(string message)

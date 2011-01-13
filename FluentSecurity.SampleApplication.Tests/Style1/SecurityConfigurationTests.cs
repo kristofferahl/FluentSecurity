@@ -8,7 +8,7 @@ namespace FluentSecurity.SampleApplication.Tests.Style1
 {
 	[TestFixture]
 	[Category("SecurityConfigurationTests")]
-	public class When_security_is_configured : SecurityExpectationHelper
+	public class When_security_is_configured : SecurityExpectationHelperBase
 	{
 		protected override ISecurityConfiguration ConfigurationToTest()
 		{
@@ -40,7 +40,7 @@ namespace FluentSecurity.SampleApplication.Tests.Style1
 
 	[TestFixture]
 	[Category("SecurityConfigurationTests")]
-	public class When_security_is_configured_for_account_controller : SecurityExpectationHelper<AccountController>
+	public class When_security_is_configured_for_account_controller : SecurityExpectationHelperBase<AccountController>
 	{
 		protected override ISecurityConfiguration ConfigurationToTest()
 		{

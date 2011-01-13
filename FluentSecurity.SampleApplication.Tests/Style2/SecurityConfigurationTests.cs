@@ -8,7 +8,7 @@ namespace FluentSecurity.SampleApplication.Tests.Style2
 {
 	[TestFixture]
 	[Category("SecurityConfigurationTests")]
-	public class When_security_is_configured_for_account_controller : SecurityExpectationHelper<AccountController>
+	public class When_security_is_configured_for_account_controller : SecurityExpectationHelperBase<AccountController>
 	{
 		protected override ISecurityConfiguration ConfigurationToTest()
 		{
@@ -31,7 +31,7 @@ namespace FluentSecurity.SampleApplication.Tests.Style2
 
 	[TestFixture]
 	[Category("SecurityConfigurationTests")]
-	public class When_security_is_configured_for_example_controller : SecurityExpectationHelper<ExampleController>
+	public class When_security_is_configured_for_example_controller : SecurityExpectationHelperBase<ExampleController>
 	{
 		protected override ISecurityConfiguration ConfigurationToTest()
 		{
@@ -56,7 +56,7 @@ namespace FluentSecurity.SampleApplication.Tests.Style2
 
 	[TestFixture]
 	[Category("SecurityConfigurationTests")]
-	public class When_security_is_configured_for_admin_controller : SecurityExpectationHelper<AdminController>
+	public class When_security_is_configured_for_admin_controller : SecurityExpectationHelperBase<AdminController>
 	{
 		protected override ISecurityConfiguration ConfigurationToTest()
 		{

@@ -8,7 +8,7 @@ namespace FluentSecurity.TestHelper.Specification
 {
 	[TestFixture]
 	[Category("SecurityExpectationsHelperSpecs")]
-	public class When_calling_expect_for_SampleController_Index_with_helper : SecurityExpectationHelper
+	public class WhenCallingExpectForSampleControllerIndexWithHelperBase : SecurityExpectationHelperBase
 	{
 		private ISecurityConfiguration _securityConfiguration;
 
@@ -64,7 +64,7 @@ namespace FluentSecurity.TestHelper.Specification
 
 	[TestFixture]
 	[Category("SecurityExpectationsHelperSpecs")]
-	public class When_calling_expect_for_SampleController_with_helper : SecurityExpectationHelper<SampleController>
+	public class WhenCallingExpectForSampleControllerWithHelperBase : SecurityExpectationHelperBase<SampleController>
 	{
 		private ISecurityConfiguration _securityConfiguration;
 
