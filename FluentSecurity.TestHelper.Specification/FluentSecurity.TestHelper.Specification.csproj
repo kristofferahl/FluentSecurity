@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Moq.4.0.10827\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\NUnit\framework\nunit.framework.dll</HintPath>
@@ -53,10 +57,24 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="PolicyContainerExtensionsSpec.cs" />
-    <Compile Include="PolicyExpectationsExtensionsTester.cs" />
+    <Compile Include="DefaultExpectationViolationHandlerSpec.cs" />
+    <Compile Include="ExpectationGroupSpec.cs" />
+    <Compile Include="ExpectationGroupBuilderSpec.cs" />
+    <Compile Include="ExpectationExpressionSpec.cs" />
+    <Compile Include="ExpectationResultsExtensionsSpec.cs" />
+    <Compile Include="ExpectationResultSpec.cs" />
+    <Compile Include="Expectations\DoesNotHaveTypeExpectationSpecs.cs" />
+    <Compile Include="Expectations\HasTypeExpectationSpecs.cs" />
+    <Compile Include="ExpectationVerifyerSpec.cs" />
     <Compile Include="PolicyExpectationsSpec.cs" />
-    <Compile Include="SecurityExpectationHelperSpec.cs" />
+    <Compile Include="NUnitExpectationViolationHandlerSpec.cs" />
+    <Compile Include="PolicyContainerExtensionsSpec.cs" />
+    <Compile Include="SecurityConfigurationExtensionsSpec.cs" />
+    <Compile Include="SecurityExpectationsHelperSpecs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestData\AdminController.cs" />
+    <Compile Include="TestData\DenyLynxPolicy.cs" />
     <Compile Include="TestData\IgnoreController.cs" />
     <Compile Include="TestData\DenyInternetExplorerPolicy.cs" />
     <Compile Include="TestData\FluentSecurityFactory.cs" />

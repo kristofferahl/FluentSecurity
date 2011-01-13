@@ -1,14 +1,10 @@
 using System.Collections.Generic;
+using FluentSecurity.Policy;
 
 namespace FluentSecurity.TestHelper.Specification.TestData
 {
 	public static class FluentSecurityFactory
 	{
-		public static IEnumerable<IPolicyContainer> CreatePolicyContainers()
-		{
-			return CreateSecurityConfiguration().PolicyContainers;
-		}
-
 		public static ISecurityConfiguration CreateSecurityConfiguration()
 		{
 			FluentSecurity.Configure(configuration =>
@@ -20,10 +16,71 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				configuration.For<SampleController>(x => x.List()).DenyAnonymousAccess();
 				configuration.For<SampleController>(x => x.New()).RequireRole("Editor").AddPolicy(new DenyInternetExplorerPolicy());
 
+				configuration.For<AdminController>().DenyAnonymousAccess();
+				configuration.For<AdminController>(x => x.Login()).DenyAuthenticatedAccess();
+
 				configuration.For<IgnoreController>().Ignore();
 			});
 
 			return FluentSecurity.CurrentConfiguration;
+		}
+
+		public static ISecurityConfiguration CreateEmptySecurityConfiguration()
+		{
+			FluentSecurity.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(() => false);
+				configuration.IgnoreMissingConfiguration();
+			});
+
+			return FluentSecurity.CurrentConfiguration;
+		}
+
+		public static ISecurityConfiguration CreateSecurityConfigurationWithTwoExpectations()
+		{
+			FluentSecurity.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(() => false);
+				configuration.IgnoreMissingConfiguration();
+
+				configuration.For<SampleController>(x => x.Index());
+				configuration.For<SampleController>(x => x.List());
+				configuration.For<SampleController>(x => x.New()).RequireRole("Writer");
+
+				configuration.For<AdminController>();
+				configuration.For<AdminController>(x => x.Login());
+
+				configuration.For<IgnoreController>();
+
+				configuration.For<TestController>().Ignore();
+			});
+
+			return FluentSecurity.CurrentConfiguration;
+		}
+
+		public static PolicyExpectations CreatePolicyExpectations()
+		{
+			var policyExpectations = new PolicyExpectations();
+			
+			policyExpectations.For<SampleController>(x => x.Index()).Has<DenyAuthenticatedAccessPolicy>();
+			policyExpectations.For<SampleController>(x => x.List()).Has<DenyAnonymousAccessPolicy>();
+			policyExpectations.For<SampleController>(x => x.New()).Has(new RequireRolePolicy("Editor")).DoesNotHave(new RequireRolePolicy("Writer")).Has<DenyInternetExplorerPolicy>();
+
+			policyExpectations.For<AdminController>().Has<DenyAnonymousAccessPolicy>();
+			policyExpectations.For<AdminController>(x => x.Login())
+				.DoesNotHave<DenyAnonymousAccessPolicy>()
+				.Has<DenyAuthenticatedAccessPolicy>();
+
+			policyExpectations.For<IgnoreController>().Has<IgnorePolicy>();
+
+			policyExpectations.For<TestController>().DoesNotHave<IgnorePolicy>();
+
+			return policyExpectations;
+		}
+
+		public static IEnumerable<ExpectationGroup> CreateExpectationsGroups()
+		{
+			return CreatePolicyExpectations().ExpectationGroups;
 		}
 	}
 }

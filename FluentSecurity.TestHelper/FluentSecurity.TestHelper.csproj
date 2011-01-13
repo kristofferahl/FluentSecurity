@@ -53,10 +53,29 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ExpectationGroup.cs" />
+    <Compile Include="ExpectationGroupBuilder.cs" />
+    <Compile Include="ExpectationExpression.cs" />
+    <Compile Include="ExpectationResult.cs" />
+    <Compile Include="ExpectationExpressionExtensions.cs" />
+    <Compile Include="ExpectationResultsExtensions.cs" />
+    <Compile Include="Expectations\DoesNotHaveInstance.cs" />
+    <Compile Include="Expectations\DoesNotHaveTypeExpectation.cs" />
+    <Compile Include="Expectations\HasInstanceExpectation.cs" />
+    <Compile Include="Expectations\HasTypeExpectation.cs" />
+    <Compile Include="Expectations\IExpectation.cs" />
+    <Compile Include="ExpectationVerifyer.cs" />
+    <Compile Include="IExpectationBuilder.cs" />
+    <Compile Include="IExpectationExpression.cs" />
+    <Compile Include="IExpectationVerifyer.cs" />
+    <Compile Include="IExpectationViolationHandler.cs" />
     <Compile Include="PolicyExpectations.cs" />
+    <Compile Include="PolicyExpectationsExpression.cs" />
+    <Compile Include="SecurityConfigurationExtensions.cs" />
+    <Compile Include="SecurityExpecationsHelper.cs" />
+    <Compile Include="NUnitExpectationViolationHandler.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />
-    <Compile Include="PolicyExpectationsExtensions.cs" />
-    <Compile Include="SecurityExpectationHelper.cs" />
+    <Compile Include="DefaultExpectationViolationHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentSecurity\FluentSecurity.csproj">

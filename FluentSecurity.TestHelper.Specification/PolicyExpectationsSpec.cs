@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentSecurity.TestHelper.Specification.TestData;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.TestHelper.Specification
@@ -10,166 +11,81 @@ namespace FluentSecurity.TestHelper.Specification
 	[Category("PolicyExpectationsSpec")]
 	public class When_creating_policy_expectations
 	{
-		private IEnumerable<IPolicyContainer> _policyContainers;
+		private PolicyExpectations _policyExpectations;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_policyContainers = FluentSecurityFactory.CreatePolicyContainers();
-		}
-
-		private PolicyExpectations Because()
-		{
-			return new PolicyExpectations(_policyContainers);
+			_policyExpectations = new PolicyExpectations();
 		}
 
 		[Test]
-		public void Should_have_policy_containers()
+		public void Should_have_0_expectation_groups()
 		{
-			// Arrange
-			_policyContainers = FluentSecurityFactory.CreatePolicyContainers();
-
-			// Act
-			var policyExtensions = Because();
-
-			// Assert
-			Assert.That(policyExtensions.PolicyContainers, Is.EqualTo(_policyContainers));
+			Assert.That(_policyExpectations.ExpectationGroups.Count(), Is.EqualTo(0));
 		}
 
 		[Test]
-		public void Should_have_0_expectations()
+		public void Should_have_expectation_builder()
 		{
-			// Arrange
-			const int expectedAmount = 0;
-
-			// Act
-			var policyExpectations = Because();
-
-			// Assert
-			Assert.That(policyExpectations.ExpectationsFor.Count(), Is.EqualTo(expectedAmount));
+			Assert.That(_policyExpectations.ExpectationGroupBuilder.GetType(), Is.EqualTo(typeof(ExpectationGroupBuilder)));
 		}
 
 		[Test]
-		public void Should_throw_when_policy_containers_is_null()
+		public void Should_have_expectation_violation()
 		{
-			// Arrange
-			const string expectedName = "policyContainers";
-			_policyContainers = null;
+			Assert.That(_policyExpectations.ExpectationViolationHandler.GetType(), Is.EqualTo(typeof(DefaultExpectationViolationHandler)));
+		}
 
-			// Act
-			var results = Assert.Throws<ArgumentNullException>(() => Because());
-
-			// Assert
-			Assert.That(results.ParamName, Is.EqualTo(expectedName));
+		[Test]
+		public void Should_have_expectation_verifyer_provider()
+		{
+			var configuration = FluentSecurityFactory.CreateEmptySecurityConfiguration();
+			var handler = _policyExpectations.ExpectationViolationHandler;
+			Assert.That(_policyExpectations.ExpectationVerifyerProvider(configuration, handler).GetType(), Is.EqualTo(typeof(ExpectationVerifyer)));
 		}
 	}
 
 	[TestFixture]
 	[Category("PolicyExpectationsSpec")]
-	public class When_adding_expectation_for_SampleController_Index
+	public class When_verifying_all_policy_expectations
 	{
-		private IEnumerable<IPolicyContainer> _policyContainers;
-		private PolicyExpectations _expectations;
-		private string _controller = "Sample";
-		private string _action = "Index";
-
-		[SetUp]
-		public void SetUp()
-		{
-			_policyContainers = FluentSecurityFactory.CreatePolicyContainers();
-			_expectations = new PolicyExpectations(_policyContainers);
-			_controller = "Sample";
-			_action = "Index";
-		}
-
-		private PolicyExpectations Because()
-		{
-			return _expectations.For(_controller, _action);
-		}
-
 		[Test]
-		public void Should_have_one_expectation()
-		{
-			const int expectedExpectations = 1;
-
-			// Act
-			var expectations = Because();
-
-			// Assert
-			var totalExpectations = expectations.ExpectationsFor.Count();
-			Assert.That(totalExpectations, Is.EqualTo(expectedExpectations));
-		}
-
-		[Test]
-		public void Should_have_expectation_for_Sample_Index()
+		public void Should_throw_when_configuration_is_null()
 		{
 			// Arrange
-			const string controller = "Sample";
-			const string action = "Index";
-			const int expectedExpectations = 1;
+			ISecurityConfiguration configuration = null;
+			var policyExpectations = new PolicyExpectations();
 
-			// Act
-			var expectations = Because();
-
-			// Assert
-			var matchingExpectations = expectations.ExpectationsFor.Count(x => x.Key.Equals(controller) && x.Value.Equals(action));
-			Assert.That(matchingExpectations, Is.EqualTo(expectedExpectations));
+			// Act & assert
+			Assert.Throws<ArgumentNullException>(() => policyExpectations.VerifyAll(configuration));
 		}
 
 		[Test]
-		public void Should_throw_when_controller_name_is_null()
+		public void Should_build_expectation_groups_and_verify_expectations()
 		{
 			// Arrange
-			const string expectedName = "controllerName";
-			_controller = null;
+			var configuration = FluentSecurityFactory.CreateSecurityConfiguration();
+			var expectationGroups = new List<ExpectationGroup>();
+
+			var builder = new Mock<IExpectationGroupBuilder>();
+			var verifyer = new Mock<IExpectationVerifyer>();
+
+			builder.Setup(x => x.Build(It.IsAny<IEnumerable<IExpectationExpression>>())).Returns(expectationGroups).AtMostOnce();
+			verifyer.Setup(x => x.VerifyExpectationsOf(expectationGroups)).Returns(new List<ExpectationResult>()).AtMostOnce();
+
+			var policyExpectations = new PolicyExpectations();
+			policyExpectations.SetExpectationGroupBuilder(builder.Object);
+			policyExpectations.ConstructExpectationVerifyerUsing((c, h) => verifyer.Object);
+			policyExpectations.For<SampleController>();
+			policyExpectations.For<AdminController>(x => x.Login());
 
 			// Act
-			var results = Assert.Throws<ArgumentException>(() => Because());
+			policyExpectations.VerifyAll(configuration);
 
 			// Assert
-			Assert.That(results.ParamName, Is.EqualTo(expectedName));
-		}
-
-		[Test]
-		public void Should_throw_when_controller_name_is_empty()
-		{
-			// Arrange
-			const string expectedName = "controllerName";
-			_controller = string.Empty;
-
-			// Act
-			var results = Assert.Throws<ArgumentException>(() => Because());
-
-			// Assert
-			Assert.That(results.ParamName, Is.EqualTo(expectedName));
-		}
-
-		[Test]
-		public void Should_throw_when_action_name_is_null()
-		{
-			// Arrange
-			const string expectedName = "actionName";
-			_action = null;
-
-			// Act
-			var results = Assert.Throws<ArgumentException>(() => Because());
-
-			// Assert
-			Assert.That(results.ParamName, Is.EqualTo(expectedName));
-		}
-
-		[Test]
-		public void Should_throw_when_action_name_is_empty()
-		{
-			// Arrange
-			const string expectedName = "actionName";
-			_action = string.Empty;
-
-			// Act
-			var results = Assert.Throws<ArgumentException>(() => Because());
-
-			// Assert
-			Assert.That(results.ParamName, Is.EqualTo(expectedName));
+			builder.VerifyAll();
+			verifyer.VerifyAll();
 		}
 	}
 }

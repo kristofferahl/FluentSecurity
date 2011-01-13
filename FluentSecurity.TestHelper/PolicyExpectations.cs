@@ -1,30 +1,69 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Web.Mvc;
 
 namespace FluentSecurity.TestHelper
 {
 	public class PolicyExpectations
 	{
-		private readonly IList<KeyValuePair<string, string>> _expectationsFor;
+		private readonly IList<IExpectationExpression> _expectationsExpressions;
 
-		public PolicyExpectations(IEnumerable<IPolicyContainer> policyContainers)
+		public PolicyExpectations()
 		{
-			if (policyContainers == null) throw new ArgumentNullException("policyContainers");
+			_expectationsExpressions = new List<IExpectationExpression>();
 
-			PolicyContainers = policyContainers;
-			_expectationsFor = new List<KeyValuePair<string, string>>();
+			ConstructExpectationVerifyerUsing((configuration, handler) => new ExpectationVerifyer(configuration, handler));
+			SetExpectationGroupBuilder(new ExpectationGroupBuilder());
+			SetExpectationViolationHandler(new DefaultExpectationViolationHandler());
 		}
 
-		public IEnumerable<KeyValuePair<string, string>> ExpectationsFor { get { return _expectationsFor; } }
-		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
-
-		public PolicyExpectations For(string controllerName, string actionName)
+		public void ConstructExpectationVerifyerUsing(Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> expectationVerifyerProvider)
 		{
-			if (string.IsNullOrEmpty(controllerName)) throw new ArgumentException("Controller name must not be null or empty", "controllerName");
-			if (string.IsNullOrEmpty(actionName)) throw new ArgumentException("Action name must not be null or empty", "actionName");
+			ExpectationVerifyerProvider = expectationVerifyerProvider;
+		}
 
-			_expectationsFor.Add(new KeyValuePair<string, string>(controllerName, actionName));
-			return this;
+		public void SetExpectationViolationHandler(IExpectationViolationHandler expectationViolationHandler)
+		{
+			ExpectationViolationHandler = expectationViolationHandler;
+		}
+
+		public void SetExpectationGroupBuilder(IExpectationGroupBuilder expectationGroupBuilder)
+		{
+			ExpectationGroupBuilder = expectationGroupBuilder;
+		}
+
+		public Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> ExpectationVerifyerProvider { get; private set; }
+		public IExpectationViolationHandler ExpectationViolationHandler { get; private set; }
+		public IExpectationGroupBuilder ExpectationGroupBuilder { get; private set; }
+
+		public IExpectationExpression For<TController>()
+		{
+			var expression = new ExpectationExpression<TController>();
+			return Add(expression);
+		}
+
+		public IExpectationExpression For<TController>(Expression<Func<TController, ActionResult>> actionExpression)
+		{
+			var expression = new ExpectationExpression<TController>(actionExpression);
+			return Add(expression);
+		}
+
+		private IExpectationExpression Add(IExpectationExpression expressionExpression)
+		{
+			_expectationsExpressions.Add(expressionExpression);
+			return expressionExpression;
+		}
+
+		public IEnumerable<ExpectationResult> VerifyAll(ISecurityConfiguration configuration)
+		{
+			if (configuration == null) throw new ArgumentNullException("configuration");
+			return ExpectationVerifyerProvider(configuration, ExpectationViolationHandler).VerifyExpectationsOf(ExpectationGroups);
+		}
+
+		public IEnumerable<ExpectationGroup> ExpectationGroups
+		{
+			get { return ExpectationGroupBuilder.Build(_expectationsExpressions); }
 		}
 	}
 }

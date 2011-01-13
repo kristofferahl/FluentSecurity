@@ -19,4 +19,12 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			return null;
 		}
 	}
+
+	public class TestController : Controller
+	{
+		public ActionResult HasIgnoreAttribute()
+		{
+			return null;
+		}
+	}
 }

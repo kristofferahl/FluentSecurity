@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.TestHelper",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.TestHelper.Specification", "FluentSecurity.TestHelper.Specification\FluentSecurity.TestHelper.Specification.csproj", "{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplication", "FluentSecurity.SampleApplication\FluentSecurity.SampleApplication.csproj", "{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplication.Tests", "FluentSecurity.SampleApplication.Tests\FluentSecurity.SampleApplication.Tests.csproj", "{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Application", "Sample Application", "{635F70A6-95DD-47D6-B815-BF7D8592D9CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,8 +37,20 @@ Global
 		{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C061FCA0-BF28-4803-B55B-F8725DAF3EA1} = {635F70A6-95DD-47D6-B815-BF7D8592D9CB}
+		{56EB339E-9C71-4374-B8DF-5B7AC80DC97A} = {635F70A6-95DD-47D6-B815-BF7D8592D9CB}
 	EndGlobalSection
 EndGlobal
