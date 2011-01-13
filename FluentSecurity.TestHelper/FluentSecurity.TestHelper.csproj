@@ -53,6 +53,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="ExpectationGroup.cs" />
     <Compile Include="ExpectationGroupBuilder.cs" />
     <Compile Include="ExpectationExpression.cs" />

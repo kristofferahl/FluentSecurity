@@ -8,14 +8,14 @@ namespace FluentSecurity.TestHelper
 	public class PolicyExpectations
 	{
 		private readonly IList<IExpectationExpression> _expectationsExpressions;
-
+		
 		public PolicyExpectations()
 		{
 			_expectationsExpressions = new List<IExpectationExpression>();
 
-			ConstructExpectationVerifyerUsing((configuration, handler) => new ExpectationVerifyer(configuration, handler));
-			SetExpectationGroupBuilder(new ExpectationGroupBuilder());
-			SetExpectationViolationHandler(new DefaultExpectationViolationHandler());
+			ConstructExpectationVerifyerUsing(Settings.DefaultExpectationVerifyerConstructor);
+			SetExpectationGroupBuilder(Settings.DefaultExpectationGroupBuilder);
+			SetExpectationViolationHandler(Settings.DefaultExpectationViolationHandler);
 		}
 
 		public void ConstructExpectationVerifyerUsing(Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> expectationVerifyerProvider)
