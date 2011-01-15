@@ -71,8 +71,8 @@ namespace FluentSecurity
 
 		private void EnsureConfigured()
 		{
-			if (_configuration == null)
-				throw new InvalidOperationException("You must configure the builder before calling GetPolicyContainers");
+			if (_configuration == null) 
+				throw new InvalidOperationException("Security has not been configured!");
 		}
 	}
 }
