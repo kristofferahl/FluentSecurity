@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<Platform>AnyCPU</Platform>
 		<SchemaVersion>2.0</SchemaVersion>
-		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
 		<DebugSymbols>false</DebugSymbols>
 		<NAntExecutable>..\..\Dependencies\NAnt\NAnt.exe</NAntExecutable>
 		<SolutionDir>..\..\</SolutionDir>

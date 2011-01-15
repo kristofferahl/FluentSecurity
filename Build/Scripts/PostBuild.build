@@ -3,7 +3,7 @@
 	<target name="PostBuild" description="Performing postbuild tasks (NAnt)">
 		<echo message="Performing postbuild asks (NAnt)" />
 		
-		<property name="nunit.console" value="NUnit\nunit-console.exe"/>
+		<property name="nunit.console" value="NUnit.2.5.9\nunit-console.exe"/>
 		<property name="nunit.build.dependenciesdir" value="..\..\Dependencies\"/>
 		<property name="nunit.build.outputdir" value="..\Output\"/>
 		<property name="nunit.build.reportsdir" value="..\Reports\"/>
