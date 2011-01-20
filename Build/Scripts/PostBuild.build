@@ -33,5 +33,14 @@
 			</do>
 		</foreach>
 		
+		<zip zipfile="${nunit.build.outputdir}..\FluentSecurity.zip">
+			<fileset basedir="${nunit.build.outputdir}">
+				<include name="FluentSecurity.dll" />
+				<include name="FluentSecurity.TestHelper.dll" />
+				<include name="..\..\License.txt" />
+				<include name="..\..\Readme.txt" />
+			</fileset>
+		</zip>
+		
 	</target>
 </project>
