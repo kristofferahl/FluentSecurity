@@ -14,7 +14,7 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 		}
 
 		[Test]
@@ -43,7 +43,7 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_when_when_controllername_is_Blog_and_actionname_is_Index()
 		{
 			// Arrange
-			FluentSecurity.Configure(policy =>
+			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
@@ -63,14 +63,14 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 		}
 
 		[Test]
 		public void Should_not_throw_exception_when_the_user_is_authenticated()
 		{
 			// Arrange
-			FluentSecurity.Configure(policy =>
+			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
@@ -86,7 +86,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_SecurityException_when_the_user_is_anonymous()
 		{
 			// Arrange
-			FluentSecurity.Configure(policy =>
+			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
@@ -106,14 +106,14 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 		}
 
 		[Test]
 		public void Should_not_throw_exception_when_the_user_is_authenticated_with_role_Owner()
 		{
 			// Arrange
-			FluentSecurity.Configure(policy =>
+			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesIncludingOwner);
@@ -130,7 +130,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_SecurityException_when_the_user_is_anonymous()
 		{
 			// Arrange
-			FluentSecurity.Configure(policy =>
+			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
@@ -147,7 +147,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_SecurityException_when_the_user_does_not_have_the_role_Owner()
 		{
 			// Arrange
-			FluentSecurity.Configure(policy =>
+			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
@@ -168,14 +168,14 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 		}
 
 		[Test]
 		public void Should_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_false()
 		{
 			// Arrange
-			FluentSecurity.Configure(policy =>
+			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
@@ -191,7 +191,7 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_true()
 		{
 			// Arrange
-			FluentSecurity.Configure(policy =>
+			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.IgnoreMissingConfiguration();

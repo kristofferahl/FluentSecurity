@@ -2,12 +2,12 @@ using System;
 
 namespace FluentSecurity
 {
-	public static class FluentSecurity
+	public static class SecurityConfigurator
 	{
 		private static readonly object LockObject;
 		private static ISecurityConfiguration _configuration;
 
-		static FluentSecurity()
+		static SecurityConfigurator()
 		{
 			LockObject = new object();
 		}

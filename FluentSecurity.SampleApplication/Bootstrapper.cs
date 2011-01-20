@@ -7,7 +7,7 @@ namespace FluentSecurity.SampleApplication
 	{
 		public static ISecurityConfiguration SetupFluentSecurity()
 		{
-			FluentSecurity.Configure(configuration =>
+			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(Helpers.SecurityHelper.UserIsAuthenticated);
 				configuration.GetRolesFrom(Helpers.SecurityHelper.UserRoles);
@@ -27,7 +27,7 @@ namespace FluentSecurity.SampleApplication
 				configuration.For<AdminController>().AddPolicy(new AdministratorPolicy());
 				configuration.For<AdminController>(x => x.Index()).Ignore();
 			});
-			return FluentSecurity.CurrentConfiguration;
+			return SecurityConfigurator.CurrentConfiguration;
 		}
 	}
 }

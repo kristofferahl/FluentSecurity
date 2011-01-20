@@ -7,7 +7,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 	{
 		public static ISecurityConfiguration CreateSecurityConfiguration()
 		{
-			FluentSecurity.Configure(configuration =>
+			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
 				configuration.IgnoreMissingConfiguration();
@@ -22,23 +22,23 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				configuration.For<IgnoreController>().Ignore();
 			});
 
-			return FluentSecurity.CurrentConfiguration;
+			return SecurityConfigurator.CurrentConfiguration;
 		}
 
 		public static ISecurityConfiguration CreateEmptySecurityConfiguration()
 		{
-			FluentSecurity.Configure(configuration =>
+			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
 				configuration.IgnoreMissingConfiguration();
 			});
 
-			return FluentSecurity.CurrentConfiguration;
+			return SecurityConfigurator.CurrentConfiguration;
 		}
 
 		public static ISecurityConfiguration CreateSecurityConfigurationWithTwoExpectations()
 		{
-			FluentSecurity.Configure(configuration =>
+			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
 				configuration.IgnoreMissingConfiguration();
@@ -55,7 +55,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				configuration.For<TestController>().Ignore();
 			});
 
-			return FluentSecurity.CurrentConfiguration;
+			return SecurityConfigurator.CurrentConfiguration;
 		}
 
 		public static PolicyExpectations CreatePolicyExpectations()

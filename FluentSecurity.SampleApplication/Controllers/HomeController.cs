@@ -8,9 +8,9 @@ namespace FluentSecurity.SampleApplication.Controllers
 		public ActionResult Index()
 		{
 			var outModel = new HomeView
-				{
-					WhatDoIHave = FluentSecurity.WhatDoIHave()
-				};
+			{
+				WhatDoIHave = SecurityConfigurator.WhatDoIHave()
+			};
 			return View(outModel);
 		}
 	}

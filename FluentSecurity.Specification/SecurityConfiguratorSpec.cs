@@ -10,57 +10,57 @@ using Rhino.Mocks;
 namespace FluentSecurity.Specification
 {
 	[TestFixture]
-	[Category("FluentSecuritySpec")]
+	[Category("SecurityConfiguratorSpec")]
 	public class When_setting_the_configuration_for_fluent_security
 	{
 		[Test]
 		public void Should_have_configuration()
 		{
 			// Arrange
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 			var configuration = MockRepository.GenerateMock<ISecurityConfiguration>();
 
 			// Act
-			FluentSecurity.SetConfiguration(configuration);
+			SecurityConfigurator.SetConfiguration(configuration);
 
 			// Assert
-			Assert.That(FluentSecurity.CurrentConfiguration, Is.EqualTo(configuration));
+			Assert.That(SecurityConfigurator.CurrentConfiguration, Is.EqualTo(configuration));
 		}
 
 		[Test]
 		public void Should_throw_ArgumentNullException_when_configuration_is_null()
 		{
 			// Arrange
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 			const ISecurityConfiguration nullConfiguration = null;
 
 			// Act & Assert
-			Assert.Throws<ArgumentNullException>(() => FluentSecurity.SetConfiguration(nullConfiguration));
+			Assert.Throws<ArgumentNullException>(() => SecurityConfigurator.SetConfiguration(nullConfiguration));
 		}
 	}
 
 	[TestFixture]
-	[Category("FluentSecuritySpec")]
-	public class When_calling_reset_on_fluent_security
+	[Category("SecurityConfiguratorSpec")]
+	public class When_calling_reset_on_security_configurator
 	{
 		[Test]
 		public void Should_create_new_configuration_instance()
 		{
 			// Arrange
 			var configuration = MockRepository.GenerateMock<ISecurityConfiguration>();
-			FluentSecurity.SetConfiguration(configuration);
+			SecurityConfigurator.SetConfiguration(configuration);
 
 			// Act
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 
 			// Assert
-			Assert.That(FluentSecurity.CurrentConfiguration, Is.Not.EqualTo(configuration));
+			Assert.That(SecurityConfigurator.CurrentConfiguration, Is.Not.EqualTo(configuration));
 		}
 	}
 
 	[TestFixture]
-	[Category("FluentSecuritySpec")]
-	public class When_calling_configure_on_fluent_security
+	[Category("SecurityConfiguratorSpec")]
+	public class When_calling_configure_on_security_configurator
 	{
 		private Action<ConfigurationExpression> _configurationExpression;
 		private ISecurityConfiguration _securityConfiguration;
@@ -69,28 +69,27 @@ namespace FluentSecurity.Specification
 		public void SetUp()
 		{
 			// Arrange
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 			_configurationExpression = delegate { TestDataFactory.CreateValidConfigurationExpression(); };
 			_securityConfiguration = MockRepository.GenerateMock<ISecurityConfiguration>();
 			_securityConfiguration.Expect(x => x.Configure(_configurationExpression)).Return(_securityConfiguration).Repeat.Once();
-			FluentSecurity.SetConfiguration(_securityConfiguration);
+			SecurityConfigurator.SetConfiguration(_securityConfiguration);
 		}
 
 		[Test]
 		public void Should_call_configure_on_configuration()
 		{
 			// Act
-			FluentSecurity.Configure(_configurationExpression);
+			SecurityConfigurator.Configure(_configurationExpression);
 
 			// Assert
 			_securityConfiguration.AssertWasCalled(x => x.Configure(_configurationExpression));
 		}
 	}
 
-
 	[TestFixture]
-	[Category("FluentSecuritySpec")]
-	public class When_I_check_what_I_have_on_fluent_security
+	[Category("SecurityConfiguratorSpec")]
+	public class When_I_check_what_I_have_on_security_configurator
 	{
 		private Action<ConfigurationExpression> _configurationExpression;
 		private ISecurityConfiguration _securityConfiguration;
@@ -99,18 +98,18 @@ namespace FluentSecurity.Specification
 		public void SetUp()
 		{
 			// Arrange
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 			_configurationExpression = delegate { TestDataFactory.CreateValidConfigurationExpression(); };
 			_securityConfiguration = MockRepository.GenerateMock<ISecurityConfiguration>();
-			FluentSecurity.SetConfiguration(_securityConfiguration);
-			FluentSecurity.Configure(_configurationExpression);
+			SecurityConfigurator.SetConfiguration(_securityConfiguration);
+			SecurityConfigurator.Configure(_configurationExpression);
 		}
 
 		[Test]
 		public void Should_call_WhatDoIHave_on_configuration()
 		{
 			// Act
-			FluentSecurity.WhatDoIHave();
+			SecurityConfigurator.WhatDoIHave();
 
 			// Assert
 			_securityConfiguration.AssertWasCalled(x => x.WhatDoIHave());
@@ -118,7 +117,7 @@ namespace FluentSecurity.Specification
 	}
 
 	[TestFixture]
-	[Category("FluentSecuritySpec")]
+	[Category("SecurityConfiguratorSpec")]
 	public class When_I_configure_fluent_security_for_Blog_Index_and_Blog_AddPost
 	{
 		private IEnumerable<IPolicyContainer> _policyContainers;
@@ -135,10 +134,10 @@ namespace FluentSecurity.Specification
 			_defaultPolicyAppender = TestDataFactory.CreateValidPolicyAppender();
 			_fakePolicyAppender = TestDataFactory.CreateFakePolicyAppender();
 
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 
 			// Act
-			FluentSecurity.Configure(configuration =>
+			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
@@ -150,7 +149,7 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.AddPost()).RequireRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
-			_policyContainers = FluentSecurity.CurrentConfiguration.PolicyContainers;
+			_policyContainers = SecurityConfigurator.CurrentConfiguration.PolicyContainers;
 		}
 
 		[Test]
@@ -183,16 +182,16 @@ namespace FluentSecurity.Specification
 	}
 
 	[TestFixture]
-	[Category("FluentSecuritySpec")]
+	[Category("SecurityConfiguratorSpec")]
 	public class When_adding_two_containers_with_the_same_controller_and_action_name
 	{
 		[Test]
 		public void Should_have_1_policycontainer()
 		{
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 
 			// Act
-			FluentSecurity.Configure(configuration =>
+			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
@@ -200,14 +199,14 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.Index());
 			});
 
-			Assert.That(FluentSecurity.CurrentConfiguration.PolicyContainers.Count(), Is.EqualTo(1));
-			Assert.That(FluentSecurity.CurrentConfiguration.PolicyContainers.First().ControllerName, Is.EqualTo("Blog"));
-			Assert.That(FluentSecurity.CurrentConfiguration.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
+			Assert.That(SecurityConfigurator.CurrentConfiguration.PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(SecurityConfigurator.CurrentConfiguration.PolicyContainers.First().ControllerName, Is.EqualTo("Blog"));
+			Assert.That(SecurityConfigurator.CurrentConfiguration.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
 		}
 	}
 
 	[TestFixture]
-	[Category("FluentSecuritySpec")]
+	[Category("SecurityConfiguratorSpec")]
 	public class When_I_remove_policies_for_Blog_Index
 	{
 		private IEnumerable<IPolicyContainer> _policyContainers;
@@ -218,10 +217,10 @@ namespace FluentSecurity.Specification
 		public void SetUp()
 		{
 			// Arrange
-			FluentSecurity.Reset();
+			SecurityConfigurator.Reset();
 
 			// Act
-			FluentSecurity.Configure(configuration =>
+			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.For<BlogController>(x => x.Index());
@@ -229,7 +228,7 @@ namespace FluentSecurity.Specification
 				configuration.RemovePoliciesFor<BlogController>(x => x.Index());
 			});
 
-			_policyContainers = FluentSecurity.CurrentConfiguration.PolicyContainers;
+			_policyContainers = SecurityConfigurator.CurrentConfiguration.PolicyContainers;
 		}
 
 		[Test]

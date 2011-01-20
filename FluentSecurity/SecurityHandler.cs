@@ -13,7 +13,7 @@ namespace FluentSecurity
 			if (actionName.IsNullOrEmpty())
 				throw new ArgumentException("Actionname must not be null or empty", "actionName");
 
-			var configuration = FluentSecurity.CurrentConfiguration;
+			var configuration = SecurityConfigurator.CurrentConfiguration;
 			
 			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
