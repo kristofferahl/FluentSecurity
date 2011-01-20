@@ -84,7 +84,7 @@
     <Compile Include="Policy\DenyAnonymousAccessPolicy.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />
     <Compile Include="IPolicyContainer.cs" />
-    <Compile Include="FluentSecurity.cs" />
+    <Compile Include="SecurityConfigurator.cs" />
     <Compile Include="Policy\RequireRolePolicy.cs" />
     <Compile Include="SecureController.cs" />
     <Compile Include="SecurityHandler.cs" />

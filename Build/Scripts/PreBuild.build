@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="PreBuild" default="Version">
-	<property name="project.version" value="0.5.0" />
+	<property name="project.version" value="0.5.1" />
 	<property name="project.config" value="release" />
 
 	<target name="PreBuild" description="Performing prebuild tasks (NAnt)">

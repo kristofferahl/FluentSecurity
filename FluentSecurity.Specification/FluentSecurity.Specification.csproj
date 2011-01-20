@@ -92,13 +92,13 @@
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
+    <Compile Include="SecurityConfiguratorSpec.cs" />
     <Compile Include="TestData\FakePolicyAppender.cs" />
     <Compile Include="Helpers\TestDataFactory.cs" />
     <Compile Include="TestData\FakePolicy.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="SecurityConfigurationSpec.cs" />
     <Compile Include="TestData\MockedHelper.cs" />
-    <Compile Include="FluentSecuritySpec.cs" />
     <Compile Include="TestData\BlogController.cs" />
     <Compile Include="TestData\PostForm.cs" />
     <Compile Include="TestData\UserRole.cs" />
