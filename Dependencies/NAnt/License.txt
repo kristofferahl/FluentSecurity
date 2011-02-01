@@ -1,1 +1,0 @@
-http://nant.sourceforge.net/release/0.85/license.html
