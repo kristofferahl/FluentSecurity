@@ -13,6 +13,7 @@
 	<target name="Minimal" description="Compiles" depends="Clean, AssemblyInfo, Compile" />
 	<target name="Default" description="Compiles and runs tests" depends="Clean, AssemblyInfo, Compile, Run-Unit-Tests" />
 	<target name="Full" description="Compiles, runs tests and publishes" depends="Clean, AssemblyInfo, Compile, Run-Unit-Tests, Run-Acceptance-Tests, Package, Publish" />
+	<target name="Pack" description="Package" depends="Package" />
 
 	<!-- ROOT DIRECTORY
 		Must be relative to this file
@@ -86,7 +87,7 @@
 			<fileset>
 				<include name="${dir.output}\**.*" />
 				<include name="${dir.reports}\**.*" />
-				<include name="${dir.artifacts}\**.*" />
+				<include name="${dir.artifacts}\**\*" />
 			</fileset>
 		</delete>
 		
@@ -207,14 +208,27 @@
 	
 	<target name="Package" description="Creates build artifacts">
 	
-		<zip zipfile="${dir.artifacts}FluentSecurity-${project.version}.zip" verbose="${verbose}">
+		<copy todir="${dir.artifacts}FluentSecurity\" verbose="${verbose}">
 			<fileset basedir="${dir.output}">
 				<include name="FluentSecurity.dll" />
 				<include name="FluentSecurity.TestHelper.dll" />
 				<include name="..\..\License.txt" />
 				<include name="..\..\Readme.txt" />
 			</fileset>
+		</copy>
+	
+		<zip zipfile="${dir.artifacts}FluentSecurity-${project.version}.zip" verbose="${verbose}">
+			<fileset basedir="${dir.artifacts}FluentSecurity\">
+				<include name="**\*.*" />
+			</fileset>
 		</zip>
+		
+		<exec program="${dir.tools}NuGet\NuGet.exe" failonerror="true">
+			<arg value="pack" />
+			<arg value="${dir.build}FluentSecurity.nuspec" />
+			<arg value="-o" />
+			<arg value="${dir.artifacts}" />
+		</exec>
 	
 	</target>
 	
