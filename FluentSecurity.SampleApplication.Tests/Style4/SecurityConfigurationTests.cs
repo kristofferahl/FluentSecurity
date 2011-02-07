@@ -1,4 +1,3 @@
-using System.Linq;
 using FluentSecurity.Policy;
 using FluentSecurity.SampleApplication.Controllers;
 using FluentSecurity.SampleApplication.Models;

@@ -229,6 +229,13 @@
 			<arg value="-o" />
 			<arg value="${dir.artifacts}" />
 		</exec>
+		
+		<exec program="${dir.tools}NuGet\NuGet.exe" failonerror="true">
+			<arg value="pack" />
+			<arg value="${dir.build}FluentSecurity.TestHelper.nuspec" />
+			<arg value="-o" />
+			<arg value="${dir.artifacts}" />
+		</exec>
 	
 	</target>
 	
