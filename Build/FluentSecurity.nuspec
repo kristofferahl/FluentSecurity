@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 		<id>FluentSecurity</id>
-		<version>0.5.1</version>
+		<version>0.6.0</version>
 		<authors>Kristoffer Ahl</authors>
 		<owners>Kristoffer Ahl</owners>
 		<projectUrl>http://code.google.com/p/fluent-security/</projectUrl>
