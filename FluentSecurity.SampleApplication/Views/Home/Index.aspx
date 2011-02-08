@@ -19,6 +19,6 @@
 		<%= Html.NavigationLink(Url.Action<ExampleController>(x => x.MissingConfiguration()), "Missing configuration", "li") %>
 	</ul>
 	
-	<h2>What do i have</h2>
+	<h2>What do I have</h2>
 	<pre><%= Model.WhatDoIHave %></pre>
 </asp:Content>
