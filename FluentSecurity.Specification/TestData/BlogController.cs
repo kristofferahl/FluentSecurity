@@ -2,7 +2,7 @@ using System.Web.Mvc;
 
 namespace FluentSecurity.Specification.TestData
 {
-	public class BlogController : SecureController
+	public class BlogController : Controller
 	{
 		public ActionResult Index()
 		{

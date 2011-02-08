@@ -1,4 +1,5 @@
-﻿using System.Web.Routing;
+﻿using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace FluentSecurity.SampleApplication
 {
@@ -19,6 +20,7 @@ namespace FluentSecurity.SampleApplication
 			SetupContainer();
 			SetControllerFactory();
 			RegisterRoutes(RouteTable.Routes);
+			RegisterGlobalFilters(GlobalFilters.Filters);
 			Bootstrapper.SetupFluentSecurity();
 		}
 
@@ -35,6 +37,11 @@ namespace FluentSecurity.SampleApplication
 		public static void RegisterRoutes(RouteCollection routes)
 		{
 			new RouteRegistrar(routes).RegisterRoutes();
+		}
+
+		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+		{
+			filters.Add(new HandleSecurityAttribute());
 		}
 	}
 }

@@ -87,7 +87,6 @@
     <Compile Include="IPolicyContainer.cs" />
     <Compile Include="SecurityConfigurator.cs" />
     <Compile Include="Policy\RequireRolePolicy.cs" />
-    <Compile Include="SecureController.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />

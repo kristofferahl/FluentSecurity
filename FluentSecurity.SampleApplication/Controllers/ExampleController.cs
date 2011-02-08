@@ -2,7 +2,7 @@ using System.Web.Mvc;
 
 namespace FluentSecurity.SampleApplication.Controllers
 {
-    public class ExampleController : BaseController
+    public class ExampleController : Controller
     {
         public ActionResult MissingConfiguration()
         {

@@ -5,7 +5,7 @@ using FluentSecurity.SampleApplication.Helpers;
 
 namespace FluentSecurity.SampleApplication.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         public ActionResult LogInAsAdministrator()
         {

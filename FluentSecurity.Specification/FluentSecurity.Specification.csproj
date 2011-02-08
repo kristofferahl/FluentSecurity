@@ -112,7 +112,6 @@
     <Compile Include="Policy\RequireRolePolicySpec.cs" />
     <Compile Include="Policy\DenyAnonymousAccessPolicySpec.cs" />
     <Compile Include="Helpers\StaticHelper.cs" />
-    <Compile Include="SecureControllerSpec.cs" />
     <Compile Include="SecurityHandlerSpec.cs" />
   </ItemGroup>
   <ItemGroup>
