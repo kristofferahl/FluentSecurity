@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Web.Mvc;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -37,10 +38,14 @@ namespace FluentSecurity
 		/// </summary>
 		public static MethodInfo[] GetActionMethods(this Type controllerType)
 		{
-			return controllerType.GetMethods(
-				BindingFlags.Public |
-				BindingFlags.Instance |
-				BindingFlags.DeclaredOnly);
+			return controllerType
+				.GetMethods(
+					BindingFlags.Public |
+					BindingFlags.Instance |
+					BindingFlags.DeclaredOnly
+				)
+				.Where(x => x.ReturnType == typeof(ActionResult))
+				.ToArray();
 		}
 
 		///<summary>
