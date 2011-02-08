@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Security;
 
 namespace FluentSecurity.Policy
 {
@@ -22,10 +21,10 @@ namespace FluentSecurity.Policy
 		public void Enforce(bool isAuthenticated, object[] roles)
 		{
 			if (isAuthenticated == false)
-				throw new SecurityException("Anonymous access denied");
+				throw new FluentSecurityException<RequireRolePolicy>("Anonymous access denied");
 
 			if (roles == null || roles.Length == 0)
-				throw new SecurityException("Access denied");
+				throw new FluentSecurityException<RequireRolePolicy>("Access denied");
 
 			foreach (var requiredRole in _requiredRoles)
 			{
@@ -40,7 +39,7 @@ namespace FluentSecurity.Policy
 
 			const string message = "Access requires one of the following roles: {0}";
 			var formattedMessage = string.Format(message, roles);
-			throw new SecurityException(formattedMessage);
+			throw new FluentSecurityException<RequireRolePolicy>(formattedMessage);
 		}
 
 		public object[] RolesRequired

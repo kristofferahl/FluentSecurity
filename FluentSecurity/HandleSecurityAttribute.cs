@@ -8,9 +8,7 @@ namespace FluentSecurity
 	{
 		private readonly ISecurityHandler _securityHandler;
 
-		public HandleSecurityAttribute() : this(new SecurityHandler())
-		{
-		}
+		public HandleSecurityAttribute() : this(new SecurityHandler()) {}
 
 		public HandleSecurityAttribute(ISecurityHandler securityHandler)
 		{

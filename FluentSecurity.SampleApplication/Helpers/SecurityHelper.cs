@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Security;
 using FluentSecurity.SampleApplication.Models;
 
 namespace FluentSecurity.SampleApplication.Helpers
@@ -16,7 +15,7 @@ namespace FluentSecurity.SampleApplication.Helpers
 				{
 					policyContainer.EnforcePolicies();
 				}
-				catch (SecurityException)
+				catch (FluentSecurityException)
 				{
 					return false;
 				}

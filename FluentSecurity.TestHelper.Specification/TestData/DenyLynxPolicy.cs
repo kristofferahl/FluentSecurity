@@ -1,5 +1,4 @@
-﻿using System.Security;
-using FluentSecurity.Policy;
+﻿using FluentSecurity.Policy;
 
 namespace FluentSecurity.TestHelper.Specification.TestData
 {
@@ -10,7 +9,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			const bool isLynx = true;
 			if (isLynx)
 			{
-				throw new SecurityException("Access to this section is restricted for Lynx. Please switch to another browser!");
+				throw new FluentSecurityException<DenyLynxPolicy>("Access to this section is restricted for Lynx. Please switch to another browser!");
 			}
 		}
 

@@ -1,6 +1,3 @@
-using System;
-using System.Security;
-
 namespace FluentSecurity.Policy
 {
 	public class DenyAuthenticatedAccessPolicy : ISecurityPolicy
@@ -9,7 +6,7 @@ namespace FluentSecurity.Policy
 		{
 			if (isAuthenticated)
 			{
-				throw new SecurityException("Authenticated access denied");
+				throw new FluentSecurityException<DenyAuthenticatedAccessPolicy>("Authenticated access denied");
 			}
 		}
 

@@ -1,4 +1,3 @@
-using System.Security;
 using FluentSecurity.Policy;
 using NUnit.Framework;
 
@@ -9,14 +8,14 @@ namespace FluentSecurity.Specification.Policy
 	public class When_enforcing_security_for_a_DenyAuthenticatedAccessPolicy
 	{
 		[Test]
-		public void Should_throw_SecurityException_when_the_user_is_authenticated()
+		public void Should_throw_when_the_user_is_authenticated()
 		{
 			// Arrange
 			var policy = new DenyAuthenticatedAccessPolicy();
 			const bool authenticated = true;
 
 			// Act & Assert
-			Assert.Throws<SecurityException>(() => policy.Enforce(authenticated, null));
+			Assert.Throws<FluentSecurityException<DenyAuthenticatedAccessPolicy>>(() => policy.Enforce(authenticated, null));
 		}
 
 		[Test]

@@ -92,6 +92,7 @@
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
+    <Compile Include="FluentSecurityExceptionSpec.cs" />
     <Compile Include="SecurityConfiguratorSpec.cs" />
     <Compile Include="TestData\FakePolicyAppender.cs" />
     <Compile Include="Helpers\TestDataFactory.cs" />

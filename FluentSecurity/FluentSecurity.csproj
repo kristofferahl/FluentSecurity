@@ -76,6 +76,7 @@
     <Compile Include="IPolicyAppender.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IWhatDoIHaveBuilder.cs" />
+    <Compile Include="FluentSecurityException.cs" />
     <Compile Include="SecurityConfiguration.cs" />
     <Compile Include="DefaultPolicyAppender.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />

@@ -1,5 +1,3 @@
-using System.Security;
-
 namespace FluentSecurity.Policy
 {
 	public class DenyAnonymousAccessPolicy : ISecurityPolicy
@@ -8,7 +6,7 @@ namespace FluentSecurity.Policy
 		{
 			if (isAuthenticated == false)
 			{
-				throw new SecurityException("Anonymous access denied");
+				throw new FluentSecurityException<DenyAnonymousAccessPolicy>("Anonymous access denied");
 			}
 		}
 

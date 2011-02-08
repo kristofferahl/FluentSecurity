@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Security;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
@@ -68,18 +66,18 @@ namespace FluentSecurity.Specification.Policy
 	public class When_enforcing_security_for_a_RequireRolePolicy
 	{
 		[Test]
-		public void Should_throw_SecurityException_when_isAuthenticated_is_false()
+		public void Should_throw_when_isAuthenticated_is_false()
 		{
 			// Arrange
 			var policy = new RequireRolePolicy(new object[1]);
 			const bool authenticated = false;
 
 			// Assert
-			Assert.Throws<SecurityException>(() => policy.Enforce(authenticated, null));
+			Assert.Throws<FluentSecurityException<RequireRolePolicy>>(() => policy.Enforce(authenticated, null));
 		}
 
 		[Test]
-		public void Should_throw_SecurityException_when_isAuthenticated_is_true_and_roles_are_null()
+		public void Should_throw_when_isAuthenticated_is_true_and_roles_are_null()
 		{
 			// Arrange
 			var policy = new RequireRolePolicy(new object[1]);
@@ -87,7 +85,7 @@ namespace FluentSecurity.Specification.Policy
 			object[] roles = null;
 
 			// Assert
-			Assert.Throws<SecurityException>(() => policy.Enforce(authenticated, roles));
+			Assert.Throws<FluentSecurityException<RequireRolePolicy>>(() => policy.Enforce(authenticated, roles));
 		}
 
 		[Test]

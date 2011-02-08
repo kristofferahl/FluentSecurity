@@ -1,6 +1,6 @@
 using System;
 using System.Configuration;
-using System.Security;
+using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
@@ -83,7 +83,7 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_throw_SecurityException_when_the_user_is_anonymous()
+		public void Should_throw_when_the_user_is_anonymous()
 		{
 			// Arrange
 			SecurityConfigurator.Configure(policy =>
@@ -95,7 +95,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.Throws<SecurityException>(() => securityHandler.HandleSecurityFor("Blog", "Index"));
+			Assert.Throws<FluentSecurityException<DenyAnonymousAccessPolicy>>(() => securityHandler.HandleSecurityFor("Blog", "Index"));
 		}
 	}
 
@@ -127,7 +127,7 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_throw_SecurityException_when_the_user_is_anonymous()
+		public void Should_throw_when_the_user_is_anonymous()
 		{
 			// Arrange
 			SecurityConfigurator.Configure(policy =>
@@ -140,11 +140,11 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.Throws<SecurityException>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
+			Assert.Throws<FluentSecurityException<RequireRolePolicy>>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
 		}
 
 		[Test]
-		public void Should_throw_SecurityException_when_the_user_does_not_have_the_role_Owner()
+		public void Should_throw_when_the_user_does_not_have_the_role_Owner()
 		{
 			// Arrange
 			SecurityConfigurator.Configure(policy =>
@@ -157,7 +157,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.Throws<SecurityException>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
+			Assert.Throws<FluentSecurityException<RequireRolePolicy>>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
 		}
 	}
 

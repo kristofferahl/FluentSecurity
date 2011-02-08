@@ -1,4 +1,3 @@
-using System.Security;
 using FluentSecurity.Policy;
 using NUnit.Framework;
 
@@ -9,14 +8,14 @@ namespace FluentSecurity.Specification.Policy
 	public class When_enforcing_security_for_a_DenyAnonymousAccessPolicy
 	{
 		[Test]
-		public void Should_throw_SecurityException_when_the_user_is_anonymous()
+		public void Should_throw_when_the_user_is_anonymous()
 		{
 			// Arrange
 			var policy = new DenyAnonymousAccessPolicy();
 			const bool authenticated = false;
 
 			// Act & Assert
-			Assert.Throws<SecurityException>(() => policy.Enforce(authenticated, null));
+			Assert.Throws<FluentSecurityException<DenyAnonymousAccessPolicy>>(() => policy.Enforce(authenticated, null));
 		}
 
 		[Test]
