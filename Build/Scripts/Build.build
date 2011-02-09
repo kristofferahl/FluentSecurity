@@ -35,7 +35,7 @@
 	<!-- COMMON ASSEMBLY INFO
 		Properties used when creating the common assembly info file
 	-->
-	<property name="project.version" value="0.6.0" />
+	<property name="project.version" value="0.6.1" />
 	<property name="project.config" value="release" />
 	
 	<!-- PROJECTS TO BUILD
@@ -222,6 +222,17 @@
 				<include name="**\*.*" />
 			</fileset>
 		</zip>
+		
+		<copy todir="${dir.build}" overwrite="true" verbose="${verbose}">
+			<fileset basedir="${dir.build}NuGet\">
+				<include name="*.nuspec" />
+			</fileset>
+			<filterchain>
+				<replacetokens>
+					<token key="CURRENT-VERSION" value="${project.version}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
 		
 		<exec program="${dir.tools}NuGet\NuGet.exe" failonerror="true">
 			<arg value="pack" />
