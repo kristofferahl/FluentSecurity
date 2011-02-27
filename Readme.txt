@@ -7,4 +7,5 @@ This build is targeted against the ASP.NET MVC 3. To open the solution you need 
 Before starting your work you should run 'Click to build.bat' to make sure everything is working as expected on your system. 
 
 / Kristoffer Ahl (project founder)
-fluent-security@77dynamite.com
+Email: fluent-security@77dynamite.com
+Twitter: @kristofferahl
