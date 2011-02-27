@@ -73,7 +73,7 @@ namespace FluentSecurity.Specification.Policy
 			const bool authenticated = false;
 
 			// Assert
-			Assert.Throws<FluentSecurityException<RequireRolePolicy>>(() => policy.Enforce(authenticated, null));
+			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => policy.Enforce(authenticated, null));
 		}
 
 		[Test]
@@ -85,7 +85,7 @@ namespace FluentSecurity.Specification.Policy
 			object[] roles = null;
 
 			// Assert
-			Assert.Throws<FluentSecurityException<RequireRolePolicy>>(() => policy.Enforce(authenticated, roles));
+			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => policy.Enforce(authenticated, roles));
 		}
 
 		[Test]

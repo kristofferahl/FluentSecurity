@@ -122,10 +122,20 @@ namespace FluentSecurity
 			WhatDoIHaveBuilder = whatDoIHaveBuilder;
 		}
 
+		public void ResolveServicesUsing(Func<Type, IEnumerable<object>> serviceLocator)
+		{
+			if (serviceLocator == null)
+				throw new ArgumentNullException("serviceLocator");
+			
+			ServiceLocator = serviceLocator;
+		}
+
 		public bool ShouldIgnoreMissingConfiguration { get; private set; }
 
 		public IPolicyAppender PolicyAppender { get; private set; }
 
 		public IWhatDoIHaveBuilder WhatDoIHaveBuilder { get; private set; }
+
+		public Func<Type, IEnumerable<object>> ServiceLocator { get; private set; }
 	}
 }

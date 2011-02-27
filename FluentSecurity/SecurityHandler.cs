@@ -1,11 +1,13 @@
 using System;
 using System.Configuration;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace FluentSecurity
 {
 	public class SecurityHandler : ISecurityHandler
 	{
-		public void HandleSecurityFor(string controllerName, string actionName)
+		public ActionResult HandleSecurityFor(string controllerName, string actionName)
 		{
 			if (controllerName.IsNullOrEmpty())
 				throw new ArgumentException("Controllername must not be null or empty", "controllerName");
@@ -18,12 +20,30 @@ namespace FluentSecurity
 			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
-				policyContainer.EnforcePolicies();
-				return;
+				try
+				{
+					policyContainer.EnforcePolicies();
+				}
+				catch (PolicyViolationException exception)
+				{
+					if (configuration.ServiceLocator != null)
+					{
+						var violationHandlers = configuration.ServiceLocator(typeof(IPolicyViolationHandler)).Cast<IPolicyViolationHandler>();
+						if (violationHandlers.Any())
+						{
+							// TODO: Refactor and resolve selector from container.
+							var violationHandlerSelector = new PolicyViolationHandlerSelector(configuration, violationHandlers);
+							var matchingHandler = violationHandlerSelector.FindHandlerFor(exception);
+							if (matchingHandler != null) return matchingHandler.Handle(exception);
+						}	
+					}
+					throw;
+				}
+				return null;
 			}
 
 			if (configuration.IgnoreMissingConfiguration)
-				return;
+				return null;
 
 			throw new ConfigurationErrorsException("Security has not been configured for controller {0}, action {1}".FormatWith(controllerName, actionName));
 		}

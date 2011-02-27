@@ -91,8 +91,12 @@
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
+    <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
+    <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />
+    <Compile Include="TestData\DenyAnonymousAccessPolicyViolationHandler.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
-    <Compile Include="FluentSecurityExceptionSpec.cs" />
+    <Compile Include="PolicyViolationExceptionSpec.cs" />
+    <Compile Include="Helpers\FakeIoC.cs" />
     <Compile Include="SecurityConfiguratorSpec.cs" />
     <Compile Include="TestData\FakePolicyAppender.cs" />
     <Compile Include="Helpers\TestDataFactory.cs" />

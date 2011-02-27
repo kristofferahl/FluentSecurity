@@ -12,5 +12,6 @@ namespace FluentSecurity
 		bool IgnoreMissingConfiguration { get; }
 		IPolicyAppender PolicyAppender { get; }
 		IWhatDoIHaveBuilder WhatDoIHaveBuilder { get; }
+		Func<Type, IEnumerable<object>> ServiceLocator { get; }
 	}
 }

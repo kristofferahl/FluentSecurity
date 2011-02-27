@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Web.Mvc;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace FluentSecurity.Specification
 {
@@ -54,6 +57,33 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor("Blog", "Index"));
 		}
+
+		[Test]
+		public void Should_ask_configuration_for_a_policy_violation_handler_for_exception()
+		{
+			// Arrange
+			SecurityConfigurator.Configure(policy =>
+			{
+				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+				policy.ResolveServicesUsing(FakeIoC.GetAllInstances);
+				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
+			});
+
+			var expectedActionResult = new ViewResult { ViewName = "SomeViewName" };
+			var violationHandler = new DenyAnonymousAccessPolicyViolationHandler(expectedActionResult);
+			FakeIoC.GetAllInstancesProvider = () => new List<IPolicyViolationHandler>
+			{
+			    violationHandler
+			};
+
+			var securityHandler = new SecurityHandler();
+
+			// Act
+			var result = securityHandler.HandleSecurityFor("Blog", "Index");
+
+			// Assert
+			Assert.That(result, Is.EqualTo(expectedActionResult));
+		}
 	}
 
 	[TestFixture]
@@ -95,7 +125,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.Throws<FluentSecurityException<DenyAnonymousAccessPolicy>>(() => securityHandler.HandleSecurityFor("Blog", "Index"));
+			Assert.Throws<PolicyViolationException<DenyAnonymousAccessPolicy>>(() => securityHandler.HandleSecurityFor("Blog", "Index"));
 		}
 	}
 
@@ -140,7 +170,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.Throws<FluentSecurityException<RequireRolePolicy>>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
+			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
 		}
 
 		[Test]
@@ -157,7 +187,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.Throws<FluentSecurityException<RequireRolePolicy>>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
+			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
 		}
 	}
 

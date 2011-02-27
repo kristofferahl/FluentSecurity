@@ -6,7 +6,7 @@ namespace FluentSecurity.Policy
 		{
 			if (isAuthenticated)
 			{
-				throw new FluentSecurityException<DenyAuthenticatedAccessPolicy>("Authenticated access denied");
+				throw new PolicyViolationException<DenyAuthenticatedAccessPolicy>("Authenticated access denied");
 			}
 		}
 

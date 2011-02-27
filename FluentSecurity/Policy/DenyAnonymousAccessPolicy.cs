@@ -6,7 +6,7 @@ namespace FluentSecurity.Policy
 		{
 			if (isAuthenticated == false)
 			{
-				throw new FluentSecurityException<DenyAnonymousAccessPolicy>("Anonymous access denied");
+				throw new PolicyViolationException<DenyAnonymousAccessPolicy>("Anonymous access denied");
 			}
 		}
 

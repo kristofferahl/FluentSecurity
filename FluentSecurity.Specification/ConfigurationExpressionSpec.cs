@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using FluentSecurity.Specification.Helpers;
@@ -297,6 +298,21 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
+	public class When_I_set_servicelocator_to_null
+	{
+		[Test]
+		public void Should_throw_ArgumentNullException()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Assert
+			Assert.Throws<ArgumentNullException>(() => configurationExpression.ResolveServicesUsing(null));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
 	public class When_I_set_policyappender_to_instance_of_DefaultPolicyAppender
 	{
 		[Test]
@@ -330,6 +346,25 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(configurationExpression.WhatDoIHaveBuilder, Is.EqualTo(expectedWhatDoIHaveBuilder));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_I_set_servicelocator_to_use_a_fake_ioc_container
+	{
+		[Test]
+		public void Should_have_fake_ioc_container_set_as_the_service_locator()
+		{
+			// Arrange
+			Func<Type, IEnumerable<object>> expectedServiceLocator = FakeIoC.GetAllInstances;
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.ResolveServicesUsing(expectedServiceLocator);
+
+			// Assert
+			Assert.That(configurationExpression.ServiceLocator, Is.EqualTo(expectedServiceLocator));
 		}
 	}
 }

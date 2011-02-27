@@ -64,6 +64,16 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.Throws<InvalidOperationException>(() => builder.WhatDoIHave());
 		}
+
+		[Test]
+		public void Should_throw_when_calling_servicelocator()
+		{
+			// Act
+			var builder = Because();
+
+			// Assert
+			Assert.Throws<InvalidOperationException>(() => { var x = builder.ServiceLocator; });
+		}
 	}
 
 	[TestFixture]
@@ -128,6 +138,16 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(_securityConfiguration.WhatDoIHaveBuilder, Is.TypeOf(expectedWhatDoIHaveBuilderType));
+		}
+
+		[Test]
+		public void Should_have_ServiceLocator_set_to_null()
+		{
+			// Act
+			Because();
+
+			// Assert
+			Assert.That(_securityConfiguration.ServiceLocator, Is.Null);
 		}
 	}
 
@@ -224,6 +244,16 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.Throws<InvalidOperationException>(() => _securityConfiguration.WhatDoIHave());
+		}
+
+		[Test]
+		public void Should_throw_when_calling_servicelocator()
+		{
+			// Act
+			Because();
+
+			// Assert
+			Assert.Throws<InvalidOperationException>(() => { var x = _securityConfiguration.ServiceLocator; });
 		}
 	}
 

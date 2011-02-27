@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 using FluentSecurity.Specification.TestData;
 
 namespace FluentSecurity.Specification.Helpers
@@ -52,6 +54,20 @@ namespace FluentSecurity.Specification.Helpers
 		public static IPolicyAppender CreateFakePolicyAppender()
 		{
 			return new FakePolicyAppender();
+		}
+
+		public static IEnumerable<IPolicyViolationHandler> CreatePolicyViolationHandlers()
+		{
+			var viewResult = new ViewResult { ViewName = "SomeViewName" };
+			var redirectResult = new RedirectResult("http://localhost/");
+			
+			var violationHandlers = new List<IPolicyViolationHandler>
+			{
+				new DenyAnonymousAccessPolicyViolationHandler(viewResult),
+				new DenyAuthenticatedAccessPolicyViolationHandler(redirectResult)
+			};
+
+			return violationHandlers;
 		}
 	}
 }

@@ -9,7 +9,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			const bool isInternetExplorer = true;
 			if (isInternetExplorer)
 			{
-				throw new FluentSecurityException<DenyInternetExplorerPolicy>("Access to this section is restricted for Internet Explorer. Please switch to another browser!");
+				throw new PolicyViolationException<DenyInternetExplorerPolicy>("Access to this section is restricted for Internet Explorer. Please switch to another browser!");
 			}
 		}
 

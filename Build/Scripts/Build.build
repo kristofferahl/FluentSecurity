@@ -35,7 +35,7 @@
 	<!-- COMMON ASSEMBLY INFO
 		Properties used when creating the common assembly info file
 	-->
-	<property name="project.version" value="0.6.1" />
+	<property name="project.version" value="0.6.5" />
 	<property name="project.config" value="release" />
 	
 	<!-- PROJECTS TO BUILD

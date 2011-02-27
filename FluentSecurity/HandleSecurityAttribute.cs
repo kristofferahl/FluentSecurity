@@ -6,13 +6,13 @@ namespace FluentSecurity
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class HandleSecurityAttribute : ActionFilterAttribute
 	{
-		private readonly ISecurityHandler _securityHandler;
+		public ISecurityHandler SecurityHandler { get; private set; }
 
 		public HandleSecurityAttribute() : this(new SecurityHandler()) {}
 
 		public HandleSecurityAttribute(ISecurityHandler securityHandler)
 		{
-			_securityHandler = securityHandler;
+			SecurityHandler = securityHandler;
 		}
 
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -20,7 +20,8 @@ namespace FluentSecurity
 			var actionName = filterContext.ActionDescriptor.ActionName;
 			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
 
-			_securityHandler.HandleSecurityFor(controllerName, actionName);
+			var overrideResult = SecurityHandler.HandleSecurityFor(controllerName, actionName);
+			if (overrideResult != null) filterContext.Result = overrideResult;
 		}
 	}
 }

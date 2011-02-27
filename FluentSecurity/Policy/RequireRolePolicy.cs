@@ -21,10 +21,10 @@ namespace FluentSecurity.Policy
 		public void Enforce(bool isAuthenticated, object[] roles)
 		{
 			if (isAuthenticated == false)
-				throw new FluentSecurityException<RequireRolePolicy>("Anonymous access denied");
+				throw new PolicyViolationException<RequireRolePolicy>("Anonymous access denied");
 
 			if (roles == null || roles.Length == 0)
-				throw new FluentSecurityException<RequireRolePolicy>("Access denied");
+				throw new PolicyViolationException<RequireRolePolicy>("Access denied");
 
 			foreach (var requiredRole in _requiredRoles)
 			{
@@ -39,7 +39,7 @@ namespace FluentSecurity.Policy
 
 			const string message = "Access requires one of the following roles: {0}";
 			var formattedMessage = string.Format(message, roles);
-			throw new FluentSecurityException<RequireRolePolicy>(formattedMessage);
+			throw new PolicyViolationException<RequireRolePolicy>(formattedMessage);
 		}
 
 		public object[] RolesRequired

@@ -15,7 +15,7 @@ namespace FluentSecurity.Specification.Policy
 			const bool authenticated = false;
 
 			// Act & Assert
-			Assert.Throws<FluentSecurityException<DenyAnonymousAccessPolicy>>(() => policy.Enforce(authenticated, null));
+			Assert.Throws<PolicyViolationException<DenyAnonymousAccessPolicy>>(() => policy.Enforce(authenticated, null));
 		}
 
 		[Test]

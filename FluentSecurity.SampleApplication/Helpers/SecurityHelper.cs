@@ -15,7 +15,7 @@ namespace FluentSecurity.SampleApplication.Helpers
 				{
 					policyContainer.EnforcePolicies();
 				}
-				catch (FluentSecurityException)
+				catch (PolicyViolationException)
 				{
 					return false;
 				}

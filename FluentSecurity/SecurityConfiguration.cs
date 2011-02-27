@@ -69,6 +69,15 @@ namespace FluentSecurity
 			}
 		}
 
+		public Func<Type, IEnumerable<object>> ServiceLocator
+		{
+			get
+			{
+				EnsureConfigured();
+				return _configuration.ServiceLocator;
+			}
+		}
+
 		private void EnsureConfigured()
 		{
 			if (_configuration == null) 
