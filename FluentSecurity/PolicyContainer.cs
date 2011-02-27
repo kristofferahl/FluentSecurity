@@ -9,10 +9,10 @@ namespace FluentSecurity
 	public class PolicyContainer : IPolicyContainer
 	{
 		private readonly IList<ISecurityPolicy> _policies;
-		private readonly Func<bool> _isAuthenticatedFunction;
-		private readonly Func<object[]> _rolesFunction;
+		private readonly Func<bool> _isAuthenticatedExpression;
+		private readonly Func<object[]> _rolesExpression;
 
-		public PolicyContainer(string controllerName, string actionName, Func<bool> isAuthenticatedFunction, Func<object[]> rolesFunction, IPolicyAppender policyAppender)
+		public PolicyContainer(string controllerName, string actionName, Func<bool> isAuthenticatedExpression, Func<object[]> rolesExpression, IPolicyAppender policyAppender)
 		{
 			if (controllerName.IsNullOrEmpty())
 				throw new ArgumentException("Controllername must not be null or empty!", "controllerName");
@@ -20,8 +20,8 @@ namespace FluentSecurity
 			if (actionName.IsNullOrEmpty())
 				throw new ArgumentException("Actionname must not be null or empty!", "actionName");
 
-			if (isAuthenticatedFunction == null)
-				throw new ArgumentNullException("isAuthenticatedFunction");
+			if (isAuthenticatedExpression == null)
+				throw new ArgumentNullException("isAuthenticatedExpression");
 
 			if (policyAppender == null)
 				throw new ArgumentNullException("policyAppender");
@@ -31,8 +31,8 @@ namespace FluentSecurity
 			ControllerName = controllerName;
 			ActionName = actionName;
 			
-			_isAuthenticatedFunction = isAuthenticatedFunction;
-			_rolesFunction = rolesFunction;
+			_isAuthenticatedExpression = isAuthenticatedExpression;
+			_rolesExpression = rolesExpression;
 
 			PolicyAppender = policyAppender;
 		}
@@ -46,12 +46,12 @@ namespace FluentSecurity
 			if (_policies.Count.Equals(0))
 				throw new ConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
-			var isAuthenticated = _isAuthenticatedFunction.Invoke();
+			var isAuthenticated = _isAuthenticatedExpression.Invoke();
 			
 			object[] roles = null;
-			if (_rolesFunction != null)
+			if (_rolesExpression != null)
 			{
-				roles = _rolesFunction.Invoke();
+				roles = _rolesExpression.Invoke();
 			}
 			
 			foreach (var policy in _policies)
