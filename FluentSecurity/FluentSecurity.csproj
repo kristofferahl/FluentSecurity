@@ -79,6 +79,7 @@
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
     <Compile Include="IWhatDoIHaveBuilder.cs" />
+    <Compile Include="PolicyResult.cs" />
     <Compile Include="PolicyViolationException.cs" />
     <Compile Include="PolicyViolationHandlerSelector.cs" />
     <Compile Include="SecurityConfiguration.cs" />

@@ -10,7 +10,7 @@ namespace FluentSecurity.Specification.Policy
 	public class When_enforcing_security_for_a_IgnorePolicy
 	{
 		[Test]
-		public void Should_not_throw_when_isAuthenticated_is_false()
+		public void Should_be_successful_when_isAuthenticated_is_false()
 		{
 			// Arrange
 			var policy = new IgnorePolicy();
@@ -18,12 +18,15 @@ namespace FluentSecurity.Specification.Policy
 			const object[] roles = null;
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
+			// Act
+			var result = policy.Enforce(context);
+
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(context));
+			Assert.That(result.ViolationOccured, Is.False);
 		}
 
 		[Test]
-		public void Should_not_throw_when_isAuthenticated_is_true()
+		public void Should_be_successful_when_isAuthenticated_is_true()
 		{
 			// Arrange
 			var policy = new IgnorePolicy();
@@ -31,12 +34,15 @@ namespace FluentSecurity.Specification.Policy
 			const object[] roles = null;
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
+			// Act
+			var result = policy.Enforce(context);
+
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(context));
+			Assert.That(result.ViolationOccured, Is.False);
 		}
 
 		[Test]
-		public void Should_not_throw_when_roles_is_null()
+		public void Should_be_successful_when_roles_is_null()
 		{
 			// Arrange
 			var policy = new IgnorePolicy();
@@ -44,12 +50,15 @@ namespace FluentSecurity.Specification.Policy
 			const object[] roles = null;
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
+			// Act
+			var result = policy.Enforce(context);
+
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(context));
+			Assert.That(result.ViolationOccured, Is.False);
 		}
 
 		[Test]
-		public void Should_not_throw_when_roles_is_empty()
+		public void Should_be_successful_when_roles_is_empty()
 		{
 			// Arrange
 			var policy = new IgnorePolicy();
@@ -57,12 +66,15 @@ namespace FluentSecurity.Specification.Policy
 			var roles = new object[0];
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
+			// Act
+			var result = policy.Enforce(context);
+
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(context));
+			Assert.That(result.ViolationOccured, Is.False);
 		}
 
 		[Test]
-		public void Should_not_throw_when_roles_are_passed()
+		public void Should_be_successful_when_roles_are_passed()
 		{
 			// Arrange
 			var policy = new IgnorePolicy();
@@ -70,8 +82,11 @@ namespace FluentSecurity.Specification.Policy
 			var roles = new List<object> { "Administrator", "Editor", "Reader" }.ToArray();
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
+			// Act
+			var result = policy.Enforce(context);
+
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(context));
+			Assert.That(result.ViolationOccured, Is.False);
 		}
 	}
 }

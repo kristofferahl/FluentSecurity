@@ -6,7 +6,6 @@ using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentSecurity.Specification
 {
@@ -124,8 +123,12 @@ namespace FluentSecurity.Specification
 
 			var securityHandler = new SecurityHandler();
 
-			// Act & Assert
-			Assert.Throws<PolicyViolationException<DenyAnonymousAccessPolicy>>(() => securityHandler.HandleSecurityFor("Blog", "Index"));
+			// Act
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor("Blog", "Index"));
+			
+			// Assert
+			Assert.That(exception.PolicyType, Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
+			Assert.That(exception.Message, Is.StringContaining("Anonymous access denied"));
 		}
 	}
 
@@ -169,8 +172,12 @@ namespace FluentSecurity.Specification
 
 			var securityHandler = new SecurityHandler();
 
-			// Act & Assert
-			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
+			// Act
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
+
+			// Assert
+			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(exception.Message, Is.StringContaining("Anonymous access denied"));
 		}
 
 		[Test]
@@ -186,8 +193,12 @@ namespace FluentSecurity.Specification
 
 			var securityHandler = new SecurityHandler();
 
-			// Act & Assert
-			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
+			// Act
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor("Blog", "DeletePost"));
+
+			// Assert
+			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(exception.Message, Is.StringContaining("Access requires one of the following roles: Owner."));
 		}
 	}
 

@@ -11,14 +11,8 @@ namespace FluentSecurity.SampleApplication.Helpers
 			var policyContainer = SecurityConfigurator.CurrentConfiguration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
-				try
-				{
-					policyContainer.EnforcePolicies();
-				}
-				catch (PolicyViolationException)
-				{
-					return false;
-				}
+				var results = policyContainer.EnforcePolicies();
+				return results.All(x => x.ViolationOccured == false);
 			}
 			return true;
 		}

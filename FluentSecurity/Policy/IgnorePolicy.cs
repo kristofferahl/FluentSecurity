@@ -2,6 +2,9 @@ namespace FluentSecurity.Policy
 {
 	public class IgnorePolicy : ISecurityPolicy
 	{
-		public void Enforce(ISecurityContext context) {}
+		public PolicyResult Enforce(ISecurityContext context)
+		{
+			return PolicyResult.CreateSuccessResult(this);
+		}
 	}
 }

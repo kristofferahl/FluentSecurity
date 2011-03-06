@@ -20,12 +20,10 @@ namespace FluentSecurity
 			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
-				try
+				var results = policyContainer.EnforcePolicies();
+				if (results.Any(x => x.ViolationOccured))
 				{
-					policyContainer.EnforcePolicies();
-				}
-				catch (PolicyViolationException exception)
-				{
+					var result = results.First(x => x.ViolationOccured);
 					if (configuration.ServiceLocator != null)
 					{
 						var violationHandlers = configuration.ServiceLocator(typeof(IPolicyViolationHandler)).Cast<IPolicyViolationHandler>();
@@ -33,11 +31,12 @@ namespace FluentSecurity
 						{
 							// TODO: Refactor and resolve selector from container.
 							var violationHandlerSelector = new PolicyViolationHandlerSelector(configuration, violationHandlers);
+							var exception = new PolicyViolationException(result.Policy.GetType(), result.Message);
 							var matchingHandler = violationHandlerSelector.FindHandlerFor(exception);
 							if (matchingHandler != null) return matchingHandler.Handle(exception);
-						}	
+						}
 					}
-					throw;
+					throw new PolicyViolationException(result.Policy.GetType(), result.Message);
 				}
 				return null;
 			}

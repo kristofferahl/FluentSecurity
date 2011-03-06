@@ -95,6 +95,7 @@
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
+    <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="SecurityContextSpec.cs" />
     <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />

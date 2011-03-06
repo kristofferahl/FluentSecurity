@@ -2,12 +2,13 @@ namespace FluentSecurity.Policy
 {
 	public class DenyAnonymousAccessPolicy : ISecurityPolicy
 	{
-		public void Enforce(ISecurityContext context)
+		public PolicyResult Enforce(ISecurityContext context)
 		{
 			if (context.CurrenUserAuthenticated() == false)
 			{
-				throw new PolicyViolationException<DenyAnonymousAccessPolicy>("Anonymous access denied");
+				return PolicyResult.CreateFailureResult(this, "Anonymous access denied");
 			}
+			return PolicyResult.CreateSuccessResult(this);
 		}
 	}
 }

@@ -208,7 +208,7 @@ namespace FluentSecurity.Specification
 			context.Setup(x => x.CurrenUserRoles()).Returns(roles);
 
 			var policy = new Mock<ISecurityPolicy>();
-			policy.Setup(x => x.Enforce(It.Is<ISecurityContext>(c => c.CurrenUserAuthenticated() == isAuthenticated && c.CurrenUserRoles() == roles)));
+			policy.Setup(x => x.Enforce(It.Is<ISecurityContext>(c => c.CurrenUserAuthenticated() == isAuthenticated && c.CurrenUserRoles() == roles))).Returns(PolicyResult.CreateSuccessResult(policy.Object));
 
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, () => isAuthenticated, () => roles, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.AddPolicy(policy.Object);
@@ -221,21 +221,50 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_return_results()
+		{
+			// Arrange
+			var roles = new List<object> { UserRole.Owner }.ToArray();
+			const bool isAuthenticated = true;
+
+			const string failureOccured = "Failure occured";
+
+			var context = new Mock<ISecurityContext>();
+			context.Setup(x => x.CurrenUserAuthenticated()).Returns(isAuthenticated);
+			context.Setup(x => x.CurrenUserRoles()).Returns(roles);
+
+			var policy = new Mock<ISecurityPolicy>();
+			policy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(policy.Object, failureOccured));
+
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, () => isAuthenticated, () => roles, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy(policy.Object);
+
+			// Act
+			var results = policyContainer.EnforcePolicies();
+
+			// Assert
+			Assert.That(results.Count(), Is.EqualTo(1));
+			Assert.That(results.Single().ViolationOccured, Is.True);
+			Assert.That(results.Single().Message, Is.EqualTo(failureOccured));
+		}
+
+		[Test]
 		public void Should_throw_ConfigurationErrorsException_when_a_container_has_no_policies()
 		{
 			// Arrange
 			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 
 			// Act & Assert
-			Assert.Throws<ConfigurationErrorsException>(policyContainer.EnforcePolicies);
+			Assert.Throws<ConfigurationErrorsException>(() => policyContainer.EnforcePolicies());
 		}
 
 		private class TestPolicy : ISecurityPolicy
 		{
-			public void Enforce(ISecurityContext context)
+			public PolicyResult Enforce(ISecurityContext context)
 			{
 				var authenticated = context.CurrenUserAuthenticated();
 				var roles = context.CurrenUserRoles();
+				return PolicyResult.CreateSuccessResult(this);
 			}
 
 			public object[] RolesRequired

@@ -19,13 +19,13 @@ namespace FluentSecurity.Policy
 			_requiredRoles = requiredRoles;
 		}
 
-		public void Enforce(ISecurityContext context)
+		public PolicyResult Enforce(ISecurityContext context)
 		{
 			if (context.CurrenUserAuthenticated() == false)
-				throw new PolicyViolationException<RequireRolePolicy>("Anonymous access denied");
+				return PolicyResult.CreateFailureResult(this, "Anonymous access denied");
 
 			if (context.CurrenUserRoles() == null || context.CurrenUserRoles().Length == 0)
-				throw new PolicyViolationException<RequireRolePolicy>("Access denied");
+				return PolicyResult.CreateFailureResult(this, "Access denied");
 
 			foreach (var requiredRole in _requiredRoles)
 			{
@@ -33,14 +33,14 @@ namespace FluentSecurity.Policy
 				{
 					if (requiredRole.ToString() == role.ToString())
 					{
-						return;
+						return PolicyResult.CreateSuccessResult(this);
 					}
 				}
 			}
 
-			const string message = "Access requires one of the following roles: {0}";
-			var formattedMessage = string.Format(message, context.CurrenUserRoles());
-			throw new PolicyViolationException<RequireRolePolicy>(formattedMessage);
+			const string message = "Access requires one of the following roles: {0}.";
+			var formattedMessage = string.Format(message, GetRoles());
+			return PolicyResult.CreateFailureResult(this, formattedMessage);
 		}
 
 		public object[] RolesRequired
@@ -79,6 +79,12 @@ namespace FluentSecurity.Policy
 		public override string ToString()
 		{
 			var name = base.ToString();
+			var roles = GetRoles();
+			return String.IsNullOrEmpty(roles) ? name : String.Concat(name, " (", GetRoles(), ")");
+		}
+
+		private string GetRoles()
+		{
 			var roles = string.Empty;
 			if (_requiredRoles != null && _requiredRoles.Length > 0)
 			{
@@ -86,9 +92,9 @@ namespace FluentSecurity.Policy
 				foreach (var requiredRole in _requiredRoles)
 					builder.AppendFormat("{0} or ", requiredRole);
 
-				roles = string.Concat(" (", builder.ToString(0, builder.Length - 4), ")");
+				roles = builder.ToString(0, builder.Length - 4); ;
 			}
-			return string.Concat(name, roles);
+			return roles;
 		}
 	}
 }

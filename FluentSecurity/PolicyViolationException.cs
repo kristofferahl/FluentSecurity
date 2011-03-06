@@ -8,9 +8,9 @@ namespace FluentSecurity
 		public PolicyViolationException(string message) : base(typeof(TSecurityPolicy), message) {}
 	}
 
-	public abstract class PolicyViolationException : Exception
+	public class PolicyViolationException : Exception
 	{
-		protected PolicyViolationException(Type policyType, string message) : base(message)
+		internal PolicyViolationException(Type policyType, string message) : base(message)
 		{
 			PolicyType = policyType;
 		}

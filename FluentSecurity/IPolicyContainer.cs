@@ -10,6 +10,6 @@ namespace FluentSecurity
 		IPolicyAppender PolicyAppender { get; }
 		IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy);
 		IEnumerable<ISecurityPolicy> GetPolicies();
-		void EnforcePolicies();
+		IEnumerable<PolicyResult> EnforcePolicies();
 	}
 }

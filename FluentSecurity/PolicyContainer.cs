@@ -41,16 +41,18 @@ namespace FluentSecurity
 		public string ActionName { get; private set; }
 		public IPolicyAppender PolicyAppender { get; private set; }
 
-		public void EnforcePolicies()
+		public IEnumerable<PolicyResult> EnforcePolicies()
 		{
 			if (_policies.Count.Equals(0))
 				throw new ConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
 			var context = new SecurityContext(_isAuthenticatedExpression, _rolesExpression);
+			var results = new List<PolicyResult>();
+			
 			foreach (var policy in _policies)
-			{
-				policy.Enforce(context);
-			}
+				results.Add(policy.Enforce(context));
+			
+			return results.ToArray();
 		}
 
 		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)

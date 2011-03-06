@@ -2,12 +2,13 @@ namespace FluentSecurity.Policy
 {
 	public class DenyAuthenticatedAccessPolicy : ISecurityPolicy
 	{
-		public void Enforce(ISecurityContext context)
+		public PolicyResult Enforce(ISecurityContext context)
 		{
 			if (context.CurrenUserAuthenticated())
 			{
-				throw new PolicyViolationException<DenyAuthenticatedAccessPolicy>("Authenticated access denied");
+				return PolicyResult.CreateFailureResult(this, "Authenticated access denied");
 			}
+			return PolicyResult.CreateSuccessResult(this);
 		}
 	}
 }

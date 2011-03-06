@@ -67,19 +67,23 @@ namespace FluentSecurity.Specification.Policy
 	public class When_enforcing_security_for_a_RequireRolePolicy
 	{
 		[Test]
-		public void Should_throw_when_isAuthenticated_is_false()
+		public void Should_not_be_successful_when_isAuthenticated_is_false()
 		{
 			// Arrange
 			var policy = new RequireRolePolicy(new object[1]);
 			const bool authenticated = false;
 			var context = TestDataFactory.CreateSecurityContext(authenticated);
 
+			// Act
+			var result = policy.Enforce(context);
+
 			// Assert
-			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => policy.Enforce(context));
+			Assert.That(result.ViolationOccured, Is.True);
+			Assert.That(result.Message, Is.EqualTo("Anonymous access denied"));
 		}
 
 		[Test]
-		public void Should_throw_when_isAuthenticated_is_true_and_roles_are_null()
+		public void Should_not_be_successful_when_isAuthenticated_is_true_and_roles_are_null()
 		{
 			// Arrange
 			var policy = new RequireRolePolicy(new object[1]);
@@ -87,12 +91,33 @@ namespace FluentSecurity.Specification.Policy
 			object[] roles = null;
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
+			// Act
+			var result = policy.Enforce(context);
+
 			// Assert
-			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => policy.Enforce(context));
+			Assert.That(result.ViolationOccured, Is.True);
+			Assert.That(result.Message, Is.EqualTo("Access denied"));
 		}
 
 		[Test]
-		public void Should_not_throw_when_isAuthenticated_is_true_and_user_has_at_least_one_matching_role()
+		public void Should_not_be_successful_when_isAuthenticated_is_true_and_roles_are_does_not_match()
+		{
+			// Arrange
+			var policy = new RequireRolePolicy("Role1", "Role2");
+			const bool authenticated = true;
+			var roles = new List<object> { "Role3", "Role4" }.ToArray();
+			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
+
+			// Act
+			var result = policy.Enforce(context);
+
+			// Assert
+			Assert.That(result.ViolationOccured, Is.True);
+			Assert.That(result.Message, Is.EqualTo("Access requires one of the following roles: Role1 or Role2."));
+		}
+
+		[Test]
+		public void Should_be_successful_when_isAuthenticated_is_true_and_user_has_at_least_one_matching_role()
 		{
 			// Arrange
 			var requiredRoles = new List<object> {
@@ -108,8 +133,11 @@ namespace FluentSecurity.Specification.Policy
 			};
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles.ToArray());
 
+			// Act
+			var result = policy.Enforce(context);
+
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(context));
+			Assert.That(result.ViolationOccured, Is.False);
 		}
 	}
 
