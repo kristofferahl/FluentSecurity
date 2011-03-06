@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 
 namespace FluentSecurity.Policy
 {
@@ -18,17 +19,17 @@ namespace FluentSecurity.Policy
 			_requiredRoles = requiredRoles;
 		}
 
-		public void Enforce(bool isAuthenticated, object[] roles)
+		public void Enforce(ISecurityContext context)
 		{
-			if (isAuthenticated == false)
+			if (context.CurrenUserAuthenticated() == false)
 				throw new PolicyViolationException<RequireRolePolicy>("Anonymous access denied");
 
-			if (roles == null || roles.Length == 0)
+			if (context.CurrenUserRoles() == null || context.CurrenUserRoles().Length == 0)
 				throw new PolicyViolationException<RequireRolePolicy>("Access denied");
 
 			foreach (var requiredRole in _requiredRoles)
 			{
-				foreach (var role in roles)
+				foreach (var role in context.CurrenUserRoles())
 				{
 					if (requiredRole.ToString() == role.ToString())
 					{
@@ -38,7 +39,7 @@ namespace FluentSecurity.Policy
 			}
 
 			const string message = "Access requires one of the following roles: {0}";
-			var formattedMessage = string.Format(message, roles);
+			var formattedMessage = string.Format(message, context.CurrenUserRoles());
 			throw new PolicyViolationException<RequireRolePolicy>(formattedMessage);
 		}
 
@@ -73,6 +74,21 @@ namespace FluentSecurity.Policy
 				}
 				return hash;
 			}
+		}
+
+		public override string ToString()
+		{
+			var name = base.ToString();
+			var roles = string.Empty;
+			if (_requiredRoles != null && _requiredRoles.Length > 0)
+			{
+				var builder = new StringBuilder();
+				foreach (var requiredRole in _requiredRoles)
+					builder.AppendFormat("{0} or ", requiredRole);
+
+				roles = string.Concat(" (", builder.ToString(0, builder.Length - 4), ")");
+			}
+			return string.Concat(name, roles);
 		}
 	}
 }

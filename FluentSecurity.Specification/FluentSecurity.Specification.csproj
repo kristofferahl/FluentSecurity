@@ -57,6 +57,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\NUnit.2.5.9\framework\nunit.framework.dll</HintPath>
@@ -92,6 +93,7 @@
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
+    <Compile Include="SecurityContextSpec.cs" />
     <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAnonymousAccessPolicyViolationHandler.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
@@ -100,7 +102,6 @@
     <Compile Include="SecurityConfiguratorSpec.cs" />
     <Compile Include="TestData\FakePolicyAppender.cs" />
     <Compile Include="Helpers\TestDataFactory.cs" />
-    <Compile Include="TestData\FakePolicy.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="SecurityConfigurationSpec.cs" />
     <Compile Include="TestData\MockedHelper.cs" />

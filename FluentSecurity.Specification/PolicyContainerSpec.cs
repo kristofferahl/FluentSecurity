@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using FluentSecurity.Policy;
-using FluentSecurity.Specification.Fakes;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using Moq;
 using NUnit.Framework;
 using Rhino.Mocks;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace FluentSecurity.Specification
 {
@@ -177,25 +178,7 @@ namespace FluentSecurity.Specification
 	public class When_encforcing_policies
 	{
 		[Test]
-		public void Should_invoke_the_isautheticated_function()
-		{
-			// Arrange
-			var helper = MockRepository.GenerateMock<MockedHelper>();
-			helper.Expect(x => x.IsAuthenticatedReturnsTrue()).Return(true).Repeat.Once();
-			helper.Replay();
-
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, helper.IsAuthenticatedReturnsTrue, TestDataFactory.ValidRolesFunction, TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.AddPolicy(new DenyAnonymousAccessPolicy());
-
-			// Act
-			policyContainer.EnforcePolicies();
-			
-			// Assert
-			helper.VerifyAllExpectations();			
-		}
-
-		[Test]
-		public void Should_invoke_the_roles_function()
+		public void Should_invoke_the_isautheticated_and_roles_functions()
 		{
 			// Arrange
 			var helper = MockRepository.GenerateMock<MockedHelper>();
@@ -204,7 +187,7 @@ namespace FluentSecurity.Specification
 			helper.Replay();
 
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, helper.IsAuthenticatedReturnsTrue, helper.GetRoles, TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.AddPolicy(new DenyAnonymousAccessPolicy());
+			policyContainer.AddPolicy(new TestPolicy());
 
 			// Act
 			policyContainer.EnforcePolicies();
@@ -214,30 +197,27 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_enforce_policies_with_status_and_roles()
+		public void Should_enforce_policies_with_context()
 		{
 			// Arrange
 			var roles = new List<object> { UserRole.Owner }.ToArray();
 			const bool isAuthenticated = true;
 
-			var helper = MockRepository.GenerateMock<MockedHelper>();
-			helper.Expect(x => x.IsAuthenticatedReturnsTrue()).Return(isAuthenticated).Repeat.Once();
-			helper.Expect(x => x.GetRoles()).Return(roles).Repeat.Once();
-			helper.Replay();
+			var context = new Mock<ISecurityContext>();
+			context.Setup(x => x.CurrenUserAuthenticated()).Returns(isAuthenticated);
+			context.Setup(x => x.CurrenUserRoles()).Returns(roles);
 
-			var mockRepository = new MockRepository();
-			var policy =  mockRepository.StrictMock<FakePolicy>();
-			policy.Expect(x => x.Enforce(isAuthenticated, roles)).Repeat.Once();
-			policy.Replay();
+			var policy = new Mock<ISecurityPolicy>();
+			policy.Setup(x => x.Enforce(It.Is<ISecurityContext>(c => c.CurrenUserAuthenticated() == isAuthenticated && c.CurrenUserRoles() == roles)));
 
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, helper.IsAuthenticatedReturnsTrue, helper.GetRoles, TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.AddPolicy(policy);
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, () => isAuthenticated, () => roles, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy(policy.Object);
 
 			// Act
 			policyContainer.EnforcePolicies();
 
 			// Assert
-			policy.VerifyAllExpectations();
+			policy.VerifyAll();
 		}
 
 		[Test]
@@ -248,6 +228,20 @@ namespace FluentSecurity.Specification
 
 			// Act & Assert
 			Assert.Throws<ConfigurationErrorsException>(policyContainer.EnforcePolicies);
+		}
+
+		private class TestPolicy : ISecurityPolicy
+		{
+			public void Enforce(ISecurityContext context)
+			{
+				var authenticated = context.CurrenUserAuthenticated();
+				var roles = context.CurrenUserRoles();
+			}
+
+			public object[] RolesRequired
+			{
+				get { throw new NotImplementedException(); }
+			}
 		}
 	}
 }

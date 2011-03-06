@@ -13,6 +13,11 @@ namespace FluentSecurity.Specification.Helpers
 		public static readonly Func<bool> ValidIsAuthenticatedFunction = () => true;
 		public static readonly Func<object[]> ValidRolesFunction = () => new object[0];
 
+		public static ISecurityContext CreateSecurityContext(bool authenticated, object[] roles = null)
+		{
+			return new SecurityContext(() => authenticated, () => roles);
+		}
+
 		public static PolicyContainer CreateValidPolicyContainer()
 		{
 			return new PolicyContainer(

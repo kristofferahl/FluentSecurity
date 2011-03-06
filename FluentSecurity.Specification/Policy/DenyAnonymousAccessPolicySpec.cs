@@ -1,4 +1,5 @@
 using FluentSecurity.Policy;
+using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy
@@ -13,9 +14,10 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var policy = new DenyAnonymousAccessPolicy();
 			const bool authenticated = false;
+			var context = TestDataFactory.CreateSecurityContext(authenticated);
 
 			// Act & Assert
-			Assert.Throws<PolicyViolationException<DenyAnonymousAccessPolicy>>(() => policy.Enforce(authenticated, null));
+			Assert.Throws<PolicyViolationException<DenyAnonymousAccessPolicy>>(() => policy.Enforce(context));
 		}
 
 		[Test]
@@ -24,24 +26,10 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var policy = new DenyAnonymousAccessPolicy();
 			const bool authenticated = true;
+			var context = TestDataFactory.CreateSecurityContext(authenticated);
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => policy.Enforce(authenticated, null));
-		}
-	}
-
-	[TestFixture]
-	[Category("DenyAnonymousAccessPolicySpec")]
-	public class When_getting_the_required_roles_for_a_DenyAnonymousAccessPolicy
-	{
-		[Test]
-		public void Should_return_null()
-		{
-			// Arrange
-			var policy = new DenyAnonymousAccessPolicy();
-
-			// Assert
-			Assert.That(policy.RolesRequired, Is.Null);
+			Assert.DoesNotThrow(() => policy.Enforce(context));
 		}
 	}
 }

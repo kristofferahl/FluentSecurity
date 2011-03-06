@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FluentSecurity.Policy;
+using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy
@@ -15,9 +16,10 @@ namespace FluentSecurity.Specification.Policy
 			var policy = new IgnorePolicy();
 			const bool authenticated = false;
 			const object[] roles = null;
+			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(authenticated, roles));
+			Assert.DoesNotThrow(() => policy.Enforce(context));
 		}
 
 		[Test]
@@ -27,9 +29,10 @@ namespace FluentSecurity.Specification.Policy
 			var policy = new IgnorePolicy();
 			const bool authenticated = true;
 			const object[] roles = null;
+			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(authenticated, roles));
+			Assert.DoesNotThrow(() => policy.Enforce(context));
 		}
 
 		[Test]
@@ -39,9 +42,10 @@ namespace FluentSecurity.Specification.Policy
 			var policy = new IgnorePolicy();
 			const bool authenticated = true;
 			const object[] roles = null;
+			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(authenticated, roles));
+			Assert.DoesNotThrow(() => policy.Enforce(context));
 		}
 
 		[Test]
@@ -51,9 +55,10 @@ namespace FluentSecurity.Specification.Policy
 			var policy = new IgnorePolicy();
 			const bool authenticated = true;
 			var roles = new object[0];
+			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(authenticated, roles));
+			Assert.DoesNotThrow(() => policy.Enforce(context));
 		}
 
 		[Test]
@@ -62,28 +67,11 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var policy = new IgnorePolicy();
 			const bool authenticated = true;
-			object[] roles = new List<object> { "Administrator", "Editor", "Reader" }.ToArray();
+			var roles = new List<object> { "Administrator", "Editor", "Reader" }.ToArray();
+			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(authenticated, roles));
-		}
-	}
-
-	[TestFixture]
-	[Category("IgnorePolicySpec")]
-	public class When_getting_the_required_roles_for_an_IgnorePolicy
-	{
-		[Test]
-		public void Should_return_null()
-		{
-			// Arrange
-			var policy = new IgnorePolicy();
-
-			// Act
-			object[] rolesRequired = policy.RolesRequired;
-
-			// Assert
-			Assert.That(rolesRequired, Is.Null);
+			Assert.DoesNotThrow(() => policy.Enforce(context));
 		}
 	}
 }

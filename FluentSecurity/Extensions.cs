@@ -96,36 +96,9 @@ namespace FluentSecurity
 			var builder = new StringBuilder();
 			foreach (var policy in policies)
 			{
-				var roles = policy.GetRoles();
-				if (roles.IsNullOrEmpty())
-				{
-					builder.AppendFormat("\r\n\t{0}", policy.GetName());	
-				}
-				else
-				{
-					builder.AppendFormat("\r\n\t{0} ({1})", policy.GetName(), roles);
-				}
+				builder.AppendFormat("\r\n\t{0}", policy);
 			}
 			return builder.ToString();
-		}
-
-		private static string GetName(this ISecurityPolicy policy)
-		{
-			return policy.GetType().Name.Replace("Policy", string.Empty);
-		}
-
-		private static string GetRoles(this ISecurityPolicy policy)
-		{
-			if (policy.RolesRequired == null || policy.RolesRequired.Length == 0)
-				return string.Empty;
-
-			var builder = new StringBuilder();
-			foreach (var requiredRole in policy.RolesRequired)
-			{
-				builder.AppendFormat("{0} or ", requiredRole);
-			}
-
-			return builder.ToString(0, builder.Length - 4);
 		}
 	}
 }

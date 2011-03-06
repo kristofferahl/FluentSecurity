@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentSecurity.Policy;
+using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
@@ -71,9 +72,10 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var policy = new RequireRolePolicy(new object[1]);
 			const bool authenticated = false;
+			var context = TestDataFactory.CreateSecurityContext(authenticated);
 
 			// Assert
-			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => policy.Enforce(authenticated, null));
+			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => policy.Enforce(context));
 		}
 
 		[Test]
@@ -83,9 +85,10 @@ namespace FluentSecurity.Specification.Policy
 			var policy = new RequireRolePolicy(new object[1]);
 			const bool authenticated = true;
 			object[] roles = null;
+			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Assert
-			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => policy.Enforce(authenticated, roles));
+			Assert.Throws<PolicyViolationException<RequireRolePolicy>>(() => policy.Enforce(context));
 		}
 
 		[Test]
@@ -103,10 +106,10 @@ namespace FluentSecurity.Specification.Policy
 			var roles = new List<object> {
 				UserRole.Writer
 			};
-
+			var context = TestDataFactory.CreateSecurityContext(authenticated, roles.ToArray());
 
 			// Assert
-			Assert.DoesNotThrow(() => policy.Enforce(authenticated, roles.ToArray()));
+			Assert.DoesNotThrow(() => policy.Enforce(context));
 		}
 	}
 

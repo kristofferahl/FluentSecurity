@@ -46,17 +46,10 @@ namespace FluentSecurity
 			if (_policies.Count.Equals(0))
 				throw new ConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
-			var isAuthenticated = _isAuthenticatedExpression.Invoke();
-			
-			object[] roles = null;
-			if (_rolesExpression != null)
-			{
-				roles = _rolesExpression.Invoke();
-			}
-			
+			var context = new SecurityContext(_isAuthenticatedExpression, _rolesExpression);
 			foreach (var policy in _policies)
 			{
-				policy.Enforce(isAuthenticated, roles);
+				policy.Enforce(context);
 			}
 		}
 

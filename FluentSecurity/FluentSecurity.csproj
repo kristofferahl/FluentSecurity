@@ -75,6 +75,7 @@
     <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityConfiguration.cs" />
     <Compile Include="IPolicyAppender.cs" />
+    <Compile Include="ISecurityContext.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
     <Compile Include="IWhatDoIHaveBuilder.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="IPolicyContainer.cs" />
     <Compile Include="SecurityConfigurator.cs" />
     <Compile Include="Policy\RequireRolePolicy.cs" />
+    <Compile Include="SecurityContext.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />

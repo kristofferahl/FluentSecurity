@@ -279,7 +279,7 @@ namespace FluentSecurity.Specification
 			var whatIHave = configuration.WhatDoIHave();
 
 			// Assert
-			Assert.That(whatIHave.Replace("\r\n", "|").Replace("\t", "%"), Is.EqualTo("Ignore missing configuration: True||------------------------------------------------------------------------------------|BlogController > DeletePost|%RequireRole (Owner or Publisher)|BlogController > Index|%DenyAnonymousAccess|------------------------------------------------------------------------------------"));
+			Assert.That(whatIHave.Replace("\r\n", "|").Replace("\t", "%"), Is.EqualTo("Ignore missing configuration: True||------------------------------------------------------------------------------------|BlogController > DeletePost|%FluentSecurity.Policy.RequireRolePolicy (Owner or Publisher)|BlogController > Index|%FluentSecurity.Policy.DenyAnonymousAccessPolicy|------------------------------------------------------------------------------------"));
 		}
 	}
 }
