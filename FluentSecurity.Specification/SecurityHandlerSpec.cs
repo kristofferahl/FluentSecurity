@@ -17,6 +17,7 @@ namespace FluentSecurity.Specification
 		public void SetUp()
 		{
 			SecurityConfigurator.Reset();
+			FakeIoC.Reset();
 		}
 
 		[Test]
@@ -58,22 +59,22 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_ask_configuration_for_a_policy_violation_handler_for_exception()
+		public void Should_resolve_policy_violation_handler_for_exception_from_container()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(policy =>
-			{
-				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
-				policy.ResolveServicesUsing(FakeIoC.GetAllInstances);
-				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
-			});
-
 			var expectedActionResult = new ViewResult { ViewName = "SomeViewName" };
 			var violationHandler = new DenyAnonymousAccessPolicyViolationHandler(expectedActionResult);
 			FakeIoC.GetAllInstancesProvider = () => new List<IPolicyViolationHandler>
 			{
 			    violationHandler
 			};
+
+			SecurityConfigurator.Configure(policy =>
+			{
+				policy.ResolveServicesUsing(FakeIoC.GetAllInstances);
+				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
+			});
 
 			var securityHandler = new SecurityHandler();
 

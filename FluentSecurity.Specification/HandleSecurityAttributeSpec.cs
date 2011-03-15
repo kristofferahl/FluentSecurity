@@ -13,6 +13,8 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_have_SecurityHandler_set()
 		{
+			SecurityConfigurator.Configure(config => {});
+
 			// Act
 			var attribute = new HandleSecurityAttribute();
 

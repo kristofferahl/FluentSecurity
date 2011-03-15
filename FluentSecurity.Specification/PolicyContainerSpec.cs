@@ -18,8 +18,6 @@ namespace FluentSecurity.Specification
 	{
 		private string _validControllerName;
 		private string _validActionName;
-		private Func<bool> _validIsAuthenticatedFunction;
-		private Func<object[]> _validRolesFunction;
 		private IPolicyAppender _validPolicyAppender;
 
 		[SetUp]
@@ -27,8 +25,6 @@ namespace FluentSecurity.Specification
 		{
 			_validControllerName = TestDataFactory.ValidControllerName;
 			_validActionName = TestDataFactory.ValidActionName;
-			_validIsAuthenticatedFunction = TestDataFactory.ValidIsAuthenticatedFunction;
-			_validRolesFunction = TestDataFactory.ValidRolesFunction;
 			_validPolicyAppender = TestDataFactory.CreateValidPolicyAppender();
 		}
 
@@ -36,7 +32,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_the_controllername_is_null()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(null, _validActionName, _validIsAuthenticatedFunction, _validRolesFunction, _validPolicyAppender)
+				new PolicyContainer(null, _validActionName, _validPolicyAppender)
 			);
 		}
 
@@ -44,7 +40,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_controllername_is_empty()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(string.Empty, _validActionName, _validIsAuthenticatedFunction, _validRolesFunction, _validPolicyAppender)
+				new PolicyContainer(string.Empty, _validActionName, _validPolicyAppender)
 			);
 		}
 
@@ -52,7 +48,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_actionname_is_null()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(_validControllerName, null, _validIsAuthenticatedFunction, _validRolesFunction, _validPolicyAppender)
+				new PolicyContainer(_validControllerName, null, _validPolicyAppender)
 			);
 		}
 
@@ -60,19 +56,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_actionname_is_empty()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(_validControllerName, string.Empty, _validIsAuthenticatedFunction, _validRolesFunction, _validPolicyAppender)
-			);
-		}
-
-		[Test]
-		public void Should_throw_ArgumentException_when_isauthenticatedfunction_is_null()
-		{
-			// Arrange
-			const Func<bool> isAuthenticatedFunction = null;
-			
-			// Act & Assert
-			Assert.Throws<ArgumentNullException>(() =>
-				new PolicyContainer(_validControllerName, _validActionName, isAuthenticatedFunction, _validRolesFunction, _validPolicyAppender)
+				new PolicyContainer(_validControllerName, string.Empty, _validPolicyAppender)
 			);
 		}
 
@@ -84,7 +68,7 @@ namespace FluentSecurity.Specification
 
 			// Act & Assert
 			Assert.Throws<ArgumentNullException>(() =>
-				new PolicyContainer(_validControllerName, _validActionName, _validIsAuthenticatedFunction, _validRolesFunction, policyAppender)
+				new PolicyContainer(_validControllerName, _validActionName, policyAppender)
 			);
 		}
 	}
@@ -107,7 +91,7 @@ namespace FluentSecurity.Specification
 
 		private IPolicyContainer Because()
 		{
-			return new PolicyContainer(_expectedControllerName, _expectedActionName, TestDataFactory.ValidIsAuthenticatedFunction, TestDataFactory.ValidRolesFunction, _expectedPolicyAppender);
+			return new PolicyContainer(_expectedControllerName, _expectedActionName, _expectedPolicyAppender);
 		}
 
 		[Test]
@@ -181,19 +165,19 @@ namespace FluentSecurity.Specification
 		public void Should_invoke_the_isautheticated_and_roles_functions()
 		{
 			// Arrange
-			var helper = MockRepository.GenerateMock<MockedHelper>();
-			helper.Expect(x => x.IsAuthenticatedReturnsTrue()).Return(true).Repeat.Once();
-			helper.Expect(x => x.GetRoles()).Return(new List<object> { UserRole.Owner }.ToArray()).Repeat.Once();
-			helper.Replay();
-
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, helper.IsAuthenticatedReturnsTrue, helper.GetRoles, TestDataFactory.CreateValidPolicyAppender());
+			var context = MockRepository.GenerateMock<ISecurityContext>();
+			context.Expect(x => x.CurrenUserAuthenticated()).Return(true).Repeat.Once();
+			context.Expect(x => x.CurrenUserRoles()).Return(new List<object> { UserRole.Owner }.ToArray()).Repeat.Once();
+			context.Replay();
+			
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.AddPolicy(new TestPolicy());
 
 			// Act
-			policyContainer.EnforcePolicies();
+			policyContainer.EnforcePolicies(context);
 
 			// Assert
-			helper.VerifyAllExpectations();
+			context.VerifyAllExpectations();
 		}
 
 		[Test]
@@ -210,11 +194,11 @@ namespace FluentSecurity.Specification
 			var policy = new Mock<ISecurityPolicy>();
 			policy.Setup(x => x.Enforce(It.Is<ISecurityContext>(c => c.CurrenUserAuthenticated() == isAuthenticated && c.CurrenUserRoles() == roles))).Returns(PolicyResult.CreateSuccessResult(policy.Object));
 
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, () => isAuthenticated, () => roles, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.AddPolicy(policy.Object);
 
 			// Act
-			policyContainer.EnforcePolicies();
+			policyContainer.EnforcePolicies(context.Object);
 
 			// Assert
 			policy.VerifyAll();
@@ -226,21 +210,17 @@ namespace FluentSecurity.Specification
 			// Arrange
 			var roles = new List<object> { UserRole.Owner }.ToArray();
 			const bool isAuthenticated = true;
-
 			const string failureOccured = "Failure occured";
-
-			var context = new Mock<ISecurityContext>();
-			context.Setup(x => x.CurrenUserAuthenticated()).Returns(isAuthenticated);
-			context.Setup(x => x.CurrenUserRoles()).Returns(roles);
+			var context = TestDataFactory.CreateSecurityContext(isAuthenticated, roles);
 
 			var policy = new Mock<ISecurityPolicy>();
 			policy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(policy.Object, failureOccured));
 
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, () => isAuthenticated, () => roles, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.AddPolicy(policy.Object);
 
 			// Act
-			var results = policyContainer.EnforcePolicies();
+			var results = policyContainer.EnforcePolicies(context);
 
 			// Assert
 			Assert.That(results.Count(), Is.EqualTo(1));
@@ -252,10 +232,11 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ConfigurationErrorsException_when_a_container_has_no_policies()
 		{
 			// Arrange
+			var context = TestDataFactory.CreateSecurityContext(false);
 			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 
 			// Act & Assert
-			Assert.Throws<ConfigurationErrorsException>(() => policyContainer.EnforcePolicies());
+			Assert.Throws<ConfigurationErrorsException>(() => policyContainer.EnforcePolicies(context));
 		}
 
 		private class TestPolicy : ISecurityPolicy
@@ -265,11 +246,6 @@ namespace FluentSecurity.Specification
 				var authenticated = context.CurrenUserAuthenticated();
 				var roles = context.CurrenUserRoles();
 				return PolicyResult.CreateSuccessResult(this);
-			}
-
-			public object[] RolesRequired
-			{
-				get { throw new NotImplementedException(); }
 			}
 		}
 	}

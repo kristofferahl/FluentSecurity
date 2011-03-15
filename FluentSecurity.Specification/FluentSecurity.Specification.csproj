@@ -95,9 +95,13 @@
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
+    <Compile Include="Helpers\ServiceLocatorResetFixture.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="SecurityContextSpec.cs" />
+    <Compile Include="ServiceLocation\ContainerSpec.cs" />
+    <Compile Include="ServiceLocation\ExternalServiceLocatorSpec.cs" />
+    <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />
     <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAnonymousAccessPolicyViolationHandler.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
@@ -108,7 +112,6 @@
     <Compile Include="Helpers\TestDataFactory.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="SecurityConfigurationSpec.cs" />
-    <Compile Include="TestData\MockedHelper.cs" />
     <Compile Include="TestData\BlogController.cs" />
     <Compile Include="TestData\PostForm.cs" />
     <Compile Include="TestData\UserRole.cs" />

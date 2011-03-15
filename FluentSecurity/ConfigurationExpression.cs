@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
 	public class ConfigurationExpression : Builder<IPolicyContainer>
 	{
-		private Func<bool> _isAuthenticatedFunction;
-		private Func<object[]> _rolesFunction;
+		public Func<bool> IsAuthenticated { get; private set; }
+		public Func<object[]> Roles { get; private set; }
+		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
+		public bool ShouldIgnoreMissingConfiguration { get; private set; }
+		public IPolicyAppender PolicyAppender { get; private set; }
 
 		public ConfigurationExpression()
 		{
 			PolicyAppender = new DefaultPolicyAppender();
-			WhatDoIHaveBuilder = new DefaultWhatDoIHaveBuilder();
 		}
 
 		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
@@ -48,7 +51,7 @@ namespace FluentSecurity
 
 		private void ValidateConfiguration()
 		{
-			if (_isAuthenticatedFunction == null)
+			if (IsAuthenticated == null)
 				throw new ConfigurationErrorsException("You must specify a function returning authenticationstatus before adding policies.");
 		}
 
@@ -63,7 +66,7 @@ namespace FluentSecurity
 			}
 			else
 			{
-				policyContainer = new PolicyContainer(controllerName, actionName, _isAuthenticatedFunction, _rolesFunction, PolicyAppender);
+				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
 				_itemValues.Add(policyContainer);
 			}
 
@@ -87,7 +90,7 @@ namespace FluentSecurity
 			if (isAuthenticatedFunction == null)
 				throw new ArgumentNullException("isAuthenticatedFunction");
 
-			_isAuthenticatedFunction = isAuthenticatedFunction;
+			IsAuthenticated = isAuthenticatedFunction;
 		}
 
 		public void GetRolesFrom(Func<object[]> rolesFunction)
@@ -98,7 +101,7 @@ namespace FluentSecurity
 			if (_itemValues.Count > 0)
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
-			_rolesFunction = rolesFunction;
+			Roles = rolesFunction;
 		}
 
 		public void IgnoreMissingConfiguration()
@@ -114,28 +117,20 @@ namespace FluentSecurity
 			PolicyAppender = policyAppender;
 		}
 
-		public void SetWhatDoIHaveBuilder(IWhatDoIHaveBuilder whatDoIHaveBuilder)
+		public void ResolveServicesUsing(Func<Type, IEnumerable<object>> servicesLocator, Func<Type, object> singleServiceLocator = null)
 		{
-			if (whatDoIHaveBuilder == null)
-				throw new ArgumentNullException("whatDoIHaveBuilder");
+			if (servicesLocator == null)
+				throw new ArgumentNullException("servicesLocator");
 
-			WhatDoIHaveBuilder = whatDoIHaveBuilder;
+			ExternalServiceLocator = new ExternalServiceLocator(servicesLocator, singleServiceLocator);
 		}
 
-		public void ResolveServicesUsing(Func<Type, IEnumerable<object>> serviceLocator)
+		public void ResolveServicesUsing(ISecurityServiceLocator securityServiceLocator)
 		{
-			if (serviceLocator == null)
-				throw new ArgumentNullException("serviceLocator");
-			
-			ServiceLocator = serviceLocator;
+			if (securityServiceLocator == null)
+				throw new ArgumentNullException("securityServiceLocator");
+
+			ExternalServiceLocator = securityServiceLocator;
 		}
-
-		public bool ShouldIgnoreMissingConfiguration { get; private set; }
-
-		public IPolicyAppender PolicyAppender { get; private set; }
-
-		public IWhatDoIHaveBuilder WhatDoIHaveBuilder { get; private set; }
-
-		public Func<Type, IEnumerable<object>> ServiceLocator { get; private set; }
 	}
 }

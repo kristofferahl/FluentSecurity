@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification
@@ -283,21 +284,6 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_I_set_whatdoihavebuilder_to_null
-	{
-		[Test]
-		public void Should_throw_ArgumentNullException()
-		{
-			// Arrange
-			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
-
-			// Assert
-			Assert.Throws<ArgumentNullException>(() => configurationExpression.SetWhatDoIHaveBuilder(null));
-		}
-	}
-
-	[TestFixture]
-	[Category("ConfigurationExpressionSpec")]
 	public class When_I_set_servicelocator_to_null
 	{
 		[Test]
@@ -332,39 +318,114 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_I_set_whatdoihavebuilder_to_instance_of_DefaultWhatDoIHaveBuilder
+	public class When_I_set_external_servicelocators
 	{
 		[Test]
-		public void Should_have_whatdoihavebuilder_set_to_instance_of_DefaultWhatDoIHaveBuilder()
+		public void Should_resolve_all_instances_from_services_locator()
 		{
 			// Arrange
-			var expectedWhatDoIHaveBuilder = new DefaultWhatDoIHaveBuilder();
+			var concreteTypes = new List<ConcreteType1> { new ConcreteType1(), new ConcreteType1(), new ConcreteType1() };
+			FakeIoC.GetAllInstancesProvider = () => concreteTypes;
+			Func<Type, IEnumerable<object>> servicesLocator = FakeIoC.GetAllInstances;
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
 
 			// Act
-			configurationExpression.SetWhatDoIHaveBuilder(expectedWhatDoIHaveBuilder);
+			configurationExpression.ResolveServicesUsing(servicesLocator);
 
 			// Assert
-			Assert.That(configurationExpression.WhatDoIHaveBuilder, Is.EqualTo(expectedWhatDoIHaveBuilder));
+			Assert.That(configurationExpression.ExternalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(concreteTypes));
 		}
-	}
 
-	[TestFixture]
-	[Category("ConfigurationExpressionSpec")]
-	public class When_I_set_servicelocator_to_use_a_fake_ioc_container
-	{
 		[Test]
-		public void Should_have_fake_ioc_container_set_as_the_service_locator()
+		public void Should_resolve_single_instance_from_services_locator()
 		{
 			// Arrange
-			Func<Type, IEnumerable<object>> expectedServiceLocator = FakeIoC.GetAllInstances;
+			var concreteTypes = new List<ConcreteType1> { new ConcreteType1(), new ConcreteType1(), new ConcreteType1() };
+			FakeIoC.GetAllInstancesProvider = () => concreteTypes;
+			Func<Type, IEnumerable<object>> servicesLocator = FakeIoC.GetAllInstances;
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
 
 			// Act
-			configurationExpression.ResolveServicesUsing(expectedServiceLocator);
+			configurationExpression.ResolveServicesUsing(servicesLocator);
 
 			// Assert
-			Assert.That(configurationExpression.ServiceLocator, Is.EqualTo(expectedServiceLocator));
+			Assert.That(configurationExpression.ExternalServiceLocator.Resolve(typeof(ConcreteType1)), Is.EqualTo(concreteTypes.First()));
 		}
+
+		[Test]
+		public void Should_resolve_all_instances_from_services_locator_and_resolve_single_instance_from_single_service_locator()
+		{
+			// Arrange
+			var concreteTypesInServiceLocator1 = new List<object> { new ConcreteType1(), new ConcreteType1(), new ConcreteType1() };
+			var concreteTypesInServiceLocator2 = new List<object> { new ConcreteType1(), new ConcreteType2() };
+			
+			FakeIoC.GetAllInstancesProvider = () => concreteTypesInServiceLocator1;
+			FakeIoC.GetInstanceProvider = () => concreteTypesInServiceLocator2;
+
+			Func<Type, IEnumerable<object>> servicesLocator = FakeIoC.GetAllInstances;
+			Func<Type, object> singleServiceLocator = FakeIoC.GetInstance;
+			
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.ResolveServicesUsing(servicesLocator, singleServiceLocator);
+
+			// Assert
+			Assert.That(configurationExpression.ExternalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(concreteTypesInServiceLocator1));
+			Assert.That(configurationExpression.ExternalServiceLocator.Resolve(typeof(ConcreteType2)), Is.EqualTo(concreteTypesInServiceLocator2.Last()));
+		}
+
+		[Test]
+		public void Should_resolve_everything_from_implementation_of_ISecurityServiceLocator()
+		{
+			// Arrange
+			IEnumerable<object> expectedTypes = new List<object> { new ConcreteType1(), new ConcreteType1(), new ConcreteType1() };
+			object expectedType = new ConcreteType2();
+
+			var securityServiceLocator = new Mock<ISecurityServiceLocator>();
+			securityServiceLocator.Setup(x => x.ResolveAll(typeof(ConcreteType1))).Returns(expectedTypes);
+			securityServiceLocator.Setup(x => x.Resolve(typeof(ConcreteType2))).Returns(expectedType);
+
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.ResolveServicesUsing(securityServiceLocator.Object);
+
+			// Assert
+			Assert.That(configurationExpression.ExternalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(expectedTypes));
+			Assert.That(configurationExpression.ExternalServiceLocator.Resolve(typeof(ConcreteType2)), Is.EqualTo(expectedType));
+			securityServiceLocator.VerifyAll();
+		}
+
+		[Test]
+		public void Should_throw_when_serviceslocator_is_null()
+		{
+			// Arrange
+			Func<Type, IEnumerable<object>> servicesLocator = null;
+			Func<Type, object> singleServiceLocator = FakeIoC.GetInstance;
+
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act & assert
+			var exception = Assert.Throws<ArgumentNullException>(() => configurationExpression.ResolveServicesUsing(servicesLocator, singleServiceLocator));
+			Assert.That(exception.ParamName, Is.EqualTo("servicesLocator"));
+		}
+		
+		[Test]
+		public void Should_throw_when_securityservicelocator_is_null()
+		{
+			// Arrange
+			Func<Type, IEnumerable<object>> servicesLocator = null;
+			Func<Type, object> singleServiceLocator = FakeIoC.GetInstance;
+
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act & assert
+			var exception = Assert.Throws<ArgumentNullException>(() => configurationExpression.ResolveServicesUsing(null));
+			Assert.That(exception.ParamName, Is.EqualTo("securityServiceLocator"));
+		}
+
+		private class ConcreteType1 {}
+		private class ConcreteType2 {}
 	}
 }

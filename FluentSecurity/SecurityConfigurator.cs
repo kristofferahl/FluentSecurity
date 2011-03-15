@@ -1,4 +1,5 @@
 using System;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
@@ -19,6 +20,7 @@ namespace FluentSecurity
 
 			lock (LockObject)
 			{
+				ServiceLocator.Reset();
 				_configuration = configuration;
 			}
 		}
@@ -53,6 +55,7 @@ namespace FluentSecurity
 		{
 			lock (LockObject)
 			{
+				ServiceLocator.Reset();
 				_configuration = null;
 			}
 		}

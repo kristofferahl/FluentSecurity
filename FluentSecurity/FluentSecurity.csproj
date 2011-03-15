@@ -71,13 +71,16 @@
     <Compile Include="ConventionPolicyContainer.cs" />
     <Compile Include="ConventionPolicyContainerExtensions.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="IConventionPolicyContainer.cs" />
+    <Compile Include="IExposeConfigurationExpression.cs" />
     <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityConfiguration.cs" />
     <Compile Include="IPolicyAppender.cs" />
     <Compile Include="ISecurityContext.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
+    <Compile Include="ISecurityServiceLocator.cs" />
     <Compile Include="IWhatDoIHaveBuilder.cs" />
     <Compile Include="PolicyResult.cs" />
     <Compile Include="PolicyViolationException.cs" />
@@ -97,6 +100,14 @@
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />
     <Compile Include="DefaultWhatDoIHaveBuilder.cs" />
+    <Compile Include="ServiceLocation\Container.cs" />
+    <Compile Include="ExceptionPolicyViolationHandler.cs" />
+    <Compile Include="ServiceLocation\IContainer.cs" />
+    <Compile Include="ServiceLocation\IContainerSource.cs" />
+    <Compile Include="ServiceLocation\LifeCycle.cs" />
+    <Compile Include="ServiceLocation\RegisteredObject.cs" />
+    <Compile Include="ServiceLocation\ServiceLocator.cs" />
+    <Compile Include="ServiceLocation\TypeNotRegisteredException.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

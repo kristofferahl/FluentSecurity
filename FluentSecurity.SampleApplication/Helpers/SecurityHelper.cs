@@ -8,10 +8,12 @@ namespace FluentSecurity.SampleApplication.Helpers
 	{
 		public static bool ActionIsAllowedForUser(string controllerName, string actionName)
 		{
-			var policyContainer = SecurityConfigurator.CurrentConfiguration.PolicyContainers.GetContainerFor(controllerName, actionName);
+			var configuration = SecurityConfigurator.CurrentConfiguration; 
+			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
-				var results = policyContainer.EnforcePolicies();
+				var context = SecurityContext.Current();
+				var results = policyContainer.EnforcePolicies(context);
 				return results.All(x => x.ViolationOccured == false);
 			}
 			return true;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FluentSecurity
 {
-	public class SecurityConfiguration : ISecurityConfiguration
+	public class SecurityConfiguration : ISecurityConfiguration, IExposeConfigurationExpression
 	{
 		private ConfigurationExpression _configuration;
 
@@ -24,7 +24,7 @@ namespace FluentSecurity
 		public string WhatDoIHave()
 		{
 			EnsureConfigured();
-			return WhatDoIHaveBuilder.WhatDoIHave(_configuration);
+			return ServiceLocation.ServiceLocator.Current.Resolve<IWhatDoIHaveBuilder>().WhatDoIHave(_configuration);
 		}
 
 		public IEnumerable<IPolicyContainer> PolicyContainers
@@ -60,28 +60,24 @@ namespace FluentSecurity
 			}
 		}
 
-		public IWhatDoIHaveBuilder WhatDoIHaveBuilder
+		public ISecurityServiceLocator ExternalServiceLocator
 		{
 			get
 			{
 				EnsureConfigured();
-				return _configuration.WhatDoIHaveBuilder;
-			}
-		}
-
-		public Func<Type, IEnumerable<object>> ServiceLocator
-		{
-			get
-			{
-				EnsureConfigured();
-				return _configuration.ServiceLocator;
+				return _configuration.ExternalServiceLocator;
 			}
 		}
 
 		private void EnsureConfigured()
 		{
-			if (_configuration == null) 
-				throw new InvalidOperationException("Security has not been configured!");
+			if (_configuration == null) throw new InvalidOperationException("Security has not been configured!");
+		}
+
+		public ConfigurationExpression GetExpression()
+		{
+			EnsureConfigured();
+			return _configuration;
 		}
 	}
 }

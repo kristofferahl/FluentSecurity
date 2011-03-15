@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
@@ -15,28 +16,20 @@ namespace FluentSecurity
 			if (actionName.IsNullOrEmpty())
 				throw new ArgumentException("Actionname must not be null or empty", "actionName");
 
-			var configuration = SecurityConfigurator.CurrentConfiguration;
+			var configuration = ServiceLocator.Current.Resolve<ISecurityConfiguration>();
 			
 			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
-				var results = policyContainer.EnforcePolicies();
+				var context = ServiceLocator.Current.Resolve<ISecurityContext>();
+				var results = policyContainer.EnforcePolicies(context);
 				if (results.Any(x => x.ViolationOccured))
 				{
 					var result = results.First(x => x.ViolationOccured);
-					if (configuration.ServiceLocator != null)
-					{
-						var violationHandlers = configuration.ServiceLocator(typeof(IPolicyViolationHandler)).Cast<IPolicyViolationHandler>();
-						if (violationHandlers.Any())
-						{
-							// TODO: Refactor and resolve selector from container.
-							var violationHandlerSelector = new PolicyViolationHandlerSelector(configuration, violationHandlers);
-							var exception = new PolicyViolationException(result.Policy.GetType(), result.Message);
-							var matchingHandler = violationHandlerSelector.FindHandlerFor(exception);
-							if (matchingHandler != null) return matchingHandler.Handle(exception);
-						}
-					}
-					throw new PolicyViolationException(result.Policy.GetType(), result.Message);
+					var policyViolationException = new PolicyViolationException(result.Policy.GetType(), result.Message);
+					var violationHandlerSelector = ServiceLocator.Current.Resolve<IPolicyViolationHandlerSelector>();
+					var matchingHandler = violationHandlerSelector.FindHandlerFor(policyViolationException) ?? new ExceptionPolicyViolationHandler();
+					return matchingHandler.Handle(policyViolationException);
 				}
 				return null;
 			}

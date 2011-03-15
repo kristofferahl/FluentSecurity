@@ -7,11 +7,9 @@ namespace FluentSecurity
 	{
 		ISecurityConfiguration Configure(Action<ConfigurationExpression> configurationExpression);
 		ISecurityConfiguration Reset();
-		string WhatDoIHave();
 		IEnumerable<IPolicyContainer> PolicyContainers { get; }
+		ISecurityServiceLocator ExternalServiceLocator { get; }
 		bool IgnoreMissingConfiguration { get; }
-		IPolicyAppender PolicyAppender { get; }
-		IWhatDoIHaveBuilder WhatDoIHaveBuilder { get; }
-		Func<Type, IEnumerable<object>> ServiceLocator { get; }
+		string WhatDoIHave();
 	}
 }

@@ -46,16 +46,6 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_throw_when_getting_whatdoihavebuilder()
-		{
-			// Act
-			var builder = Because();
-
-			// Assert
-			Assert.Throws<InvalidOperationException>(() => { var x = builder.WhatDoIHaveBuilder; });
-		}
-
-		[Test]
 		public void Should_throw_when_calling_whatdoihave()
 		{
 			// Act
@@ -72,7 +62,7 @@ namespace FluentSecurity.Specification
 			var builder = Because();
 
 			// Assert
-			Assert.Throws<InvalidOperationException>(() => { var x = builder.ServiceLocator; });
+			Assert.Throws<InvalidOperationException>(() => { var x = builder.ExternalServiceLocator; });
 		}
 	}
 
@@ -128,26 +118,13 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_WhatDoIHaveBuilder_set_to_DefaultWhatDoIHaveBuilder()
-		{
-			// Arrange
-			var expectedWhatDoIHaveBuilderType = typeof(DefaultWhatDoIHaveBuilder);
-
-			// Act
-			Because();
-
-			// Assert
-			Assert.That(_securityConfiguration.WhatDoIHaveBuilder, Is.TypeOf(expectedWhatDoIHaveBuilderType));
-		}
-
-		[Test]
 		public void Should_have_ServiceLocator_set_to_null()
 		{
 			// Act
 			Because();
 
 			// Assert
-			Assert.That(_securityConfiguration.ServiceLocator, Is.Null);
+			Assert.That(_securityConfiguration.ExternalServiceLocator, Is.Null);
 		}
 	}
 
@@ -227,16 +204,6 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_throw_when_getting_whatdoihavebuilder()
-		{
-			// Act
-			Because();
-
-			// Assert
-			Assert.Throws<InvalidOperationException>(() => { var x = _securityConfiguration.WhatDoIHaveBuilder; });
-		}
-
-		[Test]
 		public void Should_throw_when_calling_whatdoihave()
 		{
 			// Act
@@ -253,7 +220,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			Assert.Throws<InvalidOperationException>(() => { var x = _securityConfiguration.ServiceLocator; });
+			Assert.Throws<InvalidOperationException>(() => { var x = _securityConfiguration.ExternalServiceLocator; });
 		}
 	}
 

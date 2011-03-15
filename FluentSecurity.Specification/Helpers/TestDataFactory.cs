@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentSecurity.Specification.TestData;
+using Moq;
 
 namespace FluentSecurity.Specification.Helpers
 {
@@ -15,7 +16,10 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static ISecurityContext CreateSecurityContext(bool authenticated, object[] roles = null)
 		{
-			return new SecurityContext(() => authenticated, () => roles);
+			var context = new Mock<ISecurityContext>();
+			context.Setup(x => x.CurrenUserAuthenticated()).Returns(authenticated);
+			context.Setup(x => x.CurrenUserRoles()).Returns(roles);
+			return context.Object;
 		}
 
 		public static PolicyContainer CreateValidPolicyContainer()
@@ -23,8 +27,6 @@ namespace FluentSecurity.Specification.Helpers
 			return new PolicyContainer(
 				ValidControllerName,
 				ValidActionName,
-				ValidIsAuthenticatedFunction,
-				ValidRolesFunction,
 				CreateValidPolicyAppender());
 		}
 
@@ -33,8 +35,6 @@ namespace FluentSecurity.Specification.Helpers
 			return new PolicyContainer(
 				controllerName ?? ValidControllerName,
 				actionName ?? ValidActionName,
-				ValidIsAuthenticatedFunction,
-				ValidRolesFunction,
 				CreateValidPolicyAppender());
 		}
 
