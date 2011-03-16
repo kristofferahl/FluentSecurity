@@ -248,7 +248,7 @@
 			<arg value="${dir.artifacts}" />
 		</exec>
 		
-		<if test="${directory::exists('C:\NuGet-Packages')}">
+		<if test="${directory::exists('C:\Develop\NuGet-Packages')}">
 			<echo message="Publishing NuGet packages to local feed directory" if="${verbose}" />
 			<copy todir="C:\NuGet-Packages" overwrite="true" verbose="${verbose}">
 				<fileset basedir="${dir.artifacts}">
