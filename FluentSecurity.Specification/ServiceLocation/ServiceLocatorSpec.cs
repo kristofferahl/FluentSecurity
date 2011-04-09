@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using FluentSecurity.ServiceLocation;
+using FluentSecurity.Specification.Helpers;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.ServiceLocation
@@ -66,6 +70,42 @@ namespace FluentSecurity.Specification.ServiceLocation
 			Assert.That(_serviceLocator.Resolve<IWhatDoIHaveBuilder>(), Is.InstanceOf<DefaultWhatDoIHaveBuilder>());
 			Assert.That(_serviceLocator.Resolve<IWhatDoIHaveBuilder>(), Is.EqualTo(_serviceLocator.Resolve<IWhatDoIHaveBuilder>()));
 			Assert.That(_serviceLocator.ResolveAll<IWhatDoIHaveBuilder>().Single(), Is.EqualTo(_serviceLocator.Resolve<IWhatDoIHaveBuilder>()));
+		}
+	}
+
+	[TestFixture]
+	[Category("ServiceLocatorSpec")]
+	public class When_resolving_an_instance_of_ISecurityContext
+	{
+		[Test]
+		public void Should_throw_when_no_authentication_status_mechanism_has_been_provided()
+		{
+			// Arrange
+			SecurityConfigurator.Configure(configuration => {});
+			var serviceLocator = new ServiceLocator();
+
+			// Act & assert
+			Assert.Throws<ConfigurationErrorsException>(() => serviceLocator.Resolve<ISecurityContext>());
+		}
+
+		[Test]
+		public void Should_not_throw_when_instance_is_registered_in_an_external_IoC_container()
+		{
+			// Arrange
+			var expectedInstance = TestDataFactory.CreateSecurityContext(true);
+			FakeIoC.Reset();
+			FakeIoC.GetInstanceProvider = () => new List<object> { expectedInstance };
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance);
+			});
+			var serviceLocator = new ServiceLocator();
+
+			// Act
+			var instance = serviceLocator.Resolve<ISecurityContext>();
+
+			// Assert
+			Assert.That(instance, Is.EqualTo(expectedInstance));
 		}
 	}
 }

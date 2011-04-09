@@ -19,9 +19,9 @@ namespace FluentSecurity.SampleApplication
 		{
 			SetupContainer();
 			SetControllerFactory();
+			Bootstrapper.SetupFluentSecurity();
 			RegisterRoutes(RouteTable.Routes);
 			RegisterGlobalFilters(GlobalFilters.Filters);
-			Bootstrapper.SetupFluentSecurity();
 		}
 
 		public static void SetupContainer()

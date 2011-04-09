@@ -220,23 +220,6 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_I_add_policies_before_specifying_a_function_returning_authenticationstatus
-	{
-		[Test]
-		public void Should_throw_ConfigurationErrorsException()
-		{
-			// Arrange
-			var configurationExpression = new ConfigurationExpression();
-			
-			// Assert
-			Assert.Throws<ConfigurationErrorsException>(() =>
-				configurationExpression.For<BlogController>(x => x.Index())
-			);
-		}
-	}
-
-	[TestFixture]
-	[Category("ConfigurationExpressionSpec")]
 	public class When_I_add_policies_before_specifying_a_function_returning_roles
 	{
 		[Test]

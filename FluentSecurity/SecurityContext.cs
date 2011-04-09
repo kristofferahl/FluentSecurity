@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
@@ -10,8 +11,6 @@ namespace FluentSecurity
 
 		private SecurityContext(Func<bool> isAuthenticated, Func<object[]> roles)
 		{
-			if (isAuthenticated == null) throw new ArgumentNullException("isAuthenticated");
-
 			_isAuthenticated = isAuthenticated;
 			_roles = roles;
 		}
@@ -44,10 +43,25 @@ namespace FluentSecurity
 					context = externalServiceLocator.Resolve(typeof(ISecurityContext)) as ISecurityContext;
 
 				if (context == null)
+				{
+					if (CanCreateSecurityContextFromConfigurationExpression(expression) == false)
+						throw new ConfigurationErrorsException(
+							@"
+							The current configuration is invalid! Before using Fluent Security you must do one of the following.
+							1) Specify how to get the authentication status using GetAuthenticationStatusFrom().
+							2) Register an instance of ISecurityContext in your IoC-container and register your container using ResolveServicesUsing().
+							");
+
 					context = new SecurityContext(expression.IsAuthenticated, expression.Roles);
+				}
 			}
 			
 			return context;
+		}
+
+		private static bool CanCreateSecurityContextFromConfigurationExpression(ConfigurationExpression expression)
+		{
+			return expression.IsAuthenticated != null;
 		}
 	}
 }

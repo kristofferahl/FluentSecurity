@@ -35,7 +35,7 @@
 	<!-- COMMON ASSEMBLY INFO
 		Properties used when creating the common assembly info file
 	-->
-	<property name="project.version" value="0.7.0" />
+	<property name="project.version" value="0.7.1" />
 	<property name="project.config" value="release" />
 	
 	<!-- PROJECTS TO BUILD
@@ -250,7 +250,7 @@
 		
 		<if test="${directory::exists('C:\Develop\NuGet-Packages')}">
 			<echo message="Publishing NuGet packages to local feed directory" if="${verbose}" />
-			<copy todir="C:\NuGet-Packages" overwrite="true" verbose="${verbose}">
+			<copy todir="C:\Develop\NuGet-Packages" overwrite="true" verbose="${verbose}">
 				<fileset basedir="${dir.artifacts}">
 					<include name="*.nupkg" />
 				</fileset>

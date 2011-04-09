@@ -65,7 +65,7 @@ namespace FluentSecurity.TestHelper
 			if (expectation == null) return null;
 			if (policyContainer == null)
 			{
-				const string messageFormat = "Expected policycontainer for controller \"{0}\", action \"{1}\" could not be found!";
+				const string messageFormat = "Expected a configuration for controller \"{0}\", action \"{1}\". Policycontainer could not be found!";
 				var message = string.Format(messageFormat, controllerName, actionName);
 				return _expectationViolationHandler.Handle(message);
 			}
@@ -84,7 +84,7 @@ namespace FluentSecurity.TestHelper
 			if (expectation == null) return null;
 			if (policyContainer == null)
 			{
-				const string messageFormat = "Expected policycontainer for controller \"{0}\", action \"{1}\" could not be found!";
+				const string messageFormat = "Expected a configuration for controller \"{0}\", action \"{1}\". Policycontainer could not be found!";
 				var message = string.Format(messageFormat, controllerName, actionName);
 				return _expectationViolationHandler.Handle(message);
 			}

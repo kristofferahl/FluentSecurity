@@ -22,8 +22,6 @@ namespace FluentSecurity
 
 		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
 		{
-			ValidateConfiguration();
-
 			var controllerName = typeof(TController).GetControllerName();
 			var actionName = propertyExpression.GetActionName();
 
@@ -32,8 +30,6 @@ namespace FluentSecurity
 
 		public IConventionPolicyContainer For<TController>() where TController : Controller
 		{
-			ValidateConfiguration();
-
 			var controllerType = typeof(TController);
 			var controllerName = controllerType.GetControllerName();
 			var actionMethods = controllerType.GetActionMethods();
@@ -47,12 +43,6 @@ namespace FluentSecurity
 			}
 
 			return new ConventionPolicyContainer(policyContainers);
-		}
-
-		private void ValidateConfiguration()
-		{
-			if (IsAuthenticated == null)
-				throw new ConfigurationErrorsException("You must specify a function returning authenticationstatus before adding policies.");
 		}
 
 		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
