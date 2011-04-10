@@ -5,13 +5,8 @@ namespace FluentSecurity
 {
 	public static class SecurityConfigurator
 	{
-		private static readonly object LockObject;
-		private static ISecurityConfiguration _configuration;
-
-		static SecurityConfigurator()
-		{
-			LockObject = new object();
-		}
+		private static readonly object LockObject = new object();
+		private static volatile ISecurityConfiguration _configuration;
 
 		public static void SetConfiguration(ISecurityConfiguration configuration)
 		{

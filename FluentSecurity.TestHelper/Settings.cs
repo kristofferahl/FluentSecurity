@@ -6,6 +6,11 @@ namespace FluentSecurity.TestHelper
 	{
 		static Settings()
 		{
+			SetDefaults();
+		}
+
+		private static void SetDefaults()
+		{
 			DefaultExpectationViolationHandler = new DefaultExpectationViolationHandler();
 			DefaultExpectationGroupBuilder = new ExpectationGroupBuilder();
 			DefaultExpectationVerifyerConstructor = (configuration, handler) => new ExpectationVerifyer(configuration, handler);

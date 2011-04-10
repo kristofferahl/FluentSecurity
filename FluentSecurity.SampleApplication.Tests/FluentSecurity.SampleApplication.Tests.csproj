@@ -51,14 +51,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentSecurity, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Build\Output\FluentSecurity.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentSecurity.TestHelper, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Build\Output\FluentSecurity.TestHelper.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\NUnit.2.5.9\framework\nunit.framework.dll</HintPath>
@@ -92,12 +84,6 @@
     <Compile Include="Style4\SecurityConfigurationTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentSecurity.SampleApplication\FluentSecurity.SampleApplication.csproj">
-      <Project>{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}</Project>
-      <Name>FluentSecurity.SampleApplication</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -113,6 +99,20 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluentSecurity.SampleApplication\FluentSecurity.SampleApplication.csproj">
+      <Project>{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}</Project>
+      <Name>FluentSecurity.SampleApplication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FluentSecurity.TestHelper\FluentSecurity.TestHelper.csproj">
+      <Project>{F8E43851-6455-48F4-96DE-C3CB3E189123}</Project>
+      <Name>FluentSecurity.TestHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FluentSecurity\FluentSecurity.csproj">
+      <Project>{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}</Project>
+      <Name>FluentSecurity</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

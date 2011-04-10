@@ -2,9 +2,10 @@ using System.Collections.Generic;
 
 namespace FluentSecurity.ServiceLocation
 {
-	public class ServiceLocator
+	public sealed class ServiceLocator
 	{
-		private static ServiceLocator _serviceLocator;
+		private static readonly object LockObject = new object();
+		private static volatile ServiceLocator _serviceLocator;
 
 		public ServiceLocator()
 		{
@@ -31,12 +32,25 @@ namespace FluentSecurity.ServiceLocation
 
 		internal static ServiceLocator Current
 		{
-			get { return _serviceLocator ?? (_serviceLocator = new ServiceLocator()); }
+			get
+			{
+				if (_serviceLocator == null)
+				{
+					lock (LockObject)
+					{
+						_serviceLocator = new ServiceLocator();
+					}
+				}
+				return _serviceLocator;
+			}
 		}
 
 		public static void Reset()
 		{
-			_serviceLocator = null;
+			lock (LockObject)
+			{
+				_serviceLocator = null;
+			}
 		}
 
 		public TTypeToResolve Resolve<TTypeToResolve>()
