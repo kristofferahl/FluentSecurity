@@ -39,6 +39,11 @@ namespace FluentSecurity.Specification.TestData
 			return View();
 		}
 
+		public JsonResult AjaxList()
+		{
+			return Json(new {});
+		}
+
 		private void PrivateMethodThatDoesNothing()
 		{
 		}

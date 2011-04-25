@@ -36,7 +36,7 @@ namespace FluentSecurity
 		/// <summary>
 		/// Gets actionmethods for the specified controller type
 		/// </summary>
-		public static MethodInfo[] GetActionMethods(this Type controllerType)
+		public static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType)
 		{
 			return controllerType
 				.GetMethods(
@@ -44,8 +44,8 @@ namespace FluentSecurity
 					BindingFlags.Instance |
 					BindingFlags.DeclaredOnly
 				)
-				.Where(x => x.ReturnType == typeof(ActionResult))
-				.ToArray();
+				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
+				.AsEnumerable();
 		}
 
 		///<summary>
