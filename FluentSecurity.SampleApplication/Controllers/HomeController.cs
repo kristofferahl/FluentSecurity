@@ -9,7 +9,7 @@ namespace FluentSecurity.SampleApplication.Controllers
 		{
 			var outModel = new HomeView
 			{
-				WhatDoIHave = SecurityConfigurator.WhatDoIHave()
+				WhatDoIHave = SecurityConfiguration.Current.WhatDoIHave()
 			};
 			return View(outModel);
 		}

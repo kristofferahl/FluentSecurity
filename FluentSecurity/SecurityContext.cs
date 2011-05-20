@@ -25,9 +25,12 @@ namespace FluentSecurity
 			return _roles != null ? _roles() : null;
 		}
 
-		public static ISecurityContext Current()
+		public static ISecurityContext Current
 		{
-			return ServiceLocator.Current.Resolve<ISecurityContext>();
+			get
+			{
+				return ServiceLocator.Current.Resolve<ISecurityContext>();
+			}
 		}
 
 		internal static ISecurityContext CreateFrom(ISecurityConfiguration configuration)
@@ -37,7 +40,7 @@ namespace FluentSecurity
 			var expressionExposer = configuration as IExposeConfigurationExpression;
 			if (expressionExposer != null)
 			{
-				var expression = expressionExposer.GetExpression();
+				var expression = expressionExposer.Expression;
 				var externalServiceLocator = expression.ExternalServiceLocator;
 				if (externalServiceLocator != null)
 					context = externalServiceLocator.Resolve(typeof(ISecurityContext)) as ISecurityContext;

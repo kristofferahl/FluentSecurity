@@ -11,13 +11,12 @@ namespace FluentSecurity.ServiceLocation
 		{
 			IContainer container = new Container();
 			
-			container.Register<ISecurityConfiguration>(ctx => SecurityConfigurator.CurrentConfiguration);
+			container.Register<ISecurityConfiguration>(ctx => SecurityConfiguration.Current);
 			container.Register<ISecurityHandler>(ctx => new SecurityHandler());
 			
 			container.Register<ISecurityContext>(ctx => SecurityContext.CreateFrom(ctx.Resolve<ISecurityConfiguration>()));
 
 			container.Register<IPolicyViolationHandlerSelector>(ctx => new PolicyViolationHandlerSelector(
-				ctx.Resolve<ISecurityConfiguration>(),
 				ctx.ResolveAll<IPolicyViolationHandler>()
 				));
 

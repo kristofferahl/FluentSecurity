@@ -16,7 +16,7 @@ namespace FluentSecurity.Specification
 			SecurityConfigurator.Reset();
 
 			// Act
-			var exception = Assert.Throws<InvalidOperationException>(() => SecurityContext.Current());
+			var exception = Assert.Throws<InvalidOperationException>(() => { var x = SecurityContext.Current; });
 
 			// Assert
 			Assert.That(exception.Message, Is.EqualTo("Security has not been configured!"));
@@ -36,7 +36,7 @@ namespace FluentSecurity.Specification
 			});
 
 			// Act
-			var context = SecurityContext.Current();
+			var context = SecurityContext.Current;
 
 			// Assert
 			Assert.That(context.CurrenUserAuthenticated(), Is.EqualTo(status));
@@ -62,7 +62,7 @@ namespace FluentSecurity.Specification
 			});
 
 			// Act
-			var context = SecurityContext.Current();
+			var context = SecurityContext.Current;
 
 			// Assert
 			Assert.That(context.CurrenUserAuthenticated(), Is.EqualTo(status));

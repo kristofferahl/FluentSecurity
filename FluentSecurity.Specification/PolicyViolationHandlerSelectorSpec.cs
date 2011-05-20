@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
@@ -10,26 +9,10 @@ namespace FluentSecurity.Specification
 	[Category("PolicyViolationHandlerSelectorSpec")]
 	public class When_creating_a_PolicyViolationHandlerSelector
 	{
-		private ISecurityConfiguration _configuration;
-		private IEnumerable<IPolicyViolationHandler> _violationHandlers;
-
-		[SetUp]
-		public void SetUp()
-		{
-			_configuration = Helpers.TestDataFactory.CreateValidSecurityConfiguration();
-			_violationHandlers = Helpers.TestDataFactory.CreatePolicyViolationHandlers();
-		}
-
-		[Test]
-		public void Should_throw_when_configuration_is_null()
-		{
-			Assert.Throws<ArgumentNullException>(() => new PolicyViolationHandlerSelector(null, _violationHandlers));
-		}
-
 		[Test]
 		public void Should_throw_when_violation_handlers_is_null()
 		{
-			Assert.Throws<ArgumentNullException>(() => new PolicyViolationHandlerSelector(_configuration, null));
+			Assert.Throws<ArgumentNullException>(() => new PolicyViolationHandlerSelector(null));
 		}
 	}
 
@@ -42,10 +25,8 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			var configuration = Helpers.TestDataFactory.CreateValidSecurityConfiguration();
 			var violationHandlers = Helpers.TestDataFactory.CreatePolicyViolationHandlers();
-
-			_violationHandler = new PolicyViolationHandlerSelector(configuration, violationHandlers);
+			_violationHandler = new PolicyViolationHandlerSelector(violationHandlers);
 		}
 
 		[Test]

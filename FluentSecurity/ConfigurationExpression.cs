@@ -9,11 +9,11 @@ namespace FluentSecurity
 {
 	public class ConfigurationExpression : Builder<IPolicyContainer>
 	{
-		public Func<bool> IsAuthenticated { get; private set; }
-		public Func<object[]> Roles { get; private set; }
-		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
-		public bool ShouldIgnoreMissingConfiguration { get; private set; }
-		public IPolicyAppender PolicyAppender { get; private set; }
+		internal Func<bool> IsAuthenticated { get; private set; }
+		internal Func<object[]> Roles { get; private set; }
+		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
+		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
+		private IPolicyAppender PolicyAppender { get; set; }
 
 		public ConfigurationExpression()
 		{

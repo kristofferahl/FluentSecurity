@@ -27,7 +27,7 @@ namespace FluentSecurity.SampleApplication
 				configuration.For<AdminController>().AddPolicy(new AdministratorPolicy());
 				configuration.For<AdminController>(x => x.Index()).Ignore();
 			});
-			return SecurityConfigurator.CurrentConfiguration;
+			return SecurityConfiguration.Current;
 		}
 	}
 }

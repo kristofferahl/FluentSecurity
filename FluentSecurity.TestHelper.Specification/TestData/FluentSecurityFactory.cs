@@ -22,7 +22,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				configuration.For<IgnoreController>().Ignore();
 			});
 
-			return SecurityConfigurator.CurrentConfiguration;
+			return SecurityConfiguration.Current;
 		}
 
 		public static ISecurityConfiguration CreateEmptySecurityConfiguration()
@@ -33,7 +33,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				configuration.IgnoreMissingConfiguration();
 			});
 
-			return SecurityConfigurator.CurrentConfiguration;
+			return SecurityConfiguration.Current;
 		}
 
 		public static ISecurityConfiguration CreateSecurityConfigurationWithTwoExpectations()
@@ -55,7 +55,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				configuration.For<TestController>().Ignore();
 			});
 
-			return SecurityConfigurator.CurrentConfiguration;
+			return SecurityConfiguration.Current;
 		}
 
 		public static PolicyExpectations CreatePolicyExpectations()

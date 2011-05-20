@@ -24,7 +24,7 @@ namespace FluentSecurity.Specification
 			SecurityConfigurator.SetConfiguration(configuration);
 
 			// Assert
-			Assert.That(SecurityConfigurator.CurrentConfiguration, Is.EqualTo(configuration));
+			Assert.That(SecurityConfiguration.Current, Is.EqualTo(configuration));
 		}
 
 		[Test]
@@ -54,7 +54,10 @@ namespace FluentSecurity.Specification
 			SecurityConfigurator.Reset();
 
 			// Assert
-			Assert.That(SecurityConfigurator.CurrentConfiguration, Is.Not.EqualTo(configuration));
+			var exception = Assert.Throws<InvalidOperationException>(() => {
+				var x = SecurityConfiguration.Current;
+			});
+			Assert.That(exception.Message, Is.EqualTo("Security has not been configured!"));
 		}
 	}
 
@@ -63,7 +66,6 @@ namespace FluentSecurity.Specification
 	public class When_calling_configure_on_security_configurator
 	{
 		private Action<ConfigurationExpression> _configurationExpression;
-		private ISecurityConfiguration _securityConfiguration;
 
 		[SetUp]
 		public void SetUp()
@@ -71,48 +73,31 @@ namespace FluentSecurity.Specification
 			// Arrange
 			SecurityConfigurator.Reset();
 			_configurationExpression = delegate { TestDataFactory.CreateValidConfigurationExpression(); };
-			_securityConfiguration = MockRepository.GenerateMock<ISecurityConfiguration>();
-			_securityConfiguration.Expect(x => x.Configure(_configurationExpression)).Return(_securityConfiguration).Repeat.Once();
-			SecurityConfigurator.SetConfiguration(_securityConfiguration);
 		}
 
 		[Test]
-		public void Should_call_configure_on_configuration()
+		public void Should_return_configuration()
 		{
 			// Act
-			SecurityConfigurator.Configure(_configurationExpression);
+			var configuration = SecurityConfigurator.Configure(_configurationExpression);
 
 			// Assert
-			_securityConfiguration.AssertWasCalled(x => x.Configure(_configurationExpression));
+			Assert.That(configuration, Is.Not.Null);
 		}
 	}
 
 	[TestFixture]
-	[Category("SecurityConfiguratorSpec")]
-	public class When_I_check_what_I_have_on_security_configurator
+	[Category("SecurityConfigurationSpec")]
+	public class When_calling_set_configuration_on_security_configurator_passing_null_as_the_argument
 	{
-		private Action<ConfigurationExpression> _configurationExpression;
-		private ISecurityConfiguration _securityConfiguration;
-
-		[SetUp]
-		public void SetUp()
+		[Test]
+		public void Should_throw()
 		{
 			// Arrange
-			SecurityConfigurator.Reset();
-			_configurationExpression = delegate { TestDataFactory.CreateValidConfigurationExpression(); };
-			_securityConfiguration = MockRepository.GenerateMock<ISecurityConfiguration>();
-			SecurityConfigurator.SetConfiguration(_securityConfiguration);
-			SecurityConfigurator.Configure(_configurationExpression);
-		}
+			Action<ConfigurationExpression> configurationExpression = null;
 
-		[Test]
-		public void Should_call_WhatDoIHave_on_configuration()
-		{
-			// Act
-			SecurityConfigurator.WhatDoIHave();
-
-			// Assert
-			_securityConfiguration.AssertWasCalled(x => x.WhatDoIHave());
+			// Act & assert
+			Assert.Throws<ArgumentNullException>(() => SecurityConfigurator.Configure(configurationExpression));
 		}
 	}
 
@@ -149,7 +134,7 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.AddPost()).RequireRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
-			_policyContainers = SecurityConfigurator.CurrentConfiguration.PolicyContainers;
+			_policyContainers = SecurityConfiguration.Current.PolicyContainers;
 		}
 
 		[Test]
@@ -199,9 +184,9 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.Index());
 			});
 
-			Assert.That(SecurityConfigurator.CurrentConfiguration.PolicyContainers.Count(), Is.EqualTo(1));
-			Assert.That(SecurityConfigurator.CurrentConfiguration.PolicyContainers.First().ControllerName, Is.EqualTo("Blog"));
-			Assert.That(SecurityConfigurator.CurrentConfiguration.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
+			Assert.That(SecurityConfiguration.Current.PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ControllerName, Is.EqualTo("Blog"));
+			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
 		}
 	}
 
@@ -228,7 +213,7 @@ namespace FluentSecurity.Specification
 				configuration.RemovePoliciesFor<BlogController>(x => x.Index());
 			});
 
-			_policyContainers = SecurityConfigurator.CurrentConfiguration.PolicyContainers;
+			_policyContainers = SecurityConfiguration.Current.PolicyContainers;
 		}
 
 		[Test]

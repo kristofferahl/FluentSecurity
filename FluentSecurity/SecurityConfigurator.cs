@@ -6,44 +6,31 @@ namespace FluentSecurity
 	public static class SecurityConfigurator
 	{
 		private static readonly object LockObject = new object();
-		private static volatile ISecurityConfiguration _configuration;
+
+		public static ISecurityConfiguration Configure(Action<ConfigurationExpression> configurationExpression)
+		{
+			if (configurationExpression == null)
+				throw new ArgumentNullException("configurationExpression");
+
+			Reset();
+			lock (LockObject)
+			{
+				var configuration = new SecurityConfiguration(configurationExpression);
+				SecurityConfiguration.SetConfiguration(configuration);
+				return SecurityConfiguration.Current;
+			}
+		}
 
 		public static void SetConfiguration(ISecurityConfiguration configuration)
 		{
 			if (configuration == null)
 				throw new ArgumentNullException("configuration");
 
+			Reset();
 			lock (LockObject)
 			{
-				ServiceLocator.Reset();
-				_configuration = configuration;
+				SecurityConfiguration.SetConfiguration(configuration);
 			}
-		}
-
-		public static ISecurityConfiguration CurrentConfiguration
-		{
-			get
-			{
-				if (_configuration == null)
-				{
-					lock (LockObject)
-					{
-						if (_configuration == null)
-							_configuration = new SecurityConfiguration();
-					}
-				}
-				return _configuration;
-			}
-		}
-
-		public static void Configure(Action<ConfigurationExpression> configurationExpression)
-		{
-			CurrentConfiguration.Configure(configurationExpression);
-		}
-
-		public static string WhatDoIHave()
-		{
-			return CurrentConfiguration.WhatDoIHave();
 		}
 
 		public static void Reset()
@@ -51,7 +38,7 @@ namespace FluentSecurity
 			lock (LockObject)
 			{
 				ServiceLocator.Reset();
-				_configuration = null;
+				SecurityConfiguration.Reset();
 			}
 		}
 	}

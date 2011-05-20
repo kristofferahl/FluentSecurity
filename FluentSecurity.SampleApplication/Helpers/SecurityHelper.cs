@@ -8,11 +8,11 @@ namespace FluentSecurity.SampleApplication.Helpers
 	{
 		public static bool ActionIsAllowedForUser(string controllerName, string actionName)
 		{
-			var configuration = SecurityConfigurator.CurrentConfiguration; 
+			var configuration = SecurityConfiguration.Current; 
 			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
-				var context = SecurityContext.Current();
+				var context = SecurityContext.Current;
 				var results = policyContainer.EnforcePolicies(context);
 				return results.All(x => x.ViolationOccured == false);
 			}

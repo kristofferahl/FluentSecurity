@@ -5,79 +5,64 @@ namespace FluentSecurity
 {
 	public class SecurityConfiguration : ISecurityConfiguration, IExposeConfigurationExpression
 	{
-		private ConfigurationExpression _configuration;
-
-		public ISecurityConfiguration Configure(Action<ConfigurationExpression> configurationExpression)
+		public SecurityConfiguration(Action<ConfigurationExpression> configurationExpression)
 		{
-			var configuration = new ConfigurationExpression();
-			configurationExpression(configuration);
-			_configuration = configuration;
-			return this;
+			if (configurationExpression == null)
+				throw new ArgumentNullException("configurationExpression");
+
+			var expression = new ConfigurationExpression();
+			configurationExpression(expression);
+			Expression = expression;
+
+			ExternalServiceLocator = Expression.ExternalServiceLocator;
+			IgnoreMissingConfiguration = Expression.ShouldIgnoreMissingConfiguration;
+			PolicyContainers = Expression;
 		}
 
-		public ISecurityConfiguration Reset()
-		{
-			_configuration = null;
-			return this;
-		}
+		public ConfigurationExpression Expression { get; private set; }
+		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
+		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
+		public bool IgnoreMissingConfiguration { get; private set; }
 
 		public string WhatDoIHave()
 		{
-			EnsureConfigured();
-			return ServiceLocation.ServiceLocator.Current.Resolve<IWhatDoIHaveBuilder>().WhatDoIHave(_configuration);
+			return ServiceLocation.ServiceLocator.Current.Resolve<IWhatDoIHaveBuilder>().WhatDoIHave(this);
 		}
 
-		public IEnumerable<IPolicyContainer> PolicyContainers
+		private static readonly object LockObject = new object();
+		private static volatile ISecurityConfiguration _configuration;
+
+		public static ISecurityConfiguration Current
 		{
 			get
 			{
 				EnsureConfigured();
-				return GetPolicyContainers();
+				return _configuration;
 			}
 		}
 
-		private IEnumerable<IPolicyContainer> GetPolicyContainers()
+		internal static void SetConfiguration(ISecurityConfiguration configuration)
 		{
-			foreach (var policyContainer in _configuration)
-				yield return policyContainer;
-		}
+			if (configuration == null)
+				throw new ArgumentNullException("configuration");
 
-		public bool IgnoreMissingConfiguration
-		{
-			get
+			lock (LockObject)
 			{
-				EnsureConfigured();
-				return _configuration.ShouldIgnoreMissingConfiguration;
+				_configuration = configuration;
 			}
 		}
 
-		public IPolicyAppender PolicyAppender
+		internal static void Reset()
 		{
-			get
+			lock (LockObject)
 			{
-				EnsureConfigured();
-				return _configuration.PolicyAppender;
+				_configuration = null;
 			}
 		}
 
-		public ISecurityServiceLocator ExternalServiceLocator
-		{
-			get
-			{
-				EnsureConfigured();
-				return _configuration.ExternalServiceLocator;
-			}
-		}
-
-		private void EnsureConfigured()
+		private static void EnsureConfigured()
 		{
 			if (_configuration == null) throw new InvalidOperationException("Security has not been configured!");
-		}
-
-		public ConfigurationExpression GetExpression()
-		{
-			EnsureConfigured();
-			return _configuration;
 		}
 	}
 }

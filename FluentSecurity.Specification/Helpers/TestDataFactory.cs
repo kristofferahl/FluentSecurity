@@ -40,8 +40,7 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static SecurityConfiguration CreateValidSecurityConfiguration()
 		{
-			var builder = new SecurityConfiguration();
-			return builder;
+			return new SecurityConfiguration(configuration => {});
 		}
 
 		public static ConfigurationExpression CreateValidConfigurationExpression()

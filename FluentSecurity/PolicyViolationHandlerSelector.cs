@@ -6,15 +6,11 @@ namespace FluentSecurity
 {
 	public class PolicyViolationHandlerSelector : IPolicyViolationHandlerSelector
 	{
-		private readonly ISecurityConfiguration _securityConfiguration;
 		private readonly IEnumerable<IPolicyViolationHandler> _policyViolationHandlers;
 
-		public PolicyViolationHandlerSelector(ISecurityConfiguration securityConfiguration, IEnumerable<IPolicyViolationHandler> policyViolationHandlers)
+		public PolicyViolationHandlerSelector(IEnumerable<IPolicyViolationHandler> policyViolationHandlers)
 		{
-			if (securityConfiguration == null) throw new ArgumentNullException("securityConfiguration");
 			if (policyViolationHandlers == null) throw new ArgumentNullException("policyViolationHandlers");
-
-			_securityConfiguration = securityConfiguration;
 			_policyViolationHandlers = policyViolationHandlers;
 		}
 

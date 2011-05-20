@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using Moq;
@@ -36,10 +37,12 @@ namespace FluentSecurity.Specification
 			var expectedPolicyAppenderType = typeof(DefaultPolicyAppender);
 
 			// Act
-			var builder = Because();
+			var configurationExpression = Because();
 
 			// Assert
-			Assert.That(builder.PolicyAppender, Is.TypeOf(expectedPolicyAppenderType));
+			var policyAppenderProperty = configurationExpression.GetType().GetProperty("PolicyAppender", BindingFlags.Instance | BindingFlags.NonPublic);
+			var policyAppender = policyAppenderProperty.GetValue(configurationExpression, null);
+			Assert.That(policyAppender, Is.TypeOf(expectedPolicyAppenderType));
 		}
 	}
 
@@ -82,7 +85,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			var policyContainer = _configurationExpression.GetContainerFor("Blog", "Index");
-			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(_configurationExpression.PolicyAppender));
+			Assert.That(policyContainer.PolicyAppender, Is.TypeOf(typeof(DefaultPolicyAppender)));
 		}
 	}
 
@@ -296,13 +299,15 @@ namespace FluentSecurity.Specification
 			configurationExpression.SetPolicyAppender(expectedPolicyAppender);
 
 			// Assert
-			Assert.That(configurationExpression.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
+			configurationExpression.For<BlogController>(x => x.Index());
+			var policyContainer = configurationExpression.GetContainerFor("Blog", "Index");
+			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
 		}
 	}
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_I_set_external_servicelocators
+	public class When_I_set_external_servicelocators : ConfigurationExpressionSpecification
 	{
 		[Test]
 		public void Should_resolve_all_instances_from_services_locator()
@@ -317,7 +322,8 @@ namespace FluentSecurity.Specification
 			configurationExpression.ResolveServicesUsing(servicesLocator);
 
 			// Assert
-			Assert.That(configurationExpression.ExternalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(concreteTypes));
+			var externalServiceLocator = GetExternalServiceLocator(configurationExpression);
+			Assert.That(externalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(concreteTypes));
 		}
 
 		[Test]
@@ -333,7 +339,8 @@ namespace FluentSecurity.Specification
 			configurationExpression.ResolveServicesUsing(servicesLocator);
 
 			// Assert
-			Assert.That(configurationExpression.ExternalServiceLocator.Resolve(typeof(ConcreteType1)), Is.EqualTo(concreteTypes.First()));
+			var externalServiceLocator = GetExternalServiceLocator(configurationExpression);
+			Assert.That(externalServiceLocator.Resolve(typeof(ConcreteType1)), Is.EqualTo(concreteTypes.First()));
 		}
 
 		[Test]
@@ -342,21 +349,22 @@ namespace FluentSecurity.Specification
 			// Arrange
 			var concreteTypesInServiceLocator1 = new List<object> { new ConcreteType1(), new ConcreteType1(), new ConcreteType1() };
 			var concreteTypesInServiceLocator2 = new List<object> { new ConcreteType1(), new ConcreteType2() };
-			
+
 			FakeIoC.GetAllInstancesProvider = () => concreteTypesInServiceLocator1;
 			FakeIoC.GetInstanceProvider = () => concreteTypesInServiceLocator2;
 
 			Func<Type, IEnumerable<object>> servicesLocator = FakeIoC.GetAllInstances;
 			Func<Type, object> singleServiceLocator = FakeIoC.GetInstance;
-			
+
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
 
 			// Act
 			configurationExpression.ResolveServicesUsing(servicesLocator, singleServiceLocator);
 
 			// Assert
-			Assert.That(configurationExpression.ExternalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(concreteTypesInServiceLocator1));
-			Assert.That(configurationExpression.ExternalServiceLocator.Resolve(typeof(ConcreteType2)), Is.EqualTo(concreteTypesInServiceLocator2.Last()));
+			var externalServiceLocator = GetExternalServiceLocator(configurationExpression);
+			Assert.That(externalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(concreteTypesInServiceLocator1));
+			Assert.That(externalServiceLocator.Resolve(typeof(ConcreteType2)), Is.EqualTo(concreteTypesInServiceLocator2.Last()));
 		}
 
 		[Test]
@@ -376,8 +384,9 @@ namespace FluentSecurity.Specification
 			configurationExpression.ResolveServicesUsing(securityServiceLocator.Object);
 
 			// Assert
-			Assert.That(configurationExpression.ExternalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(expectedTypes));
-			Assert.That(configurationExpression.ExternalServiceLocator.Resolve(typeof(ConcreteType2)), Is.EqualTo(expectedType));
+			var externalServiceLocator = GetExternalServiceLocator(configurationExpression);
+			Assert.That(externalServiceLocator.ResolveAll(typeof(ConcreteType1)), Is.EqualTo(expectedTypes));
+			Assert.That(externalServiceLocator.Resolve(typeof(ConcreteType2)), Is.EqualTo(expectedType));
 			securityServiceLocator.VerifyAll();
 		}
 
@@ -394,7 +403,7 @@ namespace FluentSecurity.Specification
 			var exception = Assert.Throws<ArgumentNullException>(() => configurationExpression.ResolveServicesUsing(servicesLocator, singleServiceLocator));
 			Assert.That(exception.ParamName, Is.EqualTo("servicesLocator"));
 		}
-		
+
 		[Test]
 		public void Should_throw_when_securityservicelocator_is_null()
 		{
@@ -409,7 +418,17 @@ namespace FluentSecurity.Specification
 			Assert.That(exception.ParamName, Is.EqualTo("securityServiceLocator"));
 		}
 
-		private class ConcreteType1 {}
-		private class ConcreteType2 {}
+		private class ConcreteType1 { }
+		private class ConcreteType2 { }
+	}
+
+	public abstract class ConfigurationExpressionSpecification
+	{
+		protected static ISecurityServiceLocator GetExternalServiceLocator(ConfigurationExpression configurationExpression)
+		{
+			var serviceLocatorProperty = configurationExpression.GetType().GetProperty("ExternalServiceLocator", BindingFlags.Instance | BindingFlags.NonPublic);
+			var serviceLocator = serviceLocatorProperty.GetValue(configurationExpression, null);
+			return (ISecurityServiceLocator) serviceLocator;
+		}
 	}
 }

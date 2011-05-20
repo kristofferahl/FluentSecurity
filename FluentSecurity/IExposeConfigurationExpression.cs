@@ -2,6 +2,6 @@
 {
 	internal interface IExposeConfigurationExpression
 	{
-		ConfigurationExpression GetExpression();
+		ConfigurationExpression Expression { get; }
 	}
 }
