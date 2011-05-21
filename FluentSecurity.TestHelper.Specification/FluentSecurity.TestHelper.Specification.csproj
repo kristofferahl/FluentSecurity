@@ -90,14 +90,9 @@
     <Compile Include="Expectations\DoesNotHaveTypeExpectationSpecs.cs" />
     <Compile Include="Expectations\HasTypeExpectationSpecs.cs" />
     <Compile Include="ExpectationVerifyerSpec.cs" />
-    <Compile Include="NUnit\SecurityExpectationHelperSpec.cs" />
     <Compile Include="PolicyExpectationsSpec.cs" />
-    <Compile Include="NUnit\NUnitExpectationViolationHandlerSpec.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="SecurityConfigurationExtensionsSpec.cs" />
-    <Compile Include="SecurityExpectationsHelperBaseSpecs.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TestData\AdminController.cs" />
     <Compile Include="TestData\DenyLynxPolicy.cs" />
     <Compile Include="TestData\IgnoreController.cs" />
@@ -106,10 +101,6 @@
     <Compile Include="TestData\SampleController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentSecurity.TestHelper.NUnit\FluentSecurity.TestHelper.NUnit.csproj">
-      <Project>{08816094-7C5D-47E0-8F6B-BEC42D90B639}</Project>
-      <Name>FluentSecurity.TestHelper.NUnit</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FluentSecurity.TestHelper\FluentSecurity.TestHelper.csproj">
       <Project>{F8E43851-6455-48F4-96DE-C3CB3E189123}</Project>
       <Name>FluentSecurity.TestHelper</Name>

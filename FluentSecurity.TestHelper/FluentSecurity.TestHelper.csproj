@@ -93,7 +93,6 @@
     <Compile Include="PolicyExpectations.cs" />
     <Compile Include="PolicyExpectationsExpression.cs" />
     <Compile Include="SecurityConfigurationExtensions.cs" />
-    <Compile Include="SecurityExpecationsHelperBase.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />
     <Compile Include="DefaultExpectationViolationHandler.cs" />
   </ItemGroup>

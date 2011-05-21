@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace FluentSecurity.TestHelper
 {
@@ -11,6 +12,17 @@ namespace FluentSecurity.TestHelper
 			if (expectationExpression == null) throw new ArgumentNullException("expectationExpression");
 			
 			var policyExpectationsExpression = new PolicyExpectationsExpression();
+			expectationExpression(policyExpectationsExpression);
+			var policyExpectations = policyExpectationsExpression.Expectations;
+			return policyExpectations.VerifyAll(configuration);
+		}
+
+		public static IEnumerable<ExpectationResult> Verify<TController>(this ISecurityConfiguration configuration, Action<PolicyExpectationsExpression<TController>> expectationExpression) where TController : IController
+		{
+			if (configuration == null) throw new ArgumentNullException("configuration");
+			if (expectationExpression == null) throw new ArgumentNullException("expectationExpression");
+
+			var policyExpectationsExpression = new PolicyExpectationsExpression<TController>();
 			expectationExpression(policyExpectationsExpression);
 			var policyExpectations = policyExpectationsExpression.Expectations;
 			return policyExpectations.VerifyAll(configuration);

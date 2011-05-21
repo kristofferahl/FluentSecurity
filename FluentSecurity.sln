@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplication.Tests", "FluentSecurity.SampleApplication.Tests\FluentSecurity.SampleApplication.Tests.csproj", "{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.TestHelper.NUnit", "FluentSecurity.TestHelper.NUnit\FluentSecurity.TestHelper.NUnit.csproj", "{08816094-7C5D-47E0-8F6B-BEC42D90B639}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08816094-7C5D-47E0-8F6B-BEC42D90B639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08816094-7C5D-47E0-8F6B-BEC42D90B639}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08816094-7C5D-47E0-8F6B-BEC42D90B639}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08816094-7C5D-47E0-8F6B-BEC42D90B639}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

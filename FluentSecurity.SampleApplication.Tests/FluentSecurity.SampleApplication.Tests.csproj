@@ -76,8 +76,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Style1\SecurityConfigurationTests.cs" />
-    <Compile Include="Style2\SecurityConfigurationTests.cs" />
     <Compile Include="Style3\SecurityConfigurationTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -114,6 +112,7 @@
       <Name>FluentSecurity</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
