@@ -35,7 +35,8 @@
 	<!-- COMMON ASSEMBLY INFO
 		Properties used when creating the common assembly info file
 	-->
-	<property name="project.version" value="0.9.0" />
+	<property name="project.version.number" value="0.9.1" />
+	<property name="project.version.label" value="0.9.1" /><!-- Example: 1.0.0Beta1 -->
 	<property name="project.config" value="release" />
 	
 	<!-- PROJECTS TO BUILD
@@ -95,8 +96,8 @@
 	
 	<target name="AssemblyInfo" description="Create CommonAssemblyInfo">
 	
-		<property name="assembly-version" value="${project.version}.0000" />
-		<property name="file-version" value="${project.version}.0000" />
+		<property name="assembly-version" value="${project.version.number}.0000" />
+		<property name="file-version" value="${project.version.number}.0000" />
 
 		<asminfo output="..\..\CommonAssemblyInfo.cs" language="CSharp" verbose="${verbose}">
 			<imports>
@@ -217,7 +218,7 @@
 			</fileset>
 		</copy>
 	
-		<zip zipfile="${dir.artifacts}FluentSecurity-${project.version}.zip" verbose="${verbose}">
+		<zip zipfile="${dir.artifacts}FluentSecurity-${project.version.label}.zip" verbose="${verbose}">
 			<fileset basedir="${dir.artifacts}FluentSecurity\">
 				<include name="**\*.*" />
 			</fileset>
@@ -229,7 +230,7 @@
 			</fileset>
 			<filterchain>
 				<replacetokens>
-					<token key="CURRENT-VERSION" value="${project.version}" />
+					<token key="CURRENT-VERSION" value="${project.version.number}" />
 				</replacetokens>
 			</filterchain>
 		</copy>
