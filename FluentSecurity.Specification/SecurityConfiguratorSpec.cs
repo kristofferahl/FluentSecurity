@@ -76,13 +76,14 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_return_configuration()
+		public void Should_return_current_configuration()
 		{
 			// Act
 			var configuration = SecurityConfigurator.Configure(_configurationExpression);
 
 			// Assert
 			Assert.That(configuration, Is.Not.Null);
+			Assert.That(configuration, Is.EqualTo(SecurityConfiguration.Current));
 		}
 	}
 
