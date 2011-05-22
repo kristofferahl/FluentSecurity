@@ -1,5 +1,5 @@
 Project home:
-http://code.google.com/p/fluent-security/
+https://github.com/kristofferahl/FluentSecurity
 
 Source code:
 https://github.com/kristofferahl/FluentSecurity

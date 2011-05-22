@@ -5,10 +5,10 @@
 		<version>@CURRENT-VERSION@</version>
 		<authors>Kristoffer Ahl</authors>
 		<owners>Kristoffer Ahl</owners>
-		<projectUrl>http://code.google.com/p/fluent-security/</projectUrl>
+		<projectUrl>https://github.com/kristofferahl/FluentSecurity</projectUrl>
 		<licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<iconUrl>http://fluent-security.googlecode.com/svn/trunk/Documents/Fluent-Security-Logo-32x32.png</iconUrl>
+		<iconUrl>https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-32x32.png</iconUrl>
 		<description>Test helpers for FluentSecurity</description>
 		<tags>asp.net mvc .net40 security test</tags>
 		<dependencies>
