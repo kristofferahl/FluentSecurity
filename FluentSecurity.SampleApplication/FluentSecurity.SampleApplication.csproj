@@ -95,18 +95,6 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.4.1.js" />
-    <Content Include="Scripts\jquery-1.4.1.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\MicrosoftAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftAjax.js" />
-    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftMvcAjax.js" />
-    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
-    <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Views\Example\DenyAnonymousAccess.aspx" />
     <Content Include="Views\Example\DenyAuthenticatedAccess.aspx" />
     <Content Include="Views\Example\MissingConfiguration.aspx" />
@@ -121,9 +109,7 @@
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Skins\Default\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\FluentSecurity\FluentSecurity.csproj">
       <Project>{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}</Project>
