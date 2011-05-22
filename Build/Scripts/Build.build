@@ -25,6 +25,7 @@
 	-->
 	<property name="dir.source"			value="${dir.root}\"/>
 	<property name="dir.dependencies"	value="${dir.root}Dependencies\"/>
+	<property name="dir.packages"		value="${dir.root}Packages\"/>
 	<property name="dir.tools"			value="${dir.root}Tools\"/>
 	
 	<property name="dir.build"			value="${dir.root}Build\"/>
@@ -58,7 +59,7 @@
 	<!-- TEST RUNNER
 		Path to the NUnit console.
 	-->
-	<property name="nunit.console" value="${dir.dependencies}NUnit.2.5.9\nunit-console.exe"/>
+	<property name="nunit.console" value="${dir.packages}NUnit.2.5.10.11092\tools\nunit-console.exe"/>
 	
 	<!-- VERBOSE
 		Set to true if you want the build process to be verbose.
