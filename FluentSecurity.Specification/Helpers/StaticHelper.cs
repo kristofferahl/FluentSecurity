@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using FluentSecurity.Specification.TestData;
@@ -16,7 +17,7 @@ namespace FluentSecurity.Specification.Helpers
 			return true;
 		}
 
-		public static object[] GetRolesExcludingOwner()
+		public static IEnumerable<object> GetRolesExcludingOwner()
 		{
 			var roles = new Collection<object>
 				{
@@ -26,7 +27,7 @@ namespace FluentSecurity.Specification.Helpers
 			return roles.ToArray();
 		}
 
-		public static object[] GetRolesIncludingOwner()
+		public static IEnumerable<object> GetRolesIncludingOwner()
 		{
 			var roles = new Collection<object>
 				{

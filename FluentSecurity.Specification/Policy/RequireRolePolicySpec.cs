@@ -88,7 +88,7 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var policy = new RequireRolePolicy(new object[1]);
 			const bool authenticated = true;
-			object[] roles = null;
+			IEnumerable<object> roles = null;
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Act

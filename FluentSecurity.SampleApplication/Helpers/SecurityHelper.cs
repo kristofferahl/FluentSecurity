@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using FluentSecurity.SampleApplication.Models;
 
 namespace FluentSecurity.SampleApplication.Helpers
 {
@@ -25,28 +24,10 @@ namespace FluentSecurity.SampleApplication.Helpers
 			return currentUser != null;
 		}
 
-		public static object[] UserRoles()
+		public static IEnumerable<object> UserRoles()
 		{
 			var currentUser = SessionContext.Current.User;
-			
-			if (currentUser != null)
-			{
-				return currentUser.Roles.ToObjectArray();
-			}
-			
-			return null;
-		}
-
-		private static object[] ToObjectArray(this IEnumerable<UserRole> collection)
-		{
-			var objectArray = new object[collection.Count()];
-			var index = 0;
-			foreach (var o in collection)
-			{
-				objectArray[index] = o;
-				index++;
-			}
-			return objectArray;
+			return currentUser != null ? currentUser.Roles.Cast<object>().ToArray() : null;
 		}
 	}
 }

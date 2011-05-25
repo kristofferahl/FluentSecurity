@@ -15,7 +15,7 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var policy = new IgnorePolicy();
 			const bool authenticated = false;
-			const object[] roles = null;
+			const IEnumerable<object> roles = null;
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Act
@@ -31,7 +31,7 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var policy = new IgnorePolicy();
 			const bool authenticated = true;
-			const object[] roles = null;
+			const IEnumerable<object> roles = null;
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Act
@@ -47,7 +47,7 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var policy = new IgnorePolicy();
 			const bool authenticated = true;
-			const object[] roles = null;
+			const IEnumerable<object> roles = null;
 			var context = TestDataFactory.CreateSecurityContext(authenticated, roles);
 
 			// Act

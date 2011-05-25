@@ -1,8 +1,10 @@
-﻿namespace FluentSecurity
+﻿using System.Collections.Generic;
+
+namespace FluentSecurity
 {
 	public interface ISecurityContext
 	{
 		bool CurrenUserAuthenticated();
-		object[] CurrenUserRoles();
+		IEnumerable<object> CurrenUserRoles();
 	}
 }
