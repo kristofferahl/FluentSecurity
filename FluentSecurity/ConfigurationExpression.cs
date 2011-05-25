@@ -10,7 +10,7 @@ namespace FluentSecurity
 	public class ConfigurationExpression : Builder<IPolicyContainer>
 	{
 		internal Func<bool> IsAuthenticated { get; private set; }
-		internal Func<object[]> Roles { get; private set; }
+		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
 		private IPolicyAppender PolicyAppender { get; set; }
@@ -83,7 +83,7 @@ namespace FluentSecurity
 			IsAuthenticated = isAuthenticatedFunction;
 		}
 
-		public void GetRolesFrom(Func<object[]> rolesFunction)
+		public void GetRolesFrom(Func<IEnumerable<object>> rolesFunction)
 		{
 			if (rolesFunction == null)
 				throw new ArgumentNullException("rolesFunction");

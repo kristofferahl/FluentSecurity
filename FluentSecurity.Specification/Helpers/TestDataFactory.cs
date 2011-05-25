@@ -12,9 +12,9 @@ namespace FluentSecurity.Specification.Helpers
 		public const string ValidActionName = "SomeAction";
 
 		public static readonly Func<bool> ValidIsAuthenticatedFunction = () => true;
-		public static readonly Func<object[]> ValidRolesFunction = () => new object[0];
+		public static readonly Func<IEnumerable<object>> ValidRolesFunction = () => new object[0];
 
-		public static ISecurityContext CreateSecurityContext(bool authenticated, object[] roles = null)
+		public static ISecurityContext CreateSecurityContext(bool authenticated, IEnumerable<object> roles = null)
 		{
 			var context = new Mock<ISecurityContext>();
 			context.Setup(x => x.CurrenUserAuthenticated()).Returns(authenticated);

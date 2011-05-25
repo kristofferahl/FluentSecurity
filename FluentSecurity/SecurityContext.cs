@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using FluentSecurity.ServiceLocation;
 
@@ -7,9 +8,9 @@ namespace FluentSecurity
 	public class SecurityContext : ISecurityContext
 	{
 		private readonly Func<bool> _isAuthenticated;
-		private readonly Func<object[]> _roles;
+		private readonly Func<IEnumerable<object>> _roles;
 
-		private SecurityContext(Func<bool> isAuthenticated, Func<object[]> roles)
+		private SecurityContext(Func<bool> isAuthenticated, Func<IEnumerable<object>> roles)
 		{
 			_isAuthenticated = isAuthenticated;
 			_roles = roles;
@@ -20,7 +21,7 @@ namespace FluentSecurity
 			return _isAuthenticated();
 		}
 
-		public object[] CurrenUserRoles()
+		public IEnumerable<object> CurrenUserRoles()
 		{
 			return _roles != null ? _roles() : null;
 		}
