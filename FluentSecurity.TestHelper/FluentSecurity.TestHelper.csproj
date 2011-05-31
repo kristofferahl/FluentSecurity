@@ -73,6 +73,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Properties\TestHelperAssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ExpectationGroup.cs" />
     <Compile Include="ExpectationGroupBuilder.cs" />
@@ -87,7 +88,6 @@
     <Compile Include="Expectations\IExpectation.cs" />
     <Compile Include="ExpectationVerifyer.cs" />
     <Compile Include="IExpectationBuilder.cs" />
-    <Compile Include="IExpectationExpression.cs" />
     <Compile Include="IExpectationVerifyer.cs" />
     <Compile Include="IExpectationViolationHandler.cs" />
     <Compile Include="PolicyExpectations.cs" />

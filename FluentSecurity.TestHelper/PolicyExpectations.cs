@@ -7,11 +7,11 @@ namespace FluentSecurity.TestHelper
 {
 	public class PolicyExpectations
 	{
-		private readonly IList<IExpectationExpression> _expectationsExpressions;
+		private readonly IList<ExpectationExpression> _expectationsExpressions;
 		
 		public PolicyExpectations()
 		{
-			_expectationsExpressions = new List<IExpectationExpression>();
+			_expectationsExpressions = new List<ExpectationExpression>();
 
 			ConstructExpectationVerifyerUsing(Settings.DefaultExpectationVerifyerConstructor);
 			SetExpectationGroupBuilder(Settings.DefaultExpectationGroupBuilder);
@@ -33,26 +33,22 @@ namespace FluentSecurity.TestHelper
 			ExpectationGroupBuilder = expectationGroupBuilder;
 		}
 
-		public Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> ExpectationVerifyerProvider { get; private set; }
-		public IExpectationViolationHandler ExpectationViolationHandler { get; private set; }
-		public IExpectationGroupBuilder ExpectationGroupBuilder { get; private set; }
+		internal Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> ExpectationVerifyerProvider { get; private set; }
+		internal IExpectationViolationHandler ExpectationViolationHandler { get; private set; }
+		internal IExpectationGroupBuilder ExpectationGroupBuilder { get; private set; }
 
-		public IExpectationExpression For<TController>()
+		public ExpectationExpression<TController> For<TController>()
 		{
 			var expression = new ExpectationExpression<TController>();
-			return Add(expression);
+			_expectationsExpressions.Add(expression);
+			return expression;
 		}
 
-		public IExpectationExpression For<TController>(Expression<Func<TController, ActionResult>> actionExpression)
+		public ExpectationExpression<TController> For<TController>(Expression<Func<TController, ActionResult>> actionExpression)
 		{
 			var expression = new ExpectationExpression<TController>(actionExpression);
-			return Add(expression);
-		}
-
-		private IExpectationExpression Add(IExpectationExpression expressionExpression)
-		{
-			_expectationsExpressions.Add(expressionExpression);
-			return expressionExpression;
+			_expectationsExpressions.Add(expression);
+			return expression;
 		}
 
 		public IEnumerable<ExpectationResult> VerifyAll(ISecurityConfiguration configuration)
@@ -61,7 +57,7 @@ namespace FluentSecurity.TestHelper
 			return ExpectationVerifyerProvider(configuration, ExpectationViolationHandler).VerifyExpectationsOf(ExpectationGroups);
 		}
 
-		public IEnumerable<ExpectationGroup> ExpectationGroups
+		internal IEnumerable<ExpectationGroup> ExpectationGroups
 		{
 			get { return ExpectationGroupBuilder.Build(_expectationsExpressions); }
 		}

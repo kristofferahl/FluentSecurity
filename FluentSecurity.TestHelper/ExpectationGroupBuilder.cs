@@ -6,7 +6,7 @@ namespace FluentSecurity.TestHelper
 {
 	public class ExpectationGroupBuilder : IExpectationGroupBuilder
 	{
-		public IEnumerable<ExpectationGroup> Build(IEnumerable<IExpectationExpression> expectationsExpressions)
+		public IEnumerable<ExpectationGroup> Build(IEnumerable<ExpectationExpression> expectationsExpressions)
 		{
 			if (expectationsExpressions == null) throw new ArgumentNullException("expectationsExpressions");
 		
@@ -30,7 +30,7 @@ namespace FluentSecurity.TestHelper
 			return groups;
 		}
 
-		private static IEnumerable<ExpectationGroup> CreateExpectationGroupsFor(IExpectationExpression expectationExpression)
+		private static IEnumerable<ExpectationGroup> CreateExpectationGroupsFor(ExpectationExpression expectationExpression)
 		{
 			var groups = new List<ExpectationGroup>();
 			if (String.IsNullOrEmpty(expectationExpression.Action))
@@ -52,7 +52,7 @@ namespace FluentSecurity.TestHelper
 			return groups;
 		}
 
-		private static IEnumerable<ExpectationGroup> GetMatchingExpectationGroups(IEnumerable<ExpectationGroup> expectations, IExpectationExpression expectationExpression)
+		private static IEnumerable<ExpectationGroup> GetMatchingExpectationGroups(IEnumerable<ExpectationGroup> expectations, ExpectationExpression expectationExpression)
 		{
 			if (String.IsNullOrEmpty(expectationExpression.Action))
 			{
