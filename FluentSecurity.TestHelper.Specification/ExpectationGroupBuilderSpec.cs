@@ -21,7 +21,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_return_0_expectation_groups_when_expressions_are_empty()
 		{
 			// Arrange
-			var expecatationExpressions = new List<IExpectationExpression>();
+			var expecatationExpressions = new List<ExpectationExpression>();
 			var expecationBuilder = new ExpectationGroupBuilder();
 
 			// Act
@@ -35,7 +35,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_return_1_expectation_groups_for_1_expression()
 		{
 			// Arrange
-			var expecatationExpressions = new List<IExpectationExpression> { new ExpectationExpression<AdminController>(x => x.Login()) };
+			var expecatationExpressions = new List<ExpectationExpression> { new ExpectationExpression<AdminController>(x => x.Login()) };
 			var expecationBuilder = new ExpectationGroupBuilder();
 
 			// Act
@@ -49,7 +49,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_return_4_expectation_groups_for_1_expression()
 		{
 			// Arrange
-			var expecatationExpressions = new List<IExpectationExpression> { new ExpectationExpression<AdminController>() };
+			var expecatationExpressions = new List<ExpectationExpression> { new ExpectationExpression<AdminController>() };
 			var expecationBuilder = new ExpectationGroupBuilder();
 
 			// Act
@@ -63,7 +63,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_return_4_expectation_groups_for_2_expressions()
 		{
 			// Arrange
-			var expecatationExpressions = new List<IExpectationExpression>
+			var expecatationExpressions = new List<ExpectationExpression>
 			{
 				new ExpectationExpression<AdminController>(),
 				new ExpectationExpression<AdminController>(x => x.Login())
@@ -81,7 +81,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_return_5_expectation_groups_for_2_expressions()
 		{
 			// Arrange
-			var expecatationExpressions = new List<IExpectationExpression>
+			var expecatationExpressions = new List<ExpectationExpression>
 			{
 				new ExpectationExpression<AdminController>(),
 				new ExpectationExpression<SampleController>(x => x.Index())
@@ -99,7 +99,7 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_return_8_expectation_groups_for_2_expressions()
 		{
 			// Arrange
-			var expecatationExpressions = new List<IExpectationExpression>
+			var expecatationExpressions = new List<ExpectationExpression>
 			{
 				new ExpectationExpression<AdminController>(),
 				new ExpectationExpression<SampleController>()

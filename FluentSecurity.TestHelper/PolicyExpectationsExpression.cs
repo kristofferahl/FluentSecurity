@@ -11,14 +11,14 @@ namespace FluentSecurity.TestHelper
 			Expectations = new PolicyExpectations();
 		}
 
-		public PolicyExpectations Expectations { get; private set; }
+		internal PolicyExpectations Expectations { get; private set; }
 
-		public IExpectationExpression Expect<TController>(Expression<Func<TController, ActionResult>> actionExpression) where TController : IController
+		public ExpectationExpression Expect<TController>(Expression<Func<TController, ActionResult>> actionExpression) where TController : IController
 		{
 			return Expectations.For(actionExpression);
 		}
 
-		public IExpectationExpression Expect<TController>() where TController : IController
+		public ExpectationExpression Expect<TController>() where TController : IController
 		{
 			return Expectations.For<TController>();
 		}
@@ -31,14 +31,14 @@ namespace FluentSecurity.TestHelper
 			Expectations = new PolicyExpectations();
 		}
 
-		public PolicyExpectations Expectations { get; private set; }
+		internal PolicyExpectations Expectations { get; private set; }
 
-		public IExpectationExpression Expect(Expression<Func<TController, ActionResult>> actionExpression)
+		public ExpectationExpression Expect(Expression<Func<TController, ActionResult>> actionExpression)
 		{
 			return Expectations.For(actionExpression);
 		}
 
-		public IExpectationExpression Expect()
+		public ExpectationExpression Expect()
 		{
 			return Expectations.For<TController>();
 		}

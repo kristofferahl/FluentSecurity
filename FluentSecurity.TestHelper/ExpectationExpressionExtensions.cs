@@ -5,22 +5,22 @@ namespace FluentSecurity.TestHelper
 {
 	public static class ExpectationExpressionExtensions
 	{
-		public static IExpectationExpression Has<TSecurityPolicy>(this IExpectationExpression expectationExpression) where TSecurityPolicy : ISecurityPolicy
+		public static ExpectationExpression Has<TSecurityPolicy>(this ExpectationExpression expectationExpression) where TSecurityPolicy : ISecurityPolicy
 		{
 			return expectationExpression.Add(new HasTypeExpectation<TSecurityPolicy>());
 		}
 
-		public static IExpectationExpression Has<TSecurityPolicy>(this IExpectationExpression expectationExpression, TSecurityPolicy instance) where TSecurityPolicy : ISecurityPolicy
+		public static ExpectationExpression Has<TSecurityPolicy>(this ExpectationExpression expectationExpression, TSecurityPolicy instance) where TSecurityPolicy : ISecurityPolicy
 		{
 			return expectationExpression.Add(new HasInstanceExpectation(instance));
 		}
 
-		public static IExpectationExpression DoesNotHave<TSecurityPolicy>(this IExpectationExpression expectationExpression) where TSecurityPolicy : ISecurityPolicy
+		public static ExpectationExpression DoesNotHave<TSecurityPolicy>(this ExpectationExpression expectationExpression) where TSecurityPolicy : ISecurityPolicy
 		{
 			return expectationExpression.Add(new DoesNotHaveTypeExpectation<TSecurityPolicy>());
 		}
 
-		public static IExpectationExpression DoesNotHave<TSecurityPolicy>(this IExpectationExpression expectationExpression, TSecurityPolicy instance) where TSecurityPolicy : ISecurityPolicy
+		public static ExpectationExpression DoesNotHave<TSecurityPolicy>(this ExpectationExpression expectationExpression, TSecurityPolicy instance) where TSecurityPolicy : ISecurityPolicy
 		{
 			return expectationExpression.Add(new DoesNotHaveInstanceExpectation(instance));
 		}
