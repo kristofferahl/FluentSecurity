@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FluentSecurity
 {
-	public class SecurityConfiguration : ISecurityConfiguration, IExposeConfigurationExpression
+	public class SecurityConfiguration : ISecurityConfiguration
 	{
 		public SecurityConfiguration(Action<ConfigurationExpression> configurationExpression)
 		{
@@ -19,7 +19,7 @@ namespace FluentSecurity
 			PolicyContainers = Expression;
 		}
 
-		public ConfigurationExpression Expression { get; private set; }
+		internal ConfigurationExpression Expression { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
 		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 		public bool IgnoreMissingConfiguration { get; private set; }

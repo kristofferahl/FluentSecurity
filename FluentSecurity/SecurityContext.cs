@@ -38,17 +38,17 @@ namespace FluentSecurity
 		{
 			ISecurityContext context = null;
 
-			var expressionExposer = configuration as IExposeConfigurationExpression;
-			if (expressionExposer != null)
+			var securityConfiguration = configuration as SecurityConfiguration;
+			if (securityConfiguration != null)
 			{
-				var expression = expressionExposer.Expression;
-				var externalServiceLocator = expression.ExternalServiceLocator;
+				var configurationExpression = securityConfiguration.Expression;
+				var externalServiceLocator = configurationExpression.ExternalServiceLocator;
 				if (externalServiceLocator != null)
 					context = externalServiceLocator.Resolve(typeof(ISecurityContext)) as ISecurityContext;
 
 				if (context == null)
 				{
-					if (CanCreateSecurityContextFromConfigurationExpression(expression) == false)
+					if (CanCreateSecurityContextFromConfigurationExpression(configurationExpression) == false)
 						throw new ConfigurationErrorsException(
 							@"
 							The current configuration is invalid! Before using Fluent Security you must do one of the following.
@@ -56,7 +56,7 @@ namespace FluentSecurity
 							2) Register an instance of ISecurityContext in your IoC-container and register your container using ResolveServicesUsing().
 							");
 
-					context = new SecurityContext(expression.IsAuthenticated, expression.Roles);
+					context = new SecurityContext(configurationExpression.IsAuthenticated, configurationExpression.Roles);
 				}
 			}
 			
