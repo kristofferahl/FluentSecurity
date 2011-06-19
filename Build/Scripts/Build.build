@@ -36,8 +36,8 @@
 	<!-- COMMON ASSEMBLY INFO
 		Properties used when creating the common assembly info file
 	-->
-	<property name="project.version.number" value="0.9.4" />
-	<property name="project.version.label" value="0.9.4" /><!-- Example: 1.0.0Beta1 -->
+	<property name="project.version.number" value="1.0.0" />
+	<property name="project.version.label" value="1.0.0" /><!-- Example: 1.0.0Beta1 -->
 	<property name="project.config" value="release" />
 	
 	<!-- PROJECTS TO BUILD
@@ -60,6 +60,12 @@
 		Path to the NUnit console.
 	-->
 	<property name="nunit.console" value="${dir.packages}NUnit.2.5.10.11092\tools\nunit-console.exe"/>
+	
+	<!-- NUGET CONSOLE
+		Path to the NuGet console.
+	-->
+	<property name="nuget.console" value="${dir.packages}NuGet.CommandLine.1.4.20615.182\tools\NuGet.exe"/>
+	
 	
 	<!-- VERBOSE
 		Set to true if you want the build process to be verbose.
@@ -236,14 +242,14 @@
 			</filterchain>
 		</copy>
 		
-		<exec program="${dir.tools}NuGet\NuGet.exe" failonerror="true">
+		<exec program="${nuget.console}" failonerror="true">
 			<arg value="pack" />
 			<arg value="${dir.build}FluentSecurity.nuspec" />
 			<arg value="-o" />
 			<arg value="${dir.artifacts}" />
 		</exec>
 		
-		<exec program="${dir.tools}NuGet\NuGet.exe" failonerror="true">
+		<exec program="${nuget.console}" failonerror="true">
 			<arg value="pack" />
 			<arg value="${dir.build}FluentSecurity.TestHelper.nuspec" />
 			<arg value="-o" />
