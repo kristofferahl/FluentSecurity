@@ -147,13 +147,60 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_5_policycontainers()
+		public void Should_have_6_policycontainers()
 		{
 			// Act
 			Because();
 
 			// Assert
 			Assert.That(_configurationExpression.ToList().Count, Is.EqualTo(6));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers
+	{
+		private ConfigurationExpression _configurationExpression;
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+		}
+
+		private void Because()
+		{
+			_configurationExpression.ForAllControllers();
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
+		{
+			// Arrange
+			const string expectedControllerName = "Blog";
+
+			// Act
+			Because();
+
+			// Assert
+			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "Index"), Is.Not.Null);
+			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "ListPosts"), Is.Not.Null);
+			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "AddPost"), Is.Not.Null);
+			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "EditPost"), Is.Not.Null);
+			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "DeletePost"), Is.Not.Null);
+			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "AjaxList"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_9_policycontainers()
+		{
+			// Act
+			Because();
+
+			// Assert
+			Assert.That(_configurationExpression.ToList().Count, Is.EqualTo(9));
 		}
 	}
 
