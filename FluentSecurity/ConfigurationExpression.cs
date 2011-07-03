@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using FluentSecurity.Scanning;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
@@ -40,6 +42,27 @@ namespace FluentSecurity
 				var actionName = actionMethod.Name;
 				var policyContainer = AddPolicyContainerFor(controllerName, actionName);
 				policyContainers.Add(policyContainer);
+			}
+
+			return new ConventionPolicyContainer(policyContainers);
+		}
+
+		public IConventionPolicyContainer ForAllControllers()
+		{
+			var assemblyScanner = new AssemblyScanner();
+			assemblyScanner.AddTheCallingAssembly();
+			assemblyScanner.With<ControllerTypeScanner>();
+			var controllerTypes = assemblyScanner.Scan();
+
+			var policyContainers = new List<IPolicyContainer>();
+			foreach (var controllerType in controllerTypes)
+			{
+				var controllerName = controllerType.GetControllerName();
+				var actionMethods = controllerType.GetActionMethods();
+
+				policyContainers.AddRange(
+					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+					);
 			}
 
 			return new ConventionPolicyContainer(policyContainers);

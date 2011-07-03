@@ -66,11 +66,14 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Scanning\AssemblyScanner.cs" />
     <Compile Include="Builder.cs" />
     <Compile Include="ConfigurationExpression.cs" />
+    <Compile Include="Scanning\ControllerTypeScanner.cs" />
     <Compile Include="ConventionPolicyContainer.cs" />
     <Compile Include="ConventionPolicyContainerExtensions.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Scanning\ITypeScanner.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="IConventionPolicyContainer.cs" />
     <Compile Include="IPolicyViolationHandlerSelector.cs" />
