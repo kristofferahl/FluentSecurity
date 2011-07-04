@@ -159,49 +159,57 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_adding_a_conventionpolicycontainter_for_all_controllers
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_calling_assembly : AssemblyScannerSpecification
 	{
-		private ConfigurationExpression _configurationExpression;
-
-		[SetUp]
-		public void SetUp()
-		{
-			// Arrange
-			_configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
-		}
-
-		private void Because()
-		{
-			_configurationExpression.ForAllControllers();
-		}
-
 		[Test]
 		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
 		{
-			// Arrange
-			const string expectedControllerName = "Blog";
+			// Act & assert
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllers()
+				);
+		}
+	}
 
-			// Act
-			Because();
-
-			// Assert
-			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "Index"), Is.Not.Null);
-			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "ListPosts"), Is.Not.Null);
-			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "AddPost"), Is.Not.Null);
-			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "EditPost"), Is.Not.Null);
-			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "DeletePost"), Is.Not.Null);
-			Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "AjaxList"), Is.Not.Null);
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_specific_assembly : AssemblyScannerSpecification
+	{
+		[Test]
+		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
+		{
+			// Act & assert
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInAssembly(GetType().Assembly)
+				);
 		}
 
 		[Test]
-		public void Should_have_9_policycontainers()
+		public void Should_throw_when_assembly_is_null()
 		{
-			// Act
-			Because();
-
-			// Assert
-			Assert.That(_configurationExpression.ToList().Count, Is.EqualTo(9));
+			// Act & assert
+			Assert.Throws<ArgumentNullException>(() =>
+				Because(configurationExpression =>
+					configurationExpression.ForAllControllersInAssembly(null)
+					)
+				);
 		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_assembly_containing_type : AssemblyScannerSpecification
+	{
+		[Test]
+		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
+		{
+			// Act & assert
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInAssemblyContainingType<SomeClass>()
+				);
+		}
+
+		internal class SomeClass {}
 	}
 
 	[TestFixture]

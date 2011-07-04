@@ -10,7 +10,13 @@ namespace FluentSecurity.Scanning
 		private readonly List<Assembly> _assemblies = new List<Assembly>();
 		private readonly List<ITypeScanner> _scanners = new List<ITypeScanner>();
 
-		public void AddTheCallingAssembly()
+		public void Assembly(Assembly assembly)
+		{
+			if (assembly == null) throw new ArgumentNullException("assembly");
+			_assemblies.Add(assembly);
+		}
+
+		public void TheCallingAssembly()
 		{
 			var callingAssembly = FindCallingAssembly();
 			if (callingAssembly != null) _assemblies.Add(callingAssembly);
@@ -18,7 +24,7 @@ namespace FluentSecurity.Scanning
 
 		private static Assembly FindCallingAssembly()
 		{
-			var thisAssembly = Assembly.GetExecutingAssembly();
+			var thisAssembly = System.Reflection.Assembly.GetExecutingAssembly();
 			Assembly callingAssembly = null;
 
 			var trace = new StackTrace(false);
