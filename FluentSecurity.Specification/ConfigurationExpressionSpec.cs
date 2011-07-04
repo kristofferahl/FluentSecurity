@@ -147,7 +147,7 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_5_policycontainers()
+		public void Should_have_6_policycontainers()
 		{
 			// Act
 			Because();
@@ -155,6 +155,61 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(_configurationExpression.ToList().Count, Is.EqualTo(6));
 		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_calling_assembly : AssemblyScannerSpecification
+	{
+		[Test]
+		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
+		{
+			// Act & assert
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllers()
+				);
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_specific_assembly : AssemblyScannerSpecification
+	{
+		[Test]
+		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
+		{
+			// Act & assert
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInAssembly(GetType().Assembly)
+				);
+		}
+
+		[Test]
+		public void Should_throw_when_assembly_is_null()
+		{
+			// Act & assert
+			Assert.Throws<ArgumentNullException>(() =>
+				Because(configurationExpression =>
+					configurationExpression.ForAllControllersInAssembly(null)
+					)
+				);
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_assembly_containing_type : AssemblyScannerSpecification
+	{
+		[Test]
+		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
+		{
+			// Act & assert
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInAssemblyContainingType<SomeClass>()
+				);
+		}
+
+		internal class SomeClass {}
 	}
 
 	[TestFixture]

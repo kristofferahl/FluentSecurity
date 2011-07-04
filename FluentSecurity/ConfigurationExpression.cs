@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Web.Mvc;
+using FluentSecurity.Scanning;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
@@ -43,6 +46,54 @@ namespace FluentSecurity
 			}
 
 			return new ConventionPolicyContainer(policyContainers);
+		}
+
+		public IConventionPolicyContainer ForAllControllers()
+		{
+			var assemblyScanner = new AssemblyScanner();
+			assemblyScanner.TheCallingAssembly();
+			assemblyScanner.With<ControllerTypeScanner>();
+			var controllerTypes = assemblyScanner.Scan();
+
+			var policyContainers = new List<IPolicyContainer>();
+			foreach (var controllerType in controllerTypes)
+			{
+				var controllerName = controllerType.GetControllerName();
+				var actionMethods = controllerType.GetActionMethods();
+
+				policyContainers.AddRange(
+					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+					);
+			}
+
+			return new ConventionPolicyContainer(policyContainers);
+		}
+
+		public IConventionPolicyContainer ForAllControllersInAssembly(Assembly assembly)
+		{
+			var assemblyScanner = new AssemblyScanner();
+			assemblyScanner.Assembly(assembly);
+			assemblyScanner.With<ControllerTypeScanner>();
+			var controllerTypes = assemblyScanner.Scan();
+
+			var policyContainers = new List<IPolicyContainer>();
+			foreach (var controllerType in controllerTypes)
+			{
+				var controllerName = controllerType.GetControllerName();
+				var actionMethods = controllerType.GetActionMethods();
+
+				policyContainers.AddRange(
+					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+					);
+			}
+
+			return new ConventionPolicyContainer(policyContainers);
+		}
+
+		public IConventionPolicyContainer ForAllControllersInAssemblyContainingType<TType>()
+		{
+			var assembly = typeof (TType).Assembly;
+			return ForAllControllersInAssembly(assembly);
 		}
 
 		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)

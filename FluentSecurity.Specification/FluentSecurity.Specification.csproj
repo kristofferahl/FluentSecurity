@@ -93,6 +93,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AssemblyScannerSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="ServiceLocation\ContainerSpec.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocatorSpec.cs" />
     <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />
+    <Compile Include="TestData\AdminController.cs" />
     <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAnonymousAccessPolicyViolationHandler.cs" />
     <Compile Include="ExtensionsSpecs.cs" />
