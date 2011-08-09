@@ -20,8 +20,9 @@ namespace FluentSecurity
 		{
 			var actionName = filterContext.ActionDescriptor.ActionName;
 			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+		    var areaName = filterContext.RouteData.GetAreaName();
 
-			var overrideResult = SecurityHandler.HandleSecurityFor(controllerName, actionName);
+			var overrideResult = SecurityHandler.HandleSecurityFor(areaName, controllerName, actionName);
 			if (overrideResult != null) filterContext.Result = overrideResult;
 		}
 	}

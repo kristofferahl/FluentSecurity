@@ -25,15 +25,18 @@ namespace FluentSecurity
 
 		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
 		{
-			var controllerName = typeof(TController).GetControllerName();
+            var controllerType = typeof(TController);
+            var areaName = controllerType.GetAreaName();
+            var controllerName = controllerType.GetControllerName();
 			var actionName = propertyExpression.GetActionName();
 
-			return AddPolicyContainerFor(controllerName, actionName);
+            return AddPolicyContainerFor(areaName, controllerName, actionName);
 		}
 
 		public IConventionPolicyContainer For<TController>() where TController : Controller
 		{
 			var controllerType = typeof(TController);
+			var areaName = controllerType.GetAreaName();
 			var controllerName = controllerType.GetControllerName();
 			var actionMethods = controllerType.GetActionMethods();
 
@@ -41,7 +44,7 @@ namespace FluentSecurity
 			foreach (var actionMethod in actionMethods)
 			{
 				var actionName = actionMethod.Name;
-				var policyContainer = AddPolicyContainerFor(controllerName, actionName);
+                var policyContainer = AddPolicyContainerFor(areaName, controllerName, actionName);
 				policyContainers.Add(policyContainer);
 			}
 
@@ -58,11 +61,12 @@ namespace FluentSecurity
 			var policyContainers = new List<IPolicyContainer>();
 			foreach (var controllerType in controllerTypes)
 			{
+				var areaName = controllerType.GetAreaName();
 				var controllerName = controllerType.GetControllerName();
 				var actionMethods = controllerType.GetActionMethods();
 
 				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+                    actionMethods.Select(actionMethod => AddPolicyContainerFor(areaName, controllerName, actionMethod.Name))
 					);
 			}
 
@@ -79,11 +83,12 @@ namespace FluentSecurity
 			var policyContainers = new List<IPolicyContainer>();
 			foreach (var controllerType in controllerTypes)
 			{
+				var areaName = controllerType.GetAreaName();
 				var controllerName = controllerType.GetControllerName();
 				var actionMethods = controllerType.GetActionMethods();
 
 				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+                    actionMethods.Select(actionMethod => AddPolicyContainerFor(areaName, controllerName, actionMethod.Name))
 					);
 			}
 
@@ -96,18 +101,18 @@ namespace FluentSecurity
 			return ForAllControllersInAssembly(assembly);
 		}
 
-		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
+		private IPolicyContainer AddPolicyContainerFor(string areaName, string controllerName, string actionName)
 		{
 			IPolicyContainer policyContainer;
 
-			var existingContainer = _itemValues.GetContainerFor(controllerName, actionName);
+            var existingContainer = _itemValues.GetContainerFor(areaName, controllerName, actionName);
 			if (existingContainer != null)
 			{
 				policyContainer = existingContainer;
 			}
 			else
 			{
-				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
+                policyContainer = new PolicyContainer(areaName, controllerName, actionName, PolicyAppender);
 				_itemValues.Add(policyContainer);
 			}
 
@@ -116,10 +121,12 @@ namespace FluentSecurity
 
 		public void RemovePoliciesFor<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
 		{
-			var controllerName = typeof(TController).GetControllerName();
+		    var controllerType = typeof (TController);
+            var areaName = controllerType.GetAreaName();
+            var controllerName = controllerType.GetControllerName();
 			var actionName = actionExpression.GetActionName();
 
-			var policyContainer = _itemValues.GetContainerFor(controllerName, actionName);
+            var policyContainer = _itemValues.GetContainerFor(areaName, controllerName, actionName);
 			if (policyContainer != null)
 			{
 				_itemValues.Remove(policyContainer);
