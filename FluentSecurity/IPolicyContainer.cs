@@ -5,6 +5,7 @@ namespace FluentSecurity
 {
 	public interface IPolicyContainer
 	{
+		string AreaName { get; }
 		string ControllerName { get; }
 		string ActionName { get; }
 		IPolicyAppender PolicyAppender { get; }

@@ -5,24 +5,74 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
+using System.Web.Routing;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
 	public static class Extensions
 	{
-		/// <summary>
-		/// Gets a policycontainer matching the specified controller and actioname
-		/// </summary>
-		/// <param name="policyContainers">Policycontainers</param>
-		/// <param name="controllerName">The controllername</param>
-		/// <param name="actionName">The actionname</param>
-		/// <returns>A policycontainer</returns>
-		public static IPolicyContainer GetContainerFor(this IEnumerable<IPolicyContainer> policyContainers, string controllerName, string actionName)
+	    /// <summary>
+	    /// Gets a policycontainer matching the specified area,controller and actionname
+	    /// </summary>
+	    /// <param name="policyContainers">Policycontainers</param>
+	    /// <param name="areaName">The areaname</param>
+	    /// <param name="controllerName">The controllername</param>
+	    /// <param name="actionName">The actionname</param>
+	    /// <returns>A policycontainer</returns>
+	    public static IPolicyContainer GetContainerFor(this IEnumerable<IPolicyContainer> policyContainers, string areaName, string controllerName, string actionName)
 		{
 			return policyContainers
-				.Where(x => x.ControllerName.ToLower() == controllerName.ToLower() && x.ActionName.ToLower() == actionName.ToLower())
+				.Where(x => x.AreaName.ToLower() == areaName.ToLower() && 
+                       x.ControllerName.ToLower() == controllerName.ToLower() && 
+                       x.ActionName.ToLower() == actionName.ToLower())
 				.SingleOrDefault();
+		}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="routeData"></param>
+        /// <returns></returns>
+        public static string GetAreaName(this RouteData routeData)
+        {
+            object obj2;
+            if (routeData.DataTokens.TryGetValue("area", out obj2))
+            {
+                return (obj2 as string);
+            }
+            return GetAreaName(routeData.Route);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="route"></param>
+        /// <returns></returns>
+        public static string GetAreaName(RouteBase route)
+        {
+            var area = route as IRouteWithArea;
+            if (area != null)
+            {
+                return area.Area;
+            }
+            var route2 = route as Route;
+            if ((route2 != null) && (route2.DataTokens != null))
+            {
+                return (route2.DataTokens["area"] as string) ?? string.Empty;
+            }
+            return string.Empty;
+        }
+
+		///<summary>
+		/// Gets the area name for the specified controller type
+		///</summary>
+		public static string GetAreaName(this Type controllerType)
+		{
+		    var moduleName = controllerType.Module.Name;
+            var nameSpaceArr = controllerType.Namespace.Replace(moduleName.Substring(0, moduleName.Length - 3), "").Split('.');
+            // Areas.Area.Controllers.Controller
+            return nameSpaceArr.Length == 4 ? nameSpaceArr[1] : string.Empty;
 		}
 
 		///<summary>

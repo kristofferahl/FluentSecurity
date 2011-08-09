@@ -8,7 +8,7 @@ namespace FluentSecurity
 {
 	public class SecurityHandler : ISecurityHandler
 	{
-		public ActionResult HandleSecurityFor(string controllerName, string actionName)
+		public ActionResult HandleSecurityFor(string areaName, string controllerName, string actionName)
 		{
 			if (controllerName.IsNullOrEmpty())
 				throw new ArgumentException("Controllername must not be null or empty", "controllerName");
@@ -18,7 +18,7 @@ namespace FluentSecurity
 
 			var configuration = ServiceLocator.Current.Resolve<ISecurityConfiguration>();
 			
-			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
+			var policyContainer = configuration.PolicyContainers.GetContainerFor(areaName, controllerName, actionName);
 			if (policyContainer != null)
 			{
 				var context = ServiceLocator.Current.Resolve<ISecurityContext>();
@@ -37,7 +37,7 @@ namespace FluentSecurity
 			if (configuration.IgnoreMissingConfiguration)
 				return null;
 
-			throw new ConfigurationErrorsException("Security has not been configured for controller {0}, action {1}".FormatWith(controllerName, actionName));
+			throw new ConfigurationErrorsException("Security has not been configured for area {0}, controller {1}, action {2}".FormatWith(areaName, controllerName, actionName));
 		}
 	}
 }

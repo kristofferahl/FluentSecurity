@@ -4,6 +4,6 @@ namespace FluentSecurity
 {
 	public interface ISecurityHandler
 	{
-		ActionResult HandleSecurityFor(string controllerName, string actionName);
+		ActionResult HandleSecurityFor(string areaName, string controllerName, string actionName);
 	}
 }
