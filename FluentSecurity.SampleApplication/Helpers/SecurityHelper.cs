@@ -5,10 +5,10 @@ namespace FluentSecurity.SampleApplication.Helpers
 {
 	public static class SecurityHelper
 	{
-		public static bool ActionIsAllowedForUser(string controllerName, string actionName)
+		public static bool ActionIsAllowedForUser(string areaName, string controllerName, string actionName)
 		{
 			var configuration = SecurityConfiguration.Current; 
-			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
+			var policyContainer = configuration.PolicyContainers.GetContainerFor(areaName, controllerName, actionName);
 			if (policyContainer != null)
 			{
 				var context = SecurityContext.Current;

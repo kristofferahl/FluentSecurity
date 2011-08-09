@@ -13,10 +13,12 @@ namespace FluentSecurity.SampleApplication.Helpers
 
 		public static string Action<TController>(this UrlHelper urlHelper, Expression<Func<TController, object>> actionExpression, object values) where TController : Controller
 		{
-			var controllerName = typeof(TController).GetControllerName();
+		    var controllerType = typeof (TController);
+            var areaName = controllerType.GetAreaName();
+            var controllerName = controllerType.GetControllerName();
 			var actionName = actionExpression.GetActionName();
 
-			if (SecurityHelper.ActionIsAllowedForUser(controllerName, actionName) == false)
+			if (SecurityHelper.ActionIsAllowedForUser(areaName, controllerName, actionName) == false)
 			{
 				return string.Empty;
 			}
