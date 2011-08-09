@@ -71,8 +71,8 @@ namespace FluentSecurity
 		{
 		    var moduleName = controllerType.Module.Name;
             var nameSpaceArr = controllerType.Namespace.Replace(moduleName.Substring(0, moduleName.Length - 3), "").Split('.');
-            // Areas.Area.Controllers.Controller
-            return nameSpaceArr.Length == 4 ? nameSpaceArr[1] : string.Empty;
+            // Areas.Area.Controllers
+            return nameSpaceArr.Length == 3 ? nameSpaceArr[1] : string.Empty;
 		}
 
 		///<summary>
