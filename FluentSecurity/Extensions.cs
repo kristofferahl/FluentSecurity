@@ -30,7 +30,7 @@ namespace FluentSecurity
 		///</summary>
 		public static string GetControllerName(this Type controllerType)
 		{
-			return controllerType.Name.Replace("Controller", string.Empty);
+			return controllerType.FullName;
 		}
 
 		/// <summary>

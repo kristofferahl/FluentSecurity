@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FluentSecurity.Specification.Helpers;
+using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification
@@ -18,15 +19,17 @@ namespace FluentSecurity.Specification
 		private static void AssertAllControllerActionsHasContainer(ConfigurationExpression configurationExpression)
 		{
 			Assert.That(configurationExpression.Count(), Is.EqualTo(9));
-			Assert.That(configurationExpression.GetContainerFor("Blog", "Index"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Blog", "ListPosts"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Blog", "AddPost"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Blog", "EditPost"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Blog", "DeletePost"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Blog", "AjaxList"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Admin", "Index"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Admin", "LogIn"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Admin", "LogOut"), Is.Not.Null);
+			var blog = NameHelper<BlogController>.Controller();
+			var admin = NameHelper<AdminController>.Controller();
+			Assert.That(configurationExpression.GetContainerFor(blog, "Index"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(blog, "ListPosts"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(blog, "AddPost"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(blog, "EditPost"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(blog, "DeletePost"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(blog, "AjaxList"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(admin, "Index"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(admin, "LogIn"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(admin, "LogOut"), Is.Not.Null);
 		}
 	}
 }
