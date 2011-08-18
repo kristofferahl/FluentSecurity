@@ -17,7 +17,7 @@ namespace FluentSecurity
 			{
 				builder.AppendFormat(
 					"{0} > {1}{2}",
-					policyContainer.ControllerName + "Controller",
+					policyContainer.ControllerName,
 					policyContainer.ActionName,
 					policyContainer.GetPolicies().ToText()
 					);
