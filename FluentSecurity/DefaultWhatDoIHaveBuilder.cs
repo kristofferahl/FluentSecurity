@@ -11,7 +11,7 @@ namespace FluentSecurity
 
 			builder.AppendFormat("Ignore missing configuration: {0}", configuration.IgnoreMissingConfiguration);
 
-			builder.AppendLine().AppendLine().AppendLine("------------------------------------------------------------------------------------");
+			builder.AppendLine().AppendLine().AppendLine("------------------------------------------------------------------------------------").AppendLine();
 
 			foreach (var policyContainer in configuration.PolicyContainers.OrderBy(x => x.ActionName).OrderBy(x => x.ControllerName))
 			{
@@ -21,7 +21,7 @@ namespace FluentSecurity
 					policyContainer.ActionName,
 					policyContainer.GetPolicies().ToText()
 					);
-				builder.AppendLine();
+				builder.AppendLine().AppendLine();
 			}
 
 			builder.Append("------------------------------------------------------------------------------------");
