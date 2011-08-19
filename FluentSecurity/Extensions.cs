@@ -27,10 +27,10 @@ namespace FluentSecurity
 		}
 
         /// <summary>
-        /// 
+        /// Gets the area name of the route
         /// </summary>
-        /// <param name="routeData"></param>
-        /// <returns></returns>
+        /// <param name="routeData">Route data</param>
+        /// <returns>The name of the are</returns>
         public static string GetAreaName(this RouteData routeData)
         {
             object obj2;
@@ -41,11 +41,11 @@ namespace FluentSecurity
             return GetAreaName(routeData.Route);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="route"></param>
-        /// <returns></returns>
+		/// <summary>
+		/// Gets the area name of the route
+		/// </summary>
+		/// <param name="route">Route</param>
+		/// <returns>The name of the are</returns>
         public static string GetAreaName(RouteBase route)
         {
             var area = route as IRouteWithArea;
