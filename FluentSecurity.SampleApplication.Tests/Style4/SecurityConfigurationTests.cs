@@ -28,6 +28,10 @@ namespace FluentSecurity.SampleApplication.Tests.Style4
 			expectations.For<AdminController>().Has<AdministratorPolicy>();
 			expectations.For<AdminController>(x => x.Index()).Has<IgnorePolicy>().DoesNotHave<AdministratorPolicy>();
 
+			expectations.For<Areas.ExampleArea.Controllers.HomeController>(x => x.Index()).Has<DenyAnonymousAccessPolicy>();
+			expectations.For<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).Has(new RequireRolePolicy(UserRole.Administrator));
+			expectations.For<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).Has(new RequireRolePolicy(UserRole.Publisher));
+
 			var results = expectations.VerifyAll(Bootstrapper.SetupFluentSecurity());
 
 			Assert.That(results.Valid(), results.ErrorMessages());
