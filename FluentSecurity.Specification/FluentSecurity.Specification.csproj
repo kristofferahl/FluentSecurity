@@ -101,7 +101,7 @@
     <Compile Include="ExceptionFactorySpec.cs" />
     <Compile Include="Helpers\MvcMockHelpers.cs" />
     <Compile Include="Helpers\NameHelper.cs" />
-    <Compile Include="Helpers\ServiceLocatorResetFixture.cs" />
+    <Compile Include="Helpers\ResetFixture.cs" />
     <Compile Include="HttpContextRequestDescriptionSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />

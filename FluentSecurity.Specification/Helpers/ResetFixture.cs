@@ -4,10 +4,10 @@ using NUnit.Framework;
 namespace FluentSecurity.Specification // Do not change the namespace
 {
 	[SetUpFixture]
-	public class ServiceLocatorResetFixture
+	public class ResetFixture
 	{
 		[SetUp]
-		public void ResetServiceLocator()
+		public void Reset()
 		{
 			ServiceLocator.Reset();
 			ExceptionFactory.Reset();
