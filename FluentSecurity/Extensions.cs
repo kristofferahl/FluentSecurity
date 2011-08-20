@@ -33,10 +33,10 @@ namespace FluentSecurity
 		/// <returns>The name of the are</returns>
 		public static string GetAreaName(this RouteData routeData)
 		{
-			object obj2;
-			if (routeData.DataTokens.TryGetValue("area", out obj2))
+			object value;
+			if (routeData.DataTokens.TryGetValue("area", out value))
 			{
-				return (obj2 as string);
+				return (value as string);
 			}
 			return GetAreaName(routeData.Route);
 		}
@@ -48,15 +48,15 @@ namespace FluentSecurity
 		/// <returns>The name of the are</returns>
 		public static string GetAreaName(this RouteBase route)
 		{
-			var area = route as IRouteWithArea;
-			if (area != null)
+			var areRoute = route as IRouteWithArea;
+			if (areRoute != null)
 			{
-				return area.Area;
+				return areRoute.Area;
 			}
-			var route2 = route as Route;
-			if ((route2 != null) && (route2.DataTokens != null))
+			var standardRoute = route as Route;
+			if ((standardRoute != null) && (standardRoute.DataTokens != null))
 			{
-				return (route2.DataTokens["area"] as string) ?? string.Empty;
+				return (standardRoute.DataTokens["area"] as string) ?? string.Empty;
 			}
 			return string.Empty;
 		}
