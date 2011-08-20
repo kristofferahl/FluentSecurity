@@ -109,7 +109,7 @@ namespace FluentSecurity.Specification
 		private IEnumerable<IPolicyContainer> _policyContainers;
 		private DefaultPolicyAppender _defaultPolicyAppender;
 		private IPolicyAppender _fakePolicyAppender;
-		const string ControllerName = "Blog";
+		private string _controllerName = NameHelper<BlogController>.Controller();
 		const string IndexActionName = "Index";
 		const string AddPostActionName = "AddPost";
 
@@ -147,8 +147,8 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_have_policycontainer_for_Blog_Index()
 		{
-			var container = _policyContainers.GetContainerFor(ControllerName, IndexActionName);
-			Assert.That(container.ControllerName, Is.EqualTo(ControllerName));
+			var container = _policyContainers.GetContainerFor(_controllerName, IndexActionName);
+			Assert.That(container.ControllerName, Is.EqualTo(_controllerName));
 			Assert.That(container.ActionName, Is.EqualTo(IndexActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
 			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
@@ -158,8 +158,8 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_have_policycontainer_for_Blog_AddPost()
 		{
-			var container = _policyContainers.GetContainerFor(ControllerName, AddPostActionName);
-			Assert.That(container.ControllerName, Is.EqualTo(ControllerName));
+			var container = _policyContainers.GetContainerFor(_controllerName, AddPostActionName);
+			Assert.That(container.ControllerName, Is.EqualTo(_controllerName));
 			Assert.That(container.ActionName, Is.EqualTo(AddPostActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
 			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(RequireRolePolicy)));
@@ -186,7 +186,7 @@ namespace FluentSecurity.Specification
 			});
 
 			Assert.That(SecurityConfiguration.Current.PolicyContainers.Count(), Is.EqualTo(1));
-			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ControllerName, Is.EqualTo("Blog"));
+			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ControllerName, Is.EqualTo(NameHelper<BlogController>.Controller()));
 			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
 		}
 	}
@@ -196,8 +196,6 @@ namespace FluentSecurity.Specification
 	public class When_I_remove_policies_for_Blog_Index
 	{
 		private IEnumerable<IPolicyContainer> _policyContainers;
-		const string ControllerName = "Blog";
-		const string IndexActionName = "Index";
 
 		[SetUp]
 		public void SetUp()
@@ -228,7 +226,7 @@ namespace FluentSecurity.Specification
 		public void Should_not_have_policycontainer_for_Blog_Index()
 		{
 			// Assert
-			var container = _policyContainers.GetContainerFor(ControllerName, IndexActionName);
+			var container = _policyContainers.GetContainerFor(NameHelper<BlogController>.Controller(), "Index");
 			Assert.That(container, Is.Null);
 		}
 	}

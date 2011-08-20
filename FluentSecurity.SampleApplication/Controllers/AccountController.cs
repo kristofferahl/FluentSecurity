@@ -13,8 +13,7 @@ namespace FluentSecurity.SampleApplication.Controllers
 				{
 					Roles = new List<UserRole>
 						{
-							UserRole.Administrator,
-							UserRole.Publisher
+							UserRole.Administrator
 						}
 				};
 

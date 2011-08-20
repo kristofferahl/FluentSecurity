@@ -58,7 +58,7 @@ namespace FluentSecurity.Specification
 			});
 
 			var securityHandler = MockRepository.GenerateMock<ISecurityHandler>();
-			securityHandler.Expect(x => x.HandleSecurityFor("Blog", "Index")).Repeat.Once().Return(null);
+			securityHandler.Expect(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index")).Repeat.Once().Return(null);
 			securityHandler.Replay();
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler);
@@ -90,7 +90,7 @@ namespace FluentSecurity.Specification
 			var expectedResult = new ViewResult { ViewName = "SomeViewName" };
 
 			var securityHandler = MockRepository.GenerateMock<ISecurityHandler>();
-			securityHandler.Expect(x => x.HandleSecurityFor("Blog", "Index")).Repeat.Once().Return(expectedResult);
+			securityHandler.Expect(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index")).Repeat.Once().Return(expectedResult);
 			securityHandler.Replay();
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler);

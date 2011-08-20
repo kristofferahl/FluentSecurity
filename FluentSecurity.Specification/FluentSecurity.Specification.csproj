@@ -80,6 +80,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\AspNetMvc\System.Web.Mvc.dll</HintPath>
@@ -97,7 +98,11 @@
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
+    <Compile Include="ExceptionFactorySpec.cs" />
+    <Compile Include="Helpers\MvcMockHelpers.cs" />
+    <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\ServiceLocatorResetFixture.cs" />
+    <Compile Include="HttpContextRequestDescriptionSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="SecurityContextSpec.cs" />
@@ -154,6 +159,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestData\DiagnosticsOutputExample.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

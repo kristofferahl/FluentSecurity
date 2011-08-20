@@ -10,6 +10,7 @@ namespace FluentSecurity.Specification // Do not change the namespace
 		public void ResetServiceLocator()
 		{
 			ServiceLocator.Reset();
+			ExceptionFactory.Reset();
 		}
 	}
 }

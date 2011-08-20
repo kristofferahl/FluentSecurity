@@ -16,6 +16,7 @@ namespace FluentSecurity.Specification.Helpers
 
 			var controllerDescriptor = MockRepository.GenerateMock<ControllerDescriptor>();
 			controllerDescriptor.Expect(x => x.ControllerName).Return(controllerName).Repeat.Any();
+			controllerDescriptor.Expect(x => x.ControllerType).Return(typeof(TController)).Repeat.Any();
 			controllerDescriptor.Replay();
 
 			var actionDescriptor = MockRepository.GenerateMock<ActionDescriptor>();

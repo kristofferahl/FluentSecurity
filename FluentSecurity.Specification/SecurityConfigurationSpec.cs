@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
@@ -93,6 +94,10 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_return_the_current_configuration()
 		{
+			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			var fullFilePath = Path.Combine(baseDirectory, "TestData", "DiagnosticsOutputExample.txt");
+			var expectedOutput = File.ReadAllText(fullFilePath);
+
 			var securityConfiguration = new SecurityConfiguration(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
@@ -101,11 +106,13 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
 
+			SecurityConfigurator.SetConfiguration(securityConfiguration);
+
 			// Act
 			var whatIHave = securityConfiguration.WhatDoIHave();
 
 			// Assert
-			Assert.That(whatIHave.Replace("\r\n", "|").Replace("\t", "%"), Is.EqualTo("Ignore missing configuration: True||------------------------------------------------------------------------------------|BlogController > DeletePost|%FluentSecurity.Policy.RequireRolePolicy (Owner or Publisher)|BlogController > Index|%FluentSecurity.Policy.DenyAnonymousAccessPolicy|------------------------------------------------------------------------------------"));
+			Assert.That(whatIHave, Is.EqualTo(expectedOutput));
 		}
 	}
 

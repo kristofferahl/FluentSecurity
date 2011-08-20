@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
+using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification
@@ -36,11 +37,12 @@ namespace FluentSecurity.Specification
 		public void Should_add_policy_to_policycontainers()
 		{
 			// Arrange
+			var controllerName = NameHelper<AdminController>.Controller();
 			var policyContainers = new List<IPolicyContainer>()
 				{
-					TestDataFactory.CreateValidPolicyContainer("Admin", "Index"),
-					TestDataFactory.CreateValidPolicyContainer("Admin", "ListPosts"),
-					TestDataFactory.CreateValidPolicyContainer("Admin", "AddPost")
+					TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
+					TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
+					TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 				};
 
 			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);

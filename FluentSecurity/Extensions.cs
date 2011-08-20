@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
+using System.Web.Routing;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -25,12 +26,47 @@ namespace FluentSecurity
 				.SingleOrDefault();
 		}
 
+		/// <summary>
+		/// Gets the area name of the route
+		/// </summary>
+		/// <param name="routeData">Route data</param>
+		/// <returns>The name of the are</returns>
+		public static string GetAreaName(this RouteData routeData)
+		{
+			object value;
+			if (routeData.DataTokens.TryGetValue("area", out value))
+			{
+				return (value as string);
+			}
+			return GetAreaName(routeData.Route);
+		}
+
+		/// <summary>
+		/// Gets the area name of the route
+		/// </summary>
+		/// <param name="route">Route</param>
+		/// <returns>The name of the are</returns>
+		public static string GetAreaName(this RouteBase route)
+		{
+			var areRoute = route as IRouteWithArea;
+			if (areRoute != null)
+			{
+				return areRoute.Area;
+			}
+			var standardRoute = route as Route;
+			if ((standardRoute != null) && (standardRoute.DataTokens != null))
+			{
+				return (standardRoute.DataTokens["area"] as string) ?? string.Empty;
+			}
+			return string.Empty;
+		}
+
 		///<summary>
 		/// Gets the controller name for the specified controller type
 		///</summary>
 		public static string GetControllerName(this Type controllerType)
 		{
-			return controllerType.Name.Replace("Controller", string.Empty);
+			return controllerType.FullName;
 		}
 
 		/// <summary>
@@ -55,7 +91,7 @@ namespace FluentSecurity
 		{
 			return ((MethodCallExpression)actionExpression.Body).Method.Name;
 		}
-		
+
 		/// <summary>
 		/// Performs an action on each item
 		/// </summary>
