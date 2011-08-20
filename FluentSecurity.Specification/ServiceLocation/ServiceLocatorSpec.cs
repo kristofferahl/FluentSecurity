@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Linq;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
-using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.ServiceLocation
@@ -27,49 +26,69 @@ namespace FluentSecurity.Specification.ServiceLocation
 			_serviceLocator = new ServiceLocator();
 		}
 
+		[TearDown]
+		public void TearDown()
+		{
+			HttpContextRequestDescription.HttpContextProvider = HttpContextRequestDescription.DefaultHttpContextProvider;
+		}
+
 		[Test]
 		public void Should_have_single_singleton_instance_of_ISecurityConfiguration()
 		{
 			// Assert
-			Assert.That(_serviceLocator.Resolve<ISecurityConfiguration>(), Is.InstanceOf<SecurityConfiguration>());
-			Assert.That(_serviceLocator.Resolve<ISecurityConfiguration>(), Is.EqualTo(_serviceLocator.Resolve<ISecurityConfiguration>()));
-			Assert.That(_serviceLocator.ResolveAll<ISecurityConfiguration>().Single(), Is.EqualTo(_serviceLocator.Resolve<ISecurityConfiguration>()));
+			VerifyHasOneSingletonOf<ISecurityConfiguration, SecurityConfiguration>();
 		}
 
 		[Test]
 		public void Should_have_single_transient_instance_of_ISecurityHandler()
 		{
 			// Assert
-			Assert.That(_serviceLocator.Resolve<ISecurityHandler>(), Is.InstanceOf<SecurityHandler>());
-			Assert.That(_serviceLocator.ResolveAll<ISecurityHandler>().Single(), Is.InstanceOf<SecurityHandler>());
-			Assert.That(_serviceLocator.Resolve<ISecurityHandler>(), Is.Not.EqualTo(_serviceLocator.Resolve<ISecurityHandler>()));
+			VerifyHasOneTransientOf<ISecurityHandler, SecurityHandler>();
 		}
 
 		[Test]
 		public void Should_have_single_transient_instance_of_ISecurityContext()
 		{
 			// Assert
-			Assert.That(_serviceLocator.Resolve<ISecurityContext>(), Is.InstanceOf<SecurityContext>());
-			Assert.That(_serviceLocator.ResolveAll<ISecurityContext>().Single(), Is.InstanceOf<SecurityContext>());
-			Assert.That(_serviceLocator.Resolve<ISecurityContext>(), Is.Not.EqualTo(_serviceLocator.Resolve<ISecurityContext>()));
+			VerifyHasOneTransientOf<ISecurityContext, SecurityContext>();
 		}
 
 		[Test]
 		public void Should_have_single_transient_instance_of_IPolicyViolationHandlerSelector()
 		{
 			// Assert
-			Assert.That(_serviceLocator.Resolve<IPolicyViolationHandlerSelector>(), Is.InstanceOf<PolicyViolationHandlerSelector>());
-			Assert.That(_serviceLocator.ResolveAll<IPolicyViolationHandlerSelector>().Single(), Is.InstanceOf<PolicyViolationHandlerSelector>());
-			Assert.That(_serviceLocator.Resolve<IPolicyViolationHandlerSelector>(), Is.Not.EqualTo(_serviceLocator.Resolve<IPolicyViolationHandlerSelector>()));
+			VerifyHasOneTransientOf<IPolicyViolationHandlerSelector, PolicyViolationHandlerSelector>();
 		}
 
 		[Test]
 		public void Should_have_single_singleton_instance_of_IWhatDoIHaveBuilder()
 		{
 			// Assert
-			Assert.That(_serviceLocator.Resolve<IWhatDoIHaveBuilder>(), Is.InstanceOf<DefaultWhatDoIHaveBuilder>());
-			Assert.That(_serviceLocator.Resolve<IWhatDoIHaveBuilder>(), Is.EqualTo(_serviceLocator.Resolve<IWhatDoIHaveBuilder>()));
-			Assert.That(_serviceLocator.ResolveAll<IWhatDoIHaveBuilder>().Single(), Is.EqualTo(_serviceLocator.Resolve<IWhatDoIHaveBuilder>()));
+			VerifyHasOneSingletonOf<IWhatDoIHaveBuilder, DefaultWhatDoIHaveBuilder>();
+		}
+
+		[Test]
+		public void Should_have_single_singleton_instance_of_IRequestDescription()
+		{
+			// Arrange
+			HttpContextRequestDescription.HttpContextProvider = () => MvcMockHelpers.FakeHttpContext();
+
+			// Assert
+			VerifyHasOneSingletonOf<IRequestDescription, HttpContextRequestDescription>();
+		}
+
+		private void VerifyHasOneSingletonOf<TInterface, TDefaultInstance>()
+		{
+			Assert.That(_serviceLocator.Resolve<TInterface>(), Is.InstanceOf<TDefaultInstance>());
+			Assert.That(_serviceLocator.Resolve<TInterface>(), Is.EqualTo(_serviceLocator.Resolve<TInterface>()));
+			Assert.That(_serviceLocator.ResolveAll<TInterface>().Single(), Is.EqualTo(_serviceLocator.Resolve<TInterface>()));
+		}
+
+		private void VerifyHasOneTransientOf<TInterface, TDefaultInstance>()
+		{
+			Assert.That(_serviceLocator.Resolve<TInterface>(), Is.InstanceOf<TDefaultInstance>());
+			Assert.That(_serviceLocator.ResolveAll<TInterface>().Single(), Is.InstanceOf<TDefaultInstance>());
+			Assert.That(_serviceLocator.Resolve<TInterface>(), Is.Not.EqualTo(_serviceLocator.Resolve<TInterface>()));
 		}
 	}
 

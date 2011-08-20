@@ -1,5 +1,4 @@
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using FluentSecurity.ServiceLocation;
@@ -37,7 +36,7 @@ namespace FluentSecurity
 			if (configuration.IgnoreMissingConfiguration)
 				return null;
 
-			throw new ConfigurationErrorsException("Security has not been configured for controller {0}, action {1}".FormatWith(controllerName, actionName));
+			throw ExceptionFactory.CreateConfigurationErrorsException("Security has not been configured for controller {0}, action {1}".FormatWith(controllerName, actionName));
 		}
 	}
 }

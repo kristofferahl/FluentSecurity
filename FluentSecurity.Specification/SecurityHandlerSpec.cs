@@ -217,6 +217,8 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_false()
 		{
 			// Arrange
+			ExceptionFactory.RequestDescriptionProvider = () => TestDataFactory.CreateRequestDescription();
+
 			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
