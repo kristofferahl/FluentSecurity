@@ -26,40 +26,40 @@ namespace FluentSecurity
 				.SingleOrDefault();
 		}
 
-        /// <summary>
-        /// Gets the area name of the route
-        /// </summary>
-        /// <param name="routeData">Route data</param>
-        /// <returns>The name of the are</returns>
-        public static string GetAreaName(this RouteData routeData)
-        {
-            object obj2;
-            if (routeData.DataTokens.TryGetValue("area", out obj2))
-            {
-                return (obj2 as string);
-            }
-            return GetAreaName(routeData.Route);
-        }
+		/// <summary>
+		/// Gets the area name of the route
+		/// </summary>
+		/// <param name="routeData">Route data</param>
+		/// <returns>The name of the are</returns>
+		public static string GetAreaName(this RouteData routeData)
+		{
+			object obj2;
+			if (routeData.DataTokens.TryGetValue("area", out obj2))
+			{
+				return (obj2 as string);
+			}
+			return GetAreaName(routeData.Route);
+		}
 
 		/// <summary>
 		/// Gets the area name of the route
 		/// </summary>
 		/// <param name="route">Route</param>
 		/// <returns>The name of the are</returns>
-        public static string GetAreaName(RouteBase route)
-        {
-            var area = route as IRouteWithArea;
-            if (area != null)
-            {
-                return area.Area;
-            }
-            var route2 = route as Route;
-            if ((route2 != null) && (route2.DataTokens != null))
-            {
-                return (route2.DataTokens["area"] as string) ?? string.Empty;
-            }
-            return string.Empty;
-        }
+		public static string GetAreaName(this RouteBase route)
+		{
+			var area = route as IRouteWithArea;
+			if (area != null)
+			{
+				return area.Area;
+			}
+			var route2 = route as Route;
+			if ((route2 != null) && (route2.DataTokens != null))
+			{
+				return (route2.DataTokens["area"] as string) ?? string.Empty;
+			}
+			return string.Empty;
+		}
 
 		///<summary>
 		/// Gets the controller name for the specified controller type
@@ -91,7 +91,7 @@ namespace FluentSecurity
 		{
 			return ((MethodCallExpression)actionExpression.Body).Method.Name;
 		}
-		
+
 		/// <summary>
 		/// Performs an action on each item
 		/// </summary>
