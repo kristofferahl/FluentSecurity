@@ -26,6 +26,10 @@ namespace FluentSecurity.SampleApplication
 
 				configuration.For<AdminController>().AddPolicy(new AdministratorPolicy());
 				configuration.For<AdminController>(x => x.Index()).Ignore();
+
+				configuration.For<Areas.ExampleArea.Controllers.HomeController>().DenyAnonymousAccess();
+				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).RequireRole(UserRole.Publisher);
+				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).RequireRole(UserRole.Administrator);
 			});
 			return SecurityConfiguration.Current;
 		}

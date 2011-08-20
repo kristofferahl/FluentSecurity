@@ -20,6 +20,7 @@ namespace FluentSecurity.SampleApplication
 			SetupContainer();
 			SetControllerFactory();
 			Bootstrapper.SetupFluentSecurity();
+			AreaRegistration.RegisterAllAreas();
 			RegisterRoutes(RouteTable.Routes);
 			RegisterGlobalFilters(GlobalFilters.Filters);
 		}
