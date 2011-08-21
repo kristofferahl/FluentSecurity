@@ -74,7 +74,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 			HttpContextRequestDescription.HttpContextProvider = () => MvcMockHelpers.FakeHttpContext();
 
 			// Assert
-			VerifyHasOneSingletonOf<IRequestDescription, HttpContextRequestDescription>();
+			VerifyHasOneTransientOf<IRequestDescription, HttpContextRequestDescription>();
 		}
 
 		private void VerifyHasOneSingletonOf<TInterface, TDefaultInstance>()
