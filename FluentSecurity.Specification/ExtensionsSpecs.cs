@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Specification.Helpers;
@@ -146,6 +147,50 @@ namespace FluentSecurity.Specification
 			public string Area
 			{
 				get { return "AreaName"; }
+			}
+		}
+	}
+
+	[TestFixture]
+	[Category("ExtensionsSpecs")]
+	public class When_getting_the_action_name
+	{
+		[Test]
+		public void Should_handle_UnaryExpression()
+		{
+			// Arrange
+			Expression<Func<TestController, object>> expression = x => x.UnaryExpression();
+
+			// Act
+			var name = expression.GetActionName();
+
+			// Assert
+			Assert.That(name, Is.EqualTo("UnaryExpression"));
+		}
+
+		[Test]
+		public void Should_handle_InstanceMethodCallExpression()
+		{
+			// Arrange
+			Expression<Func<TestController, object>> expression = x => x.InstanceMethodCallExpression();
+
+			// Act
+			var name = expression.GetActionName();
+
+			// Assert
+			Assert.That(name, Is.EqualTo("InstanceMethodCallExpression"));
+		}
+
+		private class TestController
+		{
+			public Boolean UnaryExpression()
+			{
+				return false;
+			}
+
+			public ActionResult InstanceMethodCallExpression()
+			{
+				return new EmptyResult();
 			}
 		}
 	}
