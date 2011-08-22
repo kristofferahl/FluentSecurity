@@ -1,0 +1,11 @@
+﻿Ignore missing configuration: True
+
+------------------------------------------------------------------------------------
+
+FluentSecurity.Specification.TestData.BlogController > DeletePost
+	FluentSecurity.Policy.RequireRolePolicy (Owner or Publisher)
+
+FluentSecurity.Specification.TestData.BlogController > Index
+	FluentSecurity.Policy.DenyAnonymousAccessPolicy
+
+------------------------------------------------------------------------------------

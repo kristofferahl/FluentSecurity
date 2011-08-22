@@ -19,7 +19,7 @@ namespace FluentSecurity
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			var actionName = filterContext.ActionDescriptor.ActionName;
-			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
+			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName;
 
 			var overrideResult = SecurityHandler.HandleSecurityFor(controllerName, actionName);
 			if (overrideResult != null) filterContext.Result = overrideResult;

@@ -67,6 +67,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AdministratorPolicy.cs" />
+    <Compile Include="Areas\ExampleArea\Controllers\HomeController.cs" />
+    <Compile Include="Areas\ExampleArea\ExampleAreaAreaRegistration.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -93,6 +95,9 @@
     <Compile Include="Models\User.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\ExampleArea\Views\Home\PublishersOnly.aspx" />
+    <Content Include="Areas\ExampleArea\Views\Home\AdministratorsOnly.aspx" />
+    <Content Include="Areas\ExampleArea\Views\Home\Index.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Views\Example\DenyAnonymousAccess.aspx" />
@@ -109,12 +114,18 @@
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Areas\ExampleArea\Views\Web.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentSecurity\FluentSecurity.csproj">
       <Project>{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}</Project>
       <Name>FluentSecurity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\ExampleArea\Models\" />
+    <Folder Include="Areas\ExampleArea\Views\Shared\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Routing;
 using FluentSecurity.Specification.TestData;
 using Moq;
 
@@ -72,6 +73,30 @@ namespace FluentSecurity.Specification.Helpers
 			};
 
 			return violationHandlers;
+		}
+
+		public static IRequestDescription CreateRequestDescription(string areName = "Area")
+		{
+			var mock = new Mock<IRequestDescription>();
+			mock.Setup(x => x.AreName).Returns(areName);
+			mock.Setup(x => x.ControllerName).Returns("Controller");
+			mock.Setup(x => x.ActionName).Returns("Action");
+			return mock.Object;
+		}
+
+		public static Route CreateRoute(string areaName, string controllerName, string actionName)
+		{
+			var routeValueDictionary = new RouteValueDictionary
+			{
+				{ "controller", controllerName },
+				{ "action", actionName }
+			};
+
+			var route = new Route("some-url", routeValueDictionary, new MvcRouteHandler());
+			if (!String.IsNullOrEmpty(areaName))
+				route.DataTokens = new RouteValueDictionary { { "area", areaName } };
+
+			return route;
 		}
 	}
 }

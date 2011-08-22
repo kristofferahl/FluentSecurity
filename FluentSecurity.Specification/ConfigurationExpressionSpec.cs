@@ -71,7 +71,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainer = _configurationExpression.GetContainerFor("Blog", "Index");
+			var policyContainer = _configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index");
 			
 			Assert.That(policyContainer, Is.Not.Null);
 			Assert.That(_configurationExpression.ToList().Count, Is.EqualTo(1));
@@ -84,7 +84,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainer = _configurationExpression.GetContainerFor("Blog", "Index");
+			var policyContainer = _configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.TypeOf(typeof(DefaultPolicyAppender)));
 		}
 	}
@@ -104,8 +104,8 @@ namespace FluentSecurity.Specification
 			configurationExpression.For<BlogController>(x => x.AddPost());
 
 			// Assert
-			Assert.That(configurationExpression.GetContainerFor("Blog", "Index"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor("Blog", "AddPost"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "AddPost"), Is.Not.Null);
 			Assert.That(configurationExpression.ToList().Count, Is.EqualTo(2));
 		}
 	}
@@ -132,7 +132,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainers_for_all_actions()
 		{
 			// Arrange
-			const string expectedControllerName = "Blog";
+			var expectedControllerName = NameHelper<BlogController>.Controller();
 
 			// Act
 			Because();
@@ -227,7 +227,7 @@ namespace FluentSecurity.Specification
 			_configurationExpression.For<BlogController>(x => x.Index());
 			_configurationExpression.For<BlogController>(x => x.AddPost());
 
-			_addPostPolicyContainer = _configurationExpression.GetContainerFor("Blog", "AddPost");
+			_addPostPolicyContainer = _configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "AddPost");
 
 			// Act
 			_configurationExpression.RemovePoliciesFor<BlogController>(x => x.AddPost());
@@ -244,7 +244,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_Blog_Index()
 		{
 			// Assert
-			Assert.That(_configurationExpression.GetContainerFor("Blog", "Index"), Is.Not.Null);
+			Assert.That(_configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index"), Is.Not.Null);
 		}
 
 		[Test]
@@ -258,7 +258,7 @@ namespace FluentSecurity.Specification
 		public void Shoud_return_null_when_getting_a_policycontainer_for_Blog_AddPost()
 		{
 			// Assert
-			Assert.That(_configurationExpression.GetContainerFor("Blog", "AddPost"), Is.Null);
+			Assert.That(_configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "AddPost"), Is.Null);
 		}
 	}
 
@@ -355,7 +355,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			configurationExpression.For<BlogController>(x => x.Index());
-			var policyContainer = configurationExpression.GetContainerFor("Blog", "Index");
+			var policyContainer = configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
 		}
 	}
