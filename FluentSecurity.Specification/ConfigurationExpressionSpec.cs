@@ -159,7 +159,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_calling_assembly : AssemblyScannerSpecification
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_calling_assembly : AssemblyScannerAssemblySpecification
 	{
 		[Test]
 		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
@@ -173,7 +173,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_specific_assembly : AssemblyScannerSpecification
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_specific_assembly : AssemblyScannerAssemblySpecification
 	{
 		[Test]
 		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
@@ -198,7 +198,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_assembly_containing_type : AssemblyScannerSpecification
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_assembly_containing_type : AssemblyScannerAssemblySpecification
 	{
 		[Test]
 		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
@@ -210,6 +210,51 @@ namespace FluentSecurity.Specification
 		}
 
 		internal class SomeClass {}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_controllers_in_namespace_containing_type : AssemblyScannerNamespaceSpecification
+	{
+		[Test]
+		public void Should_have_policycontainers_for_all_controllers_and_all_actions_in_namespace_of_ClassInRootNamespace()
+		{
+			// Arrange
+			const string index = "Index";
+			var root = NameHelper<TestData.AssemblyScannerControllers.RootController>.Controller();
+			var include = NameHelper<TestData.AssemblyScannerControllers.Include.IncludedController>.Controller();
+			var exclude = NameHelper<TestData.AssemblyScannerControllers.Exclude.ExcludedController>.Controller();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInNamespaceContainingType<TestData.AssemblyScannerControllers.ClassInRootNamespace>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(3));
+			Assert.That(PolicyContainers.GetContainerFor(root, index), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(include, index), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(exclude, index), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_all_controllers_and_all_actions_in_namespace_of_ClassInInvcludeNamespace()
+		{
+			// Arrange
+			const string index = "Index";
+			var root = NameHelper<TestData.AssemblyScannerControllers.RootController>.Controller();
+			var include = NameHelper<TestData.AssemblyScannerControllers.Include.IncludedController>.Controller();
+			var exclude = NameHelper<TestData.AssemblyScannerControllers.Exclude.ExcludedController>.Controller();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInNamespaceContainingType<TestData.AssemblyScannerControllers.Include.ClassInIncludeNamespace>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(PolicyContainers.GetContainerFor(include, index), Is.Not.Null);
+		}
 	}
 
 	[TestFixture]
