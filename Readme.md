@@ -3,6 +3,9 @@
 ## Website
 http://www.fluentsecurity.net/
 
+## Documentation
+See the Wiki for [documentation of Fluent Security](/kristofferahl/FluentSecurity/wiki/)
+
 ## Source code
 https://github.com/kristofferahl/FluentSecurity
 
