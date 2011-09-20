@@ -1,4 +1,4 @@
-# ![Fluent Security](https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-100x100.png) Fluent Security
+# ![Fluent Security](https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-100x100.png)
 
 ## Website
 http://www.fluentsecurity.net/
