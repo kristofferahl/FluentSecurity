@@ -13,7 +13,8 @@ Before starting your work you should run 'Click to build.bat' to make sure every
 ## License
 MIT (http://opensource.org/licenses/mit-license.php)
 
-/ Kristoffer Ahl (project founder)  
+## Contact
+Kristoffer Ahl (project founder)  
 Email: fluent-security@77dynamite.com  
 Twitter: http://twitter.com/kristofferahl  
 Website: http://www.77dynamite.com/
