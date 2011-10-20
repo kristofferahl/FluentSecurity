@@ -49,9 +49,11 @@ namespace FluentSecurity.TestHelper.Specification
 			{
 				expectations.Expect<AdminController>().Has<DenyAnonymousAccessPolicy>();
 				expectations.Expect<AdminController>(x => x.Login()).DoesNotHave<DenyAnonymousAccessPolicy>().Has<DenyAuthenticatedAccessPolicy>();
+				expectations.Expect<AdminController>(x => x.NewUser()).DoesNotHave<DenyAnonymousAccessPolicy>()
+					.Has<RequireRolePolicy>();
 			});
 
-			Assert.That(results.All(x => x.ExpectationsMet));
+			Assert.That(results.All(x => x.ExpectationsMet), results.ErrorMessages());
 		}
 	}
 
@@ -98,9 +100,11 @@ namespace FluentSecurity.TestHelper.Specification
 			{
 				expectations.Expect().Has<DenyAnonymousAccessPolicy>();
 				expectations.Expect(x => x.Login()).DoesNotHave<DenyAnonymousAccessPolicy>().Has<DenyAuthenticatedAccessPolicy>();
+				expectations.Expect(x => x.NewUser()).DoesNotHave<DenyAnonymousAccessPolicy>()
+					.Has<RequireRolePolicy>();
 			});
 
-			Assert.That(results.All(x => x.ExpectationsMet));
+			Assert.That(results.All(x => x.ExpectationsMet), results.ErrorMessages());
 		}
 	}
 }
