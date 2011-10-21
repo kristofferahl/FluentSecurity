@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentSecurity.Policy;
 using FluentSecurity.SampleApplication.Controllers;
 using FluentSecurity.SampleApplication.Models;
@@ -22,8 +23,14 @@ namespace FluentSecurity.SampleApplication.Tests.Style4
 			expectations.For<ExampleController>(x => x.DenyAnonymousAccess()).Has<DenyAnonymousAccessPolicy>();
 			expectations.For<ExampleController>(x => x.DenyAuthenticatedAccess()).Has<DenyAuthenticatedAccessPolicy>();
 
-			expectations.For<ExampleController>(x => x.RequireAdministratorRole()).Has(new RequireRolePolicy(UserRole.Administrator));
-			expectations.For<ExampleController>(x => x.RequirePublisherRole()).Has(new RequireRolePolicy(UserRole.Publisher));
+			expectations.For<ExampleController>(x => x.RequireAdministratorRole()).Has<RequireRolePolicy>(p =>
+				p.RolesRequired.Contains(UserRole.Administrator) &&
+				p.RolesRequired.Count() == 1
+				);
+			expectations.For<ExampleController>(x => x.RequirePublisherRole()).Has<RequireRolePolicy>(p =>
+				p.RolesRequired.Contains(UserRole.Publisher) &&
+				p.RolesRequired.Count() == 1
+				);
 
 			expectations.For<AdminController>().Has<AdministratorPolicy>();
 			expectations.For<AdminController>(x => x.Index()).Has<IgnorePolicy>().DoesNotHave<AdministratorPolicy>();
