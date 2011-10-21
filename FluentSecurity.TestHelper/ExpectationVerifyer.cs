@@ -70,7 +70,7 @@ namespace FluentSecurity.TestHelper
 				return _expectationViolationHandler.Handle(message);
 			}
 
-			if (policyContainer.HasPolicyOfType(expectation.Type) == false)
+			if (policyContainer.HasPolicyMatching(expectation) == false)
 			{
 				const string messageFormat = "Expected policy of type \"{2}\" for controller \"{0}\", action \"{1}\"!";
 				var message = string.Format(messageFormat, policyContainer.ControllerName, policyContainer.ActionName, expectation.Type);
@@ -102,7 +102,7 @@ namespace FluentSecurity.TestHelper
 		private ExpectationResult VerifyDoesNotHaveType(IPolicyContainer policyContainer, DoesNotHaveTypeExpectation expectation)
 		{
 			if (expectation == null) return null;
-			if (policyContainer != null && policyContainer.HasPolicyOfType(expectation.Type))
+			if (policyContainer != null && policyContainer.HasPolicyMatching(expectation))
 			{
 				const string messageFormat = "An unexpected policy of type \"{2}\" was found for controller \"{0}\", action \"{1}\".";
 				var message = string.Format(messageFormat, policyContainer.ControllerName, policyContainer.ActionName, expectation.Type);

@@ -71,7 +71,7 @@ namespace FluentSecurity.TestHelper.Specification
 
 			// Assert
 			expectationViolationHandler.Verify(x => x.Handle(It.IsAny<string>()), Times.Never());
-			Assert.That(expectationResults.Count(), Is.EqualTo(14));
+			Assert.That(expectationResults.Count(), Is.EqualTo(15));
 		}
 
 		[Test]
@@ -91,7 +91,7 @@ namespace FluentSecurity.TestHelper.Specification
 
 			// Assert
 			expectationViolationHandler.Verify(x => x.Handle(It.IsAny<string>()), Times.Exactly(11));
-			Assert.That(expectationResults.Count(), Is.EqualTo(14));
+			Assert.That(expectationResults.Count(), Is.EqualTo(15));
 		}
 
 		[Test]
@@ -111,7 +111,7 @@ namespace FluentSecurity.TestHelper.Specification
 
 			// Assert
 			expectationViolationHandler.Verify(x => x.Handle(It.IsAny<string>()), Times.Exactly(13));
-			Assert.That(expectationResults.Count(), Is.EqualTo(14));
+			Assert.That(expectationResults.Count(), Is.EqualTo(15));
 		}
 	} 
 }

@@ -92,7 +92,6 @@
     <Compile Include="Expectations\HasTypeExpectationSpecs.cs" />
     <Compile Include="ExpectationVerifyerSpec.cs" />
     <Compile Include="PolicyExpectationsSpec.cs" />
-    <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="SecurityConfigurationExtensionsSpec.cs" />
     <Compile Include="TestData\AdminController.cs" />
     <Compile Include="TestData\DenyLynxPolicy.cs" />
@@ -100,6 +99,7 @@
     <Compile Include="TestData\DenyInternetExplorerPolicy.cs" />
     <Compile Include="TestData\FluentSecurityFactory.cs" />
     <Compile Include="TestData\SampleController.cs" />
+    <Compile Include="TestData\UserRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentSecurity.TestHelper\FluentSecurity.TestHelper.csproj">

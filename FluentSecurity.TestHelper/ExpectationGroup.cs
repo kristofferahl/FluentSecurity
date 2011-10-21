@@ -59,29 +59,29 @@ namespace FluentSecurity.TestHelper
 
 		private void HandleHasTypeExpectation(HasTypeExpectation expectation)
 		{
-			var doesNotHaveTypeExpectations = _expectations.Where(x => x is DoesNotHaveTypeExpectation).Cast<DoesNotHaveTypeExpectation>().Where(x => x.Type == expectation.Type);
+			var doesNotHaveTypeExpectations = _expectations.OfType<DoesNotHaveTypeExpectation>().Where(x => x.Type == expectation.Type);
 			for (var i = 0; i < doesNotHaveTypeExpectations.Count(); i++)
 			{
 				var doesNotHaveTypeExpectation = doesNotHaveTypeExpectations.ElementAt(i);
 				_expectations.Remove(doesNotHaveTypeExpectation);
 			}
 
-			var hasTypeExpectations = _expectations.Where(x => x is HasTypeExpectation).Cast<HasTypeExpectation>();
+			var hasTypeExpectations = _expectations.OfType<HasTypeExpectation>();
 			if (hasTypeExpectations.Any(x => x.Type == expectation.Type)) return;
-				
+
 			_expectations.Add(expectation);
 		}
 
 		private void HandleHasInstanceExpectation(HasInstanceExpectation expectation)
 		{
-			var doesNotHaveInstanceExpectations = _expectations.Where(x => x is DoesNotHaveInstanceExpectation).Cast<DoesNotHaveInstanceExpectation>().Where(x => x.Instance.Equals(expectation.Instance));
+			var doesNotHaveInstanceExpectations = _expectations.OfType<DoesNotHaveInstanceExpectation>().Where(x => x.Instance.Equals(expectation.Instance));
 			for (var i = 0; i < doesNotHaveInstanceExpectations.Count(); i++)
 			{
 				var doesNotHaveInstanceExpectation = doesNotHaveInstanceExpectations.ElementAt(i);
 				_expectations.Remove(doesNotHaveInstanceExpectation);
 			}
 
-			var hasInstanceExpectations = _expectations.Where(x => x is HasInstanceExpectation).Cast<HasInstanceExpectation>();
+			var hasInstanceExpectations = _expectations.OfType<HasInstanceExpectation>();
 			if (hasInstanceExpectations.Any(x => x.Instance.Equals(expectation.Instance))) return;
 
 			_expectations.Add(expectation);
@@ -89,14 +89,14 @@ namespace FluentSecurity.TestHelper
 
 		private void HandleDoesNotHaveTypeExpectation(DoesNotHaveTypeExpectation expectation)
 		{
-			var hasTypeExpectations = _expectations.Where(x => x is HasTypeExpectation).Cast<HasTypeExpectation>().Where(x => x.Type == expectation.Type);
+			var hasTypeExpectations = _expectations.OfType<HasTypeExpectation>().Where(x => x.Type == expectation.Type);
 			for (var i = 0; i < hasTypeExpectations.Count(); i++)
 			{
 				var hasTypeExpectation = hasTypeExpectations.ElementAt(i);
 				_expectations.Remove(hasTypeExpectation);
 			}
 
-			var doesNotHaveTypeExpectations = _expectations.Where(x => x is DoesNotHaveTypeExpectation).Cast<DoesNotHaveTypeExpectation>();
+			var doesNotHaveTypeExpectations = _expectations.OfType<DoesNotHaveTypeExpectation>();
 			if (doesNotHaveTypeExpectations.Any(x => x.Type == expectation.Type)) return;
 
 			_expectations.Add(expectation);
@@ -104,14 +104,14 @@ namespace FluentSecurity.TestHelper
 
 		private void HandleDoesNotHaveInstanceExpectation(DoesNotHaveInstanceExpectation expectation)
 		{
-			var hasInstanceExpectations = _expectations.Where(x => x is HasInstanceExpectation).Cast<HasInstanceExpectation>().Where(x => x.Instance.Equals(expectation.Instance));
+			var hasInstanceExpectations = _expectations.OfType<HasInstanceExpectation>().Where(x => x.Instance.Equals(expectation.Instance));
 			for (var i = 0; i < hasInstanceExpectations.Count(); i++)
 			{
 				var hasInstanceExpectation = hasInstanceExpectations.ElementAt(i);
 				_expectations.Remove(hasInstanceExpectation);
 			}
 
-			var doesNotHaveTypeExpectations = _expectations.Where(x => x is DoesNotHaveInstanceExpectation).Cast<DoesNotHaveInstanceExpectation>();
+			var doesNotHaveTypeExpectations = _expectations.OfType<DoesNotHaveInstanceExpectation>();
 			if (doesNotHaveTypeExpectations.Any(x => x.Instance.Equals(expectation.Instance))) return;
 
 			_expectations.Add(expectation);
