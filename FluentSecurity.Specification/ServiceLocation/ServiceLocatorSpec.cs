@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
@@ -51,6 +52,13 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Assert
 			VerifyHasOneTransientOf<ISecurityContext, SecurityContext>();
+		}
+
+		[Test]
+		public void Should_have_single_singleton_instance_of_IPolicyViolationHandler()
+		{
+			// Assert
+			VerifyHasOneSingletonOf<IPolicyViolationHandler, DelegatePolicyViolationHandler>();
 		}
 
 		[Test]
