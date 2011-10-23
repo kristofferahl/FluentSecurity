@@ -73,6 +73,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Expectations\TypeExpectation.cs" />
     <Compile Include="Properties\TestHelperAssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ExpectationGroup.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="ExpectationResult.cs" />
     <Compile Include="ExpectationExpressionExtensions.cs" />
     <Compile Include="ExpectationResultsExtensions.cs" />
-    <Compile Include="Expectations\DoesNotHaveInstance.cs" />
+    <Compile Include="Expectations\DoesNotHaveInstanceExpectation.cs" />
     <Compile Include="Expectations\DoesNotHaveTypeExpectation.cs" />
     <Compile Include="Expectations\HasInstanceExpectation.cs" />
     <Compile Include="Expectations\HasTypeExpectation.cs" />

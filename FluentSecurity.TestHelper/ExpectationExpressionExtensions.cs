@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using FluentSecurity.Policy;
 using FluentSecurity.TestHelper.Expectations;
 
@@ -11,7 +12,7 @@ namespace FluentSecurity.TestHelper
 			return expectationExpression.Add(new HasTypeExpectation<TSecurityPolicy>());
 		}
 
-		public static ExpectationExpression Has<TSecurityPolicy>(this ExpectationExpression expectationExpression, Func<TSecurityPolicy, bool> predicate) where TSecurityPolicy : class, ISecurityPolicy
+		public static ExpectationExpression Has<TSecurityPolicy>(this ExpectationExpression expectationExpression, Expression<Func<TSecurityPolicy, bool>> predicate) where TSecurityPolicy : class, ISecurityPolicy
 		{
 			return expectationExpression.Add(new HasTypeExpectation<TSecurityPolicy>(predicate));
 		}
@@ -26,7 +27,7 @@ namespace FluentSecurity.TestHelper
 			return expectationExpression.Add(new DoesNotHaveTypeExpectation<TSecurityPolicy>());
 		}
 
-		public static ExpectationExpression DoesNotHave<TSecurityPolicy>(this ExpectationExpression expectationExpression, Func<TSecurityPolicy, bool> predicate) where TSecurityPolicy : class, ISecurityPolicy
+		public static ExpectationExpression DoesNotHave<TSecurityPolicy>(this ExpectationExpression expectationExpression, Expression<Func<TSecurityPolicy, bool>> predicate) where TSecurityPolicy : class, ISecurityPolicy
 		{
 			return expectationExpression.Add(new DoesNotHaveTypeExpectation<TSecurityPolicy>(predicate));
 		}
