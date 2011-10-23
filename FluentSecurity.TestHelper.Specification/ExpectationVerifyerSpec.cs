@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Policy;
 using FluentSecurity.TestHelper.Specification.TestData;
 using Moq;
 using NUnit.Framework;
@@ -113,5 +114,25 @@ namespace FluentSecurity.TestHelper.Specification
 			expectationViolationHandler.Verify(x => x.Handle(It.IsAny<string>()), Times.Exactly(13));
 			Assert.That(expectationResults.Count(), Is.EqualTo(15));
 		}
-	} 
+
+		[Test]
+		public void Should_fail_once_with_predicate_description_in_result_message()
+		{
+			// Arrange
+			var configuration = FluentSecurityFactory.CreateSecurityConfiguration();
+
+			var expectationViolationHandler = new DefaultExpectationViolationHandler();
+			var expectationVerifyer = new ExpectationVerifyer(configuration, expectationViolationHandler);
+			var policyExpectations = new PolicyExpectations();
+			policyExpectations.For<AdminController>(x => x.Login()).Has<DelegatePolicy>(p => p.Name == "LoginPolicy");
+
+			// Act
+			var expectationResults = expectationVerifyer.VerifyExpectationsOf(policyExpectations.ExpectationGroups);
+
+			// Assert
+			Assert.That(expectationResults.Count(), Is.EqualTo(1));
+			Assert.That(expectationResults.First().ExpectationsMet, Is.False);
+			Assert.That(expectationResults.First().Message, Is.EqualTo("Expected policy of type \"FluentSecurity.Policy.DelegatePolicy\" for controller \"FluentSecurity.TestHelper.Specification.TestData.AdminController\", action \"Login\".\r\n\t\tPredicate: p => (p.Name == \"LoginPolicy\")"));
+		}
+	}
 }
