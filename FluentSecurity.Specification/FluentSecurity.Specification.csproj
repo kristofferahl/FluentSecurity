@@ -107,6 +107,7 @@
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="Policy\RequireAllRolesPolicySpec.cs" />
+    <Compile Include="Policy\DelegatePolicySpec.cs" />
     <Compile Include="SecurityContextSpec.cs" />
     <Compile Include="ServiceLocation\ContainerSpec.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocatorSpec.cs" />
