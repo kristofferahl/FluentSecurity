@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Web.Mvc;
 
 namespace FluentSecurity.Policy
 {
 	public class DelegatePolicy : ISecurityPolicy
 	{
 		public string Name { get; private set; }
-		public Func<DelegateSecurityContext, PolicyResult> PolicyDelegate { get; private set; }
+		public Func<DelegateSecurityContext, PolicyResult> Policy { get; private set; }
+		public Func<PolicyViolationException, ActionResult> ViolationHandler { get; private set; }
 
-		public DelegatePolicy(string uniqueName, Func<DelegateSecurityContext, PolicyResult> policyDelegate)
+		public DelegatePolicy(string uniqueName, Func<DelegateSecurityContext, PolicyResult> policyDelegate, Func<PolicyViolationException, ActionResult> violationHandlerDelegate = null)
 		{
 			if (String.IsNullOrWhiteSpace(uniqueName))
 				throw new ArgumentException("uniqueName");
@@ -16,13 +18,14 @@ namespace FluentSecurity.Policy
 				throw new ArgumentNullException("policyDelegate");
 
 			Name = uniqueName;
-			PolicyDelegate = policyDelegate;
+			Policy = policyDelegate;
+			ViolationHandler = violationHandlerDelegate;
 		}
 
 		public PolicyResult Enforce(ISecurityContext context)
 		{
 			var wrappedContext = new DelegateSecurityContext(this, context);
-			return PolicyDelegate.Invoke(wrappedContext);
+			return Policy.Invoke(wrappedContext);
 		}
 
 		public class DelegateSecurityContext : SecurityContextWrapper

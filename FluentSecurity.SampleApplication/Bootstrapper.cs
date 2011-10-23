@@ -1,4 +1,5 @@
 using System.Web;
+using System.Web.Mvc;
 using FluentSecurity.Policy;
 using FluentSecurity.SampleApplication.Controllers;
 using FluentSecurity.SampleApplication.Models;
@@ -31,7 +32,8 @@ namespace FluentSecurity.SampleApplication
 					new DelegatePolicy("LocalOnlyPolicy",
 						context => HttpContext.Current.Request.IsLocal ?
 							PolicyResult.CreateSuccessResult(context.Policy) :
-							PolicyResult.CreateFailureResult(context.Policy, "Access denied")
+							PolicyResult.CreateFailureResult(context.Policy, "Access denied"),
+						exception => new ContentResult { Content = exception.Message }
 						)
 					);
 

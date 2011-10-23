@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
+using System.Web.Mvc;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
-using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy
@@ -12,7 +11,8 @@ namespace FluentSecurity.Specification.Policy
 	public abstract class DelegatePolicyTestBase
 	{
 		protected const string ValidPolicyName = "DelegatePolicyName";
-		protected Func<DelegatePolicy.DelegateSecurityContext, PolicyResult> ValidDelegate = c => PolicyResult.CreateSuccessResult(c.Policy);
+		protected Func<DelegatePolicy.DelegateSecurityContext, PolicyResult> ValidPolicyDelegate = c => PolicyResult.CreateSuccessResult(c.Policy);
+		protected Func<PolicyViolationException, ActionResult> ValidViolationHandlerDelegate = e => new EmptyResult();
 	}
 
 	public class When_passing_null_as_name_to_the_constructor_of_DelegatePolicy : DelegatePolicyTestBase
@@ -21,7 +21,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_throw_ArgumentException()
 		{
 			// Assert
-			Assert.Throws<ArgumentException>(() => new DelegatePolicy(null, ValidDelegate));
+			Assert.Throws<ArgumentException>(() => new DelegatePolicy(null, ValidPolicyDelegate, ValidViolationHandlerDelegate));
 		}
 	}
 
@@ -31,7 +31,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_throw_ArgumentException()
 		{
 			// Assert
-			Assert.Throws<ArgumentException>(() => new DelegatePolicy("", ValidDelegate));
+			Assert.Throws<ArgumentException>(() => new DelegatePolicy("", ValidPolicyDelegate, ValidViolationHandlerDelegate));
 		}
 	}
 
@@ -42,7 +42,7 @@ namespace FluentSecurity.Specification.Policy
 		{
 			// Arrange
 			const string expectedName = "DelegatePolicyName";
-			var policy = new DelegatePolicy(expectedName, ValidDelegate);
+			var policy = new DelegatePolicy(expectedName, ValidPolicyDelegate, ValidViolationHandlerDelegate);
 
 			// Act
 			var name = policy.Name;
@@ -52,30 +52,58 @@ namespace FluentSecurity.Specification.Policy
 		}
 	}
 
-	public class When_passing_null_as_delegate_to_the_constructor_of_DelegatePolicy : DelegatePolicyTestBase
+	public class When_passing_null_as_policy_delegate_to_the_constructor_of_DelegatePolicy : DelegatePolicyTestBase
 	{
 		[Test]
 		public void Should_throw_ArgumentNullException()
 		{
 			// Assert
-			Assert.Throws<ArgumentNullException>(() => new DelegatePolicy(ValidPolicyName, null));
+			Assert.Throws<ArgumentNullException>(() => new DelegatePolicy(ValidPolicyName, null, ValidViolationHandlerDelegate));
 		}
 	}
 
-	public class When_getting_the_delegate_of_a_DelegatePolicy : DelegatePolicyTestBase
+	public class When_setting_the_policy_delegate_of_a_DelegatePolicy : DelegatePolicyTestBase
 	{
 		[Test]
-		public void Should_return_expected_delegate()
+		public void Should_have_expected_delegate()
 		{
 			// Arrange
-			var expectedDelegate = ValidDelegate;
-			var policy = new DelegatePolicy(ValidPolicyName, expectedDelegate);
+			var expectedDelegate = ValidPolicyDelegate;
 
 			// Act
-			var policyDelegate = policy.PolicyDelegate;
+			var policy = new DelegatePolicy(ValidPolicyName, expectedDelegate, ValidViolationHandlerDelegate);
 
 			// Assert
-			Assert.That(policyDelegate, Is.EqualTo(expectedDelegate));
+			Assert.That(policy.Policy, Is.EqualTo(expectedDelegate));
+		}
+	}
+
+	public class When_passing_null_as_violation_handler_delegate_to_the_constructor_of_DelegatePolicy : DelegatePolicyTestBase
+	{
+		[Test]
+		public void Should_not_have_delegate_set_for_violation_handler()
+		{
+			// Act
+			var policy = new DelegatePolicy(ValidPolicyName, ValidPolicyDelegate, null);
+
+			// Assert
+			Assert.That(policy.ViolationHandler, Is.Null);
+		}
+	}
+
+	public class When_setting_the_violation_handler_delegate_of_a_DelegatePolicy : DelegatePolicyTestBase
+	{
+		[Test]
+		public void Should_have_expected_delegate()
+		{
+			// Arrange
+			var expectedDelegate = ValidViolationHandlerDelegate;
+
+			// Act
+			var policy = new DelegatePolicy(ValidPolicyName, ValidPolicyDelegate, expectedDelegate);
+
+			// Assert
+			Assert.That(policy.ViolationHandler, Is.EqualTo(expectedDelegate));
 		}
 	}
 
@@ -86,7 +114,7 @@ namespace FluentSecurity.Specification.Policy
 		{
 			// Arrange
 			Func<DelegatePolicy.DelegateSecurityContext, PolicyResult> failureDelegate = c => PolicyResult.CreateFailureResult(c.Policy, "Access denied");
-			var policy = new DelegatePolicy(ValidPolicyName, failureDelegate);
+			var policy = new DelegatePolicy(ValidPolicyName, failureDelegate, ValidViolationHandlerDelegate);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -102,7 +130,7 @@ namespace FluentSecurity.Specification.Policy
 		{
 			// Arrange
 			Func<DelegatePolicy.DelegateSecurityContext, PolicyResult> successDelegate = c => PolicyResult.CreateSuccessResult(c.Policy);
-			var policy = new DelegatePolicy(ValidPolicyName, successDelegate);
+			var policy = new DelegatePolicy(ValidPolicyName, successDelegate, ValidViolationHandlerDelegate);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -122,12 +150,12 @@ namespace FluentSecurity.Specification.Policy
 				delegateContext = c;
 			    return PolicyResult.CreateSuccessResult(c.Policy);
 			};
-			
-			var policy = new DelegatePolicy(ValidPolicyName, successDelegate);
+
+			var policy = new DelegatePolicy(ValidPolicyName, successDelegate, ValidViolationHandlerDelegate);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
-			var result = policy.Enforce(context);
+			policy.Enforce(context);
 
 			// Assert
 			Assert.That(typeof(ISecurityContext).IsAssignableFrom(delegateContext.GetType()), Is.True);
