@@ -1,6 +1,7 @@
 using System;
 using System.Web.Mvc;
 using FluentSecurity.Policy;
+using FluentSecurity.Policy.Results;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
@@ -121,6 +122,7 @@ namespace FluentSecurity.Specification.Policy
 			var result = policy.Enforce(context);
 
 			// Assert
+			Assert.That(result, Is.TypeOf<DelegatePolicyResult>());
 			Assert.That(result.ViolationOccured, Is.True);
 			Assert.That(result.Message, Is.EqualTo("Access denied"));
 		}
@@ -137,6 +139,7 @@ namespace FluentSecurity.Specification.Policy
 			var result = policy.Enforce(context);
 
 			// Assert
+			Assert.That(result, Is.TypeOf<DelegatePolicyResult>());
 			Assert.That(result.ViolationOccured, Is.False);
 		}
 

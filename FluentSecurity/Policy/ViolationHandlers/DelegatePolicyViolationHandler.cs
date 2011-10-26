@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using FluentSecurity.Policy.Results;
 
 namespace FluentSecurity.Policy.ViolationHandlers
 {
@@ -6,10 +7,10 @@ namespace FluentSecurity.Policy.ViolationHandlers
 	{
 		public ActionResult Handle(PolicyViolationException exception)
 		{
-			var delegatePolicy = (DelegatePolicy)exception.Policy;
+			var delegatePolicyResult = (DelegatePolicyResult)exception.PolicyResult;
 			
-			if (delegatePolicy.ViolationHandler != null)
-				return delegatePolicy.ViolationHandler.Invoke(exception);
+			if (delegatePolicyResult.ViolationHandler != null)
+				return delegatePolicyResult.ViolationHandler.Invoke(exception);
 
 			throw exception;
 		}

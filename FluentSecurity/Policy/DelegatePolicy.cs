@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using FluentSecurity.Policy.Results;
 
 namespace FluentSecurity.Policy
 {
@@ -25,7 +26,8 @@ namespace FluentSecurity.Policy
 		public PolicyResult Enforce(ISecurityContext context)
 		{
 			var wrappedContext = new DelegateSecurityContext(this, context);
-			return Policy.Invoke(wrappedContext);
+			var policyResult = Policy.Invoke(wrappedContext);
+			return new DelegatePolicyResult(policyResult, ViolationHandler);
 		}
 
 		public class DelegateSecurityContext : SecurityContextWrapper

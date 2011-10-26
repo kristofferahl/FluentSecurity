@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using FluentSecurity.Policy;
+using FluentSecurity.Policy.Results;
 using FluentSecurity.Policy.ViolationHandlers;
 using NUnit.Framework;
 
@@ -13,11 +14,11 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 		public void Should_throw_when_violation_handler_has_not_been_set_for_DelegatePolicy()
 		{
 			// Arrange
-			var policy = new DelegatePolicy("Test",
-					c => PolicyResult.CreateFailureResult(c.Policy, "Access denied")
-				);
+			var failureResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Access denied");
+			var policy = new DelegatePolicy("Test", c => failureResult);
+			var delegatePolicyResult = new DelegatePolicyResult(failureResult, policy.ViolationHandler);
 			var handler = new DelegatePolicyViolationHandler();
-			var exception = new PolicyViolationException(policy, "Access denied");
+			var exception = new PolicyViolationException(delegatePolicyResult);
 
 			// Act & assert
 			var caughtException = Assert.Throws<PolicyViolationException>(() => handler.Handle(exception));
@@ -29,12 +30,11 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 		{
 			// Arrange
 			var expectedResult = new ContentResult { Content = "Some content" };
-			var policy = new DelegatePolicy("Test",
-					c => PolicyResult.CreateFailureResult(c.Policy, "Access denied"),
-					e => expectedResult
-				);
+			var failureResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Access denied");
+			var policy = new DelegatePolicy("Test", c => failureResult, e => expectedResult);
+			var delegatePolicyResult = new DelegatePolicyResult(failureResult, policy.ViolationHandler);
 			var handler = new DelegatePolicyViolationHandler();
-			var exception = new PolicyViolationException(policy, "Access denied");
+			var exception = new PolicyViolationException(delegatePolicyResult);
 
 			// Act
 			var result = handler.Handle(exception);

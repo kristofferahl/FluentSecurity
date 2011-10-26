@@ -16,13 +16,13 @@ namespace FluentSecurity
 			PolicyType = policyType;
 		}
 
-		internal PolicyViolationException(ISecurityPolicy policy, string message) : base(message)
+		internal PolicyViolationException(PolicyResult policyResult) : base(policyResult.Message)
 		{
-			Policy = policy;
-			PolicyType = policy.GetType();
+			PolicyResult = policyResult;
+			PolicyType = PolicyResult.PolicyType;
 		}
 
-		public ISecurityPolicy Policy { get; private set; }
+		public PolicyResult PolicyResult { get; private set; }
 		public Type PolicyType { get; private set; }
 	}
 }
