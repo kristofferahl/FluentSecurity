@@ -5,11 +5,13 @@ namespace FluentSecurity.Policy.Results
 {
 	public class DelegatePolicyResult : PolicyResult
 	{
+		public string PolicyName { get; private set; }
 		public Func<PolicyViolationException, ActionResult> ViolationHandler { get; private set; }
 
-		public DelegatePolicyResult(PolicyResult policyResult, Func<PolicyViolationException, ActionResult> violationHandler)
+		public DelegatePolicyResult(PolicyResult policyResult, string policyName, Func<PolicyViolationException, ActionResult> violationHandler)
 			: base(policyResult.Message, policyResult.ViolationOccured, policyResult.PolicyType)
 		{
+			PolicyName = policyName;
 			ViolationHandler = violationHandler;
 		}
 	}

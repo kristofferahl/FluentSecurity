@@ -14,15 +14,17 @@ namespace FluentSecurity.Specification.Policy.Results
 		public void Should_have_values_from_policyresult_and_violation_handler()
 		{
 			// Arrange
+			const string policyName = "PolicyName1";
 			var policyResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Failure message");
 			Func<PolicyViolationException, ActionResult> violationHandler = e => new EmptyResult();
 
 			// Act
-			var delegatePolicyResult = new DelegatePolicyResult(policyResult, violationHandler);
+			var delegatePolicyResult = new DelegatePolicyResult(policyResult, policyName, violationHandler);
 
 			// Assert
 			Assert.That(delegatePolicyResult.Message, Is.EqualTo(policyResult.Message));
 			Assert.That(delegatePolicyResult.PolicyType, Is.EqualTo(policyResult.PolicyType));
+			Assert.That(delegatePolicyResult.PolicyName, Is.EqualTo(policyName));
 			Assert.That(delegatePolicyResult.ViolationOccured, Is.EqualTo(policyResult.ViolationOccured));
 			Assert.That(delegatePolicyResult.ViolationHandler, Is.EqualTo(violationHandler));
 		}
@@ -31,14 +33,16 @@ namespace FluentSecurity.Specification.Policy.Results
 		public void Should_have_values_from_policyresult_but_no_violation_handler()
 		{
 			// Arrange
+			const string policyName = "PolicyName2";
 			var policyResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Failure message");
 
 			// Act
-			var delegatePolicyResult = new DelegatePolicyResult(policyResult, null);
+			var delegatePolicyResult = new DelegatePolicyResult(policyResult, policyName, null);
 
 			// Assert
 			Assert.That(delegatePolicyResult.Message, Is.EqualTo(policyResult.Message));
 			Assert.That(delegatePolicyResult.PolicyType, Is.EqualTo(policyResult.PolicyType));
+			Assert.That(delegatePolicyResult.PolicyName, Is.EqualTo(policyName));
 			Assert.That(delegatePolicyResult.ViolationOccured, Is.EqualTo(policyResult.ViolationOccured));
 			Assert.That(delegatePolicyResult.ViolationHandler, Is.Null);
 		}

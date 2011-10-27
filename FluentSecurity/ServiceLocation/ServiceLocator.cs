@@ -17,7 +17,7 @@ namespace FluentSecurity.ServiceLocation
 			
 			container.Register<ISecurityContext>(ctx => SecurityContext.CreateFrom(ctx.Resolve<ISecurityConfiguration>()));
 
-			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(), LifeCycle.Singleton);
+			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), LifeCycle.Singleton);
 
 			container.Register<IPolicyViolationHandlerSelector>(ctx => new PolicyViolationHandlerSelector(
 				ctx.ResolveAll<IPolicyViolationHandler>()

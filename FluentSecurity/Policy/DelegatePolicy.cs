@@ -27,7 +27,7 @@ namespace FluentSecurity.Policy
 		{
 			var wrappedContext = new DelegateSecurityContext(this, context);
 			var policyResult = Policy.Invoke(wrappedContext);
-			return new DelegatePolicyResult(policyResult, ViolationHandler);
+			return new DelegatePolicyResult(policyResult, Name, ViolationHandler);
 		}
 
 		public class DelegateSecurityContext : SecurityContextWrapper
