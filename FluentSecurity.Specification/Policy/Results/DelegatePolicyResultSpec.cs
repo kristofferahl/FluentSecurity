@@ -46,5 +46,27 @@ namespace FluentSecurity.Specification.Policy.Results
 			Assert.That(delegatePolicyResult.ViolationOccured, Is.EqualTo(policyResult.ViolationOccured));
 			Assert.That(delegatePolicyResult.ViolationHandler, Is.Null);
 		}
+
+		[Test]
+		public void Should_throw_when_policyname_is_null()
+		{
+			// Arrange
+			const string nullPolicyName = null;
+			var policyResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Failure message");
+
+			// Act & assert
+			Assert.Throws<ArgumentException>(() => new DelegatePolicyResult(policyResult, nullPolicyName, null));
+		}
+
+		[Test]
+		public void Should_throw_when_policyname_is_empty()
+		{
+			// Arrange
+			const string emptyPolicyName = "";
+			var policyResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Failure message");
+
+			// Act & assert
+			Assert.Throws<ArgumentException>(() => new DelegatePolicyResult(policyResult, emptyPolicyName, null));
+		}
 	}
 }

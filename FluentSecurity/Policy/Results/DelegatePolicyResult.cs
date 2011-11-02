@@ -11,6 +11,9 @@ namespace FluentSecurity.Policy.Results
 		public DelegatePolicyResult(PolicyResult policyResult, string policyName, Func<PolicyViolationException, ActionResult> violationHandler)
 			: base(policyResult.Message, policyResult.ViolationOccured, policyResult.PolicyType)
 		{
+			if (String.IsNullOrWhiteSpace(policyName))
+				throw new ArgumentException("policyName");
+
 			PolicyName = policyName;
 			ViolationHandler = violationHandler;
 		}
