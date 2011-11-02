@@ -1,6 +1,4 @@
 using System.Web;
-using System.Web.Mvc;
-using FluentSecurity.Policy;
 using FluentSecurity.SampleApplication.Controllers;
 using FluentSecurity.SampleApplication.Models;
 
@@ -28,13 +26,8 @@ namespace FluentSecurity.SampleApplication
 				configuration.For<ExampleController>(x => x.RequirePublisherRole()).RequireRole(UserRole.Publisher);
 
 				configuration.For<AdminController>().AddPolicy(new AdministratorPolicy());
-				configuration.For<AdminController>(x => x.Delete()).AddPolicy(
-					new DelegatePolicy("LocalOnlyPolicy",
-						context => HttpContext.Current.Request.IsLocal ?
-							PolicyResult.CreateSuccessResult(context.Policy) :
-							PolicyResult.CreateFailureResult(context.Policy, "Access denied"),
-						exception => new ContentResult { Content = exception.Message }
-						)
+				configuration.For<AdminController>(x => x.Delete()).DelegatePolicy("LocalOnlyPolicy",
+					context => HttpContext.Current.Request.IsLocal
 					);
 
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>().DenyAnonymousAccess();

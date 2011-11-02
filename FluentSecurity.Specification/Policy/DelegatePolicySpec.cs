@@ -1,6 +1,7 @@
 using System;
 using System.Web.Mvc;
 using FluentSecurity.Policy;
+using FluentSecurity.Policy.Contexts;
 using FluentSecurity.Policy.Results;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
@@ -12,7 +13,7 @@ namespace FluentSecurity.Specification.Policy
 	public abstract class DelegatePolicyTestBase
 	{
 		protected const string ValidPolicyName = "DelegatePolicyName";
-		protected Func<DelegatePolicy.DelegateSecurityContext, PolicyResult> ValidPolicyDelegate = c => PolicyResult.CreateSuccessResult(c.Policy);
+		protected Func<DelegateSecurityContext, PolicyResult> ValidPolicyDelegate = c => PolicyResult.CreateSuccessResult(c.Policy);
 		protected Func<PolicyViolationException, ActionResult> ValidViolationHandlerDelegate = e => new EmptyResult();
 	}
 
@@ -114,7 +115,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_not_be_successful_when_delegate_returns_failure()
 		{
 			// Arrange
-			Func<DelegatePolicy.DelegateSecurityContext, PolicyResult> failureDelegate = c => PolicyResult.CreateFailureResult(c.Policy, "Access denied");
+			Func<DelegateSecurityContext, PolicyResult> failureDelegate = c => PolicyResult.CreateFailureResult(c.Policy, "Access denied");
 			var policy = new DelegatePolicy(ValidPolicyName, failureDelegate, ValidViolationHandlerDelegate);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
@@ -131,7 +132,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_be_successful_when_delegate_returns_success()
 		{
 			// Arrange
-			Func<DelegatePolicy.DelegateSecurityContext, PolicyResult> successDelegate = c => PolicyResult.CreateSuccessResult(c.Policy);
+			Func<DelegateSecurityContext, PolicyResult> successDelegate = c => PolicyResult.CreateSuccessResult(c.Policy);
 			var policy = new DelegatePolicy(ValidPolicyName, successDelegate, ValidViolationHandlerDelegate);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
@@ -147,8 +148,8 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_pass_wrapped_security_context_to_delegate()
 		{
 			// Arrange
-			DelegatePolicy.DelegateSecurityContext delegateContext = null;
-			Func<DelegatePolicy.DelegateSecurityContext, PolicyResult> successDelegate = c =>
+			DelegateSecurityContext delegateContext = null;
+			Func<DelegateSecurityContext, PolicyResult> successDelegate = c =>
 			{
 				delegateContext = c;
 			    return PolicyResult.CreateSuccessResult(c.Policy);
