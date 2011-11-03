@@ -12,10 +12,10 @@ namespace FluentSecurity.Specification.Policy
 	public class When_passing_null_to_the_constructor_of_RequireRolePolicy
 	{
 		[Test]
-		public void Should_throw_ArgumentException()
+		public void Should_throw_ArgumentNullException()
 		{
 			// Assert
-			Assert.Throws<ArgumentException>(() => new RequireRolePolicy(null));
+			Assert.Throws<ArgumentNullException>(() => new RequireRolePolicy(null));
 		}
 	}
 
@@ -45,7 +45,7 @@ namespace FluentSecurity.Specification.Policy
 
 	[TestFixture]
 	[Category("RequireRolePolicySpec")]
-	public class When_getting_the_required_roles_for_an_RequiredRolePolicy
+	public class When_getting_the_required_roles_for_a_RequireRolePolicy
 	{
 		[Test]
 		public void Should_return_expected_roles()
@@ -100,7 +100,7 @@ namespace FluentSecurity.Specification.Policy
 		}
 
 		[Test]
-		public void Should_not_be_successful_when_isAuthenticated_is_true_and_roles_are_does_not_match()
+		public void Should_not_be_successful_when_isAuthenticated_is_true_and_roles_does_not_match()
 		{
 			// Arrange
 			var policy = new RequireRolePolicy("Role1", "Role2");
@@ -220,6 +220,14 @@ namespace FluentSecurity.Specification.Policy
 			var instance3 = new RequireRolePolicy(UserRole.Owner, UserRole.Writer, UserRole.Publisher);
 			var instance4 = new RequireRolePolicy(UserRole.Owner);
 			Assert.That(instance3.GetHashCode(), Is.Not.EqualTo(instance4.GetHashCode()));
+		}
+
+		[Test]
+		public void Should_not_be_the_same_when_types_differ()
+		{
+			var instance1 = new RequireAllRolesPolicy("Editor", "Writer");
+			var instance2 = new RequireRolePolicy("Editor", "Writer");
+			Assert.That(instance1.GetHashCode(), Is.Not.EqualTo(instance2.GetHashCode()));
 		}
 	}
 }
