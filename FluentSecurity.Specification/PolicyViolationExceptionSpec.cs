@@ -8,6 +8,22 @@ namespace FluentSecurity.Specification
 	public class When_creating_a_PolicyViolationException
 	{
 		[Test]
+		public void Should_have_PolicyResult_PolicyType_and_Message_set()
+		{
+			// Arrange
+			var policy = new DenyAnonymousAccessPolicy();
+			var policyResult = PolicyResult.CreateFailureResult(policy, "Anonymous access denied");
+
+			// Act
+			var exception = new PolicyViolationException(policyResult);
+
+			// Assert
+			Assert.That(exception.PolicyResult, Is.EqualTo(policyResult));
+			Assert.That(exception.PolicyType, Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
+			Assert.That(exception.Message, Is.EqualTo("Anonymous access denied"));
+		}
+
+		[Test]
 		public void Should_have_PolicyType_set_to_DenyAnonymousAccessPolicy()
 		{
 			// Act
@@ -37,6 +53,17 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(exception.Message, Is.EqualTo("Access denied"));
+		}
+
+		[Test]
+		public void Should_have_PolicyType_set_to_DelegatePolicy()
+		{
+			// Act
+			var exception = new PolicyViolationException<DelegatePolicy>("Access denied");
+
+			// Assert
+			Assert.That(exception.PolicyType, Is.EqualTo(typeof(DelegatePolicy)));
 			Assert.That(exception.Message, Is.EqualTo("Access denied"));
 		}
 	}

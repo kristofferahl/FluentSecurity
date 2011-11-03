@@ -109,7 +109,7 @@ namespace FluentSecurity.Specification
 		private IEnumerable<IPolicyContainer> _policyContainers;
 		private DefaultPolicyAppender _defaultPolicyAppender;
 		private IPolicyAppender _fakePolicyAppender;
-		private string _controllerName = NameHelper<BlogController>.Controller();
+		private readonly string _controllerName = NameHelper<BlogController>.Controller();
 		const string IndexActionName = "Index";
 		const string AddPostActionName = "AddPost";
 

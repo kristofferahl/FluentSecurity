@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentSecurity.Policy.ViolationHandlers;
 
 namespace FluentSecurity.ServiceLocation
 {
@@ -15,6 +16,8 @@ namespace FluentSecurity.ServiceLocation
 			container.Register<ISecurityHandler>(ctx => new SecurityHandler());
 			
 			container.Register<ISecurityContext>(ctx => SecurityContext.CreateFrom(ctx.Resolve<ISecurityConfiguration>()));
+
+			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), LifeCycle.Singleton);
 
 			container.Register<IPolicyViolationHandlerSelector>(ctx => new PolicyViolationHandlerSelector(
 				ctx.ResolveAll<IPolicyViolationHandler>()

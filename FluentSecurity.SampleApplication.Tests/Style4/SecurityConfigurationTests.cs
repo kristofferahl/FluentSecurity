@@ -16,13 +16,13 @@ namespace FluentSecurity.SampleApplication.Tests.Style4
 		{
 			var expectations = new PolicyExpectations();
 
-			expectations.For<AccountController>(x => x.LogInAsAdministrator()).Has<DenyAuthenticatedAccessPolicy>();
-			expectations.For<AccountController>(x => x.LogInAsPublisher()).Has<DenyAuthenticatedAccessPolicy>();
-			expectations.For<AccountController>(x => x.LogOut()).Has<DenyAnonymousAccessPolicy>();
+			expectations.For<HomeController>().Has<IgnorePolicy>();
+
+			expectations.For<AccountController>().Has<DenyAuthenticatedAccessPolicy>();
+			expectations.For<AccountController>(x => x.LogOut()).Has<DenyAnonymousAccessPolicy>().DoesNotHave<DenyAuthenticatedAccessPolicy>();
 
 			expectations.For<ExampleController>(x => x.DenyAnonymousAccess()).Has<DenyAnonymousAccessPolicy>();
 			expectations.For<ExampleController>(x => x.DenyAuthenticatedAccess()).Has<DenyAuthenticatedAccessPolicy>();
-
 			expectations.For<ExampleController>(x => x.RequireAdministratorRole()).Has<RequireRolePolicy>(p =>
 				p.RolesRequired.Contains(UserRole.Administrator) &&
 				p.RolesRequired.Count() == 1
@@ -33,7 +33,7 @@ namespace FluentSecurity.SampleApplication.Tests.Style4
 				);
 
 			expectations.For<AdminController>().Has<AdministratorPolicy>();
-			expectations.For<AdminController>(x => x.Index()).Has<IgnorePolicy>().DoesNotHave<AdministratorPolicy>();
+			expectations.For<AdminController>(x => x.Delete()).Has<DelegatePolicy>(p => p.Name == "LocalOnlyPolicy");
 
 			expectations.For<Areas.ExampleArea.Controllers.HomeController>(x => x.Index()).Has<DenyAnonymousAccessPolicy>();
 			expectations.For<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).Has(new RequireRolePolicy(UserRole.Administrator));

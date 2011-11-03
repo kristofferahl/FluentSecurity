@@ -7,15 +7,25 @@ namespace FluentSecurity
 	{
 		private PolicyResult() {}
 
+		protected PolicyResult(string message, bool violationOccured, Type policyType)
+		{
+			Message = message;
+			ViolationOccured = violationOccured;
+			PolicyType = policyType;
+		}
+
+		protected PolicyResult(string message, bool violationOccured, ISecurityPolicy policy) 
+			: this(message, violationOccured, policy.GetType()) {}
+
 		public bool ViolationOccured { get; private set; }
 		public string Message { get; private set; }
-		public ISecurityPolicy Policy { get; private set; }
+		public Type PolicyType { get; private set; }
 
 		public static PolicyResult CreateSuccessResult(ISecurityPolicy policy)
 		{
 			return new PolicyResult
 			{
-				Policy = policy,
+				PolicyType = policy.GetType(),
 				ViolationOccured = false,
 				Message = null
 			};
@@ -28,7 +38,7 @@ namespace FluentSecurity
 			
 			return new PolicyResult
 			{
-				Policy = policy,
+				PolicyType = policy.GetType(),
 				ViolationOccured = true,
 				Message = message
 			};

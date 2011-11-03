@@ -1,20 +1,24 @@
 ﻿using System;
+using System.Linq.Expressions;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity.TestHelper.Expectations
 {
 	public class HasTypeExpectation<TSecurityPolicy> : HasTypeExpectation where TSecurityPolicy : class, ISecurityPolicy
 	{
+		public Expression<Func<TSecurityPolicy, bool>> PredicateExpression { get; private set; }
 		public Func<TSecurityPolicy, bool> Predicate { get; private set; }
-
-		public HasTypeExpectation() : base(typeof(TSecurityPolicy))
+		
+		public HasTypeExpectation() : base(typeof(TSecurityPolicy), false)
 		{
-			Predicate = securityPolicy => securityPolicy.GetType() == Type;
+			PredicateExpression = securityPolicy => securityPolicy.GetType() == Type;
+			Predicate = PredicateExpression.Compile();
 		}
 
-		public HasTypeExpectation(Func<TSecurityPolicy, bool> predicate) : base(typeof(TSecurityPolicy))
+		public HasTypeExpectation(Expression<Func<TSecurityPolicy, bool>> predicateExpression) : base(typeof(TSecurityPolicy), true)
 		{
-			Predicate = predicate;
+			PredicateExpression = predicateExpression;
+			Predicate = PredicateExpression.Compile();
 		}
 
 		protected override bool EvaluatePredicate(ISecurityPolicy securityPolicy)
@@ -22,22 +26,15 @@ namespace FluentSecurity.TestHelper.Expectations
 			var policy = securityPolicy as TSecurityPolicy;
 			return policy != null && Predicate.Invoke(policy);
 		}
+
+		public override string GetPredicateDescription()
+		{
+			return PredicateExpression.ToString();
+		}
 	}
 
-	public abstract class HasTypeExpectation : IExpectation
+	public abstract class HasTypeExpectation : TypeExpectation
 	{
-		public Type Type { get; private set; }
-
-		protected HasTypeExpectation(Type type)
-		{
-			Type = type;
-		}
-
-		public bool IsMatch(ISecurityPolicy securityPolicy)
-		{
-			return EvaluatePredicate(securityPolicy);
-		}
-
-		protected abstract bool EvaluatePredicate(ISecurityPolicy securityPolicy);
+		protected HasTypeExpectation(Type type, bool isPredicateExpectation) : base(type, isPredicateExpectation) {}
 	}
 }

@@ -71,6 +71,11 @@
     <Compile Include="HttpContextRequestDescription.cs" />
     <Compile Include="IRequestDescription.cs" />
     <Compile Include="Policy\RequireAllRolesPolicy.cs" />
+    <Compile Include="Policy\DelegatePolicy.cs" />
+    <Compile Include="Policy\Contexts\DelegateSecurityContext.cs" />
+    <Compile Include="Policy\Results\DelegatePolicyResult.cs" />
+    <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandler.cs" />
+    <Compile Include="SecurityContextWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\AssemblyScanner.cs" />
     <Compile Include="Builder.cs" />
