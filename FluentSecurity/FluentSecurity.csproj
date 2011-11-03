@@ -70,6 +70,7 @@
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="HttpContextRequestDescription.cs" />
     <Compile Include="IRequestDescription.cs" />
+    <Compile Include="Policy\RequireAllRolesPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\AssemblyScanner.cs" />
     <Compile Include="Builder.cs" />

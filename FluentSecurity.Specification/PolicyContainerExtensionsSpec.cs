@@ -65,6 +65,25 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicyContainerExtensionsSpec")]
+	public class When_adding_a_RequireAllRolesPolicy_to_a_policycontainer
+	{
+		[Test]
+		public void Should_have_a_RequireAllRolesPolicy()
+		{
+			// Arrange
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
+
+			// Act
+			policyContainer.RequireAllRoles(UserRole.Writer);
+
+			// Assert
+			var securityPolicy = policyContainer.GetPolicies().Where(x => x.GetType().Equals(typeof(RequireAllRolesPolicy))).Single();
+			Assert.That(securityPolicy, Is.Not.Null);
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerExtensionsSpec")]
 	public class When_adding_a_IgnorePolicy_to_a_policycontainer
 	{
 		[Test]

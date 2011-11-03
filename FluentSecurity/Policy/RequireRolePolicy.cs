@@ -12,7 +12,7 @@ namespace FluentSecurity.Policy
 		public RequireRolePolicy(params object[] requiredRoles)
 		{
 			if (requiredRoles == null)
-				throw new ArgumentException("Required roles must not be null");
+				throw new ArgumentNullException("Required roles must not be null");
 
 			if (requiredRoles.Length == 0)
 				throw new ArgumentException("Required roles must be specified");
@@ -28,20 +28,14 @@ namespace FluentSecurity.Policy
 			if (context.CurrenUserRoles() == null || context.CurrenUserRoles().Any() == false)
 				return PolicyResult.CreateFailureResult(this, "Access denied");
 
-			foreach (var requiredRole in _requiredRoles)
+			if (context.CurrenUserRoles().Any(role => _requiredRoles.Contains(role)) == false)
 			{
-				foreach (var role in context.CurrenUserRoles())
-				{
-					if (requiredRole.ToString() == role.ToString())
-					{
-						return PolicyResult.CreateSuccessResult(this);
-					}
-				}
+				const string message = "Access requires one of the following roles: {0}.";
+				var formattedMessage = string.Format(message, GetRoles());
+				return PolicyResult.CreateFailureResult(this, formattedMessage);
 			}
 
-			const string message = "Access requires one of the following roles: {0}.";
-			var formattedMessage = string.Format(message, GetRoles());
-			return PolicyResult.CreateFailureResult(this, formattedMessage);
+			return PolicyResult.CreateSuccessResult(this);
 		}
 
 		public IEnumerable<object> RolesRequired
@@ -65,7 +59,7 @@ namespace FluentSecurity.Policy
 		{
 			unchecked
 			{
-				var hash = 17;
+				var hash = typeof(RequireRolePolicy).GetHashCode();
 				if (RolesRequired != null)
 				{
 					hash = RolesRequired.Aggregate(
