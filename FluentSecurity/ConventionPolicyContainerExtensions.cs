@@ -27,5 +27,11 @@ namespace FluentSecurity
 			conventionPolicyContainer.AddPolicy(new RequireRolePolicy(roles));
 			return conventionPolicyContainer;
 		}
+
+		public static IConventionPolicyContainer RequireAllRoles(this IConventionPolicyContainer policyContainer, params object[] roles)
+		{
+			policyContainer.AddPolicy(new RequireAllRolesPolicy(roles));
+			return policyContainer;
+		}
 	}
 }

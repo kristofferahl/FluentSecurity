@@ -59,6 +59,22 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConventionPolicyContainerExtensionsSpec")]
+	public class When_adding_a_RequireAllRolesPolicy_to_a_conventionpolicycontainer : with_ConventionPolicyContainer
+	{
+		[Test]
+		public void Should_have_a_RequireAllRolesPolicy()
+		{
+			// Act
+			_conventionPolicyContainer.RequireAllRoles(UserRole.Owner);
+
+			// Assert
+			var securityPolicy = _policyContainers[0].GetPolicies().Where(x => x.GetType().Equals(typeof(RequireAllRolesPolicy))).Single();
+			Assert.That(securityPolicy, Is.Not.Null);
+		}
+	}
+
+	[TestFixture]
+	[Category("ConventionPolicyContainerExtensionsSpec")]
 	public class When_adding_a_IgnorePolicy_to_a_conventionpolicycontainer : with_ConventionPolicyContainer
 	{
 		[Test]
