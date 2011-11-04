@@ -12,7 +12,7 @@ namespace FluentSecurity.Policy
 		public RequireAllRolesPolicy(params object[] requiredRoles)
 		{
 			if (requiredRoles == null)
-				throw new ArgumentNullException("Required roles must not be null");
+				throw new ArgumentNullException("requiredRoles", "Required roles must not be null");
 
 			if (requiredRoles.Length == 0)
 				throw new ArgumentException("Required roles must be specified");
@@ -53,6 +53,16 @@ namespace FluentSecurity.Policy
 			if (ReferenceEquals(null, other)) return false;
 			if (RolesRequired.Count() != other.RolesRequired.Count()) return false;
 			return RolesRequired.All(role => other.RolesRequired.Contains(role));
+		}
+
+		public static bool operator ==(RequireAllRolesPolicy left, RequireAllRolesPolicy right)
+		{
+			return Equals(left, right);
+		}
+
+		public static bool operator !=(RequireAllRolesPolicy left, RequireAllRolesPolicy right)
+		{
+			return !Equals(left, right);
 		}
 
 		public override int GetHashCode()

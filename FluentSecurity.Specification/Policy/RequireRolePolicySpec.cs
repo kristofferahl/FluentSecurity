@@ -141,6 +141,38 @@ namespace FluentSecurity.Specification.Policy
 		}
 	}
 
+	[Category("RequireAllRolesPolicySpec")]
+	public class When_doing_tostring_for_a_RequireRolePolicy
+	{
+		[Test]
+		public void Should_return_name_and_role()
+		{
+			// Arrange
+			var roles = new List<object> { "Administrator" }.ToArray();
+			var policy = new RequireRolePolicy(roles);
+
+			// Act
+			var result = policy.ToString();
+
+			// Assert
+			Assert.That(result, Is.EqualTo("FluentSecurity.Policy.RequireRolePolicy (Administrator)"));
+		}
+
+		[Test]
+		public void Should_return_name_and_roles()
+		{
+			// Arrange
+			var roles = new List<object> { "Writer", "Editor", "Administrator" }.ToArray();
+			var policy = new RequireRolePolicy(roles);
+
+			// Act
+			var result = policy.ToString();
+
+			// Assert
+			Assert.That(result, Is.EqualTo("FluentSecurity.Policy.RequireRolePolicy (Writer or Editor or Administrator)"));
+		}
+	}
+
 	[TestFixture]
 	[Category("RequireRolePolicySpec")]
 	public class When_comparing_RequireRolePolicy
@@ -151,10 +183,21 @@ namespace FluentSecurity.Specification.Policy
 			var instance1 = new RequireRolePolicy("Editor");
 			var instance2 = new RequireRolePolicy("Editor");
 			Assert.That(instance1.Equals(instance2), Is.True);
+			Assert.That(instance1 == instance2, Is.True);
+			Assert.That(instance1 != instance2, Is.False);
 
 			var instance3 = new RequireRolePolicy(UserRole.Writer);
 			var instance4 = new RequireRolePolicy(UserRole.Writer);
 			Assert.That(instance3.Equals(instance4), Is.True);
+			Assert.That(instance3 == instance4, Is.True);
+			Assert.That(instance3 != instance4, Is.False);
+		}
+
+		[Test]
+		public void Should_not_be_equal_when_comparing_to_null()
+		{
+			var instance = new RequireRolePolicy("Editor");
+			Assert.That(instance.Equals(null), Is.False);
 		}
 
 		[Test]
@@ -163,10 +206,14 @@ namespace FluentSecurity.Specification.Policy
 			var instance1 = new RequireRolePolicy("Editor");
 			var instance2 = new RequireRolePolicy("Writer");
 			Assert.That(instance1.Equals(instance2), Is.False);
+			Assert.That(instance1 == instance2, Is.False);
+			Assert.That(instance1 != instance2, Is.True);
 
 			var instance3 = new RequireRolePolicy(UserRole.Publisher);
 			var instance4 = new RequireRolePolicy(UserRole.Owner);
 			Assert.That(instance3.Equals(instance4), Is.False);
+			Assert.That(instance3 == instance4, Is.False);
+			Assert.That(instance3 != instance4, Is.True);
 		}
 
 		[Test]
@@ -175,10 +222,14 @@ namespace FluentSecurity.Specification.Policy
 			var instance1 = new RequireRolePolicy("Editor", "Writer");
 			var instance2 = new RequireRolePolicy("Writer");
 			Assert.That(instance1.Equals(instance2), Is.False);
+			Assert.That(instance1 == instance2, Is.False);
+			Assert.That(instance1 != instance2, Is.True);
 
 			var instance3 = new RequireRolePolicy(UserRole.Owner, UserRole.Writer, UserRole.Publisher);
 			var instance4 = new RequireRolePolicy(UserRole.Owner);
 			Assert.That(instance3.Equals(instance4), Is.False);
+			Assert.That(instance3 == instance4, Is.False);
+			Assert.That(instance3 != instance4, Is.True);
 		}
 	}
 
