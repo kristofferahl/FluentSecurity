@@ -1,20 +1,40 @@
 ﻿using System;
+using System.Linq.Expressions;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity.TestHelper.Expectations
 {
-	public class HasTypeExpectation<TSecurityPolicy> : HasTypeExpectation where TSecurityPolicy : ISecurityPolicy
+	public class HasTypeExpectation<TSecurityPolicy> : HasTypeExpectation where TSecurityPolicy : class, ISecurityPolicy
 	{
-		public HasTypeExpectation() : base(typeof(TSecurityPolicy)) {}
+		public Expression<Func<TSecurityPolicy, bool>> PredicateExpression { get; private set; }
+		public Func<TSecurityPolicy, bool> Predicate { get; private set; }
+		
+		public HasTypeExpectation() : base(typeof(TSecurityPolicy), false)
+		{
+			PredicateExpression = securityPolicy => securityPolicy.GetType() == Type;
+			Predicate = PredicateExpression.Compile();
+		}
+
+		public HasTypeExpectation(Expression<Func<TSecurityPolicy, bool>> predicateExpression) : base(typeof(TSecurityPolicy), true)
+		{
+			PredicateExpression = predicateExpression;
+			Predicate = PredicateExpression.Compile();
+		}
+
+		protected override bool EvaluatePredicate(ISecurityPolicy securityPolicy)
+		{
+			var policy = securityPolicy as TSecurityPolicy;
+			return policy != null && Predicate.Invoke(policy);
+		}
+
+		public override string GetPredicateDescription()
+		{
+			return PredicateExpression.ToString();
+		}
 	}
 
-	public class HasTypeExpectation : IExpectation
+	public abstract class HasTypeExpectation : TypeExpectation
 	{
-		public Type Type { get; private set; }
-
-		protected HasTypeExpectation(Type type)
-		{
-			Type = type;
-		}
+		protected HasTypeExpectation(Type type, bool isPredicateExpectation) : base(type, isPredicateExpectation) {}
 	}
 }

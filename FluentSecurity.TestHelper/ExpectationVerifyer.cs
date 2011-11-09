@@ -70,15 +70,15 @@ namespace FluentSecurity.TestHelper
 				return _expectationViolationHandler.Handle(message);
 			}
 
-			if (policyContainer.HasPolicyOfType(expectation.Type) == false)
+			if (policyContainer.HasPolicyMatching(expectation) == false)
 			{
-				const string messageFormat = "Expected policy of type \"{2}\" for controller \"{0}\", action \"{1}\"!";
-				var message = string.Format(messageFormat, policyContainer.ControllerName, policyContainer.ActionName, expectation.Type);
+				const string messageFormat = "Expected policy of type \"{2}\" for controller \"{0}\", action \"{1}\".{3}";
+				var message = string.Format(messageFormat, policyContainer.ControllerName, policyContainer.ActionName, expectation.Type, GetPredicateDescription(expectation));
 				return _expectationViolationHandler.Handle(message);
 			}
 			return ExpectationResult.CreateSuccessResult();
 		}
-
+		
 		private ExpectationResult VerifyHasInstance(IPolicyContainer policyContainer, HasInstanceExpectation expectation, string controllerName, string actionName)
 		{
 			if (expectation == null) return null;
@@ -102,10 +102,10 @@ namespace FluentSecurity.TestHelper
 		private ExpectationResult VerifyDoesNotHaveType(IPolicyContainer policyContainer, DoesNotHaveTypeExpectation expectation)
 		{
 			if (expectation == null) return null;
-			if (policyContainer != null && policyContainer.HasPolicyOfType(expectation.Type))
+			if (policyContainer != null && policyContainer.HasPolicyMatching(expectation))
 			{
-				const string messageFormat = "An unexpected policy of type \"{2}\" was found for controller \"{0}\", action \"{1}\".";
-				var message = string.Format(messageFormat, policyContainer.ControllerName, policyContainer.ActionName, expectation.Type);
+				const string messageFormat = "An unexpected policy of type \"{2}\" was found for controller \"{0}\", action \"{1}\".{3}";
+				var message = string.Format(messageFormat, policyContainer.ControllerName, policyContainer.ActionName, expectation.Type, GetPredicateDescription(expectation));
 				return _expectationViolationHandler.Handle(message);
 			}
 			return ExpectationResult.CreateSuccessResult();
@@ -122,6 +122,20 @@ namespace FluentSecurity.TestHelper
 				return _expectationViolationHandler.Handle(message);
 			}
 			return ExpectationResult.CreateSuccessResult();
+		}
+
+		private static string GetPredicateDescription(TypeExpectation expectation)
+		{
+			if (expectation.IsPredicateExpectation)
+			{
+				return String.Concat(
+					Environment.NewLine,
+					"\t\t",
+					"Predicate: ",
+					expectation.GetPredicateDescription()
+					);
+			}
+			return String.Empty;
 		}
 
 		private void AppendResultOf(ExpectationResult expectationResult)

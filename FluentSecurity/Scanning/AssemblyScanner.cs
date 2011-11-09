@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 
 namespace FluentSecurity.Scanning
@@ -9,6 +10,7 @@ namespace FluentSecurity.Scanning
 	{
 		private readonly List<Assembly> _assemblies = new List<Assembly>();
 		private readonly List<ITypeScanner> _scanners = new List<ITypeScanner>();
+		private readonly IList<Func<Type, bool>> _filters = new List<Func<Type, bool>>();
 
 		public void Assembly(Assembly assembly)
 		{
@@ -51,10 +53,23 @@ namespace FluentSecurity.Scanning
 			With(new TTypeScanner());
 		}
 
+		public void IncludeNamespaceContainingType<T>()
+		{
+			Func<Type, bool> predicate = type =>
+			{
+				var currentNamespace = type.Namespace ?? "";
+				var expectedNamespace = typeof (T).Namespace ?? "";
+				return currentNamespace.StartsWith(expectedNamespace);
+			};
+			_filters.Add(predicate);
+		}
+
 		public IEnumerable<Type> Scan()
 		{
 			var results = new List<Type>();
-			_scanners.Each(scanner => scanner.Scan(_assemblies).Each(results.Add));
+			_scanners.Each(scanner => scanner.Scan(_assemblies).Where(type =>
+				_filters.Any() == false || _filters.Any(filter => filter.Invoke(type))).Each(results.Add)
+				);
 			return results;
 		}
 	}

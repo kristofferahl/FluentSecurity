@@ -97,7 +97,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ExtensionsSpecs")]
-	public class When_getting_the_are_name_from_route_base
+	public class When_getting_the_area_name_from_route_base
 	{
 		[Test]
 		public void Should_return_the_are_name_from_data_tokens()

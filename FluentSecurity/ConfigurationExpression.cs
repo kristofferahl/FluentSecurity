@@ -96,6 +96,30 @@ namespace FluentSecurity
 			return ForAllControllersInAssembly(assembly);
 		}
 
+		public IConventionPolicyContainer ForAllControllersInNamespaceContainingType<TType>()
+		{
+			var assembly = typeof (TType).Assembly;
+
+			var assemblyScanner = new AssemblyScanner();
+			assemblyScanner.Assembly(assembly);
+			assemblyScanner.With<ControllerTypeScanner>();
+			assemblyScanner.IncludeNamespaceContainingType<TType>();
+			var controllerTypes = assemblyScanner.Scan();
+
+			var policyContainers = new List<IPolicyContainer>();
+			foreach (var controllerType in controllerTypes)
+			{
+				var controllerName = controllerType.GetControllerName();
+				var actionMethods = controllerType.GetActionMethods();
+
+				policyContainers.AddRange(
+					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+					);
+			}
+
+			return new ConventionPolicyContainer(policyContainers);
+		}
+
 		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
 		{
 			IPolicyContainer policyContainer;
