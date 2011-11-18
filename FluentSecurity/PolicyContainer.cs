@@ -48,6 +48,22 @@ namespace FluentSecurity
 			return this;
 		}
 
+		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
+		{
+			if (predicate == null)
+				predicate = x => true;
+
+			var matchingPolicies = _policies.Where(p =>
+				p is TSecurityPolicy &&
+				predicate.Invoke((TSecurityPolicy)p)
+				).ToList();
+			
+			foreach (var matchingPolicy in matchingPolicies)
+				_policies.Remove(matchingPolicy);
+
+			return this;
+		}
+
 		public IEnumerable<ISecurityPolicy> GetPolicies()
 		{
 			return new ReadOnlyCollection<ISecurityPolicy>(_policies);
