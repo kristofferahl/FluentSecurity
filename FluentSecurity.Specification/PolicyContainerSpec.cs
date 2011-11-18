@@ -328,6 +328,57 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_stop_on_first_violation_and_return_1_result()
+		{
+			// Arrange
+			PolicyExecutionMode.StopOnFirstViolation(true);
+
+			var context = TestDataFactory.CreateSecurityContext(false);
+
+			var firstPolicy = new Mock<ISecurityPolicy>();
+			firstPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(firstPolicy.Object, "Failure occured"));
+
+			var secondPolicy = new Mock<ISecurityPolicy>();
+			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(secondPolicy.Object));
+
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object);
+
+			// Act
+			var results = policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(results.Count(), Is.EqualTo(1));
+			Assert.That(results.Single().ViolationOccured, Is.True);
+		}
+
+		[Test]
+		public void Should_not_stop_on_first_violation_and_return_2_results()
+		{
+			// Arrange
+			PolicyExecutionMode.StopOnFirstViolation(false);
+
+			var context = TestDataFactory.CreateSecurityContext(false);
+
+			var firstPolicy = new Mock<ISecurityPolicy>();
+			firstPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(firstPolicy.Object, "Failure occured"));
+
+			var secondPolicy = new Mock<ISecurityPolicy>();
+			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(secondPolicy.Object));
+
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object);
+
+			// Act
+			var results = policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(results.Count(), Is.EqualTo(2));
+			Assert.That(results.First().ViolationOccured, Is.True);
+			Assert.That(results.Last().ViolationOccured, Is.False);
+		}
+
+		[Test]
 		public void Should_throw_ConfigurationErrorsException_when_a_container_has_no_policies()
 		{
 			// Arrange
