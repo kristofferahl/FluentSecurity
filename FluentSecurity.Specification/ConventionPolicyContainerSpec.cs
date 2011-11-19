@@ -14,17 +14,17 @@ namespace FluentSecurity.Specification
 	public class When_I_create_a_conventionpolicycontainer
 	{
 		[Test]
-		public void Should_throw_ArgumentException_when_policycontainers_is_null()
+		public void Should_throw_ArgumentNullException_when_policycontainers_is_null()
 		{
-			Assert.Throws<ArgumentException>(() =>
+			Assert.Throws<ArgumentNullException>(() =>
 				new ConventionPolicyContainer(null)
 			);
 		}
 
 		[Test]
-		public void Should_throw_ArgumentException_when_policycontainers_is_empty()
+		public void Should_not_throw_when_policycontainers_is_empty()
 		{
-			Assert.Throws<ArgumentException>(() =>
+			Assert.DoesNotThrow(() =>
 				new ConventionPolicyContainer(new List<IPolicyContainer>())
 			);
 		}

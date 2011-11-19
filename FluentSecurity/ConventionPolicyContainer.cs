@@ -10,8 +10,8 @@ namespace FluentSecurity
 
 		public ConventionPolicyContainer(IList<IPolicyContainer> policyContainers)
 		{
-			if (policyContainers == null || policyContainers.Count == 0)
-				throw new ArgumentException("A list of policycontainers was not provided", "policyContainers");
+			if (policyContainers == null)
+				throw new ArgumentNullException("policyContainers", "A list of policycontainers was not provided");
 			
 			_policyContainers = policyContainers;
 		}

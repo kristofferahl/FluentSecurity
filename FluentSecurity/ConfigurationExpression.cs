@@ -31,21 +31,30 @@ namespace FluentSecurity
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
 
+		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
+		{
+			IPolicyContainer policyContainer;
+
+			var existingContainer = _itemValues.GetContainerFor(controllerName, actionName);
+			if (existingContainer != null)
+			{
+				policyContainer = existingContainer;
+			}
+			else
+			{
+				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
+				_itemValues.Add(policyContainer);
+			}
+
+			return policyContainer;
+		}
+
 		public IConventionPolicyContainer For<TController>() where TController : Controller
 		{
 			var controllerType = typeof(TController);
-			var controllerName = controllerType.GetControllerName();
-			var actionMethods = controllerType.GetActionMethods();
+			var controllerTypes = new[] { controllerType };
 
-			var policyContainers = new List<IPolicyContainer>();
-			foreach (var actionMethod in actionMethods)
-			{
-				var actionName = actionMethod.Name;
-				var policyContainer = AddPolicyContainerFor(controllerName, actionName);
-				policyContainers.Add(policyContainer);
-			}
-
-			return new ConventionPolicyContainer(policyContainers);
+			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
 		public IConventionPolicyContainer ForAllControllers()
@@ -55,18 +64,7 @@ namespace FluentSecurity
 			assemblyScanner.With<ControllerTypeScanner>();
 			var controllerTypes = assemblyScanner.Scan();
 
-			var policyContainers = new List<IPolicyContainer>();
-			foreach (var controllerType in controllerTypes)
-			{
-				var controllerName = controllerType.GetControllerName();
-				var actionMethods = controllerType.GetActionMethods();
-
-				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
-					);
-			}
-
-			return new ConventionPolicyContainer(policyContainers);
+			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
 		public IConventionPolicyContainer ForAllControllersInAssembly(Assembly assembly)
@@ -76,18 +74,7 @@ namespace FluentSecurity
 			assemblyScanner.With<ControllerTypeScanner>();
 			var controllerTypes = assemblyScanner.Scan();
 
-			var policyContainers = new List<IPolicyContainer>();
-			foreach (var controllerType in controllerTypes)
-			{
-				var controllerName = controllerType.GetControllerName();
-				var actionMethods = controllerType.GetActionMethods();
-
-				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
-					);
-			}
-
-			return new ConventionPolicyContainer(policyContainers);
+			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
 		public IConventionPolicyContainer ForAllControllersInAssemblyContainingType<TType>()
@@ -106,6 +93,11 @@ namespace FluentSecurity
 			assemblyScanner.IncludeNamespaceContainingType<TType>();
 			var controllerTypes = assemblyScanner.Scan();
 
+			return CreateConventionPolicyContainerFor(controllerTypes);
+		}
+
+		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes)
+		{
 			var policyContainers = new List<IPolicyContainer>();
 			foreach (var controllerType in controllerTypes)
 			{
@@ -118,24 +110,6 @@ namespace FluentSecurity
 			}
 
 			return new ConventionPolicyContainer(policyContainers);
-		}
-
-		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
-		{
-			IPolicyContainer policyContainer;
-
-			var existingContainer = _itemValues.GetContainerFor(controllerName, actionName);
-			if (existingContainer != null)
-			{
-				policyContainer = existingContainer;
-			}
-			else
-			{
-				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-				_itemValues.Add(policyContainer);
-			}
-
-			return policyContainer;
 		}
 
 		[Obsolete("Will be removed for the 2.0 release")]
