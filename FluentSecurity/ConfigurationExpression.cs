@@ -138,6 +138,7 @@ namespace FluentSecurity
 			return policyContainer;
 		}
 
+		[Obsolete("Will be removed for the 2.0 release")]
 		public void RemovePoliciesFor<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
 		{
 			var controllerName = typeof(TController).GetControllerName();
