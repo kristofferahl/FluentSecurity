@@ -12,35 +12,17 @@ namespace FluentSecurity
 			if (policies == null) throw new ArgumentNullException("policies");
 
 			if (securityPolicyToAdd is IgnorePolicy)
-				PrepareForIgnorePolicy(policies);
+				policies.Clear();
 			else if (securityPolicyToAdd is DenyAnonymousAccessPolicy)
-				PrepareForDenyAnonymousAccessPolicy(policies);
+				policies.Clear();
 			else if (securityPolicyToAdd is DenyAuthenticatedAccessPolicy)
-				PrepareForDenyAuthenticatedAccessPolicy(policies);
+				policies.Clear();
 			else if (securityPolicyToAdd is RequireRolePolicy)
-				PrepareForRequireRolePolicy(policies);
+				policies.Clear();
+			else if (securityPolicyToAdd is RequireAllRolesPolicy)
+				policies.Clear();
 			
 			policies.Add(securityPolicyToAdd);
-		}
-
-		private static void PrepareForRequireRolePolicy(IList<ISecurityPolicy> policies)
-		{
-			policies.Clear();
-		}
-
-		private static void PrepareForIgnorePolicy(IList<ISecurityPolicy> policies)
-		{
-			policies.Clear();
-		}
-
-		private static void PrepareForDenyAnonymousAccessPolicy(IList<ISecurityPolicy> policies)
-		{
-			policies.Clear();
-		}
-
-		private static void PrepareForDenyAuthenticatedAccessPolicy(IList<ISecurityPolicy> policies)
-		{
-			policies.Clear();
 		}
 	}
 }
