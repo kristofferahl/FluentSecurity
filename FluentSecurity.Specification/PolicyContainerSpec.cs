@@ -158,6 +158,105 @@ namespace FluentSecurity.Specification
 	}
 
 	[TestFixture]
+	[Category("PolicContainerExtensionsSpec")]
+	public class When_removing_policies_from_a_policy_container
+	{
+		private PolicyContainer _policyContainer;
+		private readonly Policy1 _policy1 = new Policy1();
+		private readonly Policy2 _policy2 = new Policy2();
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_policyContainer = TestDataFactory.CreateValidPolicyContainer();
+			_policyContainer
+				.AddPolicy(_policy1)
+				.AddPolicy(_policy2);
+		}
+
+		[Test]
+		public void Should_remove_policy1()
+		{
+			// Act
+			_policyContainer.RemovePolicy<Policy1>();
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().Single(), Is.EqualTo(_policy2));
+		}
+
+		[Test]
+		public void Should_remove_policy2()
+		{
+			// Act
+			_policyContainer.RemovePolicy<Policy2>();
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().Single(), Is.EqualTo(_policy1));
+		}
+
+		[Test]
+		public void Should_remove_policy_matching_predicate()
+		{
+			// Act
+			_policyContainer.RemovePolicy<Policy1>(p => p.Name == "Policy1");
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().Single(), Is.EqualTo(_policy2));
+		}
+
+		[Test]
+		public void Should_not_remove_policies_not_matching_predicate()
+		{
+			// Act
+			_policyContainer.RemovePolicy<Policy1>(p => p.Name == "X");
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Should_remove_all_policies()
+		{
+			// Act
+			_policyContainer.RemovePolicy<ISecurityPolicy>();
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().Any(), Is.False);
+		}
+
+		[Test]
+		public void Should_not_remove_any_policies()
+		{
+			// Act
+			_policyContainer.RemovePolicy<DenyAnonymousAccessPolicy>();
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(2));
+			Assert.That(_policyContainer.GetPolicies().First(), Is.EqualTo(_policy1));
+			Assert.That(_policyContainer.GetPolicies().Last(), Is.EqualTo(_policy2));
+		}
+
+		public class Policy1 : ISecurityPolicy
+		{
+			public PolicyResult Enforce(ISecurityContext context)
+			{
+				return PolicyResult.CreateSuccessResult(this);
+			}
+
+			public string Name = "Policy1";
+		}
+
+		public class Policy2 : ISecurityPolicy
+		{
+			public PolicyResult Enforce(ISecurityContext context)
+			{
+				return PolicyResult.CreateSuccessResult(this);
+			}
+		}
+	}
+	
+	[TestFixture]
 	[Category("PolicyContainerSpec")]
 	public class When_encforcing_policies
 	{
@@ -226,6 +325,57 @@ namespace FluentSecurity.Specification
 			Assert.That(results.Count(), Is.EqualTo(1));
 			Assert.That(results.Single().ViolationOccured, Is.True);
 			Assert.That(results.Single().Message, Is.EqualTo(failureOccured));
+		}
+
+		[Test]
+		public void Should_stop_on_first_violation_and_return_1_result()
+		{
+			// Arrange
+			PolicyExecutionMode.StopOnFirstViolation(true);
+
+			var context = TestDataFactory.CreateSecurityContext(false);
+
+			var firstPolicy = new Mock<ISecurityPolicy>();
+			firstPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(firstPolicy.Object, "Failure occured"));
+
+			var secondPolicy = new Mock<ISecurityPolicy>();
+			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(secondPolicy.Object));
+
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object);
+
+			// Act
+			var results = policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(results.Count(), Is.EqualTo(1));
+			Assert.That(results.Single().ViolationOccured, Is.True);
+		}
+
+		[Test]
+		public void Should_not_stop_on_first_violation_and_return_2_results()
+		{
+			// Arrange
+			PolicyExecutionMode.StopOnFirstViolation(false);
+
+			var context = TestDataFactory.CreateSecurityContext(false);
+
+			var firstPolicy = new Mock<ISecurityPolicy>();
+			firstPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(firstPolicy.Object, "Failure occured"));
+
+			var secondPolicy = new Mock<ISecurityPolicy>();
+			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(secondPolicy.Object));
+
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object);
+
+			// Act
+			var results = policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(results.Count(), Is.EqualTo(2));
+			Assert.That(results.First().ViolationOccured, Is.True);
+			Assert.That(results.Last().ViolationOccured, Is.False);
 		}
 
 		[Test]

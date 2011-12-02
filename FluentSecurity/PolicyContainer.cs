@@ -38,12 +38,38 @@ namespace FluentSecurity
 			if (_policies.Count.Equals(0))
 				throw ExceptionFactory.CreateConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
-			return _policies.Select(policy => policy.Enforce(context)).ToArray();
+			var results = new List<PolicyResult>();
+			foreach (var policy in _policies)
+			{
+				var result = policy.Enforce(context);
+				results.Add(result);
+
+				if (result.ViolationOccured && PolicyExecutionMode.ShouldStopOnFirstViolation)
+					break;
+			}
+
+			return results.AsReadOnly();
 		}
 
 		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
 		{
 			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
+
+			return this;
+		}
+
+		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
+		{
+			if (predicate == null)
+				predicate = x => true;
+
+			var matchingPolicies = _policies.Where(p =>
+				p is TSecurityPolicy &&
+				predicate.Invoke((TSecurityPolicy)p)
+				).ToList();
+			
+			foreach (var matchingPolicy in matchingPolicies)
+				_policies.Remove(matchingPolicy);
 
 			return this;
 		}

@@ -10,7 +10,8 @@ namespace FluentSecurity
 
 		public ConventionPolicyContainer(IList<IPolicyContainer> policyContainers)
 		{
-			if (policyContainers == null || policyContainers.Count == 0) throw new ArgumentException("A list of policycontainers was not provided", "policyContainers");
+			if (policyContainers == null)
+				throw new ArgumentNullException("policyContainers", "A list of policycontainers was not provided");
 			
 			_policyContainers = policyContainers;
 		}
@@ -18,9 +19,16 @@ namespace FluentSecurity
 		public IConventionPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
 		{
 			foreach (var policyContainer in _policyContainers)
-			{
 				policyContainer.AddPolicy(securityPolicy);
-			}
+			
+			return this;
+		}
+
+		public IConventionPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
+		{
+			foreach (var policyContainer in _policyContainers)
+				policyContainer.RemovePolicy(predicate);
+
 			return this;
 		}
 	}
