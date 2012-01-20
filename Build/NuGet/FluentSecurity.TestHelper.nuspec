@@ -16,7 +16,7 @@
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Artifacts\FluentSecurity\FluentSecurity.TestHelper.dll" target="lib" />
+		<file src="Artifacts\FluentSecurity\FluentSecurity.TestHelper.dll" target="lib\net40" />
 		<file src="Artifacts\FluentSecurity\**\*.txt" />
 	</files>
 </package>
