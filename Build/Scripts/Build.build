@@ -37,7 +37,7 @@
 		Properties used when creating the common assembly info file
 	-->
 	<property name="project.version.number" value="1.4.0" />
-	<property name="project.version.label" value="1.4.0" /><!-- Example: 1.0.0Beta1 -->
+	<property name="project.version.label" value="1.4.0" /><!-- Example: 1.0.0-beta1 -->
 	<property name="project.config" value="release" />
 	
 	<!-- PROJECTS TO BUILD
@@ -104,7 +104,7 @@
 	<target name="AssemblyInfo" description="Create CommonAssemblyInfo">
 	
 		<property name="assembly-version" value="${project.version.number}.0000" />
-		<property name="file-version" value="${project.version.number}.0000" />
+		<property name="assembly-file-version" value="${project.version.number}.0000" />
 
 		<asminfo output="..\..\CommonAssemblyInfo.cs" language="CSharp" verbose="${verbose}">
 			<imports>
@@ -115,13 +115,13 @@
 			<attributes>
 				<attribute type="ComVisibleAttribute" value="false" />
 				<attribute type="AssemblyVersionAttribute" value="${assembly-version}" />
-				<attribute type="AssemblyCopyrightAttribute" value="Copyright (c) 2009-2011, Kristoffer Ahl" />
+				<attribute type="AssemblyCopyrightAttribute" value="Copyright (c) 2009-2012, Kristoffer Ahl" />
 				<attribute type="AssemblyProductAttribute" value="FluentSecurity" />
 				<attribute type="AssemblyTitleAttribute" value="FluentSecurity" />
 				<attribute type="AssemblyCompanyAttribute" value="" />
 				<attribute type="AssemblyConfigurationAttribute" value="${project.config}" />
-				<attribute type="AssemblyInformationalVersionAttribute" value="${file-version}" />
-				<attribute type="AssemblyFileVersionAttribute" value="${file-version}" />
+				<attribute type="AssemblyInformationalVersionAttribute" value="${project.version.label}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${assembly-file-version}" />
 			</attributes>
 			<references>
 				<include name="System.dll" />
@@ -237,7 +237,7 @@
 			</fileset>
 			<filterchain>
 				<replacetokens>
-					<token key="CURRENT-VERSION" value="${project.version.number}" />
+					<token key="CURRENT-VERSION" value="${project.version.label}" />
 				</replacetokens>
 			</filterchain>
 		</copy>
