@@ -64,7 +64,7 @@
 	<!-- NUGET CONSOLE
 		Path to the NuGet console.
 	-->
-	<property name="nuget.console" value="${dir.packages}NuGet.CommandLine.1.4.20615.182\tools\NuGet.exe"/>
+	<property name="nuget.console" value="${dir.packages}NuGet.CommandLine.1.6.0\tools\NuGet.exe"/>
 	
 	
 	<!-- VERBOSE
