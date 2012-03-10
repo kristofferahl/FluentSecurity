@@ -1,0 +1,4 @@
+Release notes for FluentSecurity 2.0
+
+- (Removed) Removed RemovePoliciesFor from ConfigurationExpression. Use RemovePolicy on IPolicyContainer and IConventionPolicyContainer.
+- (Removed) Removed PolicyViolationException<TSecurityPolicy> as exceptions should be created based on PolicyResult.

@@ -33,7 +33,9 @@ namespace FluentSecurity.Specification
 		public void Should_return_handler_for_DenyAnonymousAccessPolicy()
 		{
 			// Arrange
-			var exception = new PolicyViolationException<DenyAnonymousAccessPolicy>("Anonymous access denied");
+			var policy = new DenyAnonymousAccessPolicy();
+			var policyResult = PolicyResult.CreateFailureResult(policy, "Anonymous access denied");
+			var exception = new PolicyViolationException(policyResult);
 
 			// Act
 			var handler = _violationHandler.FindHandlerFor(exception);
@@ -46,7 +48,9 @@ namespace FluentSecurity.Specification
 		public void Should_return_handler_for_DenyAuthenticatedAccessPolicy()
 		{
 			// Arrange
-			var exception = new PolicyViolationException<DenyAuthenticatedAccessPolicy>("Authenticated access denied");
+			var policy = new DenyAuthenticatedAccessPolicy();
+			var policyResult = PolicyResult.CreateFailureResult(policy, "Authenticated access denied");
+			var exception = new PolicyViolationException(policyResult);
 
 			// Act
 			var handler = _violationHandler.FindHandlerFor(exception);
@@ -59,7 +63,9 @@ namespace FluentSecurity.Specification
 		public void Should_not_return_handler_for_RequireRolePolicy()
 		{
 			// Arrange
-			var exception = new PolicyViolationException<RequireRolePolicy>("Access denied");
+			var policy = new RequireRolePolicy("Role");
+			var policyResult = PolicyResult.CreateFailureResult(policy, "Access denied");
+			var exception = new PolicyViolationException(policyResult);
 
 			// Act
 			var handler = _violationHandler.FindHandlerFor(exception);
