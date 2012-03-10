@@ -43,9 +43,8 @@ namespace FluentSecurity
 			{
 				var result = policy.Enforce(context);
 				results.Add(result);
-
-				if (result.ViolationOccured && PolicyExecutionMode.ShouldStopOnFirstViolation)
-					break;
+				
+				if (result.ViolationOccured) break;
 			}
 
 			return results.AsReadOnly();

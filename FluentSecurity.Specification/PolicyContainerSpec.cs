@@ -331,8 +331,6 @@ namespace FluentSecurity.Specification
 		public void Should_stop_on_first_violation_and_return_1_result()
 		{
 			// Arrange
-			PolicyExecutionMode.StopOnFirstViolation(true);
-
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			var firstPolicy = new Mock<ISecurityPolicy>();
@@ -353,29 +351,30 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_not_stop_on_first_violation_and_return_2_results()
+		public void Should_stop_on_first_violation_and_return_2_results()
 		{
 			// Arrange
-			PolicyExecutionMode.StopOnFirstViolation(false);
-
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			var firstPolicy = new Mock<ISecurityPolicy>();
-			firstPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(firstPolicy.Object, "Failure occured"));
+			firstPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(firstPolicy.Object));
 
 			var secondPolicy = new Mock<ISecurityPolicy>();
-			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(secondPolicy.Object));
+			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(secondPolicy.Object, "Failure occured"));
+
+			var thirdPolicy = new Mock<ISecurityPolicy>();
+			thirdPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(thirdPolicy.Object));
 
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object);
+			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object).AddPolicy(thirdPolicy.Object);
 
 			// Act
 			var results = policyContainer.EnforcePolicies(context);
 
 			// Assert
 			Assert.That(results.Count(), Is.EqualTo(2));
-			Assert.That(results.First().ViolationOccured, Is.True);
-			Assert.That(results.Last().ViolationOccured, Is.False);
+			Assert.That(results.First().ViolationOccured, Is.False);
+			Assert.That(results.Last().ViolationOccured, Is.True);
 		}
 
 		[Test]
@@ -395,6 +394,7 @@ namespace FluentSecurity.Specification
 		{
 			public PolicyResult Enforce(ISecurityContext context)
 			{
+				// NOTE: OK to leave like this as tests depends on it.
 				var authenticated = context.CurrenUserAuthenticated();
 				var roles = context.CurrenUserRoles();
 				return PolicyResult.CreateSuccessResult(this);

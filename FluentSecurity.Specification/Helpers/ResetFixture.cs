@@ -9,7 +9,6 @@ namespace FluentSecurity.Specification // Do not change the namespace
 		[SetUp]
 		public void Reset()
 		{
-			PolicyExecutionMode.StopOnFirstViolation(false);
 			ServiceLocator.Reset();
 			ExceptionFactory.Reset();
 		}
