@@ -5,7 +5,7 @@
 		<version>@CURRENT-VERSION@</version>
 		<authors>Kristoffer Ahl</authors>
 		<owners>Kristoffer Ahl</owners>
-		<projectUrl>https://github.com/kristofferahl/FluentSecurity</projectUrl>
+		<projectUrl>http://www.fluentsecurity.net/</projectUrl>
 		<licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<iconUrl>https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-32x32.png</iconUrl>
