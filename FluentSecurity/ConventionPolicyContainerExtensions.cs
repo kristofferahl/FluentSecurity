@@ -7,6 +7,12 @@ namespace FluentSecurity
 {
 	public static class ConventionPolicyContainerExtensions
 	{
+		public static IConventionPolicyContainer AllowAny(this IConventionPolicyContainer conventionPolicyContainer)
+		{
+			conventionPolicyContainer.AddPolicy(new IgnorePolicy());
+			return conventionPolicyContainer;
+		}
+
 		public static IConventionPolicyContainer DelegatePolicy(this IConventionPolicyContainer policyContainer, string uniqueName, Func<DelegateSecurityContext, PolicyResult> policyDelegate, Func<PolicyViolationException, ActionResult> violationHandlerDelegate = null)
 		{
 			policyContainer.AddPolicy(new DelegatePolicy(uniqueName, policyDelegate, violationHandlerDelegate));

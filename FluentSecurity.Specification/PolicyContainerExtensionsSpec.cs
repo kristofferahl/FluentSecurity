@@ -155,4 +155,23 @@ namespace FluentSecurity.Specification
 			Assert.That(securityPolicy, Is.Not.Null);
 		}
 	}
+
+	[TestFixture]
+	[Category("PolicyContainerExtensionsSpec")]
+	public class When_adding_a_IgnorePolicy_to_a_policycontainer_using_AllowAny
+	{
+		[Test]
+		public void Should_have_a_IgnorePolicy()
+		{
+			// Arrange
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
+
+			// Act
+			policyContainer.AllowAny();
+
+			// Assert
+			var securityPolicy = policyContainer.GetPolicies().Where(x => x.GetType().Equals(typeof(IgnorePolicy))).Single();
+			Assert.That(securityPolicy, Is.Not.Null);
+		}
+	}
 }

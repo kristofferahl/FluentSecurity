@@ -144,6 +144,24 @@ namespace FluentSecurity.Specification
 		}
 	}
 
+	[TestFixture]
+	[Category("ConventionPolicyContainerExtensionsSpec")]
+	public class When_adding_a_IgnorePolicy_to_a_conventionpolicycontainer_using_AllowAny : with_ConventionPolicyContainer
+	{
+		[Test]
+		public void Should_have_a_IgnorePolicy()
+		{
+			// Arrange
+
+			// Act
+			_conventionPolicyContainer.AllowAny();
+
+			// Assert
+			var securityPolicy = _policyContainers[0].GetPolicies().Where(x => x.GetType().Equals(typeof(IgnorePolicy))).Single();
+			Assert.That(securityPolicy, Is.Not.Null);
+		}
+	}
+
 	public abstract class with_ConventionPolicyContainer
 	{
 		protected ConventionPolicyContainer _conventionPolicyContainer;
