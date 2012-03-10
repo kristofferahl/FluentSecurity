@@ -112,19 +112,6 @@ namespace FluentSecurity
 			return new ConventionPolicyContainer(policyContainers);
 		}
 
-		[Obsolete("Will be removed for the 2.0 release")]
-		public void RemovePoliciesFor<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
-		{
-			var controllerName = typeof(TController).GetControllerName();
-			var actionName = actionExpression.GetActionName();
-
-			var policyContainer = _itemValues.GetContainerFor(controllerName, actionName);
-			if (policyContainer != null)
-			{
-				_itemValues.Remove(policyContainer);
-			}
-		}
-
 		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)
 		{
 			if (isAuthenticatedFunction == null)

@@ -259,56 +259,6 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
-	public class When_removing_policies_for_Blog_AddPost
-	{
-		private ConfigurationExpression _configurationExpression;
-		private IPolicyContainer _addPostPolicyContainer;
-
-		[SetUp]
-		public void SetUp()
-		{
-			// Arrange
-			_configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
-			_configurationExpression.For<BlogController>(x => x.Index());
-			_configurationExpression.For<BlogController>(x => x.AddPost());
-
-			_addPostPolicyContainer = _configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "AddPost");
-
-			// Act
-			_configurationExpression.RemovePoliciesFor<BlogController>(x => x.AddPost());
-		}
-
-		[Test]
-		public void Should_have_1_policycontainer()
-		{
-			// Assert
-			Assert.That(_configurationExpression.ToList().Count, Is.EqualTo(1));
-		}
-
-		[Test]
-		public void Should_have_policycontainer_for_Blog_Index()
-		{
-			// Assert
-			Assert.That(_configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index"), Is.Not.Null);
-		}
-
-		[Test]
-		public void Should_not_have_policycontainer_for_Blog_AddPost()
-		{
-			// Assert
-			Assert.That(_configurationExpression.Contains(_addPostPolicyContainer), Is.False);
-		}
-
-		[Test]
-		public void Shoud_return_null_when_getting_a_policycontainer_for_Blog_AddPost()
-		{
-			// Assert
-			Assert.That(_configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "AddPost"), Is.Null);
-		}
-	}
-
-	[TestFixture]
-	[Category("ConfigurationExpressionSpec")]
 	public class When_I_pass_null_to_GetAuthenticationStatusFrom
 	{
 		[Test]

@@ -190,44 +190,4 @@ namespace FluentSecurity.Specification
 			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
 		}
 	}
-
-	[TestFixture]
-	[Category("SecurityConfiguratorSpec")]
-	public class When_I_remove_policies_for_Blog_Index
-	{
-		private IEnumerable<IPolicyContainer> _policyContainers;
-
-		[SetUp]
-		public void SetUp()
-		{
-			// Arrange
-			SecurityConfigurator.Reset();
-
-			// Act
-			SecurityConfigurator.Configure(configuration =>
-			{
-				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
-				configuration.For<BlogController>(x => x.Index());
-				configuration.For<BlogController>(x => x.AddPost());
-				configuration.RemovePoliciesFor<BlogController>(x => x.Index());
-			});
-
-			_policyContainers = SecurityConfiguration.Current.PolicyContainers;
-		}
-
-		[Test]
-		public void Should_have_1_policycontainer()
-		{
-			// Assert
-			Assert.That(_policyContainers.Count(), Is.EqualTo(1));
-		}
-
-		[Test]
-		public void Should_not_have_policycontainer_for_Blog_Index()
-		{
-			// Assert
-			var container = _policyContainers.GetContainerFor(NameHelper<BlogController>.Controller(), "Index");
-			Assert.That(container, Is.Null);
-		}
-	}
 }
