@@ -118,6 +118,7 @@
     <Compile Include="ServiceLocation\IContainer.cs" />
     <Compile Include="ServiceLocation\IContainerSource.cs" />
     <Compile Include="ServiceLocation\LifeCycles\HttpContextLifecycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HttpSessionLifecycle.cs" />
     <Compile Include="ServiceLocation\LifeCycles\HybridHttpContextLifecycle.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ILifecycle.cs" />
     <Compile Include="ServiceLocation\LifeCycles\IObjectCache.cs" />
