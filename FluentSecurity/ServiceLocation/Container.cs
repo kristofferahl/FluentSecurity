@@ -11,9 +11,9 @@ namespace FluentSecurity.ServiceLocation
 		private IContainerSource _primarySource;
 		private readonly IList<RegisteredObject> _registeredObjects = new List<RegisteredObject>();
 
-		public void Register<TTypeToResolve>(Func<IContainer, object> instanceExpression, LifeCycle lifeCycle)
+		public void Register<TTypeToResolve>(Func<IContainer, object> instanceExpression, Lifecycle lifecycle)
 		{
-			var registeredObject = new RegisteredObject(typeof(TTypeToResolve), instanceExpression, lifeCycle);
+			var registeredObject = new RegisteredObject(typeof(TTypeToResolve), instanceExpression, lifecycle);
 			_registeredObjects.Add(registeredObject);
 		}
 
@@ -78,10 +78,16 @@ namespace FluentSecurity.ServiceLocation
 
 		private object GetInstance(RegisteredObject registeredObject)
 		{
-			if (registeredObject.Instance == null || registeredObject.LifeCycle == LifeCycle.Transient)
-				registeredObject.CreateInstance(this);
+			var lifecycleCache = registeredObject.Lifecycle.Get().FindCache();
+			var instance = lifecycleCache.Get(registeredObject.InstanceKey);
+			
+			if (instance == null)
+			{
+				instance = registeredObject.CreateInstance(this);
+				lifecycleCache.Set(registeredObject.InstanceKey, instance);
+			}
 
-			return registeredObject.Instance;
+			return instance;
 		}
 	}
 }
