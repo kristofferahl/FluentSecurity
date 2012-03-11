@@ -41,10 +41,10 @@ namespace FluentSecurity.Specification.ServiceLocation
 		}
 
 		[Test]
-		public void Should_have_single_transient_instance_of_ISecurityHandler()
+		public void Should_have_single_singleton_instance_of_ISecurityHandler()
 		{
 			// Assert
-			VerifyHasOneTransientOf<ISecurityHandler, SecurityHandler>();
+			VerifyHasOneSingletonOf<ISecurityHandler, SecurityHandler>();
 		}
 
 		[Test]
@@ -76,7 +76,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		}
 
 		[Test]
-		public void Should_have_single_singleton_instance_of_IRequestDescription()
+		public void Should_have_single_transient_instance_of_IRequestDescription()
 		{
 			// Arrange
 			HttpContextRequestDescription.HttpContextProvider = () => MvcMockHelpers.FakeHttpContext();

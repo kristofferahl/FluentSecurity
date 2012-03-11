@@ -117,9 +117,20 @@
     <Compile Include="ExceptionPolicyViolationHandler.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />
     <Compile Include="ServiceLocation\IContainerSource.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HttpContextLifecycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HttpSessionLifecycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HybridHttpContextLifecycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\ILifecycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\IObjectCache.cs" />
     <Compile Include="ServiceLocation\LifeCycle.cs" />
+    <Compile Include="ServiceLocation\LifecycleExtensions.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\NullObjectCache.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\ObjectCache.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycle.cs" />
     <Compile Include="ServiceLocation\RegisteredObject.cs" />
     <Compile Include="ServiceLocation\ServiceLocator.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\SingletonLifecycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\TransientLifecycle.cs" />
     <Compile Include="ServiceLocation\TypeNotRegisteredException.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +150,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

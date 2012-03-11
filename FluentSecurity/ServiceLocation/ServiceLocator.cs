@@ -13,17 +13,17 @@ namespace FluentSecurity.ServiceLocation
 			IContainer container = new Container();
 			
 			container.Register<ISecurityConfiguration>(ctx => SecurityConfiguration.Current);
-			container.Register<ISecurityHandler>(ctx => new SecurityHandler());
+			container.Register<ISecurityHandler>(ctx => new SecurityHandler(), Lifecycle.Singleton);
 			
 			container.Register<ISecurityContext>(ctx => SecurityContext.CreateFrom(ctx.Resolve<ISecurityConfiguration>()));
 
-			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), LifeCycle.Singleton);
+			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), Lifecycle.Singleton);
 
 			container.Register<IPolicyViolationHandlerSelector>(ctx => new PolicyViolationHandlerSelector(
 				ctx.ResolveAll<IPolicyViolationHandler>()
 				));
 
-			container.Register<IWhatDoIHaveBuilder>(ctx => new DefaultWhatDoIHaveBuilder(), LifeCycle.Singleton);
+			container.Register<IWhatDoIHaveBuilder>(ctx => new DefaultWhatDoIHaveBuilder(), Lifecycle.Singleton);
 
 			container.Register<IRequestDescription>(ctx => new HttpContextRequestDescription());
 

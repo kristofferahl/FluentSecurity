@@ -32,7 +32,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Arrange
 			IContainer container = new Container();
-			container.Register<ITypeToResolve>(ctx => new ConcreteType(), LifeCycle.Singleton);
+			container.Register<ITypeToResolve>(ctx => new ConcreteType(), Lifecycle.Singleton);
 
 			// Act
 			var instance1 = container.Resolve<ITypeToResolve>();
@@ -69,7 +69,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 			// Arrange
 			IContainer container = new Container();
 			container.Register<ITypeToResolve>(ctx => new ConcreteType());
-			container.Register<ITypeToResolveWithConstructorParams>(ctx => new ConcreteTypeWithConstructorParams(ctx.Resolve<ITypeToResolve>()), LifeCycle.Singleton);
+			container.Register<ITypeToResolveWithConstructorParams>(ctx => new ConcreteTypeWithConstructorParams(ctx.Resolve<ITypeToResolve>()), Lifecycle.Singleton);
 
 			// Act
 			var instance1 = container.Resolve<ITypeToResolveWithConstructorParams>();
@@ -85,7 +85,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Arrange
 			IContainer container = new Container();
-			container.Register<ITypeToResolve>(ctx => new ConcreteType(), LifeCycle.Singleton);
+			container.Register<ITypeToResolve>(ctx => new ConcreteType(), Lifecycle.Singleton);
 			container.Register<ITypeToResolveWithConstructorParams>(ctx => new ConcreteTypeWithConstructorParams(ctx.Resolve<ITypeToResolve>()));
 
 			// Act

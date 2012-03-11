@@ -113,6 +113,11 @@
     <Compile Include="SecurityContextSpec.cs" />
     <Compile Include="ServiceLocation\ContainerSpec.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocatorSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HttpSessionLifecycleSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HybridHttpContextLifecycleSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HttpContextLifecycleSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\ObjectCacheSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />
     <Compile Include="TestData\AdminController.cs" />
     <Compile Include="TestData\AssemblyScannerControllers.cs" />
@@ -171,6 +176,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
