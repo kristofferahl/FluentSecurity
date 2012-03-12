@@ -4,26 +4,47 @@ using System.Web;
 
 namespace FluentSecurity.ServiceLocation.LifeCycles
 {
-	internal class HttpSessionLifecycle : HttpContextLifecycle
+	internal class HttpSessionLifecycle : ILifecycle
 	{
+		public const string CacheKey = "FluentSecurity-HttpSessionCache";
+
 		public static Func<bool> HasSessionResolver;
-		public static Func<HttpSessionStateBase> HttpSessionStateResolver;
+		public static Func<IDictionary> DictionaryResolver;
 
 		public HttpSessionLifecycle()
 		{
 			HasSessionResolver = () => HttpContext.Current != null && HttpContext.Current.Session != null;
-			HttpSessionStateResolver = () => new HttpSessionStateWrapper(HttpContext.Current.Session);
+			DictionaryResolver = () => new SessionWrapper(new HttpSessionStateWrapper(HttpContext.Current.Session));
 		}
 
-		protected override IDictionary FindHttpDictionary()
+		public IObjectCache FindCache()
 		{
-			if (!HasSession()) throw new InvalidOperationException("HttpContext.Current.Session is not available.");
-			return new SessionWrapper(HttpSessionStateResolver.Invoke());
+			var items = FindHttpDictionary();
+			if (!items.Contains(CacheKey))
+			{
+				lock (items.SyncRoot)
+				{
+					if (!items.Contains(CacheKey))
+					{
+						var cache = new ObjectCache();
+						items.Add(CacheKey, cache);
+						return cache;
+					}
+				}
+			}
+
+			return (ObjectCache)items[CacheKey];
 		}
 
 		public bool HasSession()
 		{
 			return HasSessionResolver.Invoke();
+		}
+
+		private IDictionary FindHttpDictionary()
+		{
+			if (!HasSession()) throw new InvalidOperationException("HttpContext.Current.Session is not available.");
+			return DictionaryResolver.Invoke();
 		}
 
 		// Based on the Structuremap SessionWrapper.

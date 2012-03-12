@@ -6,20 +6,20 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 	[Serializable]
 	internal class ObjectCache : IObjectCache
 	{
-		private readonly ConcurrentDictionary<Guid, object> _objects = new ConcurrentDictionary<Guid, object>();
+		private readonly ConcurrentDictionary<object, object> _objects = new ConcurrentDictionary<object, object>();
 
 		public int Count
 		{
 			get { return _objects.Count; }
 		}
 
-		public object Get(Guid key)
+		public object Get(object key)
 		{
 			var hasInstance = Has(key);
 			return hasInstance ? _objects[key] : null;
 		}
 
-		public void Set(Guid key, object instance)
+		public void Set(object key, object instance)
 		{
 			if (instance == null) return;
 	
@@ -32,7 +32,19 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 			_objects[key] = instance;
 		}
 
-		private bool Has(Guid key)
+		public void Clear()
+		{
+			_objects.Each(@object => TryDispose(@object.Value));
+			_objects.Clear();
+		}
+
+		private static void TryDispose(object cachedObject)
+		{
+			var disposable = cachedObject as IDisposable;
+			if (disposable != null) disposable.Dispose();
+		}
+
+		private bool Has(object key)
 		{
 			var containsKey = _objects.ContainsKey(key);
 			return containsKey;

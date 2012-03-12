@@ -113,9 +113,11 @@
     <Compile Include="SecurityContextSpec.cs" />
     <Compile Include="ServiceLocation\ContainerSpec.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocatorSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HybridHttpSessionLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\HttpSessionLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\HybridHttpContextLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\HttpContextLifecycleSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\NullObjectCacheSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ObjectCacheSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />

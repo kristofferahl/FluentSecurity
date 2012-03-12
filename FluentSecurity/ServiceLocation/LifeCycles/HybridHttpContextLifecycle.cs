@@ -2,8 +2,8 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 {
 	internal class HybridHttpContextLifecycle : ILifecycle
 	{
-		private readonly ILifecycle _http;
-		private readonly ILifecycle _nonHttp;
+		private readonly HttpContextLifecycle _http;
+		private readonly ThreadLocalStorageLifecycle _nonHttp;
 
 		public HybridHttpContextLifecycle()
 		{
