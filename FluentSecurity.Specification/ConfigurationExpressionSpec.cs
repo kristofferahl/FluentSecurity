@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using FluentSecurity.Configuration;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using Moq;
@@ -43,6 +44,20 @@ namespace FluentSecurity.Specification
 			var policyAppenderProperty = configurationExpression.GetType().GetProperty("PolicyAppender", BindingFlags.Instance | BindingFlags.NonPublic);
 			var policyAppender = policyAppenderProperty.GetValue(configurationExpression, null);
 			Assert.That(policyAppender, Is.TypeOf(expectedPolicyAppenderType));
+		}
+
+		[Test]
+		public void Should_have_Advanced_set_to_AdvancedConfigurationExpression()
+		{
+			// Arrange
+			var expectedType = typeof(AdvancedConfiguration);
+
+			// Act
+			var configurationExpression = Because();
+
+			// Assert
+			Assert.That(configurationExpression.Advanced, Is.TypeOf(expectedType));
+			Assert.That(configurationExpression.Advanced, Is.Not.Null);
 		}
 	}
 

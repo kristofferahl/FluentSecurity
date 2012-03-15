@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
+using FluentSecurity.Configuration;
 using FluentSecurity.Scanning;
 using FluentSecurity.ServiceLocation;
 
@@ -18,8 +19,11 @@ namespace FluentSecurity
 		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
 		private IPolicyAppender PolicyAppender { get; set; }
 
+		public AdvancedConfiguration Advanced { get; set; }
+
 		public ConfigurationExpression()
 		{
+			Advanced = new AdvancedConfiguration();
 			PolicyAppender = new DefaultPolicyAppender();
 		}
 

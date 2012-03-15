@@ -41,7 +41,16 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static SecurityConfiguration CreateValidSecurityConfiguration()
 		{
-			return new SecurityConfiguration(configuration => {});
+			return CreateValidSecurityConfiguration(expression => {});
+		}
+
+		public static SecurityConfiguration CreateValidSecurityConfiguration(Action<ConfigurationExpression> modifyer)
+		{
+			Action<ConfigurationExpression> configurationExpression = configuration =>
+			{
+				if (modifyer != null) modifyer.Invoke(configuration);
+			};
+			return new SecurityConfiguration(configurationExpression);
 		}
 
 		public static ConfigurationExpression CreateValidConfigurationExpression()

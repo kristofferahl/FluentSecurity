@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using FluentSecurity.Caching;
 using FluentSecurity.Policy;
+using FluentSecurity.ServiceLocation;
+using FluentSecurity.ServiceLocation.LifeCycles;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using Moq;
@@ -170,6 +173,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			_policyContainer = TestDataFactory.CreateValidPolicyContainer();
+			_policyContainer.SecurityConfigurationProvider = TestDataFactory.CreateValidSecurityConfiguration;
 			_policyContainer
 				.AddPolicy(_policy1)
 				.AddPolicy(_policy2);
@@ -258,7 +262,7 @@ namespace FluentSecurity.Specification
 	
 	[TestFixture]
 	[Category("PolicyContainerSpec")]
-	public class When_encforcing_policies
+	public class When_enforcing_policies
 	{
 		[Test]
 		public void Should_invoke_the_isautheticated_and_roles_functions()
@@ -270,6 +274,7 @@ namespace FluentSecurity.Specification
 			context.Replay();
 			
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.SecurityConfigurationProvider = TestDataFactory.CreateValidSecurityConfiguration;
 			policyContainer.AddPolicy(new TestPolicy());
 
 			// Act
@@ -294,6 +299,7 @@ namespace FluentSecurity.Specification
 			policy.Setup(x => x.Enforce(It.Is<ISecurityContext>(c => c.CurrenUserAuthenticated() == isAuthenticated && c.CurrenUserRoles() == roles))).Returns(PolicyResult.CreateSuccessResult(policy.Object));
 
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.SecurityConfigurationProvider = TestDataFactory.CreateValidSecurityConfiguration;
 			policyContainer.AddPolicy(policy.Object);
 
 			// Act
@@ -316,6 +322,7 @@ namespace FluentSecurity.Specification
 			policy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(policy.Object, failureOccured));
 
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.SecurityConfigurationProvider = TestDataFactory.CreateValidSecurityConfiguration;
 			policyContainer.AddPolicy(policy.Object);
 
 			// Act
@@ -340,6 +347,7 @@ namespace FluentSecurity.Specification
 			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(secondPolicy.Object));
 
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.SecurityConfigurationProvider = TestDataFactory.CreateValidSecurityConfiguration;
 			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object);
 
 			// Act
@@ -356,17 +364,16 @@ namespace FluentSecurity.Specification
 			// Arrange
 			var context = TestDataFactory.CreateSecurityContext(false);
 
-			var firstPolicy = new Mock<ISecurityPolicy>();
-			firstPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(firstPolicy.Object));
+			var firstPolicy = new TestPolicy();
 
 			var secondPolicy = new Mock<ISecurityPolicy>();
 			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(secondPolicy.Object, "Failure occured"));
 
-			var thirdPolicy = new Mock<ISecurityPolicy>();
-			thirdPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(thirdPolicy.Object));
+			var thirdPolicy = new TestPolicy();
 
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object).AddPolicy(thirdPolicy.Object);
+			policyContainer.SecurityConfigurationProvider = TestDataFactory.CreateValidSecurityConfiguration;
+			policyContainer.AddPolicy(firstPolicy).AddPolicy(secondPolicy.Object).AddPolicy(thirdPolicy);
 
 			// Act
 			var results = policyContainer.EnforcePolicies(context);
@@ -385,6 +392,7 @@ namespace FluentSecurity.Specification
 
 			var context = TestDataFactory.CreateSecurityContext(false);
 			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
+			policyContainer.SecurityConfigurationProvider = TestDataFactory.CreateValidSecurityConfiguration;
 
 			// Act & Assert
 			Assert.Throws<ConfigurationErrorsException>(() => policyContainer.EnforcePolicies(context));
@@ -399,6 +407,91 @@ namespace FluentSecurity.Specification
 				var roles = context.CurrenUserRoles();
 				return PolicyResult.CreateSuccessResult(this);
 			}
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerSpec")]
+	public class When_enforcing_policies_with_default_cache_level_set_to_DoNotCache
+	{
+		[Test]
+		public void Should_return_unique_results()
+		{
+			// Arrange
+			var firstPolicy = new IgnorePolicy();			
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.DoNotCacheCacheResults());
+			policyContainer.AddPolicy(firstPolicy);
+
+			// Act
+			var context = TestDataFactory.CreateSecurityContext(false);
+			var results1 = policyContainer.EnforcePolicies(context);
+			var results2 = policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(results1.Single(), Is.Not.EqualTo(results2.Single()));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerSpec")]
+	public class When_enforcing_policies_with_default_cache_level_set_to_PerHttpRequest
+	{
+		[Test]
+		public void Should_return_the_same_results()
+		{
+			// Arrange
+			var context = TestDataFactory.CreateSecurityContext(false);
+			var firstPolicy = new IgnorePolicy();
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.CacheResultsPerHttpRequest());
+			policyContainer.AddPolicy(firstPolicy);
+
+			// Act
+			var results1 = policyContainer.EnforcePolicies(context);
+			var results2 = policyContainer.EnforcePolicies(context);
+
+			SecurityCache.ClearCache(Lifecycle.HybridHttpContext);;
+
+			var results3 = policyContainer.EnforcePolicies(context);
+			var results4 = policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(results1.Single(), Is.EqualTo(results2.Single()));
+			Assert.That(results3.Single(), Is.EqualTo(results4.Single()));
+
+			Assert.That(results1.Single(), Is.Not.EqualTo(results3.Single()), "Results should not be equal across requests.");
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerSpec")]
+	public class When_enforcing_policies_with_default_cache_level_set_to_PerHttpSession
+	{
+		[Test]
+		public void Should_return_the_same_results()
+		{
+			// Arrange
+			var context = TestDataFactory.CreateSecurityContext(false);
+			var firstPolicy = new IgnorePolicy();
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.CacheResultsPerHttpSession());
+			policyContainer.AddPolicy(firstPolicy);
+
+			// Act
+			var results1 = policyContainer.EnforcePolicies(context);
+			var results2 = policyContainer.EnforcePolicies(context);
+
+			SecurityCache.ClearCache(Lifecycle.HybridHttpSession); ;
+
+			var results3 = policyContainer.EnforcePolicies(context);
+			var results4 = policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(results1.Single(), Is.EqualTo(results2.Single()));
+			Assert.That(results3.Single(), Is.EqualTo(results4.Single()));
+
+			Assert.That(results1.Single(), Is.Not.EqualTo(results3.Single()), "Results should not be equal across sessions.");
 		}
 	}
 }

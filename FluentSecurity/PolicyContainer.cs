@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using FluentSecurity.Caching;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
 	public class PolicyContainer : IPolicyContainer
 	{
+		internal Func<ISecurityConfiguration> SecurityConfigurationProvider;
+
 		private readonly IList<ISecurityPolicy> _policies;
 
 		public PolicyContainer(string controllerName, string actionName, IPolicyAppender policyAppender)
@@ -27,6 +30,8 @@ namespace FluentSecurity
 			ActionName = actionName;
 			
 			PolicyAppender = policyAppender;
+
+			SecurityConfigurationProvider = () => SecurityConfiguration.Current;
 		}
 
 		public string ControllerName { get; private set; }
@@ -38,10 +43,24 @@ namespace FluentSecurity
 			if (_policies.Count.Equals(0))
 				throw ExceptionFactory.CreateConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
+			var defaultCacheLevel = SecurityConfigurationProvider.Invoke().Advanced.DefaultResultsCacheLevel;
+			var cache = SecurityCache.CacheProvider.Invoke();
+			
 			var results = new List<PolicyResult>();
 			foreach (var policy in _policies)
 			{
-				var result = policy.Enforce(context);
+				//var manifest = GetCacheManifestFor(policy);
+				//var policyIndex = GetIndex(policy);
+				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromPolicy(policy, context);
+				var result = cache.Get<PolicyResult>(cacheKey, defaultCacheLevel.ToLifecycle());
+				
+				// Recurive try get from cache at level C_A_P, C_*_P, *_*_P unless DoNotCacheIs the lifecycle
+
+				if (result == null)
+				{
+					result = policy.Enforce(context);
+					cache.Store(result, cacheKey, defaultCacheLevel.ToLifecycle());
+				}
 				results.Add(result);
 				
 				if (result.ViolationOccured) break;

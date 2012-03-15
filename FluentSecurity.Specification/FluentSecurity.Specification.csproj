@@ -97,6 +97,7 @@
     <Compile Include="AssemblyScannerAssemblySpecification.cs" />
     <Compile Include="AssemblyScannerNamespaceSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
+    <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExceptionFactorySpec.cs" />
