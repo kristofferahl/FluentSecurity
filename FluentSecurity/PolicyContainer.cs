@@ -49,9 +49,8 @@ namespace FluentSecurity
 			var results = new List<PolicyResult>();
 			foreach (var policy in _policies)
 			{
-				//var manifest = GetCacheManifestFor(policy);
-				//var policyIndex = GetIndex(policy);
-				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromPolicy(policy, context);
+				var manifest = new CacheManifest(ControllerName, ActionName, policy.GetType(), defaultCacheLevel);
+				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, policy, context);
 				var result = cache.Get<PolicyResult>(cacheKey, defaultCacheLevel.ToLifecycle());
 				
 				// Recurive try get from cache at level C_A_P, C_*_P, *_*_P unless DoNotCacheIs the lifecycle

@@ -109,7 +109,7 @@ namespace FluentSecurity.Specification
 		private IEnumerable<IPolicyContainer> _policyContainers;
 		private DefaultPolicyAppender _defaultPolicyAppender;
 		private IPolicyAppender _fakePolicyAppender;
-		private readonly string _controllerName = NameHelper<BlogController>.Controller();
+		private readonly string _controllerName = NameHelper.Controller<BlogController>();
 		const string IndexActionName = "Index";
 		const string AddPostActionName = "AddPost";
 
@@ -186,7 +186,7 @@ namespace FluentSecurity.Specification
 			});
 
 			Assert.That(SecurityConfiguration.Current.PolicyContainers.Count(), Is.EqualTo(1));
-			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ControllerName, Is.EqualTo(NameHelper<BlogController>.Controller()));
+			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ControllerName, Is.EqualTo(NameHelper.Controller<BlogController>()));
 			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
 		}
 	}

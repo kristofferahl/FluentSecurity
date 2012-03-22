@@ -1,12 +1,27 @@
-﻿using FluentSecurity.Policy;
+﻿using System;
+using FluentSecurity.Policy;
 
 namespace FluentSecurity.Caching
 {
 	public static class PolicyResultCacheKeyBuilder
 	{
-		public static string CreateFromPolicy(ISecurityPolicy policy, ISecurityContext context)
+		const string Separator = "_";
+
+		public static string CreateFromManifest(CacheManifest manifest, ISecurityPolicy securityPolicy, ISecurityContext context)
 		{
-			var cacheKey = policy.GetType().FullName;
+			var prefix = typeof(PolicyResult).Name;
+			var policyTypeFullName = manifest.PolicyType.FullName;
+
+			var cacheKey = String.Concat(
+				prefix,
+				Separator,
+				manifest.ControllerName,
+				Separator,
+				manifest.ActionName,
+				Separator,
+				policyTypeFullName
+				);
+			
 			return cacheKey;
 		}
 	}

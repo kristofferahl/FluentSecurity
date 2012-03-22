@@ -38,7 +38,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_policy_to_policycontainers()
 		{
 			// Arrange
-			var controllerName = NameHelper<AdminController>.Controller();
+			var controllerName = NameHelper.Controller<AdminController>();
 			var policyContainers = new List<IPolicyContainer>()
 			{
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),

@@ -55,7 +55,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "Index"));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index"));
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var result = securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "Index");
+			var result = securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index");
 
 			// Assert
 			Assert.That(result, Is.EqualTo(expectedActionResult));
@@ -109,7 +109,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "Index"));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index"));
 		}
 
 		[Test]
@@ -125,7 +125,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "Index"));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index"));
 			
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
@@ -157,7 +157,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "DeletePost"));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost"));
 		}
 
 		[Test]
@@ -174,7 +174,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "DeletePost"));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost"));
 
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
@@ -195,7 +195,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "DeletePost"));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost"));
 
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
