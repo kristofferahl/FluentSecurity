@@ -9,22 +9,22 @@ namespace FluentSecurity.Specification.Configuration
 	public class When_creating_a_new_advanced_configuration
 	{
 		[Test]
-		public void Should_have_default_policy_cache_level_set_to_DoNotCache()
+		public void Should_have_default_policy_cache_lifecycle_set_to_DoNotCache()
 		{
 			// Arrange
 			var advancedConfiguration = new AdvancedConfiguration();
 
 			// Act & assert
-			Assert.That(advancedConfiguration.DefaultResultsCacheLevel, Is.EqualTo(Cache.DoNotCache));
+			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.DoNotCache));
 		}
 	}
 
 	[TestFixture]
 	[Category("AdvancedConfigurationSpec")]
-	public class When_setting_the_default_policy_results_cache_level
+	public class When_setting_the_default_policy_results_cache_lifecycle
 	{
 		[Test]
-		public void Should_have_default_policy_cache_level_set_to_PerHttpSession()
+		public void Should_have_default_policy_cache_lifecycle_set_to_PerHttpSession()
 		{
 			// Arrange
 			var advancedConfiguration = new AdvancedConfiguration();
@@ -33,11 +33,11 @@ namespace FluentSecurity.Specification.Configuration
 			advancedConfiguration.CacheResultsPerHttpSession();
 
 			// Assert
-			Assert.That(advancedConfiguration.DefaultResultsCacheLevel, Is.EqualTo(Cache.PerHttpSession));
+			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.PerHttpSession));
 		}
 
 		[Test]
-		public void Should_have_default_policy_cache_level_set_to_PerHttpRequest()
+		public void Should_have_default_policy_cache_lifecycle_set_to_PerHttpRequest()
 		{
 			// Arrange
 			var advancedConfiguration = new AdvancedConfiguration();
@@ -46,11 +46,11 @@ namespace FluentSecurity.Specification.Configuration
 			advancedConfiguration.CacheResultsPerHttpRequest();
 			
 			// Assert
-			Assert.That(advancedConfiguration.DefaultResultsCacheLevel, Is.EqualTo(Cache.PerHttpRequest));
+			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.PerHttpRequest));
 		}
 
 		[Test]
-		public void Should_have_default_policy_cache_level_set_to_DoNotCache()
+		public void Should_have_default_policy_cache_lifecycle_set_to_DoNotCache()
 		{
 			// Arrange
 			var advancedConfiguration = new AdvancedConfiguration();
@@ -59,7 +59,7 @@ namespace FluentSecurity.Specification.Configuration
 			advancedConfiguration.DoNotCacheCacheResults();
 
 			// Assert
-			Assert.That(advancedConfiguration.DefaultResultsCacheLevel, Is.EqualTo(Cache.DoNotCache));
+			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.DoNotCache));
 		}
 	}
 }

@@ -9,21 +9,21 @@ namespace FluentSecurity.Configuration
 			DoNotCacheCacheResults();
 		}
 
-		public Cache DefaultResultsCacheLevel { get; private set; }
+		public Cache DefaultResultsCacheLifecycle { get; private set; }
 
 		public void CacheResultsPerHttpRequest()
 		{
-			DefaultResultsCacheLevel = Cache.PerHttpRequest;
+			DefaultResultsCacheLifecycle = Cache.PerHttpRequest;
 		}
 
 		public void DoNotCacheCacheResults()
 		{
-			DefaultResultsCacheLevel = Cache.DoNotCache;
+			DefaultResultsCacheLifecycle = Cache.DoNotCache;
 		}
 
 		public void CacheResultsPerHttpSession()
 		{
-			DefaultResultsCacheLevel = Cache.PerHttpSession;
+			DefaultResultsCacheLifecycle = Cache.PerHttpSession;
 		}
 	}
 }

@@ -412,7 +412,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicyContainerSpec")]
-	public class When_enforcing_policies_with_default_cache_level_set_to_DoNotCache
+	public class When_enforcing_policies_with_default_cache_lifecycle_set_to_DoNotCache
 	{
 		[Test]
 		public void Should_return_unique_results()
@@ -435,7 +435,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicyContainerSpec")]
-	public class When_enforcing_policies_with_default_cache_level_set_to_PerHttpRequest
+	public class When_enforcing_policies_with_default_cache_lifecycle_set_to_PerHttpRequest
 	{
 		[Test]
 		public void Should_return_the_same_results()
@@ -466,7 +466,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicyContainerSpec")]
-	public class When_enforcing_policies_with_default_cache_level_set_to_PerHttpSession
+	public class When_enforcing_policies_with_default_cache_lifecycle_set_to_PerHttpSession
 	{
 		[Test]
 		public void Should_return_the_same_results()

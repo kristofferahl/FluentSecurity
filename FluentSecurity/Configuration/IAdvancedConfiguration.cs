@@ -4,6 +4,6 @@ namespace FluentSecurity.Configuration
 {
 	public interface IAdvancedConfiguration
 	{
-		Cache DefaultResultsCacheLevel { get; }
+		Cache DefaultResultsCacheLifecycle { get; }
 	}
 }

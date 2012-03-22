@@ -7,7 +7,7 @@ namespace FluentSecurity.Caching
 	{
 		const string Separator = "_";
 
-		public static string CreateFromManifest(CacheManifest manifest, ISecurityPolicy securityPolicy, ISecurityContext context)
+		public static string CreateFromManifest(PolicyResultCacheManifest manifest, ISecurityPolicy securityPolicy, ISecurityContext context)
 		{
 			var prefix = typeof(PolicyResult).Name;
 			var policyTypeFullName = manifest.PolicyType.FullName;

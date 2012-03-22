@@ -2,9 +2,9 @@ using System;
 
 namespace FluentSecurity.Caching
 {
-	public class CacheManifest
+	public class PolicyResultCacheManifest
 	{
-		public CacheManifest(string controllerName, string actionName, Type policyType, Cache cacheLifecycle)
+		public PolicyResultCacheManifest(string controllerName, string actionName, Type policyType, Cache cacheLifecycle)
 		{
 			ControllerName = controllerName;
 			ActionName = actionName;

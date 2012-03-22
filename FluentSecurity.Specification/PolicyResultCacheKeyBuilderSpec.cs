@@ -15,7 +15,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var policy = new TestPolicy();
-			var manifest = new CacheManifest("AdminController", "Login", policy.GetType(), Cache.DoNotCache);
+			var manifest = new PolicyResultCacheManifest("AdminController", "Login", policy.GetType(), Cache.DoNotCache);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -43,7 +43,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var policy = new BlogAdminPolicy();
-			var manifest = new CacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
+			var manifest = new PolicyResultCacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -71,7 +71,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var policy = new BlogEditorPolicy("1");
-			var manifest = new CacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
+			var manifest = new PolicyResultCacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -86,7 +86,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var policy = new BlogEditorPolicy("2");
-			var manifest = new CacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
+			var manifest = new PolicyResultCacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -101,7 +101,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var policy = new BlogEditorPolicy("  3  ");
-			var manifest = new CacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
+			var manifest = new PolicyResultCacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -116,7 +116,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var policy = new BlogEditorPolicy("    ");
-			var manifest = new CacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
+			var manifest = new PolicyResultCacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -131,7 +131,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var policy = new BlogEditorPolicy("");
-			var manifest = new CacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
+			var manifest = new PolicyResultCacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
@@ -146,7 +146,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var policy = new BlogEditorPolicy(null);
-			var manifest = new CacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
+			var manifest = new PolicyResultCacheManifest("BlogController", "Post", policy.GetType(), Cache.DoNotCache);
 			var context = TestDataFactory.CreateSecurityContext(true);
 
 			// Act
