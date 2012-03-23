@@ -13,7 +13,7 @@ namespace FluentSecurity.ServiceLocation
 				case Lifecycle.HybridHttpContext:
 					return Lifecycle<HybridHttpContextLifecycle>.Instance;
 				case Lifecycle.HybridHttpSession:
-					return Lifecycle<HybridHttpContextLifecycle>.Instance;
+					return Lifecycle<HybridHttpSessionLifecycle>.Instance;
 				default: // Transient
 					return Lifecycle<TransientLifecycle>.Instance;
 			}
