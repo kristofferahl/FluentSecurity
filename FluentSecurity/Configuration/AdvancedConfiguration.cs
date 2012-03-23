@@ -6,24 +6,14 @@ namespace FluentSecurity.Configuration
 	{
 		internal AdvancedConfiguration()
 		{
-			DoNotCacheCacheResults();
+			SetDefaultResultsCacheLifecycle(Cache.DoNotCache);
 		}
 
 		public Cache DefaultResultsCacheLifecycle { get; private set; }
 
-		public void CacheResultsPerHttpRequest()
+		public void SetDefaultResultsCacheLifecycle(Cache lifecycle)
 		{
-			DefaultResultsCacheLifecycle = Cache.PerHttpRequest;
-		}
-
-		public void DoNotCacheCacheResults()
-		{
-			DefaultResultsCacheLifecycle = Cache.DoNotCache;
-		}
-
-		public void CacheResultsPerHttpSession()
-		{
-			DefaultResultsCacheLifecycle = Cache.PerHttpSession;
+			DefaultResultsCacheLifecycle = lifecycle;
 		}
 	}
 }

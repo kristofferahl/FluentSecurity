@@ -30,7 +30,7 @@ namespace FluentSecurity.Specification.Configuration
 			var advancedConfiguration = new AdvancedConfiguration();
 
 			// Act
-			advancedConfiguration.CacheResultsPerHttpSession();
+			advancedConfiguration.SetDefaultResultsCacheLifecycle(Cache.PerHttpSession);
 
 			// Assert
 			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.PerHttpSession));
@@ -43,7 +43,7 @@ namespace FluentSecurity.Specification.Configuration
 			var advancedConfiguration = new AdvancedConfiguration();
 
 			// Act
-			advancedConfiguration.CacheResultsPerHttpRequest();
+			advancedConfiguration.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
 			
 			// Assert
 			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.PerHttpRequest));
@@ -56,7 +56,7 @@ namespace FluentSecurity.Specification.Configuration
 			var advancedConfiguration = new AdvancedConfiguration();
 
 			// Act
-			advancedConfiguration.DoNotCacheCacheResults();
+			advancedConfiguration.SetDefaultResultsCacheLifecycle(Cache.DoNotCache);
 
 			// Assert
 			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.DoNotCache));

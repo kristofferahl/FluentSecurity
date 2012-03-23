@@ -420,7 +420,7 @@ namespace FluentSecurity.Specification
 			// Arrange
 			var firstPolicy = new IgnorePolicy();			
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.DoNotCacheCacheResults());
+			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.DoNotCache));
 			policyContainer.AddPolicy(firstPolicy);
 
 			// Act
@@ -444,7 +444,7 @@ namespace FluentSecurity.Specification
 			var context = TestDataFactory.CreateSecurityContext(false);
 			var firstPolicy = new IgnorePolicy();
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.CacheResultsPerHttpRequest());
+			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest));
 			policyContainer.AddPolicy(firstPolicy);
 
 			// Act
@@ -475,7 +475,7 @@ namespace FluentSecurity.Specification
 			var context = TestDataFactory.CreateSecurityContext(false);
 			var firstPolicy = new IgnorePolicy();
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.CacheResultsPerHttpSession());
+			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpSession));
 			policyContainer.AddPolicy(firstPolicy);
 
 			// Act
