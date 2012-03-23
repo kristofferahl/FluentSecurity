@@ -9,6 +9,7 @@ namespace FluentSecurity
 {
 	public class PolicyContainer : IPolicyContainer
 	{
+		internal readonly List<PolicyResultCacheManifest> CacheManifests;
 		internal Func<ISecurityConfiguration> SecurityConfigurationProvider;
 
 		private readonly IList<ISecurityPolicy> _policies;
@@ -31,6 +32,7 @@ namespace FluentSecurity
 			
 			PolicyAppender = policyAppender;
 
+			CacheManifests = new List<PolicyResultCacheManifest>();
 			SecurityConfigurationProvider = () => SecurityConfiguration.Current;
 		}
 
@@ -43,22 +45,21 @@ namespace FluentSecurity
 			if (_policies.Count.Equals(0))
 				throw ExceptionFactory.CreateConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
-			var resultsCacheLifecycle = SecurityConfigurationProvider.Invoke().Advanced.DefaultResultsCacheLifecycle;
+			var defaultResultsCacheLifecycle = SecurityConfigurationProvider.Invoke().Advanced.DefaultResultsCacheLifecycle;
 			var cache = SecurityCache.CacheProvider.Invoke();
 			
 			var results = new List<PolicyResult>();
 			foreach (var policy in _policies)
 			{
-				var manifest = new PolicyResultCacheManifest(ControllerName, ActionName, policy.GetType(), resultsCacheLifecycle);
+				var manifest = GetExecutionCacheManifestForPolicy(policy, defaultResultsCacheLifecycle);
 				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, policy, context);
-				var result = cache.Get<PolicyResult>(cacheKey, resultsCacheLifecycle.ToLifecycle());
 				
+				var result = cache.Get<PolicyResult>(cacheKey, manifest.CacheLifecycle.ToLifecycle());
 				// Recurive try get from cache at lifecycle C_A_P, C_*_P, *_*_P unless DoNotCacheIs the lifecycle?
-
 				if (result == null)
 				{
 					result = policy.Enforce(context);
-					cache.Store(result, cacheKey, resultsCacheLifecycle.ToLifecycle());
+					cache.Store(result, cacheKey, manifest.CacheLifecycle.ToLifecycle());
 				}
 				results.Add(result);
 				
@@ -71,6 +72,18 @@ namespace FluentSecurity
 		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
 		{
 			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
+
+			return this;
+		}
+
+		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy, Cache lifecycle)
+		{
+			AddPolicy(securityPolicy);
+
+			var existingCacheManifest = GetExistingCacheManifestForPolicy(securityPolicy);
+			if (existingCacheManifest != null) CacheManifests.Remove(existingCacheManifest);
+
+			CacheManifests.Add(new PolicyResultCacheManifest(ControllerName, ActionName, securityPolicy.GetType(), lifecycle));
 
 			return this;
 		}
@@ -94,6 +107,17 @@ namespace FluentSecurity
 		public IEnumerable<ISecurityPolicy> GetPolicies()
 		{
 			return new ReadOnlyCollection<ISecurityPolicy>(_policies);
+		}
+
+		private PolicyResultCacheManifest GetExecutionCacheManifestForPolicy(ISecurityPolicy securityPolicy, Cache defaultResultsCacheLifecycle)
+		{
+			var existingManifest = GetExistingCacheManifestForPolicy(securityPolicy);
+			return existingManifest ?? new PolicyResultCacheManifest(ControllerName, ActionName, securityPolicy.GetType(), defaultResultsCacheLifecycle);
+		}
+
+		private PolicyResultCacheManifest GetExistingCacheManifestForPolicy(ISecurityPolicy securityPolicy)
+		{
+			return CacheManifests.SingleOrDefault(m => m.PolicyType == securityPolicy.GetType());
 		}
 	}
 }
