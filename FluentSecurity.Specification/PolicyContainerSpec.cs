@@ -513,7 +513,7 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_add_policy_with_policyresult_cache_manifest_with_lifecycle_set_to_DoNotCache()
+		public void Should_add_policy_and_a_policyresult_cache_manifest_with_lifecycle_set_to_DoNotCache()
 		{
 			// Arrange
 			const Cache expectedLifecycle = Cache.DoNotCache;
@@ -534,7 +534,7 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_add_policy_with_policyresult_cache_manifest_with_lifecycle_set_to_PerHttpContext()
+		public void Should_add_policy_and_a_policyresult_cache_manifest_with_lifecycle_set_to_PerHttpContext()
 		{
 			// Arrange
 			const Cache expectedLifecycle = Cache.PerHttpRequest;
@@ -555,7 +555,7 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_add_policy_with_policyresult_cache_manifests_for_each_policy_type()
+		public void Should_add_policy_and_policyresult_cache_manifests_for_each_policy_type()
 		{
 			// Arrange
 			const string expectedControllerName = "Controller4";

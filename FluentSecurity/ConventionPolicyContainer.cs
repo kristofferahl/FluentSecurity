@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentSecurity.Caching;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -21,6 +22,14 @@ namespace FluentSecurity
 			foreach (var policyContainer in _policyContainers)
 				policyContainer.AddPolicy(securityPolicy);
 			
+			return this;
+		}
+
+		public IConventionPolicyContainer AddPolicy(ISecurityPolicy securityPolicy, Cache lifecycle)
+		{
+			foreach (var policyContainer in _policyContainers)
+				policyContainer.AddPolicy(securityPolicy, lifecycle);
+
 			return this;
 		}
 

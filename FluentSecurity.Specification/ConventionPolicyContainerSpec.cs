@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Caching;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
@@ -39,7 +40,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var controllerName = NameHelper.Controller<AdminController>();
-			var policyContainers = new List<IPolicyContainer>()
+			var policyContainers = new List<IPolicyContainer>
 			{
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
@@ -56,6 +57,35 @@ namespace FluentSecurity.Specification
 			Assert.That(policyContainers[0].GetPolicies().First(), Is.EqualTo(policy));
 			Assert.That(policyContainers[1].GetPolicies().First(), Is.EqualTo(policy));
 			Assert.That(policyContainers[2].GetPolicies().First(), Is.EqualTo(policy));
+		}
+
+		[Test]
+		public void Should_add_policy_and_policyresult_cache_manifest_to_policycontainers()
+		{
+			// Arrange
+			var controllerName = NameHelper.Controller<AdminController>();
+			var policyContainers = new List<IPolicyContainer>
+			{
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
+			};
+
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			var policy = new DenyAnonymousAccessPolicy();
+			const Cache expectedLifecycle = Cache.PerHttpRequest;
+
+			// Act
+			conventionPolicyContainer.AddPolicy(policy, Cache.PerHttpRequest);
+
+			// Assert
+			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			Assert.That(containers[0].GetPolicies().First(), Is.EqualTo(policy));
+			Assert.That(containers[0].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[1].GetPolicies().First(), Is.EqualTo(policy));
+			Assert.That(containers[1].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[2].GetPolicies().First(), Is.EqualTo(policy));
+			Assert.That(containers[2].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
 		}
 	}
 
