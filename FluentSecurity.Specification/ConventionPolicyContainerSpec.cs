@@ -72,19 +72,19 @@ namespace FluentSecurity.Specification
 			};
 
 			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
-			var policy = new DenyAnonymousAccessPolicy();
 			const Cache expectedLifecycle = Cache.PerHttpRequest;
+			var expectedType = typeof(DenyAnonymousAccessPolicy);
 
 			// Act
-			conventionPolicyContainer.AddPolicy(policy, Cache.PerHttpRequest);
+			conventionPolicyContainer.CacheResultsOf<DenyAnonymousAccessPolicy>(Cache.PerHttpRequest);
 
 			// Assert
 			var containers = policyContainers.Cast<PolicyContainer>().ToList();
-			Assert.That(containers[0].GetPolicies().First(), Is.EqualTo(policy));
+			Assert.That(containers[0].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
 			Assert.That(containers[0].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[1].GetPolicies().First(), Is.EqualTo(policy));
+			Assert.That(containers[1].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
 			Assert.That(containers[1].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[2].GetPolicies().First(), Is.EqualTo(policy));
+			Assert.That(containers[2].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
 			Assert.That(containers[2].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
 		}
 	}

@@ -25,18 +25,18 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IConventionPolicyContainer AddPolicy(ISecurityPolicy securityPolicy, Cache lifecycle)
-		{
-			foreach (var policyContainer in _policyContainers)
-				policyContainer.AddPolicy(securityPolicy, lifecycle);
-
-			return this;
-		}
-
 		public IConventionPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
 		{
 			foreach (var policyContainer in _policyContainers)
 				policyContainer.RemovePolicy(predicate);
+
+			return this;
+		}
+
+		public IConventionPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
+		{
+			foreach (var policyContainer in _policyContainers)
+				policyContainer.CacheResultsOf<TSecurityPolicy>(lifecycle);
 
 			return this;
 		}

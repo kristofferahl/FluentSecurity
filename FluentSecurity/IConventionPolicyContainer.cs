@@ -7,7 +7,7 @@ namespace FluentSecurity
 	public interface IConventionPolicyContainer
 	{
 		IConventionPolicyContainer AddPolicy(ISecurityPolicy securityPolicy);
-		IConventionPolicyContainer AddPolicy(ISecurityPolicy securityPolicy, Cache lifecycle);
 		IConventionPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy;
+		IConventionPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy;
 	}
 }

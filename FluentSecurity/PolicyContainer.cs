@@ -76,18 +76,6 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy, Cache lifecycle)
-		{
-			AddPolicy(securityPolicy);
-
-			var existingCacheManifest = GetExistingCacheManifestForPolicy(securityPolicy);
-			if (existingCacheManifest != null) CacheManifests.Remove(existingCacheManifest);
-
-			CacheManifests.Add(new PolicyResultCacheManifest(ControllerName, ActionName, securityPolicy.GetType(), lifecycle));
-
-			return this;
-		}
-
 		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
 		{
 			if (predicate == null)
@@ -104,6 +92,18 @@ namespace FluentSecurity
 			return this;
 		}
 
+		public IPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
+		{
+			var policyType = typeof (TSecurityPolicy);
+
+			var existingCacheManifest = GetExistingCacheManifestForPolicy(policyType);
+			if (existingCacheManifest != null) CacheManifests.Remove(existingCacheManifest);
+
+			CacheManifests.Add(new PolicyResultCacheManifest(ControllerName, ActionName, policyType, lifecycle));
+
+			return this;
+		}
+
 		public IEnumerable<ISecurityPolicy> GetPolicies()
 		{
 			return new ReadOnlyCollection<ISecurityPolicy>(_policies);
@@ -111,13 +111,13 @@ namespace FluentSecurity
 
 		private PolicyResultCacheManifest GetExecutionCacheManifestForPolicy(ISecurityPolicy securityPolicy, Cache defaultResultsCacheLifecycle)
 		{
-			var existingManifest = GetExistingCacheManifestForPolicy(securityPolicy);
+			var existingManifest = GetExistingCacheManifestForPolicy(securityPolicy.GetType());
 			return existingManifest ?? new PolicyResultCacheManifest(ControllerName, ActionName, securityPolicy.GetType(), defaultResultsCacheLifecycle);
 		}
 
-		private PolicyResultCacheManifest GetExistingCacheManifestForPolicy(ISecurityPolicy securityPolicy)
+		private PolicyResultCacheManifest GetExistingCacheManifestForPolicy(Type policyType)
 		{
-			return CacheManifests.SingleOrDefault(m => m.PolicyType == securityPolicy.GetType());
+			return CacheManifests.SingleOrDefault(m => m.PolicyType == policyType);
 		}
 	}
 }

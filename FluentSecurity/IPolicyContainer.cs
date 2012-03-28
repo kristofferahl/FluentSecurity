@@ -11,8 +11,8 @@ namespace FluentSecurity
 		string ActionName { get; }
 		IPolicyAppender PolicyAppender { get; }
 		IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy);
-		IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy, Cache lifecycle);
 		IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy;
+		IPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy;
 		IEnumerable<ISecurityPolicy> GetPolicies();
 		IEnumerable<PolicyResult> EnforcePolicies(ISecurityContext context);
 	}
