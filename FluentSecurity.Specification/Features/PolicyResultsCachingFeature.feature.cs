@@ -170,16 +170,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OverrideCacheLevelOfPolicyForAllControllers()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Override cache level of policy for all controllers", ((string[])(null)));
-#line 50
+#line 46
 this.ScenarioSetup(scenarioInfo);
-#line 52
+#line 48
  testRunner.Given("the cache strategy of all controllers is set to PerHttpRequest by ControllerActio" +
                     "n for WriterPolicy");
-#line 53
+#line 49
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 54
+#line 50
  testRunner.Then("it should cache result PerHttpRequest");
-#line 55
+#line 51
  testRunner.Then("it should cache result with key \"BlogController_AddPost_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -190,16 +190,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OverrideCacheLevelOfPolicyForSpecificController()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Override cache level of policy for specific controller", ((string[])(null)));
-#line 58
+#line 54
 this.ScenarioSetup(scenarioInfo);
-#line 60
+#line 56
  testRunner.Given("the cache strategy of BlogController is set to PerHttpRequest by ControllerAction" +
                     " for WriterPolicy");
-#line 61
+#line 57
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 62
+#line 58
  testRunner.Then("it should cache result PerHttpRequest");
-#line 63
+#line 59
  testRunner.Then("it should cache result with key \"BlogController_AddPost_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -210,17 +210,55 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OverrideCacheLevelOfPolicyForSpecificControllerAction()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Override cache level of policy for specific controller action", ((string[])(null)));
-#line 66
+#line 62
 this.ScenarioSetup(scenarioInfo);
-#line 68
+#line 64
  testRunner.Given("the cache strategy of BlogController AddPost is set to PerHttpRequest by Policy f" +
                     "or WriterPolicy");
-#line 69
+#line 65
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 70
+#line 66
  testRunner.Then("it should cache result PerHttpRequest");
-#line 71
+#line 67
  testRunner.Then("it should cache result with key \"*_*_WriterPolicy\"");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Clear cache strategies for specific controller")]
+        public virtual void ClearCacheStrategiesForSpecificController()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Clear cache strategies for specific controller", ((string[])(null)));
+#line 70
+this.ScenarioSetup(scenarioInfo);
+#line 72
+ testRunner.Given("the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy");
+#line 73
+ testRunner.And("the cache strategies of BlogController is cleared");
+#line 74
+ testRunner.When("enforcing WriterPolicy for BlogController AddPost");
+#line 75
+ testRunner.Then("it should not cache result");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Clear cache strategies for specific controller action")]
+        public virtual void ClearCacheStrategiesForSpecificControllerAction()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Clear cache strategies for specific controller action", ((string[])(null)));
+#line 78
+this.ScenarioSetup(scenarioInfo);
+#line 80
+ testRunner.Given("the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy");
+#line 81
+ testRunner.And("the cache strategies of BlogController AddPost is cleared");
+#line 82
+ testRunner.When("enforcing WriterPolicy for BlogController AddPost");
+#line 83
+ testRunner.Then("it should not cache result");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -108,6 +108,19 @@ namespace FluentSecurity
 			return this;
 		}
 
+		public IPolicyContainer ClearCacheStrategies()
+		{
+			CacheManifests.Clear();
+			return this;
+		}
+
+		public IPolicyContainer ClearCacheStrategyFor<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
+		{
+			var existingManifest = GetExistingCacheManifestForPolicy(typeof (TSecurityPolicy));
+			CacheManifests.Remove(existingManifest);
+			return this;
+		}
+
 		public IEnumerable<ISecurityPolicy> GetPolicies()
 		{
 			return new ReadOnlyCollection<ISecurityPolicy>(_policies);

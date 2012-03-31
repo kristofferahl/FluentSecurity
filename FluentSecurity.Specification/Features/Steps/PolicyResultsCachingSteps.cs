@@ -54,6 +54,18 @@ namespace FluentSecurity.Specification.Features.Steps
 			Given(configuration => configuration.For<BlogController>(x => x.AddPost()).CacheResultsOf<WriterPolicy>(lifecycle));
 		}
 
+		[Given(@"the cache strategies of BlogController is cleared")]
+		public void GivenTheCacheStrategiesOfBlogControllerIsCleared()
+		{
+			Given(configuration => configuration.For<BlogController>().ClearCacheStrategies());
+		}
+
+		[Given(@"the cache strategies of BlogController AddPost is cleared")]
+		public void GivenTheCacheStrategiesOfBlogControllerAddPostIsCleared()
+		{
+			Given(configuration => configuration.For<BlogController>(x => x.AddPost()).ClearCacheStrategies());
+		}
+
 		[When(@"enforcing (.*) for (.*) (.*)")]
 		public void WhenEnforcingPolicyXForControllerXActionX(PolicyType policy, string controller, string action)
 		{
@@ -84,7 +96,7 @@ namespace FluentSecurity.Specification.Features.Steps
 			var policyType = ScenarioContext.Current.Get<Type>();
 			var manifest = GetPolicyContainer().CacheManifests.SingleOrDefault(x => x.CacheLifecycle == Cache.DoNotCache && x.PolicyType == policyType);
 
-			Assert.That(manifest, Is.Not.Null);
+			Assert.That(manifest == null || manifest.CacheLifecycle == Cache.DoNotCache, Is.True);
 		}
 
 		[Then(@"it should cache result with key ""(.*)_(.*)_(.*)""")]

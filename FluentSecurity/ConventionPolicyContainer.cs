@@ -47,5 +47,21 @@ namespace FluentSecurity
 
 			return this;
 		}
+
+		public IConventionPolicyContainer ClearCacheStrategies()
+		{
+			foreach (var policyContainer in _policyContainers)
+				policyContainer.ClearCacheStrategies();
+
+			return this;
+		}
+
+		public IConventionPolicyContainer ClearCacheStrategiesFor<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
+		{
+			foreach (var policyContainer in _policyContainers)
+				policyContainer.ClearCacheStrategyFor<TSecurityPolicy>();
+
+			return this;
+		}
 	}
 }

@@ -43,10 +43,6 @@ Scenario: Override cache lifecyle of policy for specific controller
 	Then it should cache result PerHttpRequest
 	Then it should cache result with key "BlogController_*_WriterPolicy"
 
-
-#Scenario: Override cache lifecycle of policy for controller action matching convention
-
-
 Scenario: Override cache level of policy for all controllers
 
 	Given the cache strategy of all controllers is set to PerHttpRequest by ControllerAction for WriterPolicy
@@ -71,7 +67,17 @@ Scenario: Override cache level of policy for specific controller action
 	Then it should cache result with key "*_*_WriterPolicy"
 
 
-#Scenario: Clear cache strategies for specific controller
+Scenario: Clear cache strategies for specific controller
+
+	Given the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy
+	And the cache strategies of BlogController is cleared
+	When enforcing WriterPolicy for BlogController AddPost
+	Then it should not cache result
 
 
-#Scenario: Clear cache strategies for specific controller action
+Scenario: Clear cache strategies for specific controller action
+
+	Given the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy
+	And the cache strategies of BlogController AddPost is cleared
+	When enforcing WriterPolicy for BlogController AddPost
+	Then it should not cache result

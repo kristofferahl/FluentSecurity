@@ -709,6 +709,38 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicyContainerSpec")]
+	public class When_clearing_the_cache_strategy
+	{
+		[Test]
+		public void Should_clear_all_cache_strategies()
+		{
+			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest);
+
+			// Act
+			policyContainer.ClearCacheStrategies();
+
+			// Assert
+			Assert.That(policyContainer.CacheManifests.Any(), Is.False);
+		}
+
+		[Test]
+		public void Should_clear_all_cache_strategies_for_policy()
+		{
+			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest);
+			policyContainer.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpRequest);
+
+			// Act
+			policyContainer.ClearCacheStrategyFor<RequireRolePolicy>();
+
+			// Assert
+			Assert.That(policyContainer.CacheManifests.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerSpec")]
 	public class When_enforcing_policies_with_default_cache_lifecycle_set
 	{
 		[Test]

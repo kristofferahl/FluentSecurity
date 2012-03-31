@@ -58,35 +58,6 @@ namespace FluentSecurity.Specification
 			Assert.That(policyContainers[1].GetPolicies().First(), Is.EqualTo(policy));
 			Assert.That(policyContainers[2].GetPolicies().First(), Is.EqualTo(policy));
 		}
-
-		[Test]
-		public void Should_add_policy_and_policyresult_cache_manifest_to_policycontainers()
-		{
-			// Arrange
-			var controllerName = NameHelper.Controller<AdminController>();
-			var policyContainers = new List<IPolicyContainer>
-			{
-				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
-				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
-				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
-			};
-
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
-			const Cache expectedLifecycle = Cache.PerHttpRequest;
-			var expectedType = typeof(DenyAnonymousAccessPolicy);
-
-			// Act
-			conventionPolicyContainer.CacheResultsOf<DenyAnonymousAccessPolicy>(Cache.PerHttpRequest);
-
-			// Assert
-			var containers = policyContainers.Cast<PolicyContainer>().ToList();
-			Assert.That(containers[0].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[0].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[1].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[1].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[2].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[2].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-		}
 	}
 
 	[TestFixture]
@@ -125,6 +96,135 @@ namespace FluentSecurity.Specification
 			{
 				throw new NotImplementedException();
 			}
+		}
+	}
+
+	[TestFixture]
+	[Category("ConventionPolicyContainerSpec")]
+	public class When_setting_the_cache_lifecycle_for_a_policy_on_a_conventionpolicycontainer
+	{
+		[Test]
+		public void Should_add_policyresult_cache_manifest_to_policycontainers()
+		{
+			// Arrange
+			var controllerName = NameHelper.Controller<AdminController>();
+			var policyContainers = new List<IPolicyContainer>
+			{
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
+			};
+
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers, By.Controller);
+			const Cache expectedLifecycle = Cache.PerHttpRequest;
+			var expectedType = typeof(DenyAnonymousAccessPolicy);
+
+			// Act
+			conventionPolicyContainer.CacheResultsOf<DenyAnonymousAccessPolicy>(expectedLifecycle);
+
+			// Assert
+			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			Assert.That(containers[0].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[0].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[0].CacheManifests.Single().CacheLevel, Is.EqualTo(By.Controller));
+			Assert.That(containers[1].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[1].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[1].CacheManifests.Single().CacheLevel, Is.EqualTo(By.Controller));
+			Assert.That(containers[2].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[2].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[2].CacheManifests.Single().CacheLevel, Is.EqualTo(By.Controller));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConventionPolicyContainerSpec")]
+	public class When_setting_the_cache_lifecycle_and_cache_level_for_a_policy_on_a_conventionpolicycontainer
+	{
+		[Test]
+		public void Should_add_policyresult_cache_manifest_to_policycontainers()
+		{
+			// Arrange
+			var controllerName = NameHelper.Controller<AdminController>();
+			var policyContainers = new List<IPolicyContainer>
+			{
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
+			};
+
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			const Cache expectedLifecycle = Cache.PerHttpRequest;
+			const By expectedLevel = By.ControllerAction;
+			var expectedType = typeof(DenyAnonymousAccessPolicy);
+
+			// Act
+			conventionPolicyContainer.CacheResultsOf<DenyAnonymousAccessPolicy>(expectedLifecycle, expectedLevel);
+
+			// Assert
+			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			Assert.That(containers[0].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[0].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[0].CacheManifests.Single().CacheLevel, Is.EqualTo(expectedLevel));
+			Assert.That(containers[1].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[1].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[1].CacheManifests.Single().CacheLevel, Is.EqualTo(expectedLevel));
+			Assert.That(containers[2].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[2].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[2].CacheManifests.Single().CacheLevel, Is.EqualTo(expectedLevel));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerSpec")]
+	public class When_clearing_the_cache_strategies_of_a_conventionpolicycontainer
+	{
+		[Test]
+		public void Should_clear_all_cache_strategies()
+		{
+			var controllerName = NameHelper.Controller<AdminController>();
+			var policyContainers = new List<IPolicyContainer>
+			{
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
+			};
+
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			conventionPolicyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest);
+
+			// Act
+			conventionPolicyContainer.ClearCacheStrategies();
+
+			// Assert
+			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			Assert.That(containers[0].CacheManifests.Any(), Is.False);
+			Assert.That(containers[1].CacheManifests.Any(), Is.False);
+			Assert.That(containers[2].CacheManifests.Any(), Is.False);
+		}
+
+		[Test]
+		public void Should_clear_all_cache_strategies_for_policy()
+		{
+			var controllerName = NameHelper.Controller<AdminController>();
+			var policyContainers = new List<IPolicyContainer>
+			{
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
+			};
+
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			conventionPolicyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest);
+			conventionPolicyContainer.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpRequest);
+
+			// Act
+			conventionPolicyContainer.ClearCacheStrategiesFor<RequireRolePolicy>();
+
+			// Assert
+			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			Assert.That(containers[0].CacheManifests.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
+			Assert.That(containers[1].CacheManifests.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
+			Assert.That(containers[2].CacheManifests.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
 		}
 	}
 }
