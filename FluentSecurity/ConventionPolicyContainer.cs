@@ -7,14 +7,16 @@ namespace FluentSecurity
 {
 	public class ConventionPolicyContainer : IConventionPolicyContainer
 	{
+		private readonly By _defaultCacheLevel;
 		private readonly IList<IPolicyContainer> _policyContainers;
 
-		public ConventionPolicyContainer(IList<IPolicyContainer> policyContainers)
+		public ConventionPolicyContainer(IList<IPolicyContainer> policyContainers, By defaultCacheLevel = By.Policy)
 		{
 			if (policyContainers == null)
 				throw new ArgumentNullException("policyContainers", "A list of policycontainers was not provided");
 			
 			_policyContainers = policyContainers;
+			_defaultCacheLevel = defaultCacheLevel;
 		}
 
 		public IConventionPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
@@ -35,8 +37,13 @@ namespace FluentSecurity
 
 		public IConventionPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
 		{
+			return CacheResultsOf<TSecurityPolicy>(lifecycle, _defaultCacheLevel);
+		}
+
+		public IConventionPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
+		{
 			foreach (var policyContainer in _policyContainers)
-				policyContainer.CacheResultsOf<TSecurityPolicy>(lifecycle);
+				policyContainer.CacheResultsOf<TSecurityPolicy>(lifecycle, level);
 
 			return this;
 		}

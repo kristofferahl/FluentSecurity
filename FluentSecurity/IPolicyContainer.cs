@@ -13,6 +13,7 @@ namespace FluentSecurity
 		IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy);
 		IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy;
 		IPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy;
+		IPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy;
 		IEnumerable<ISecurityPolicy> GetPolicies();
 		IEnumerable<PolicyResult> EnforcePolicies(ISecurityContext context);
 	}

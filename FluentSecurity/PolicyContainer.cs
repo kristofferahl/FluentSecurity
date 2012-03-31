@@ -55,7 +55,6 @@ namespace FluentSecurity
 				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, policy, context);
 				
 				var result = cache.Get<PolicyResult>(cacheKey, manifest.CacheLifecycle.ToLifecycle());
-				// Recurive try get from cache at lifecycle C_A_P, C_*_P, *_*_P unless DoNotCacheIs the lifecycle?
 				if (result == null)
 				{
 					result = policy.Enforce(context);
@@ -94,12 +93,17 @@ namespace FluentSecurity
 
 		public IPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
 		{
+			return CacheResultsOf<TSecurityPolicy>(lifecycle, By.ControllerAction);
+		}
+
+		public IPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
+		{
 			var policyType = typeof (TSecurityPolicy);
 
 			var existingCacheManifest = GetExistingCacheManifestForPolicy(policyType);
 			if (existingCacheManifest != null) CacheManifests.Remove(existingCacheManifest);
 
-			CacheManifests.Add(new PolicyResultCacheManifest(ControllerName, ActionName, policyType, lifecycle));
+			CacheManifests.Add(new PolicyResultCacheManifest(ControllerName, ActionName, policyType, lifecycle, level));
 
 			return this;
 		}

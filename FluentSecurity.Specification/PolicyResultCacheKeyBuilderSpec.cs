@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using FluentSecurity.Caching;
+﻿using FluentSecurity.Caching;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
@@ -23,6 +22,36 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(cacheKey, Is.EqualTo("PolicyResult_AdminController_Login_" + NameHelper.Policy<TestPolicy>()));
+		}
+
+		[Test]
+		public void Should_be_PolicyResult_AdminController_star_TestPolicy()
+		{
+			// Arrange
+			var policy = new TestPolicy();
+			var manifest = new PolicyResultCacheManifest("AdminController", "Login", policy.GetType(), Cache.DoNotCache, By.Controller);
+			var context = TestDataFactory.CreateSecurityContext(true);
+
+			// Act
+			var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, policy, context);
+
+			// Assert
+			Assert.That(cacheKey, Is.EqualTo("PolicyResult_AdminController_*_" + NameHelper.Policy<TestPolicy>()));
+		}
+
+		[Test]
+		public void Should_be_PolicyResult_star_star_TestPolicy()
+		{
+			// Arrange
+			var policy = new TestPolicy();
+			var manifest = new PolicyResultCacheManifest("AdminController", "Login", policy.GetType(), Cache.DoNotCache, By.Policy);
+			var context = TestDataFactory.CreateSecurityContext(true);
+
+			// Act
+			var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, policy, context);
+
+			// Assert
+			Assert.That(cacheKey, Is.EqualTo("PolicyResult_*_*_" + NameHelper.Policy<TestPolicy>()));
 		}
 
 		public class TestPolicy : ISecurityPolicy
@@ -51,6 +80,36 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(cacheKey, Is.EqualTo("PolicyResult_BlogController_Post_" + NameHelper.Policy<BlogAdminPolicy>()));
+		}
+
+		[Test]
+		public void Should_be_PolicyResult_BlogController_star_TestPolicy()
+		{
+			// Arrange
+			var policy = new BlogAdminPolicy();
+			var manifest = new PolicyResultCacheManifest("BlogController", "Login", policy.GetType(), Cache.DoNotCache, By.Controller);
+			var context = TestDataFactory.CreateSecurityContext(true);
+
+			// Act
+			var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, policy, context);
+
+			// Assert
+			Assert.That(cacheKey, Is.EqualTo("PolicyResult_BlogController_*_" + NameHelper.Policy<BlogAdminPolicy>()));
+		}
+
+		[Test]
+		public void Should_be_PolicyResult_star_star_TestPolicy()
+		{
+			// Arrange
+			var policy = new BlogAdminPolicy();
+			var manifest = new PolicyResultCacheManifest("BlogController", "Login", policy.GetType(), Cache.DoNotCache, By.Policy);
+			var context = TestDataFactory.CreateSecurityContext(true);
+
+			// Act
+			var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, policy, context);
+
+			// Assert
+			Assert.That(cacheKey, Is.EqualTo("PolicyResult_*_*_" + NameHelper.Policy<BlogAdminPolicy>()));
 		}
 
 		public class BlogAdminPolicy : ISecurityPolicy

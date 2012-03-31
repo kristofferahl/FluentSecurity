@@ -516,6 +516,7 @@ namespace FluentSecurity.Specification
 			Assert.That(policyResultCacheManifest.ActionName, Is.EqualTo(expectedActionName));
 			Assert.That(policyResultCacheManifest.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
 			Assert.That(policyResultCacheManifest.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(By.ControllerAction));
 		}
 
 		[Test]
@@ -536,6 +537,7 @@ namespace FluentSecurity.Specification
 			Assert.That(policyResultCacheManifest.ActionName, Is.EqualTo(expectedActionName));
 			Assert.That(policyResultCacheManifest.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
 			Assert.That(policyResultCacheManifest.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(By.ControllerAction));
 		}
 
 		[Test]
@@ -556,6 +558,7 @@ namespace FluentSecurity.Specification
 			Assert.That(policyResultCacheManifest.ActionName, Is.EqualTo(expectedActionName));
 			Assert.That(policyResultCacheManifest.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
 			Assert.That(policyResultCacheManifest.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(By.ControllerAction));
 		}
 
 		[Test]
@@ -576,6 +579,7 @@ namespace FluentSecurity.Specification
 			Assert.That(policyResultCacheManifest.ActionName, Is.EqualTo(expectedActionName));
 			Assert.That(policyResultCacheManifest.PolicyType, Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
 			Assert.That(policyResultCacheManifest.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(By.ControllerAction));
 		}
 
 		[Test]
@@ -599,12 +603,14 @@ namespace FluentSecurity.Specification
 			Assert.That(manifest1.ActionName, Is.EqualTo(expectedActionName));
 			Assert.That(manifest1.PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
 			Assert.That(manifest1.CacheLifecycle, Is.EqualTo(Cache.PerHttpRequest));
+			Assert.That(manifest1.CacheLevel, Is.EqualTo(By.ControllerAction));
 
 			var manifest2 = policyContainer.CacheManifests.Last();
 			Assert.That(manifest2.ControllerName, Is.EqualTo(expectedControllerName));
 			Assert.That(manifest2.ActionName, Is.EqualTo(expectedActionName));
 			Assert.That(manifest2.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
 			Assert.That(manifest2.CacheLifecycle, Is.EqualTo(Cache.PerHttpSession));
+			Assert.That(manifest2.CacheLevel, Is.EqualTo(By.ControllerAction));
 		}
 
 		[Test]
@@ -627,6 +633,77 @@ namespace FluentSecurity.Specification
 			Assert.That(policyResultCacheManifest.ActionName, Is.EqualTo(expectedActionName));
 			Assert.That(policyResultCacheManifest.PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
 			Assert.That(policyResultCacheManifest.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(By.ControllerAction));
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerSpec")]
+	public class When_setting_the_cache_lifecycle_and_cache_level
+	{
+		[Test]
+		public void Should_add_policyresult_cache_manifest_for_RequireRolePolicy_with_level_set_to_ControllerAction()
+		{
+			const By expectedLevel = By.ControllerAction;
+			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+
+			// Act
+			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
+
+			// Assert
+			var policyResultCacheManifest = policyContainer.CacheManifests.Single();
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(expectedLevel));
+		}
+
+		[Test]
+		public void Should_add_policyresult_cache_manifest_for_RequireRolePolicy_with_level_set_to_Controller()
+		{
+			const By expectedLevel = By.Controller;
+			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+
+			// Act
+			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
+
+			// Assert
+			var policyResultCacheManifest = policyContainer.CacheManifests.Single();
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(expectedLevel));
+		}
+
+		[Test]
+		public void Should_add_policyresult_cache_manifest_for_RequireRolePolicy_with_level_set_to_Policy()
+		{
+			const By expectedLevel = By.Policy;
+			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+
+			// Act
+			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
+
+			// Assert
+			var policyResultCacheManifest = policyContainer.CacheManifests.Single();
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(expectedLevel));
+		}
+
+		[Test]
+		public void Should_update_existing_policyresult_cache_manifests()
+		{
+			// Arrange
+			const Cache expectedLifecycle = Cache.PerHttpSession;
+			const string expectedControllerName = "Controller6";
+			const string expectedActionName = "Action6";
+			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+
+			// Act
+			policyContainer
+				.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpRequest, By.Controller)
+				.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpSession, By.Policy);
+
+			// Assert
+			var policyResultCacheManifest = policyContainer.CacheManifests.Single();
+			Assert.That(policyResultCacheManifest.ControllerName, Is.EqualTo(expectedControllerName));
+			Assert.That(policyResultCacheManifest.ActionName, Is.EqualTo(expectedActionName));
+			Assert.That(policyResultCacheManifest.PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
+			Assert.That(policyResultCacheManifest.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheManifest.CacheLevel, Is.EqualTo(By.Policy));
 		}
 	}
 

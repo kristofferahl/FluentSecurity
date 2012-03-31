@@ -84,6 +84,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow">
+      <HintPath>..\packages\SpecFlow.1.8.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -96,6 +99,20 @@
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExceptionFactorySpec.cs" />
+    <Compile Include="Features\PolicyResultsCachingFeature.feature.cs">
+      <DependentUpon>PolicyResultsCachingFeature.feature</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Features\Helpers\Givens.cs" />
+    <Compile Include="Features\Steps\PolicyResultsCachingSteps.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Features\Helpers\SpecFlowNUnitExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Features\Helpers\ScenarioContextExtensions.cs" />
     <Compile Include="Helpers\MvcMockHelpers.cs" />
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\ResetFixture.cs" />
@@ -144,6 +161,7 @@
     <Compile Include="Policy\DenyAnonymousAccessPolicySpec.cs" />
     <Compile Include="Helpers\StaticHelper.cs" />
     <Compile Include="SecurityHandlerSpec.cs" />
+    <Compile Include="TestData\WriterPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentSecurity\FluentSecurity.csproj">
@@ -169,6 +187,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Features\PolicyResultsCachingFeature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PolicyResultsCachingFeature.feature.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
