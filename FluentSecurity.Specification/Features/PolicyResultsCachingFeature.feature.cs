@@ -72,13 +72,13 @@ namespace FluentSecurity.Specification.Features
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cache results of policy for all controllers", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
-#line 8
- testRunner.Given("the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy");
-#line 9
- testRunner.When("enforcing WriterPolicy for BlogController AddPost");
 #line 10
- testRunner.Then("it should cache result PerHttpRequest");
+ testRunner.Given("the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy");
 #line 11
+ testRunner.When("enforcing WriterPolicy for BlogController AddPost");
+#line 12
+ testRunner.Then("it should cache result PerHttpRequest");
+#line 13
  testRunner.Then("it should cache result with key \"*_*_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -89,15 +89,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CacheResultsOfPolicyForSpecificController()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cache results of policy for specific controller", ((string[])(null)));
-#line 14
-this.ScenarioSetup(scenarioInfo);
 #line 16
+this.ScenarioSetup(scenarioInfo);
+#line 20
  testRunner.Given("the cache strategy of BlogController is set to PerHttpRequest for WriterPolicy");
-#line 17
+#line 21
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 18
+#line 22
  testRunner.Then("it should cache result PerHttpRequest");
-#line 19
+#line 23
  testRunner.Then("it should cache result with key \"BlogController_*_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -108,16 +108,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CacheResultsOfPolicyForSpecificControllerAndAction()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cache results of policy for specific controller and action", ((string[])(null)));
-#line 22
+#line 26
 this.ScenarioSetup(scenarioInfo);
-#line 24
+#line 30
  testRunner.Given("the cache strategy of BlogController AddPost is set to PerHttpRequest for WriterP" +
                     "olicy");
-#line 25
+#line 31
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 26
+#line 32
  testRunner.Then("it should cache result PerHttpRequest");
-#line 27
+#line 33
  testRunner.Then("it should cache result with key \"BlogController_AddPost_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -128,16 +128,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OverrideCacheLifecycleOfPolicyForSpecificControllerAndAction()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Override cache lifecycle of policy for specific controller and action", ((string[])(null)));
-#line 30
+#line 36
 this.ScenarioSetup(scenarioInfo);
-#line 32
+#line 41
  testRunner.Given("the cache strategy of BlogController is set to PerHttpRequest for WriterPolicy");
-#line 33
+#line 42
  testRunner.And("the cache strategy of BlogController AddPost is set to DoNotCache for WriterPolic" +
                     "y");
-#line 34
+#line 43
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 35
+#line 44
  testRunner.Then("it should not cache result");
 #line hidden
             this.ScenarioCleanup();
@@ -148,18 +148,18 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OverrideCacheLifecyleOfPolicyForSpecificController()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Override cache lifecyle of policy for specific controller", ((string[])(null)));
-#line 38
+#line 47
 this.ScenarioSetup(scenarioInfo);
-#line 40
+#line 52
  testRunner.Given("the cache strategy of BlogController AddPost is set to PerHttpSession for WriterP" +
                     "olicy");
-#line 41
+#line 53
  testRunner.And("the cache strategy of BlogController is set to PerHttpRequest for WriterPolicy");
-#line 42
+#line 54
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 43
+#line 55
  testRunner.Then("it should cache result PerHttpRequest");
-#line 44
+#line 56
  testRunner.Then("it should cache result with key \"BlogController_*_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -170,16 +170,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OverrideCacheLevelOfPolicyForAllControllers()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Override cache level of policy for all controllers", ((string[])(null)));
-#line 46
+#line 59
 this.ScenarioSetup(scenarioInfo);
-#line 48
+#line 63
  testRunner.Given("the cache strategy of all controllers is set to PerHttpRequest by ControllerActio" +
                     "n for WriterPolicy");
-#line 49
+#line 64
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 50
+#line 65
  testRunner.Then("it should cache result PerHttpRequest");
-#line 51
+#line 66
  testRunner.Then("it should cache result with key \"BlogController_AddPost_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -190,16 +190,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OverrideCacheLevelOfPolicyForSpecificController()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Override cache level of policy for specific controller", ((string[])(null)));
-#line 54
+#line 69
 this.ScenarioSetup(scenarioInfo);
-#line 56
+#line 73
  testRunner.Given("the cache strategy of BlogController is set to PerHttpRequest by ControllerAction" +
                     " for WriterPolicy");
-#line 57
+#line 74
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 58
+#line 75
  testRunner.Then("it should cache result PerHttpRequest");
-#line 59
+#line 76
  testRunner.Then("it should cache result with key \"BlogController_AddPost_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -210,16 +210,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OverrideCacheLevelOfPolicyForSpecificControllerAction()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Override cache level of policy for specific controller action", ((string[])(null)));
-#line 62
+#line 79
 this.ScenarioSetup(scenarioInfo);
-#line 64
+#line 83
  testRunner.Given("the cache strategy of BlogController AddPost is set to PerHttpRequest by Policy f" +
                     "or WriterPolicy");
-#line 65
+#line 84
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 66
+#line 85
  testRunner.Then("it should cache result PerHttpRequest");
-#line 67
+#line 86
  testRunner.Then("it should cache result with key \"*_*_WriterPolicy\"");
 #line hidden
             this.ScenarioCleanup();
@@ -230,15 +230,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ClearCacheStrategiesForSpecificController()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Clear cache strategies for specific controller", ((string[])(null)));
-#line 70
+#line 89
 this.ScenarioSetup(scenarioInfo);
-#line 72
+#line 94
  testRunner.Given("the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy");
-#line 73
+#line 95
  testRunner.And("the cache strategies of BlogController is cleared");
-#line 74
+#line 96
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 75
+#line 97
  testRunner.Then("it should not cache result");
 #line hidden
             this.ScenarioCleanup();
@@ -249,15 +249,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ClearCacheStrategiesForSpecificControllerAction()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Clear cache strategies for specific controller action", ((string[])(null)));
-#line 78
+#line 100
 this.ScenarioSetup(scenarioInfo);
-#line 80
+#line 105
  testRunner.Given("the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy");
-#line 81
+#line 106
  testRunner.And("the cache strategies of BlogController AddPost is cleared");
-#line 82
+#line 107
  testRunner.When("enforcing WriterPolicy for BlogController AddPost");
-#line 83
+#line 108
  testRunner.Then("it should not cache result");
 #line hidden
             this.ScenarioCleanup();
