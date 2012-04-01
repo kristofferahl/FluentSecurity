@@ -68,7 +68,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Caching\By.cs" />
-    <Compile Include="Caching\PolicyResultCacheManifest.cs" />
+    <Compile Include="Caching\PolicyResultCacheStrategy.cs" />
     <Compile Include="Caching\ICacheKeyProvider.cs" />
     <Compile Include="Caching\PolicyResultCacheKeyBuilder.cs" />
     <Compile Include="Caching\ISecurityCache.cs" />

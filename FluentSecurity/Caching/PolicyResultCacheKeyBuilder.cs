@@ -7,14 +7,14 @@ namespace FluentSecurity.Caching
 	{
 		const string Separator = "_";
 
-		public static string CreateFromManifest(PolicyResultCacheManifest manifest, ISecurityPolicy securityPolicy, ISecurityContext context)
+		public static string CreateFromStrategy(PolicyResultCacheStrategy strategy, ISecurityPolicy securityPolicy, ISecurityContext context)
 		{
-			var policyCacheKey = BuildPolicyCacheKey(manifest, securityPolicy, context);
-			var cacheKey = BuildCacheKey(manifest, policyCacheKey);
+			var policyCacheKey = BuildPolicyCacheKey(strategy, securityPolicy, context);
+			var cacheKey = BuildCacheKey(strategy, policyCacheKey);
 			return cacheKey;
 		}
 
-		private static string BuildPolicyCacheKey(PolicyResultCacheManifest manifest, ISecurityPolicy securityPolicy, ISecurityContext context)
+		private static string BuildPolicyCacheKey(PolicyResultCacheStrategy strategy, ISecurityPolicy securityPolicy, ISecurityContext context)
 		{
 			var customPolicyCacheKey = String.Empty;
 
@@ -32,19 +32,19 @@ namespace FluentSecurity.Caching
 				}
 			}
 
-			return String.Concat(manifest.PolicyType.FullName, customPolicyCacheKey);
+			return String.Concat(strategy.PolicyType.FullName, customPolicyCacheKey);
 		}
 
-		private static string BuildCacheKey(PolicyResultCacheManifest manifest, string policyCacheKey)
+		private static string BuildCacheKey(PolicyResultCacheStrategy strategy, string policyCacheKey)
 		{
 			string cacheKey;
-			switch (manifest.CacheLevel)
+			switch (strategy.CacheLevel)
 			{
 				case By.Controller:
-					cacheKey = String.Concat(manifest.ControllerName, Separator, "*", Separator, policyCacheKey);
+					cacheKey = String.Concat(strategy.ControllerName, Separator, "*", Separator, policyCacheKey);
 					break;
 				case By.ControllerAction:
-					cacheKey = String.Concat(manifest.ControllerName, Separator, manifest.ActionName, Separator, policyCacheKey);
+					cacheKey = String.Concat(strategy.ControllerName, Separator, strategy.ActionName, Separator, policyCacheKey);
 					break;
 				default: // Policy
 					cacheKey = String.Concat("*", Separator, "*", Separator, policyCacheKey);

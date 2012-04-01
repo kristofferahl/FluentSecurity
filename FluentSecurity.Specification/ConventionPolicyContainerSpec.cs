@@ -104,7 +104,7 @@ namespace FluentSecurity.Specification
 	public class When_setting_the_cache_lifecycle_for_a_policy_on_a_conventionpolicycontainer
 	{
 		[Test]
-		public void Should_add_policyresult_cache_manifest_to_policycontainers()
+		public void Should_add_policyresult_cache_strategy_to_policycontainers()
 		{
 			// Arrange
 			var controllerName = NameHelper.Controller<AdminController>();
@@ -124,15 +124,15 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			var containers = policyContainers.Cast<PolicyContainer>().ToList();
-			Assert.That(containers[0].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[0].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[0].CacheManifests.Single().CacheLevel, Is.EqualTo(By.Controller));
-			Assert.That(containers[1].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[1].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[1].CacheManifests.Single().CacheLevel, Is.EqualTo(By.Controller));
-			Assert.That(containers[2].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[2].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[2].CacheManifests.Single().CacheLevel, Is.EqualTo(By.Controller));
+			Assert.That(containers[0].CacheStrategies.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[0].CacheStrategies.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[0].CacheStrategies.Single().CacheLevel, Is.EqualTo(By.Controller));
+			Assert.That(containers[1].CacheStrategies.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[1].CacheStrategies.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[1].CacheStrategies.Single().CacheLevel, Is.EqualTo(By.Controller));
+			Assert.That(containers[2].CacheStrategies.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[2].CacheStrategies.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[2].CacheStrategies.Single().CacheLevel, Is.EqualTo(By.Controller));
 		}
 	}
 
@@ -141,7 +141,7 @@ namespace FluentSecurity.Specification
 	public class When_setting_the_cache_lifecycle_and_cache_level_for_a_policy_on_a_conventionpolicycontainer
 	{
 		[Test]
-		public void Should_add_policyresult_cache_manifest_to_policycontainers()
+		public void Should_add_policyresult_cache_strategy_to_policycontainers()
 		{
 			// Arrange
 			var controllerName = NameHelper.Controller<AdminController>();
@@ -162,15 +162,15 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			var containers = policyContainers.Cast<PolicyContainer>().ToList();
-			Assert.That(containers[0].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[0].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[0].CacheManifests.Single().CacheLevel, Is.EqualTo(expectedLevel));
-			Assert.That(containers[1].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[1].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[1].CacheManifests.Single().CacheLevel, Is.EqualTo(expectedLevel));
-			Assert.That(containers[2].CacheManifests.Single().PolicyType, Is.EqualTo(expectedType));
-			Assert.That(containers[2].CacheManifests.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
-			Assert.That(containers[2].CacheManifests.Single().CacheLevel, Is.EqualTo(expectedLevel));
+			Assert.That(containers[0].CacheStrategies.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[0].CacheStrategies.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[0].CacheStrategies.Single().CacheLevel, Is.EqualTo(expectedLevel));
+			Assert.That(containers[1].CacheStrategies.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[1].CacheStrategies.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[1].CacheStrategies.Single().CacheLevel, Is.EqualTo(expectedLevel));
+			Assert.That(containers[2].CacheStrategies.Single().PolicyType, Is.EqualTo(expectedType));
+			Assert.That(containers[2].CacheStrategies.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(containers[2].CacheStrategies.Single().CacheLevel, Is.EqualTo(expectedLevel));
 		}
 	}
 
@@ -197,9 +197,9 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			var containers = policyContainers.Cast<PolicyContainer>().ToList();
-			Assert.That(containers[0].CacheManifests.Any(), Is.False);
-			Assert.That(containers[1].CacheManifests.Any(), Is.False);
-			Assert.That(containers[2].CacheManifests.Any(), Is.False);
+			Assert.That(containers[0].CacheStrategies.Any(), Is.False);
+			Assert.That(containers[1].CacheStrategies.Any(), Is.False);
+			Assert.That(containers[2].CacheStrategies.Any(), Is.False);
 		}
 
 		[Test]
@@ -222,9 +222,9 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			var containers = policyContainers.Cast<PolicyContainer>().ToList();
-			Assert.That(containers[0].CacheManifests.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
-			Assert.That(containers[1].CacheManifests.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
-			Assert.That(containers[2].CacheManifests.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
+			Assert.That(containers[0].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
+			Assert.That(containers[1].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
+			Assert.That(containers[2].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
 		}
 	}
 }

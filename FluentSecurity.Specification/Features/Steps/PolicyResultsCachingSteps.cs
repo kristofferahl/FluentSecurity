@@ -85,26 +85,26 @@ namespace FluentSecurity.Specification.Features.Steps
 		public void ThenItShouldCacheResultX(Cache expectedLifecycle)
 		{
 			var policyType = ScenarioContext.Current.Get<Type>();
-			var manifest = GetPolicyContainer().CacheManifests.SingleOrDefault(x => x.CacheLifecycle == expectedLifecycle && x.PolicyType == policyType);
+			var strategy = GetPolicyContainer().CacheStrategies.SingleOrDefault(x => x.CacheLifecycle == expectedLifecycle && x.PolicyType == policyType);
 
-			Assert.That(manifest, Is.Not.Null);
+			Assert.That(strategy, Is.Not.Null);
 		}
 
 		[Then(@"it should not cache result")]
 		public void ThenItShouldNotCacheResult()
 		{
 			var policyType = ScenarioContext.Current.Get<Type>();
-			var manifest = GetPolicyContainer().CacheManifests.SingleOrDefault(x => x.CacheLifecycle == Cache.DoNotCache && x.PolicyType == policyType);
+			var strategy = GetPolicyContainer().CacheStrategies.SingleOrDefault(x => x.CacheLifecycle == Cache.DoNotCache && x.PolicyType == policyType);
 
-			Assert.That(manifest == null || manifest.CacheLifecycle == Cache.DoNotCache, Is.True);
+			Assert.That(strategy == null || strategy.CacheLifecycle == Cache.DoNotCache, Is.True);
 		}
 
 		[Then(@"it should cache result with key ""(.*)_(.*)_(.*)""")]
 		public void ThenItShouldCacheResultWithKeyX(string controller, string action, string policy)
 		{
 			var policyType = ScenarioContext.Current.Get<Type>();
-			var manifest = GetPolicyContainer().CacheManifests.SingleOrDefault(x => x.PolicyType == policyType);
-			var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, WriterPolicy, SecurityContext.Current);
+			var strategy = GetPolicyContainer().CacheStrategies.SingleOrDefault(x => x.PolicyType == policyType);
+			var cacheKey = PolicyResultCacheKeyBuilder.CreateFromStrategy(strategy, WriterPolicy, SecurityContext.Current);
 
 			VerifyCacheKey(cacheKey, controller, action, policy);
 		}

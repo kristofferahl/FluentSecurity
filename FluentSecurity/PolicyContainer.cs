@@ -9,7 +9,7 @@ namespace FluentSecurity
 {
 	public class PolicyContainer : IPolicyContainer
 	{
-		internal readonly List<PolicyResultCacheManifest> CacheManifests;
+		internal readonly List<PolicyResultCacheStrategy> CacheStrategies;
 		internal Func<ISecurityConfiguration> SecurityConfigurationProvider;
 
 		private readonly IList<ISecurityPolicy> _policies;
@@ -32,7 +32,7 @@ namespace FluentSecurity
 			
 			PolicyAppender = policyAppender;
 
-			CacheManifests = new List<PolicyResultCacheManifest>();
+			CacheStrategies = new List<PolicyResultCacheStrategy>();
 			SecurityConfigurationProvider = () => SecurityConfiguration.Current;
 		}
 
@@ -51,14 +51,14 @@ namespace FluentSecurity
 			var results = new List<PolicyResult>();
 			foreach (var policy in _policies)
 			{
-				var manifest = GetExecutionCacheManifestForPolicy(policy, defaultResultsCacheLifecycle);
-				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromManifest(manifest, policy, context);
+				var strategy = GetExecutionCacheStrategyForPolicy(policy, defaultResultsCacheLifecycle);
+				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromStrategy(strategy, policy, context);
 				
-				var result = cache.Get<PolicyResult>(cacheKey, manifest.CacheLifecycle.ToLifecycle());
+				var result = cache.Get<PolicyResult>(cacheKey, strategy.CacheLifecycle.ToLifecycle());
 				if (result == null)
 				{
 					result = policy.Enforce(context);
-					cache.Store(result, cacheKey, manifest.CacheLifecycle.ToLifecycle());
+					cache.Store(result, cacheKey, strategy.CacheLifecycle.ToLifecycle());
 				}
 				results.Add(result);
 				
@@ -100,24 +100,24 @@ namespace FluentSecurity
 		{
 			var policyType = typeof (TSecurityPolicy);
 
-			var existingCacheManifest = GetExistingCacheManifestForPolicy(policyType);
-			if (existingCacheManifest != null) CacheManifests.Remove(existingCacheManifest);
+			var existingCacheStrategy = GetExistingCacheStrategyForPolicy(policyType);
+			if (existingCacheStrategy != null) CacheStrategies.Remove(existingCacheStrategy);
 
-			CacheManifests.Add(new PolicyResultCacheManifest(ControllerName, ActionName, policyType, lifecycle, level));
+			CacheStrategies.Add(new PolicyResultCacheStrategy(ControllerName, ActionName, policyType, lifecycle, level));
 
 			return this;
 		}
 
 		public IPolicyContainer ClearCacheStrategies()
 		{
-			CacheManifests.Clear();
+			CacheStrategies.Clear();
 			return this;
 		}
 
 		public IPolicyContainer ClearCacheStrategyFor<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			var existingManifest = GetExistingCacheManifestForPolicy(typeof (TSecurityPolicy));
-			CacheManifests.Remove(existingManifest);
+			var existingStrategy = GetExistingCacheStrategyForPolicy(typeof (TSecurityPolicy));
+			CacheStrategies.Remove(existingStrategy);
 			return this;
 		}
 
@@ -126,15 +126,15 @@ namespace FluentSecurity
 			return new ReadOnlyCollection<ISecurityPolicy>(_policies);
 		}
 
-		private PolicyResultCacheManifest GetExecutionCacheManifestForPolicy(ISecurityPolicy securityPolicy, Cache defaultResultsCacheLifecycle)
+		private PolicyResultCacheStrategy GetExecutionCacheStrategyForPolicy(ISecurityPolicy securityPolicy, Cache defaultResultsCacheLifecycle)
 		{
-			var existingManifest = GetExistingCacheManifestForPolicy(securityPolicy.GetType());
-			return existingManifest ?? new PolicyResultCacheManifest(ControllerName, ActionName, securityPolicy.GetType(), defaultResultsCacheLifecycle);
+			var existingStrategy = GetExistingCacheStrategyForPolicy(securityPolicy.GetType());
+			return existingStrategy ?? new PolicyResultCacheStrategy(ControllerName, ActionName, securityPolicy.GetType(), defaultResultsCacheLifecycle);
 		}
 
-		private PolicyResultCacheManifest GetExistingCacheManifestForPolicy(Type policyType)
+		private PolicyResultCacheStrategy GetExistingCacheStrategyForPolicy(Type policyType)
 		{
-			return CacheManifests.SingleOrDefault(m => m.PolicyType == policyType);
+			return CacheStrategies.SingleOrDefault(m => m.PolicyType == policyType);
 		}
 	}
 }
