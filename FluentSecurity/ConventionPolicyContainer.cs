@@ -35,15 +35,15 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IConventionPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
+		public IConventionPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
 		{
-			return CacheResultsOf<TSecurityPolicy>(lifecycle, _defaultCacheLevel);
+			return Cache<TSecurityPolicy>(lifecycle, _defaultCacheLevel);
 		}
 
-		public IConventionPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
+		public IConventionPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
 		{
 			foreach (var policyContainer in _policyContainers)
-				policyContainer.CacheResultsOf<TSecurityPolicy>(lifecycle, level);
+				policyContainer.Cache<TSecurityPolicy>(lifecycle, level);
 
 			return this;
 		}

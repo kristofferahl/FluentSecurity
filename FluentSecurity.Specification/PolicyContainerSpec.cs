@@ -508,7 +508,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
 
 			// Act
-			policyContainer.CacheResultsOf<RequireRolePolicy>(expectedLifecycle);
+			policyContainer.Cache<RequireRolePolicy>(expectedLifecycle);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -529,7 +529,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
 
 			// Act
-			policyContainer.CacheResultsOf<RequireRolePolicy>(expectedLifecycle);
+			policyContainer.Cache<RequireRolePolicy>(expectedLifecycle);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -550,7 +550,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
 
 			// Act
-			policyContainer.CacheResultsOf<RequireRolePolicy>(expectedLifecycle);
+			policyContainer.Cache<RequireRolePolicy>(expectedLifecycle);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -571,7 +571,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
 
 			// Act
-			policyContainer.CacheResultsOf<DenyAnonymousAccessPolicy>(expectedLifecycle);
+			policyContainer.Cache<DenyAnonymousAccessPolicy>(expectedLifecycle);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -592,8 +592,8 @@ namespace FluentSecurity.Specification
 
 			// Act
 			policyContainer
-				.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpRequest)
-				.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpSession);
+				.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest)
+				.Cache<RequireRolePolicy>(Cache.PerHttpSession);
 
 			// Assert
 			Assert.That(policyContainer.CacheStrategies.Count, Is.EqualTo(2));
@@ -624,8 +624,8 @@ namespace FluentSecurity.Specification
 
 			// Act
 			policyContainer
-				.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpRequest)
-				.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpSession);
+				.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest)
+				.Cache<RequireAllRolesPolicy>(Cache.PerHttpSession);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -648,7 +648,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
 
 			// Act
-			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
+			policyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -662,7 +662,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
 
 			// Act
-			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
+			policyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -676,7 +676,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
 
 			// Act
-			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
+			policyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest, expectedLevel);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -694,8 +694,8 @@ namespace FluentSecurity.Specification
 
 			// Act
 			policyContainer
-				.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpRequest, By.Controller)
-				.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpSession, By.Policy);
+				.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest, By.Controller)
+				.Cache<RequireAllRolesPolicy>(Cache.PerHttpSession, By.Policy);
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
@@ -715,7 +715,7 @@ namespace FluentSecurity.Specification
 		public void Should_clear_all_cache_strategies()
 		{
 			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest);
+			policyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest);
 
 			// Act
 			policyContainer.ClearCacheStrategies();
@@ -728,8 +728,8 @@ namespace FluentSecurity.Specification
 		public void Should_clear_all_cache_strategies_for_policy()
 		{
 			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
-			policyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest);
-			policyContainer.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpRequest);
+			policyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest);
+			policyContainer.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest);
 
 			// Act
 			policyContainer.ClearCacheStrategyFor<RequireRolePolicy>();
@@ -754,7 +754,7 @@ namespace FluentSecurity.Specification
 			var securityPolicy = new IgnorePolicy();
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.SecurityConfigurationProvider = () => TestDataFactory.CreateValidSecurityConfiguration(configuration => configuration.Advanced.SetDefaultResultsCacheLifecycle(defaultCacheLifecycle));
-			policyContainer.AddPolicy(securityPolicy).CacheResultsOf<IgnorePolicy>(specifiedCacheLifecycle);
+			policyContainer.AddPolicy(securityPolicy).Cache<IgnorePolicy>(specifiedCacheLifecycle);
 
 			// Act
 			var results1 = policyContainer.EnforcePolicies(context);

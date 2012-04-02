@@ -21,37 +21,37 @@ namespace FluentSecurity.Specification.Features.Steps
 		[Given(@"the cache strategy of all controllers is set to (.*) by (.*) for (.*)")]
 		public void GivenTheCacheStrategyOfAllControllersIsSetToXByXForX(Cache lifecycle, By level, PolicyType policy)
 		{
-			Given(configuration => configuration.ForAllControllers().CacheResultsOf<WriterPolicy>(lifecycle, level));
+			Given(configuration => configuration.ForAllControllers().Cache<WriterPolicy>(lifecycle, level));
 		}
 
 		[Given(@"the cache strategy of all controllers is set to (.*) for (.*)")]
 		public void GivenTheCacheStrategyOfAllControllersIsSetToXForX(Cache lifecycle, PolicyType policy)
 		{
-			Given(configuration => configuration.ForAllControllers().CacheResultsOf<WriterPolicy>(lifecycle));
+			Given(configuration => configuration.ForAllControllers().Cache<WriterPolicy>(lifecycle));
 		}
 
 		[Given(@"the cache strategy of BlogController is set to (.*) by (.*) for (.*)")]
 		public void GivenTheCacheStrategyOfBlogControllerIsSetToXByXForX(Cache lifecycle, By level, PolicyType policy)
 		{
-			Given(configuration => configuration.For<BlogController>().CacheResultsOf<WriterPolicy>(lifecycle, level));
+			Given(configuration => configuration.For<BlogController>().Cache<WriterPolicy>(lifecycle, level));
 		}
 
 		[Given(@"the cache strategy of BlogController is set to (.*) for (.*)")]
 		public void GivenTheCacheStrategyOfBlogControllerIsSetToXForX(Cache lifecycle, PolicyType policy)
 		{
-			Given(configuration => configuration.For<BlogController>().CacheResultsOf<WriterPolicy>(lifecycle));
+			Given(configuration => configuration.For<BlogController>().Cache<WriterPolicy>(lifecycle));
 		}
 
 		[Given(@"the cache strategy of BlogController AddPost is set to (.*) by (.*) for (.*)")]
 		public void GivenTheCacheStrategyOfBlogControllerAddPostIsSetToXByXForX(Cache lifecycle, By level, PolicyType policy)
 		{
-			Given(configuration => configuration.For<BlogController>(x => x.AddPost()).CacheResultsOf<WriterPolicy>(lifecycle, level));
+			Given(configuration => configuration.For<BlogController>(x => x.AddPost()).Cache<WriterPolicy>(lifecycle, level));
 		}
 
 		[Given(@"the cache strategy of BlogController AddPost is set to (.*) for (.*)")]
 		public void GivenTheCacheStrategyOfBlogControllerAddPostIsSetToXForX(Cache lifecycle, PolicyType policy)
 		{
-			Given(configuration => configuration.For<BlogController>(x => x.AddPost()).CacheResultsOf<WriterPolicy>(lifecycle));
+			Given(configuration => configuration.For<BlogController>(x => x.AddPost()).Cache<WriterPolicy>(lifecycle));
 		}
 
 		[Given(@"the cache strategies of BlogController is cleared")]

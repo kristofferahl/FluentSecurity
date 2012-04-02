@@ -5,7 +5,7 @@
 
 Scenario: Cache results of policy for all controllers
 
-# configuration.ForAllControllers().CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest);
+# configuration.ForAllControllers().Cache<WriterPolicy>(Cache.PerHttpRequest);
 
 	Given the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy
 	When enforcing WriterPolicy for BlogController AddPost
@@ -15,7 +15,7 @@ Scenario: Cache results of policy for all controllers
 
 Scenario: Cache results of policy for specific controller
 
-# configuration.For<BlogController>().CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest);
+# configuration.For<BlogController>().Cache<WriterPolicy>(Cache.PerHttpRequest);
 
 	Given the cache strategy of BlogController is set to PerHttpRequest for WriterPolicy
 	When enforcing WriterPolicy for BlogController AddPost
@@ -25,7 +25,7 @@ Scenario: Cache results of policy for specific controller
 
 Scenario: Cache results of policy for specific controller and action
 
-# configuration.For<BlogController>(x => x.AddPost()).CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest);
+# configuration.For<BlogController>(x => x.AddPost()).Cache<WriterPolicy>(Cache.PerHttpRequest);
 
 	Given the cache strategy of BlogController AddPost is set to PerHttpRequest for WriterPolicy
 	When enforcing WriterPolicy for BlogController AddPost
@@ -35,8 +35,8 @@ Scenario: Cache results of policy for specific controller and action
 
 Scenario: Override cache lifecycle of policy for specific controller and action
 
-# configuration.For<BlogController>().CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest);
-# configuration.For<BlogController>(x => x.AddPost()).CacheResultsOf<WriterPolicy>(Cache.DoNotCache);
+# configuration.For<BlogController>().Cache<WriterPolicy>(Cache.PerHttpRequest);
+# configuration.For<BlogController>(x => x.AddPost()).Cache<WriterPolicy>(Cache.DoNotCache);
 
 	Given the cache strategy of BlogController is set to PerHttpRequest for WriterPolicy
 	And the cache strategy of BlogController AddPost is set to DoNotCache for WriterPolicy
@@ -46,8 +46,8 @@ Scenario: Override cache lifecycle of policy for specific controller and action
 
 Scenario: Override cache lifecyle of policy for specific controller
 
-# configuration.For<BlogController>(x => x.AddPost()).CacheResultsOf<WriterPolicy>(Cache.PerHttpSession);
-# configuration.For<BlogController>().CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest);
+# configuration.For<BlogController>(x => x.AddPost()).Cache<WriterPolicy>(Cache.PerHttpSession);
+# configuration.For<BlogController>().Cache<WriterPolicy>(Cache.PerHttpRequest);
 
 	Given the cache strategy of BlogController AddPost is set to PerHttpSession for WriterPolicy
 	And the cache strategy of BlogController is set to PerHttpRequest for WriterPolicy
@@ -58,7 +58,7 @@ Scenario: Override cache lifecyle of policy for specific controller
 
 Scenario: Override cache level of policy for all controllers
 
-# configuration.ForAllControllers().CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest, By.ControllerAction);
+# configuration.ForAllControllers().Cache<WriterPolicy>(Cache.PerHttpRequest, By.ControllerAction);
 
 	Given the cache strategy of all controllers is set to PerHttpRequest by ControllerAction for WriterPolicy
 	When enforcing WriterPolicy for BlogController AddPost
@@ -68,7 +68,7 @@ Scenario: Override cache level of policy for all controllers
 
 Scenario: Override cache level of policy for specific controller
 
-# configuration.For<BlogController>().CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest, By.ControllerAction);
+# configuration.For<BlogController>().Cache<WriterPolicy>(Cache.PerHttpRequest, By.ControllerAction);
 
 	Given the cache strategy of BlogController is set to PerHttpRequest by ControllerAction for WriterPolicy
 	When enforcing WriterPolicy for BlogController AddPost
@@ -78,7 +78,7 @@ Scenario: Override cache level of policy for specific controller
 
 Scenario: Override cache level of policy for specific controller action
 
-# configuration.For<BlogController>(x => x.AddPost()).CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest, By.Policy);
+# configuration.For<BlogController>(x => x.AddPost()).Cache<WriterPolicy>(Cache.PerHttpRequest, By.Policy);
 
 	Given the cache strategy of BlogController AddPost is set to PerHttpRequest by Policy for WriterPolicy
 	When enforcing WriterPolicy for BlogController AddPost
@@ -88,7 +88,7 @@ Scenario: Override cache level of policy for specific controller action
 
 Scenario: Clear cache strategies for specific controller
 
-# configuration.ForAllControllers().CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest);
+# configuration.ForAllControllers().Cache<WriterPolicy>(Cache.PerHttpRequest);
 # configuration.For<BlogController>().ClearCacheStrategies();
 
 	Given the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy
@@ -99,7 +99,7 @@ Scenario: Clear cache strategies for specific controller
 
 Scenario: Clear cache strategies for specific controller action
 
-# configuration.ForAllControllers().CacheResultsOf<WriterPolicy>(Cache.PerHttpRequest);
+# configuration.ForAllControllers().Cache<WriterPolicy>(Cache.PerHttpRequest);
 # configuration.For<BlogController>(x => x.AddPost()).ClearCacheStrategies();
 
 	Given the cache strategy of all controllers is set to PerHttpRequest for WriterPolicy

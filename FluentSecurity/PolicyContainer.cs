@@ -91,12 +91,12 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
 		{
-			return CacheResultsOf<TSecurityPolicy>(lifecycle, By.ControllerAction);
+			return Cache<TSecurityPolicy>(lifecycle, By.ControllerAction);
 		}
 
-		public IPolicyContainer CacheResultsOf<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
 		{
 			var policyType = typeof (TSecurityPolicy);
 

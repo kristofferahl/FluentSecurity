@@ -120,7 +120,7 @@ namespace FluentSecurity.Specification
 			var expectedType = typeof(DenyAnonymousAccessPolicy);
 
 			// Act
-			conventionPolicyContainer.CacheResultsOf<DenyAnonymousAccessPolicy>(expectedLifecycle);
+			conventionPolicyContainer.Cache<DenyAnonymousAccessPolicy>(expectedLifecycle);
 
 			// Assert
 			var containers = policyContainers.Cast<PolicyContainer>().ToList();
@@ -158,7 +158,7 @@ namespace FluentSecurity.Specification
 			var expectedType = typeof(DenyAnonymousAccessPolicy);
 
 			// Act
-			conventionPolicyContainer.CacheResultsOf<DenyAnonymousAccessPolicy>(expectedLifecycle, expectedLevel);
+			conventionPolicyContainer.Cache<DenyAnonymousAccessPolicy>(expectedLifecycle, expectedLevel);
 
 			// Assert
 			var containers = policyContainers.Cast<PolicyContainer>().ToList();
@@ -190,7 +190,7 @@ namespace FluentSecurity.Specification
 			};
 
 			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
-			conventionPolicyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest);
+			conventionPolicyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest);
 
 			// Act
 			conventionPolicyContainer.ClearCacheStrategies();
@@ -214,8 +214,8 @@ namespace FluentSecurity.Specification
 			};
 
 			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
-			conventionPolicyContainer.CacheResultsOf<RequireRolePolicy>(Cache.PerHttpRequest);
-			conventionPolicyContainer.CacheResultsOf<RequireAllRolesPolicy>(Cache.PerHttpRequest);
+			conventionPolicyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest);
+			conventionPolicyContainer.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest);
 
 			// Act
 			conventionPolicyContainer.ClearCacheStrategiesFor<RequireRolePolicy>();
