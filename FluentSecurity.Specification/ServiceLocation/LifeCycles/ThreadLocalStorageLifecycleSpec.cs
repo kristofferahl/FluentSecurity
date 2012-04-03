@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using FluentSecurity.ServiceLocation.LifeCycles;
 using NUnit.Framework;
 
@@ -8,34 +9,60 @@ namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
 	[Category("ThreadLocalStorageLifecycleSpec")]
 	public class When_getting_the_cache_from_ThreadLocalStorageLifecycle
 	{
-		[Test]
-		public void Should_get_same_cache_while_on_the_same_thread()
-		{
-			// Act
-			var cache1 = new ThreadLocalStorageLifecycle().FindCache();
-			var cache2 = new ThreadLocalStorageLifecycle().FindCache();
+		private ThreadLocalStorageLifecycle _lifecycle;
+		private IObjectCache _cache1;
+		private IObjectCache _cache2;
+		private IObjectCache _cache3;
 
-			// Assert
-			Assert.That(cache1, Is.EqualTo(cache2));
+		[SetUp]
+		public void SetUp()
+		{
+			_lifecycle = new ThreadLocalStorageLifecycle();
 		}
 
-		[Test]
-		public void Should_get_different_caches_for_2_threads()
+		private void findCache1()
 		{
-			// Arrange & act
-			var task1 = new Task<IObjectCache>(() => new ThreadLocalStorageLifecycle().FindCache());
-			task1.Start();
+			_cache1 = _lifecycle.FindCache();
+			var cache1 = _lifecycle.FindCache();
+			
+			Assert.AreSame(_cache1, cache1);
+		}
 
-			var task2 = new Task<IObjectCache>(() => new ThreadLocalStorageLifecycle().FindCache());
-			task2.Start();
+		private void findCache2()
+		{
+			_cache2 = _lifecycle.FindCache();
+			var cache2 = _lifecycle.FindCache();
 
-			Task.WaitAll(task1, task2);
+			Assert.AreSame(_cache2, cache2);
+		}
 
-			var cache1 = task1.Result;
-			var cache2 = task2.Result;
+		private void findCache3()
+		{
+			_cache3 = _lifecycle.FindCache();
 
-			// Assert
-			Assert.That(cache1, Is.Not.EqualTo(cache2));
+			Assert.AreSame(_cache3, _lifecycle.FindCache());
+			Assert.AreSame(_cache3, _lifecycle.FindCache());
+			Assert.AreSame(_cache3, _lifecycle.FindCache());
+		}
+		
+		[Test]
+		public void Should_get_different_caches_for_each_thread()
+		{
+			var t1 = new Thread(findCache1);
+			var t2 = new Thread(findCache2);
+			var t3 = new Thread(findCache3);
+
+			t1.Start();
+			t2.Start();
+			t3.Start();
+
+			t1.Join();
+			t2.Join();
+			t3.Join();
+
+			Assert.AreNotSame(_cache1, _cache2);
+			Assert.AreNotSame(_cache1, _cache3);
+			Assert.AreNotSame(_cache2, _cache3);
 		}
 	}
 }
