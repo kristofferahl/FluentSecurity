@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Dynamic;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
 	public class SecurityContext : ISecurityContext
 	{
+		private readonly ExpandoObject _data;
 		private readonly Func<bool> _isAuthenticated;
 		private readonly Func<IEnumerable<object>> _roles;
 
 		private SecurityContext(Func<bool> isAuthenticated, Func<IEnumerable<object>> roles)
 		{
+			_data = new ExpandoObject();
 			_isAuthenticated = isAuthenticated;
 			_roles = roles;
+		}
+
+		public dynamic Data
+		{
+			get { return _data; }
 		}
 
 		public bool CurrenUserAuthenticated()

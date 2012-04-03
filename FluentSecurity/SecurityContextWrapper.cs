@@ -11,6 +11,11 @@ namespace FluentSecurity
 			_securityContext = securityContext;
 		}
 
+		public dynamic Data
+		{
+			get { return _securityContext.Data; }
+		}
+
 		public bool CurrenUserAuthenticated()
 		{
 			return _securityContext.CurrenUserAuthenticated();

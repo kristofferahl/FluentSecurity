@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
@@ -39,6 +40,7 @@ namespace FluentSecurity.Specification
 			var context = SecurityContext.Current;
 
 			// Assert
+			Assert.That(context.Data, Is.TypeOf(typeof(ExpandoObject)));
 			Assert.That(context.CurrenUserAuthenticated(), Is.EqualTo(status));
 			Assert.That(context.CurrenUserRoles(), Is.EqualTo(roles));
 		}
@@ -65,6 +67,7 @@ namespace FluentSecurity.Specification
 			var context = SecurityContext.Current;
 
 			// Assert
+			Assert.That(context.Data, Is.TypeOf(typeof(ExpandoObject)));
 			Assert.That(context.CurrenUserAuthenticated(), Is.EqualTo(status));
 			Assert.That(context.CurrenUserRoles(), Is.EqualTo(roles));
 			Assert.AreSame(context, iocContext);
