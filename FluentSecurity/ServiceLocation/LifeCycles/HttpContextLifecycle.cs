@@ -6,7 +6,7 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 {
 	internal class HttpContextLifecycle : ILifecycle
 	{
-		public const string CacheKey = "FluentSecurity-Instances";
+		public const string CacheKey = "FluentSecurity-HttpContextCache";
 
 		public static Func<bool> HasContextResolver;
 		public static Func<IDictionary> DictionaryResolver;
@@ -41,7 +41,7 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 			return HasContextResolver.Invoke();
 		}
 
-		protected virtual IDictionary FindHttpDictionary()
+		private IDictionary FindHttpDictionary()
 		{
 			if (!HasContext()) throw new InvalidOperationException("HttpContext is not available.");
 			return DictionaryResolver.Invoke();

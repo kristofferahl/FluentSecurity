@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentSecurity.ServiceLocation.LifeCycles;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
@@ -35,6 +36,26 @@ namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
 
 			// Act & assert
 			Assert.Throws<ArgumentException>(() => objectCache.Set(key, obj2));
+		}
+
+		[Test]
+		public void Should_dispose_IDisposable_instances_when_cleared()
+		{
+			// Arrange
+			var key = Guid.NewGuid();
+			
+			var disposable = new Mock<IDisposable>();
+			disposable.Setup(x => x.Dispose());
+
+			var objectCache = new ObjectCache();
+			objectCache.Set(key, disposable.Object);
+
+			// Act
+			objectCache.Clear();
+
+			// Assert
+			Assert.That(objectCache.Count, Is.EqualTo(0));
+			disposable.Verify(x => x.Dispose(), Times.Exactly(1));
 		}
 	}
 }

@@ -60,16 +60,11 @@
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.core.interfaces">
+      <HintPath>..\Packages\NUnit.Runners.2.6.0.12051\tools\lib\nunit.core.interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="pnunit.framework">
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -89,6 +84,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow">
+      <HintPath>..\packages\SpecFlow.1.8.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -97,13 +95,29 @@
     <Compile Include="AssemblyScannerAssemblySpecification.cs" />
     <Compile Include="AssemblyScannerNamespaceSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
+    <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExceptionFactorySpec.cs" />
+    <Compile Include="Features\PolicyResultsCachingFeature.feature.cs">
+      <DependentUpon>PolicyResultsCachingFeature.feature</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Features\Helpers\Givens.cs" />
+    <Compile Include="Features\Steps\PolicyResultsCachingSteps.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Features\Helpers\SpecFlowNUnitExtension.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Features\Helpers\ScenarioContextExtensions.cs" />
     <Compile Include="Helpers\MvcMockHelpers.cs" />
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\ResetFixture.cs" />
     <Compile Include="HttpContextRequestDescriptionSpec.cs" />
+    <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="Policy\RequireAllRolesPolicySpec.cs" />
@@ -113,9 +127,12 @@
     <Compile Include="SecurityContextSpec.cs" />
     <Compile Include="ServiceLocation\ContainerSpec.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocatorSpec.cs" />
+    <Compile Include="ServiceLocation\LifecycleExtensionsSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\HybridHttpSessionLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\HttpSessionLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\HybridHttpContextLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\HttpContextLifecycleSpec.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\NullObjectCacheSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ObjectCacheSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />
@@ -144,6 +161,7 @@
     <Compile Include="Policy\DenyAnonymousAccessPolicySpec.cs" />
     <Compile Include="Helpers\StaticHelper.cs" />
     <Compile Include="SecurityHandlerSpec.cs" />
+    <Compile Include="TestData\WriterPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentSecurity\FluentSecurity.csproj">
@@ -169,6 +187,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Features\PolicyResultsCachingFeature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PolicyResultsCachingFeature.feature.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

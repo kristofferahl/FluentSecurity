@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.SessionState;
 using FluentSecurity.ServiceLocation.LifeCycles;
-using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
 {
 	[TestFixture]
 	[Category("HttpSessionLifecycleSpec")]
-	public class When_checking_if_session_is_available_for_HttpSessionLifecycle
+	public class When_checking_if_HttpSession_is_available_for_HttpSessionLifecycle
 	{
 		[Test]
 		public void Should_return_false_when_not_available()
@@ -48,7 +45,7 @@ namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
 			var dictionary = new Dictionary<string, object>();
 			var lifecycle = new HttpSessionLifecycle();
 			HttpSessionLifecycle.HasSessionResolver = () => true;
-			HttpSessionLifecycle.HttpSessionStateResolver = () => new TestHttpSessionState(dictionary);
+			HttpSessionLifecycle.DictionaryResolver = () => dictionary;
 
 			// Act
 			var result = lifecycle.FindCache() as ObjectCache;
@@ -66,11 +63,11 @@ namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
 			cache.Set(Guid.NewGuid(), new object());
 
 			var dictionary = new Dictionary<string, object>();
-			dictionary.Add(HttpContextLifecycle.CacheKey, cache);
+			dictionary.Add(HttpSessionLifecycle.CacheKey, cache);
 
 			var lifecycle = new HttpSessionLifecycle();
 			HttpSessionLifecycle.HasSessionResolver = () => true;
-			HttpSessionLifecycle.HttpSessionStateResolver = () => new TestHttpSessionState(dictionary);
+			HttpSessionLifecycle.DictionaryResolver = () => dictionary;
 
 			// Act
 			var result = lifecycle.FindCache() as ObjectCache;
@@ -81,7 +78,7 @@ namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
 		}
 
 		[Test]
-		public void Should_try_to_get_cache_from_context_when_context_is_available()
+		public void Should_try_to_get_cache_from_session_when_session_is_available()
 		{
 			// Arrange
 			var lifecycle = new HttpSessionLifecycle();
@@ -92,42 +89,6 @@ namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
 
 			// Assert
 			Assert.That(exception.Message, Is.EqualTo("Object reference not set to an instance of an object."));
-		}
-
-		public class TestHttpSessionState : HttpSessionStateBase
-		{
-			private static readonly object Locker = new object();
-			private readonly Dictionary<string, object> _sessionStorage;
-
-			public TestHttpSessionState(Dictionary<string, object> dictionary)
-			{
-				_sessionStorage = dictionary;
-			}
-
-			public override object this[string name]
-			{
-				get
-				{
-					return _sessionStorage.ContainsKey(name) ? _sessionStorage[name] : null;
-				}
-				set
-				{
-					_sessionStorage[name] = value;
-				}
-			}
-
-			public override void Add(string name, object value)
-			{
-				_sessionStorage[name] = value;
-			}
-
-			public override object SyncRoot
-			{
-				get
-				{
-					return Locker;
-				}
-			}
 		}
 	}
 }

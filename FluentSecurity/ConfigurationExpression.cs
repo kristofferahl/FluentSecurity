@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
+using FluentSecurity.Caching;
+using FluentSecurity.Configuration;
 using FluentSecurity.Scanning;
 using FluentSecurity.ServiceLocation;
 
@@ -18,8 +20,11 @@ namespace FluentSecurity
 		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
 		private IPolicyAppender PolicyAppender { get; set; }
 
+		public AdvancedConfiguration Advanced { get; set; }
+
 		public ConfigurationExpression()
 		{
+			Advanced = new AdvancedConfiguration();
 			PolicyAppender = new DefaultPolicyAppender();
 		}
 
@@ -54,7 +59,7 @@ namespace FluentSecurity
 			var controllerType = typeof(TController);
 			var controllerTypes = new[] { controllerType };
 
-			return CreateConventionPolicyContainerFor(controllerTypes);
+			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller);
 		}
 
 		public IConventionPolicyContainer ForAllControllers()
@@ -96,7 +101,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes)
+		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
 		{
 			var policyContainers = new List<IPolicyContainer>();
 			foreach (var controllerType in controllerTypes)
@@ -109,7 +114,7 @@ namespace FluentSecurity
 					);
 			}
 
-			return new ConventionPolicyContainer(policyContainers);
+			return new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
 		}
 
 		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)

@@ -67,6 +67,16 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Caching\By.cs" />
+    <Compile Include="Caching\PolicyResultCacheStrategy.cs" />
+    <Compile Include="Caching\ICacheKeyProvider.cs" />
+    <Compile Include="Caching\PolicyResultCacheKeyBuilder.cs" />
+    <Compile Include="Caching\ISecurityCache.cs" />
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\PolicyResultCacheExtensions.cs" />
+    <Compile Include="Caching\SecurityCache.cs" />
+    <Compile Include="Configuration\AdvancedConfiguration.cs" />
+    <Compile Include="Configuration\IAdvancedConfiguration.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="HttpContextRequestDescription.cs" />
     <Compile Include="IRequestDescription.cs" />
@@ -117,20 +127,21 @@
     <Compile Include="ExceptionPolicyViolationHandler.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />
     <Compile Include="ServiceLocation\IContainerSource.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\HttpContextLifecycle.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\HttpSessionLifecycle.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\HybridHttpContextLifecycle.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\ILifecycle.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\IObjectCache.cs" />
-    <Compile Include="ServiceLocation\LifeCycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\HttpContextLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\HttpSessionLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\HybridHttpContextLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\HybridHttpSessionLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\ILifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\IObjectCache.cs" />
+    <Compile Include="ServiceLocation\Lifecycle.cs" />
     <Compile Include="ServiceLocation\LifecycleExtensions.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\NullObjectCache.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\ObjectCache.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\NullObjectCache.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\ObjectCache.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\ThreadLocalStorageLifecycle.cs" />
     <Compile Include="ServiceLocation\RegisteredObject.cs" />
     <Compile Include="ServiceLocation\ServiceLocator.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\SingletonLifecycle.cs" />
-    <Compile Include="ServiceLocation\LifeCycles\TransientLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\SingletonLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\TransientLifecycle.cs" />
     <Compile Include="ServiceLocation\TypeNotRegisteredException.cs" />
   </ItemGroup>
   <ItemGroup>

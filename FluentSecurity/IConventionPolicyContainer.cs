@@ -1,4 +1,5 @@
 using System;
+using FluentSecurity.Caching;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -7,5 +8,9 @@ namespace FluentSecurity
 	{
 		IConventionPolicyContainer AddPolicy(ISecurityPolicy securityPolicy);
 		IConventionPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy;
+		IConventionPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy;
+		IConventionPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy;
+		IConventionPolicyContainer ClearCacheStrategies();
+		IConventionPolicyContainer ClearCacheStrategiesFor<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy;
 	}
 }

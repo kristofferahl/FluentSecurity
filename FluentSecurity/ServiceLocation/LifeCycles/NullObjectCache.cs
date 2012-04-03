@@ -1,14 +1,14 @@
-using System;
-
 namespace FluentSecurity.ServiceLocation.LifeCycles
 {
 	internal class NullObjectCache : IObjectCache
 	{
-		public object Get(Guid key)
+		public object Get(object key)
 		{
 			return null;
 		}
 
-		public void Set(Guid key, object instance) {}
+		public void Set(object key, object instance) {}
+		
+		public void Clear() {}
 	}
 }

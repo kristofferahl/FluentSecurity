@@ -5,7 +5,9 @@ namespace FluentSecurity.ServiceLocation
 	public enum Lifecycle
 	{
 		Transient,
-		Singleton
+		Singleton,
+		HybridHttpContext,
+		HybridHttpSession
 	}
 
 	internal static class Lifecycle<TLifecycle> where TLifecycle : ILifecycle, new()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using FluentSecurity.Configuration;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using Moq;
@@ -44,6 +45,20 @@ namespace FluentSecurity.Specification
 			var policyAppender = policyAppenderProperty.GetValue(configurationExpression, null);
 			Assert.That(policyAppender, Is.TypeOf(expectedPolicyAppenderType));
 		}
+
+		[Test]
+		public void Should_have_Advanced_set_to_AdvancedConfigurationExpression()
+		{
+			// Arrange
+			var expectedType = typeof(AdvancedConfiguration);
+
+			// Act
+			var configurationExpression = Because();
+
+			// Assert
+			Assert.That(configurationExpression.Advanced, Is.TypeOf(expectedType));
+			Assert.That(configurationExpression.Advanced, Is.Not.Null);
+		}
 	}
 
 	[TestFixture]
@@ -71,7 +86,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainer = _configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index");
+			var policyContainer = _configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			
 			Assert.That(policyContainer, Is.Not.Null);
 			Assert.That(_configurationExpression.ToList().Count, Is.EqualTo(1));
@@ -84,7 +99,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainer = _configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index");
+			var policyContainer = _configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.TypeOf(typeof(DefaultPolicyAppender)));
 		}
 	}
@@ -104,8 +119,8 @@ namespace FluentSecurity.Specification
 			configurationExpression.For<BlogController>(x => x.AddPost());
 
 			// Assert
-			Assert.That(configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index"), Is.Not.Null);
-			Assert.That(configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "AddPost"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "AddPost"), Is.Not.Null);
 			Assert.That(configurationExpression.ToList().Count, Is.EqualTo(2));
 		}
 	}
@@ -132,7 +147,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainers_for_all_actions()
 		{
 			// Arrange
-			var expectedControllerName = NameHelper<BlogController>.Controller();
+			var expectedControllerName = NameHelper.Controller<BlogController>();
 
 			// Act
 			Because();
@@ -221,9 +236,9 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			const string index = "Index";
-			var root = NameHelper<TestData.AssemblyScannerControllers.RootController>.Controller();
-			var include = NameHelper<TestData.AssemblyScannerControllers.Include.IncludedController>.Controller();
-			var exclude = NameHelper<TestData.AssemblyScannerControllers.Exclude.ExcludedController>.Controller();
+			var root = NameHelper.Controller<TestData.AssemblyScannerControllers.RootController>();
+			var include = NameHelper.Controller<TestData.AssemblyScannerControllers.Include.IncludedController>();
+			var exclude = NameHelper.Controller<TestData.AssemblyScannerControllers.Exclude.ExcludedController>();
 
 			// Act
 			Because(configurationExpression =>
@@ -242,9 +257,9 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			const string index = "Index";
-			var root = NameHelper<TestData.AssemblyScannerControllers.RootController>.Controller();
-			var include = NameHelper<TestData.AssemblyScannerControllers.Include.IncludedController>.Controller();
-			var exclude = NameHelper<TestData.AssemblyScannerControllers.Exclude.ExcludedController>.Controller();
+			var root = NameHelper.Controller<TestData.AssemblyScannerControllers.RootController>();
+			var include = NameHelper.Controller<TestData.AssemblyScannerControllers.Include.IncludedController>();
+			var exclude = NameHelper.Controller<TestData.AssemblyScannerControllers.Exclude.ExcludedController>();
 
 			// Act
 			Because(configurationExpression =>
@@ -350,7 +365,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			configurationExpression.For<BlogController>(x => x.Index());
-			var policyContainer = configurationExpression.GetContainerFor(NameHelper<BlogController>.Controller(), "Index");
+			var policyContainer = configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
 		}
 	}
