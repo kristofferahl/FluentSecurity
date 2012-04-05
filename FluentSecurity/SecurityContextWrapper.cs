@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace FluentSecurity
@@ -8,6 +9,9 @@ namespace FluentSecurity
 
 		public SecurityContextWrapper(ISecurityContext securityContext)
 		{
+			if (securityContext == null)
+				throw new ArgumentNullException("securityContext");
+			
 			_securityContext = securityContext;
 		}
 

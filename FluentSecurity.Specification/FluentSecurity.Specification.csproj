@@ -122,6 +122,7 @@
     <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
+    <Compile Include="Policy\Contexts\MvcSecurityContextSpec.cs" />
     <Compile Include="Policy\RequireAllRolesPolicySpec.cs" />
     <Compile Include="Policy\DelegatePolicySpec.cs" />
     <Compile Include="Policy\Results\DelegatePolicyResultSpec.cs" />
