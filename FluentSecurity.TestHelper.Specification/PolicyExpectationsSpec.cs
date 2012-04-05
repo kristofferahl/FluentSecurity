@@ -71,8 +71,8 @@ namespace FluentSecurity.TestHelper.Specification
 			var builder = new Mock<IExpectationGroupBuilder>();
 			var verifyer = new Mock<IExpectationVerifyer>();
 
-			builder.Setup(x => x.Build(It.IsAny<IEnumerable<ExpectationExpression>>())).Returns(expectationGroups).AtMostOnce();
-			verifyer.Setup(x => x.VerifyExpectationsOf(expectationGroups)).Returns(new List<ExpectationResult>()).AtMostOnce();
+			builder.Setup(x => x.Build(It.IsAny<IEnumerable<ExpectationExpression>>())).Returns(expectationGroups);
+			verifyer.Setup(x => x.VerifyExpectationsOf(expectationGroups)).Returns(new List<ExpectationResult>());
 
 			var policyExpectations = new PolicyExpectations();
 			policyExpectations.SetExpectationGroupBuilder(builder.Object);
@@ -84,6 +84,8 @@ namespace FluentSecurity.TestHelper.Specification
 			policyExpectations.VerifyAll(configuration);
 
 			// Assert
+			builder.Verify(x => x.Build(It.IsAny<IEnumerable<ExpectationExpression>>()), Times.AtMostOnce());
+			verifyer.Verify(x => x.VerifyExpectationsOf(expectationGroups), Times.AtMostOnce());
 			builder.VerifyAll();
 			verifyer.VerifyAll();
 		}

@@ -473,9 +473,6 @@ namespace FluentSecurity.Specification
 		public void Should_throw_when_securityservicelocator_is_null()
 		{
 			// Arrange
-			Func<Type, IEnumerable<object>> servicesLocator = null;
-			Func<Type, object> singleServiceLocator = FakeIoC.GetInstance;
-
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
 
 			// Act & assert
