@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Rhino.Mocks;
 
 namespace FluentSecurity.Specification.Helpers
@@ -25,6 +26,10 @@ namespace FluentSecurity.Specification.Helpers
 			actionDescriptor.Replay();
 
 			filterContext.Expect(x => x.ActionDescriptor).Return(actionDescriptor).Repeat.Any();
+			filterContext.Replay();
+
+			var routeData = new RouteData();
+			filterContext.Expect(x => x.RouteData).Return(routeData).Repeat.Any();
 			filterContext.Replay();
 
 			return filterContext;

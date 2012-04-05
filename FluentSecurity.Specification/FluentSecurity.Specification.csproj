@@ -118,6 +118,7 @@
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\ResetFixture.cs" />
     <Compile Include="HttpContextRequestDescriptionSpec.cs" />
+    <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
