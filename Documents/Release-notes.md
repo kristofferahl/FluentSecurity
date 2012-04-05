@@ -14,3 +14,4 @@
 - (**New**) Extended ISecurityContext with a Data property (dynamic) for adding and reading custom context data at runtime.
 - (**New**) A RouteValueDictionary is by default added to ISecurityContext.Data.RouteValues when using the HandleSecurityAttribute.
 - (**Change**) Method HandleSecurityFor on ISecurityHandler now takes an instance of ISecurityContext as the last parameter.
+- (**Change**) Moved SecurityContextWrapper to the FluentSecurity.Policy.Contexts namespace.

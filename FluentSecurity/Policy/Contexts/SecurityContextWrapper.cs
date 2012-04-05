@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FluentSecurity
+namespace FluentSecurity.Policy.Contexts
 {
 	public class SecurityContextWrapper : ISecurityContext
 	{
