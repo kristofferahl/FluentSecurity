@@ -86,6 +86,7 @@
     <Compile Include="Policy\DelegatePolicy.cs" />
     <Compile Include="Policy\Contexts\DelegateSecurityContext.cs" />
     <Compile Include="Policy\Results\DelegatePolicyResult.cs" />
+    <Compile Include="Policy\SecurityPolicyBase.cs" />
     <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandler.cs" />
     <Compile Include="Policy\Contexts\SecurityContextWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

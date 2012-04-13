@@ -13,5 +13,7 @@
 - (**New**) Added support for clearing cache strategies using ClearCacheStrategies and ClearStrategiesFor\<TSecurityPolicy\>.
 - (**New**) Extended ISecurityContext with a Data property (dynamic) for adding and reading custom context data at runtime.
 - (**New**) A RouteValueDictionary is by default added to ISecurityContext.Data.RouteValues when using the HandleSecurityAttribute.
+- (**New**) Added support for working with a typed ISecurityContext in policies by inheriting from SecurityPolicyBase\<TSecurityContext\>.
+- (**New**) Added a MvcSecurityContext wrapper over ISecurityContext that makes it easier accessing route values in policies.
 - (**Change**) Method HandleSecurityFor on ISecurityHandler now takes an instance of ISecurityContext as the last parameter.
 - (**Change**) Moved SecurityContextWrapper to the FluentSecurity.Policy.Contexts namespace.

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Web.Routing;
 
 namespace FluentSecurity.Specification.Helpers
 {
@@ -8,12 +9,13 @@ namespace FluentSecurity.Specification.Helpers
 		private readonly bool _isAuthenticated;
 		private readonly IEnumerable<object> _roles;
 
-		public MockSecurityContext(bool isAuthenticated = true, IEnumerable<object> roles = null)
+		public MockSecurityContext(bool isAuthenticated = true, IEnumerable<object> roles = null, RouteValueDictionary routeValues = null)
 		{
 			_isAuthenticated = isAuthenticated;
 			_roles = roles;
 
 			Data = new ExpandoObject();
+			Data.RouteValues = routeValues;
 		}
 
 		public dynamic Data { get; private set; }
