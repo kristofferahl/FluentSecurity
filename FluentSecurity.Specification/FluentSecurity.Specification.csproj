@@ -57,6 +57,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
@@ -117,12 +118,15 @@
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\ResetFixture.cs" />
     <Compile Include="HttpContextRequestDescriptionSpec.cs" />
+    <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
+    <Compile Include="Policy\Contexts\MvcSecurityContextSpec.cs" />
     <Compile Include="Policy\RequireAllRolesPolicySpec.cs" />
     <Compile Include="Policy\DelegatePolicySpec.cs" />
     <Compile Include="Policy\Results\DelegatePolicyResultSpec.cs" />
+    <Compile Include="Policy\SecurityPolicyBaseSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandlerSpec.cs" />
     <Compile Include="SecurityContextSpec.cs" />
     <Compile Include="ServiceLocation\ContainerSpec.cs" />

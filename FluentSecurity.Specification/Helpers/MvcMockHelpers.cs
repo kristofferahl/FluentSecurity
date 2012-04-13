@@ -67,11 +67,11 @@ namespace FluentSecurity.Specification.Helpers
 
 			var mock = Mock.Get(request);
 
-			mock.Expect(req => req.QueryString)
+			mock.Setup(req => req.QueryString)
 				.Returns(GetQueryStringParameters(url));
-			mock.Expect(req => req.AppRelativeCurrentExecutionFilePath)
+			mock.Setup(req => req.AppRelativeCurrentExecutionFilePath)
 				.Returns(GetUrlFileName(url));
-			mock.Expect(req => req.PathInfo)
+			mock.Setup(req => req.PathInfo)
 				.Returns(string.Empty);
 		}
 	}

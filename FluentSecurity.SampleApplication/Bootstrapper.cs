@@ -13,6 +13,7 @@ namespace FluentSecurity.SampleApplication
 				configuration.GetAuthenticationStatusFrom(Helpers.SecurityHelper.UserIsAuthenticated);
 				configuration.GetRolesFrom(Helpers.SecurityHelper.UserRoles);
 
+				configuration.Advanced.ModifySecurityContext(context => context.Data.QueryString = HttpContext.Current.Request.QueryString);
 				configuration.For<HomeController>().Ignore();
 
 				configuration.For<AccountController>(x => x.LogInAsAdministrator()).DenyAuthenticatedAccess();

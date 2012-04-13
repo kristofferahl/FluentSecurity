@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FluentSecurity.Specification
 {
@@ -13,14 +14,13 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_have_SecurityHandler_set()
 		{
-			SecurityConfigurator.Configure(config => {});
+			SecurityConfigurator.Configure(config => config.GetAuthenticationStatusFrom(() => true));
 
 			// Act
 			var attribute = new HandleSecurityAttribute();
 
 			// Assert
-			Assert.That(attribute.SecurityHandler, Is.AssignableTo(typeof(ISecurityHandler)));
-			Assert.That(attribute.SecurityHandler, Is.Not.Null);
+			Assert.That(attribute.Handler, Is.TypeOf<SecurityHandler>());
 		}
 	}
 
@@ -32,14 +32,13 @@ namespace FluentSecurity.Specification
 		public void Should_have_SecurityHandler_set()
 		{
 			// Arrange
-			var mockSecurityHandler = MockRepository.GenerateMock<ISecurityHandler>();
+			var securityHandler = new Mock<ISecurityHandler>();
 
 			// Act
-			var attribute = new HandleSecurityAttribute(mockSecurityHandler);
+			var attribute = new HandleSecurityAttribute(securityHandler.Object);
 
 			// Assert
-			Assert.That(attribute.SecurityHandler, Is.AssignableTo(typeof(ISecurityHandler)));
-			Assert.That(attribute.SecurityHandler, Is.EqualTo(mockSecurityHandler));
+			Assert.That(attribute.Handler, Is.EqualTo(securityHandler.Object));
 		}
 	}
 
@@ -47,21 +46,30 @@ namespace FluentSecurity.Specification
 	[Category("HandleSecurityAttributeSpec")]
 	public class When_executing_OnActionExecuting
 	{
+		private MockSecurityContext _securityContext;
+
+		[SetUp]
+		public void SetUp()
+		{
+			_securityContext = new MockSecurityContext();
+			FakeIoC.GetAllInstancesProvider = () => new List<object>
+			{
+				_securityContext
+			};
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
+			});
+		}
+
 		[Test]
-		public void Should_call_HandleSecurityFor_with_the_controllername_Blog_and_actionname_Index()
+		public void Should_call_HandleSecurityFor_with_the_controllername_Blog_and_actionname_Index_passing_the_current_security_context()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(policy =>
-			{
-				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
-				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
-			});
+			var securityHandler = new Mock<ISecurityHandler>();
 
-			var securityHandler = MockRepository.GenerateMock<ISecurityHandler>();
-			securityHandler.Expect(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index")).Repeat.Once().Return(null);
-			securityHandler.Replay();
-
-			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler);
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
 			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
 
 			// Act
@@ -69,7 +77,24 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(filterContext.Result, Is.Null);
-			securityHandler.VerifyAllExpectations();
+			securityHandler.Verify(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", _securityContext), Times.Exactly(1));
+		}
+
+		[Test]
+		public void Should_add_route_values_to_current_security_context()
+		{
+			// Arrange
+			var securityHandler = new Mock<ISecurityHandler>();
+
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
+			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
+
+			// Act
+			handleSecurityAttribute.OnActionExecuting(filterContext);
+
+			// Assert
+			Assert.That(_securityContext.Data.RouteValues, Is.Not.Null);
+			Assert.That(_securityContext.Data.RouteValues, Is.EqualTo(filterContext.RouteData.Values));
 		}
 	}
 
@@ -89,11 +114,10 @@ namespace FluentSecurity.Specification
 
 			var expectedResult = new ViewResult { ViewName = "SomeViewName" };
 
-			var securityHandler = MockRepository.GenerateMock<ISecurityHandler>();
-			securityHandler.Expect(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index")).Repeat.Once().Return(expectedResult);
-			securityHandler.Replay();
+			var securityHandler = new Mock<ISecurityHandler>();
+			securityHandler.Setup(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", It.IsAny<ISecurityContext>())).Returns(expectedResult);
 
-			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler);
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
 			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
 
 			// Act
@@ -101,7 +125,6 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(filterContext.Result, Is.EqualTo(expectedResult));
-			securityHandler.VerifyAllExpectations();
 		}
 	}
 }

@@ -27,7 +27,7 @@ namespace FluentSecurity.Specification
 			policyContainer.DelegatePolicy(policyName, policyDelegate, violationHandlerDelegate);
 
 			// Assert
-			var securityPolicy = policyContainer.GetPolicies().Where(x => x.GetType().Equals(typeof(DelegatePolicy))).Single() as DelegatePolicy;
+			var securityPolicy = policyContainer.GetPolicies().Single(x => x.GetType() == typeof(DelegatePolicy)) as DelegatePolicy;
 			Assert.That(securityPolicy, Is.Not.Null);
 			Assert.That(securityPolicy.Name, Is.EqualTo(policyName));
 			Assert.That(securityPolicy.Policy, Is.EqualTo(policyDelegate));

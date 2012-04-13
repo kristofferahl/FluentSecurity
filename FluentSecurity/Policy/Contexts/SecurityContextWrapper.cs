@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 
-namespace FluentSecurity
+namespace FluentSecurity.Policy.Contexts
 {
 	public class SecurityContextWrapper : ISecurityContext
 	{
@@ -8,7 +9,15 @@ namespace FluentSecurity
 
 		public SecurityContextWrapper(ISecurityContext securityContext)
 		{
+			if (securityContext == null)
+				throw new ArgumentNullException("securityContext");
+			
 			_securityContext = securityContext;
+		}
+
+		public dynamic Data
+		{
+			get { return _securityContext.Data; }
 		}
 
 		public bool CurrenUserAuthenticated()
