@@ -12,11 +12,14 @@ namespace FluentSecurity
 		private readonly Func<bool> _isAuthenticated;
 		private readonly Func<IEnumerable<object>> _roles;
 
-		private SecurityContext(Func<bool> isAuthenticated, Func<IEnumerable<object>> roles)
+		private SecurityContext(ConfigurationExpression configurationExpression)
 		{
 			_data = new ExpandoObject();
-			_isAuthenticated = isAuthenticated;
-			_roles = roles;
+			_isAuthenticated = configurationExpression.IsAuthenticated;
+			_roles = configurationExpression.Roles;
+
+			var modifyer = configurationExpression.Advanced.SecurityContextModifyer;
+			if (modifyer != null) modifyer.Invoke(this);
 		}
 
 		public dynamic Data
@@ -64,7 +67,7 @@ namespace FluentSecurity
 							2) Register an instance of ISecurityContext in your IoC-container and register your container using ResolveServicesUsing().
 							");
 
-					context = new SecurityContext(configurationExpression.IsAuthenticated, configurationExpression.Roles);
+					context = new SecurityContext(configurationExpression);
 				}
 			}
 			

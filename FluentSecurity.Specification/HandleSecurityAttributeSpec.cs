@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
@@ -20,7 +21,6 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(attribute.Handler, Is.TypeOf<SecurityHandler>());
-			Assert.That(attribute.Context, Is.TypeOf<SecurityContext>());
 		}
 	}
 
@@ -33,14 +33,12 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var securityHandler = new Mock<ISecurityHandler>();
-			var securityContext = new Mock<ISecurityContext>();
 
 			// Act
-			var attribute = new HandleSecurityAttribute(securityHandler.Object, securityContext.Object);
+			var attribute = new HandleSecurityAttribute(securityHandler.Object);
 
 			// Assert
 			Assert.That(attribute.Handler, Is.EqualTo(securityHandler.Object));
-			Assert.That(attribute.Context, Is.EqualTo(securityContext.Object));
 		}
 	}
 
@@ -48,14 +46,30 @@ namespace FluentSecurity.Specification
 	[Category("HandleSecurityAttributeSpec")]
 	public class When_executing_OnActionExecuting
 	{
+		private MockSecurityContext _securityContext;
+
+		[SetUp]
+		public void SetUp()
+		{
+			_securityContext = new MockSecurityContext();
+			FakeIoC.GetAllInstancesProvider = () => new List<object>
+			{
+				_securityContext
+			};
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
+			});
+		}
+
 		[Test]
 		public void Should_call_HandleSecurityFor_with_the_controllername_Blog_and_actionname_Index_passing_the_current_security_context()
 		{
 			// Arrange
 			var securityHandler = new Mock<ISecurityHandler>();
-			var securityContext = new MockSecurityContext();
 
-			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object, securityContext);
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
 			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
 
 			// Act
@@ -63,7 +77,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(filterContext.Result, Is.Null);
-			securityHandler.Verify(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", securityContext), Times.Exactly(1));
+			securityHandler.Verify(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", _securityContext), Times.Exactly(1));
 		}
 
 		[Test]
@@ -71,17 +85,16 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var securityHandler = new Mock<ISecurityHandler>();
-			var securityContext = new MockSecurityContext();
 
-			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object, securityContext);
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
 			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
 
 			// Act
 			handleSecurityAttribute.OnActionExecuting(filterContext);
 
 			// Assert
-			Assert.That(securityContext.Data.RouteValues, Is.Not.Null);
-			Assert.That(securityContext.Data.RouteValues, Is.EqualTo(filterContext.RouteData.Values));
+			Assert.That(_securityContext.Data.RouteValues, Is.Not.Null);
+			Assert.That(_securityContext.Data.RouteValues, Is.EqualTo(filterContext.RouteData.Values));
 		}
 	}
 
@@ -102,10 +115,9 @@ namespace FluentSecurity.Specification
 			var expectedResult = new ViewResult { ViewName = "SomeViewName" };
 
 			var securityHandler = new Mock<ISecurityHandler>();
-			var securityContext = new MockSecurityContext();
-			securityHandler.Setup(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", securityContext)).Returns(expectedResult);
+			securityHandler.Setup(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", It.IsAny<ISecurityContext>())).Returns(expectedResult);
 
-			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object, securityContext);
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
 			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
 
 			// Act

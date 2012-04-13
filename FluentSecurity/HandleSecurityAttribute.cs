@@ -7,15 +7,13 @@ namespace FluentSecurity
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class HandleSecurityAttribute : ActionFilterAttribute
 	{
-		internal ISecurityContext Context { get; private set; }
 		internal ISecurityHandler Handler { get; private set; }
 
-		public HandleSecurityAttribute() : this(ServiceLocator.Current.Resolve<ISecurityHandler>(), ServiceLocator.Current.Resolve<ISecurityContext>()) {}
+		public HandleSecurityAttribute() : this(ServiceLocator.Current.Resolve<ISecurityHandler>()) {}
 
-		public HandleSecurityAttribute(ISecurityHandler securityHandler, ISecurityContext securityContext)
+		public HandleSecurityAttribute(ISecurityHandler securityHandler)
 		{
 			Handler = securityHandler;
-			Context = securityContext;
 		}
 
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -23,9 +21,10 @@ namespace FluentSecurity
 			var actionName = filterContext.ActionDescriptor.ActionName;
 			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName;
 
-			Context.Data.RouteValues = filterContext.RouteData.Values;
+			var securityContext = SecurityContext.Current;
+			securityContext.Data.RouteValues = filterContext.RouteData.Values;
 
-			var overrideResult = Handler.HandleSecurityFor(controllerName, actionName, Context);
+			var overrideResult = Handler.HandleSecurityFor(controllerName, actionName, securityContext);
 			if (overrideResult != null) filterContext.Result = overrideResult;
 		}
 	}
