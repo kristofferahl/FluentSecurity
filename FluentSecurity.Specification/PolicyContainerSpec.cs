@@ -117,7 +117,7 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_Manager_set_to_DefaultPolicyAppender()
+		public void Should_have_PolicyAppender_set_to_DefaultPolicyAppender()
 		{
 			// Act
 			var policyContainer = Because();
