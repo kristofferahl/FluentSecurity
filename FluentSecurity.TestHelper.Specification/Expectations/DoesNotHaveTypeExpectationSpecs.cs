@@ -76,6 +76,12 @@ namespace FluentSecurity.TestHelper.Specification.Expectations
 	[Category("DoesNotHaveTypeExpectationSpecs")]
 	public class When_evaluating_a_DoesNotHaveTypeExpectation_on_a_lazy_policy
 	{
+		[SetUp]
+		public void SetUp()
+		{
+			SecurityConfigurator.Configure(configuration => {});
+		}
+
 		[Test]
 		public void Should_be_match_for_lazy_policy()
 		{

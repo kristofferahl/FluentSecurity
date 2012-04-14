@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.Contexts;
 using FluentSecurity.Specification.Helpers;
@@ -26,6 +27,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_handle_loading_policy_with_empty_constructor()
 		{
 			// Arrange
+			SecurityConfigurator.Configure(configuration => {});
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithEmptyConstructor>();
 
 			// Act
@@ -50,9 +52,30 @@ namespace FluentSecurity.Specification.Policy
 		}
 
 		[Test]
+		public void Should_handle_loading_policy_from_container()
+		{
+			// Arrange
+			var expectedPolicy = new PolicyWithConstructorArguments("arg1", "arg2", "arg3");
+			FakeIoC.GetAllInstancesProvider = () => new List<object> { expectedPolicy };
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(() => true);
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
+			});
+			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithConstructorArguments>();
+
+			// Act
+			var policy = lazySecurityPolicy.Load();
+
+			// Assert
+			Assert.That(policy, Is.EqualTo(expectedPolicy));
+		}
+
+		[Test]
 		public void Should_return_null_when_loading_policy_with_constructor_arguments()
 		{
 			// Arrange
+			SecurityConfigurator.Configure(configuration => {});
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithConstructorArguments>();
 
 			// Act
@@ -67,6 +90,12 @@ namespace FluentSecurity.Specification.Policy
 	[Category("LazySecurityPolicySpec")]
 	public class When_enforcing_a_LazySecurityPolicy
 	{
+		[SetUp]
+		public void SetUp()
+		{
+			SecurityConfigurator.Configure(configuration => {});
+		}
+
 		[Test]
 		public void Should_throw_when_no_policy_was_loaded()
 		{
@@ -76,7 +105,7 @@ namespace FluentSecurity.Specification.Policy
 
 			// Act & assert
 			var exception = Assert.Throws<InvalidOperationException>(() => lazySecurityPolicy.Enforce(context));
-			Assert.That(exception.Message, Is.EqualTo("A policy of type FluentSecurity.Specification.Policy.PolicyWithConstructorArguments could not be loaded! Make sure the policy has an empty constructor."));
+			Assert.That(exception.Message, Is.EqualTo("A policy of type FluentSecurity.Specification.Policy.PolicyWithConstructorArguments could not be loaded! Make sure the policy has an empty constructor or is registered in your IoC-container."));
 		}
 
 		[Test]
