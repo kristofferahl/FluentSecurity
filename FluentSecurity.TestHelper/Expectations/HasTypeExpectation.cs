@@ -11,7 +11,7 @@ namespace FluentSecurity.TestHelper.Expectations
 		
 		public HasTypeExpectation() : base(typeof(TSecurityPolicy), false)
 		{
-			PredicateExpression = securityPolicy => securityPolicy.GetType() == Type;
+			PredicateExpression = securityPolicy => securityPolicy.GetPolicyType() == Type;
 			Predicate = PredicateExpression.Compile();
 		}
 
@@ -24,6 +24,12 @@ namespace FluentSecurity.TestHelper.Expectations
 		protected override bool EvaluatePredicate(ISecurityPolicy securityPolicy)
 		{
 			var policy = securityPolicy as TSecurityPolicy;
+			if (policy == null)
+			{
+				var lazyPolicy = securityPolicy as ILazySecurityPolicy;
+				if (lazyPolicy != null && lazyPolicy.PolicyType == typeof(TSecurityPolicy))
+					policy = lazyPolicy.Load() as TSecurityPolicy;
+			}
 			return policy != null && Predicate.Invoke(policy);
 		}
 
