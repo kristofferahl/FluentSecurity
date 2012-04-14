@@ -1,0 +1,140 @@
+﻿using System;
+using FluentSecurity.Policy;
+using FluentSecurity.Policy.Contexts;
+using FluentSecurity.Specification.Helpers;
+using NUnit.Framework;
+
+namespace FluentSecurity.Specification.Policy
+{
+	[TestFixture]
+	[Category("LazySecurityPolicySpec")]
+	public class When_creating_a_LazySecurityPolicy
+	{
+		[Test]
+		public void Should_expose_the_actual_type()
+		{
+			Assert.That(new LazySecurityPolicy<IgnorePolicy>().PolicyType, Is.EqualTo(typeof(IgnorePolicy)));
+			Assert.That(new LazySecurityPolicy<DenyAnonymousAccessPolicy>().PolicyType, Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
+		}
+	}
+
+	[TestFixture]
+	[Category("LazySecurityPolicySpec")]
+	public class When_loading_a_LazySecurityPolicy
+	{
+		[Test]
+		public void Should_handle_loading_policy_with_empty_constructor()
+		{
+			// Arrange
+			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithEmptyConstructor>();
+
+			// Act
+			var policy = lazySecurityPolicy.Load();
+			
+			// Assert
+			Assert.That(policy, Is.TypeOf<PolicyWithEmptyConstructor>());
+		}
+
+		[Test]
+		public void Should_handle_loading_policy_with_empty_constructor_based_on_SecurityPolicyBase()
+		{
+			// Arrange
+			SecurityConfigurator.Configure(configuraiton => {});
+			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithBaseClass>();
+
+			// Act
+			var policy = lazySecurityPolicy.Load();
+
+			// Assert
+			Assert.That(policy, Is.TypeOf<PolicyWithBaseClass>());
+		}
+
+		[Test]
+		public void Should_return_null_when_loading_policy_with_constructor_arguments()
+		{
+			// Arrange
+			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithConstructorArguments>();
+
+			// Act
+			var policy = lazySecurityPolicy.Load();
+
+			// Assert
+			Assert.That(policy, Is.Null);
+		}
+	}
+
+	[TestFixture]
+	[Category("LazySecurityPolicySpec")]
+	public class When_enforcing_a_LazySecurityPolicy
+	{
+		[Test]
+		public void Should_throw_when_no_policy_was_loaded()
+		{
+			// Arrange
+			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithConstructorArguments>();
+			var context = new MockSecurityContext();
+
+			// Act & assert
+			var exception = Assert.Throws<InvalidOperationException>(() => lazySecurityPolicy.Enforce(context));
+			Assert.That(exception.Message, Is.EqualTo("A policy of type FluentSecurity.Specification.Policy.PolicyWithConstructorArguments could not be loaded! Make sure the policy has an empty constructor."));
+		}
+
+		[Test]
+		public void Should_load_and_enforce_policy_with_failed_result()
+		{
+			// Arrange
+			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithEmptyConstructor>();
+			var context = new MockSecurityContext(isAuthenticated: false);
+
+			// Act
+			var result = lazySecurityPolicy.Enforce(context);
+
+			// Assert
+			Assert.That(result.PolicyType, Is.EqualTo(typeof(PolicyWithEmptyConstructor)));
+			Assert.That(result.ViolationOccured, Is.True);
+		}
+
+		[Test]
+		public void Should_load_and_enforce_policy_with_success_result()
+		{
+			// Arrange
+			SecurityConfigurator.Configure(configuraiton => {});
+			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithBaseClass>();
+			var context = new MockSecurityContext(isAuthenticated: true);
+
+			// Act
+			var result = lazySecurityPolicy.Enforce(context);
+
+			// Assert
+			Assert.That(result.PolicyType, Is.EqualTo(typeof(PolicyWithBaseClass)));
+			Assert.That(result.ViolationOccured, Is.False);
+		}
+	}
+
+	public class PolicyWithEmptyConstructor : BasePolicy {}
+
+	public class PolicyWithConstructorArguments : BasePolicy
+	{
+		public PolicyWithConstructorArguments(string arg1, string arg2, string arg3) {}
+	}
+
+	public class PolicyWithBaseClass : SecurityPolicyBase<MvcSecurityContext>
+	{
+		public override PolicyResult Enforce(MvcSecurityContext context)
+		{
+			return context.CurrenUserAuthenticated()
+				? PolicyResult.CreateSuccessResult(this)
+				: PolicyResult.CreateFailureResult(this, "Access denied");
+		}
+	}
+
+	public abstract class BasePolicy : ISecurityPolicy
+	{
+		public PolicyResult Enforce(ISecurityContext context)
+		{
+			return context.CurrenUserAuthenticated()
+				? PolicyResult.CreateSuccessResult(this)
+				: PolicyResult.CreateFailureResult(this, "Access denied");
+		}
+	}
+}

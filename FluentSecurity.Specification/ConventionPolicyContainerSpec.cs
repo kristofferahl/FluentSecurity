@@ -77,9 +77,9 @@ namespace FluentSecurity.Specification
 			conventionPolicyContainer.AddPolicy<DenyAnonymousAccessPolicy>();
 
 			// Assert
-			Assert.That(policyContainers[0].GetPolicies().First(), Is.TypeOf<LazyPolicy<DenyAnonymousAccessPolicy>>());
-			Assert.That(policyContainers[1].GetPolicies().First(), Is.TypeOf<LazyPolicy<DenyAnonymousAccessPolicy>>());
-			Assert.That(policyContainers[2].GetPolicies().First(), Is.TypeOf<LazyPolicy<DenyAnonymousAccessPolicy>>());
+			Assert.That(policyContainers[0].GetPolicies().First(), Is.TypeOf<LazySecurityPolicy<DenyAnonymousAccessPolicy>>());
+			Assert.That(policyContainers[1].GetPolicies().First(), Is.TypeOf<LazySecurityPolicy<DenyAnonymousAccessPolicy>>());
+			Assert.That(policyContainers[2].GetPolicies().First(), Is.TypeOf<LazySecurityPolicy<DenyAnonymousAccessPolicy>>());
 		}
 	}
 

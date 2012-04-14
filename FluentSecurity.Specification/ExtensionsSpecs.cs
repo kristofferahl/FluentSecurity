@@ -214,7 +214,7 @@ namespace FluentSecurity.Specification
 		public void Should_retun_the_type_of_lazy_policies()
 		{
 			// Arrange
-			ISecurityPolicy policy = new LazyPolicy<IgnorePolicy>();
+			ISecurityPolicy policy = new LazySecurityPolicy<IgnorePolicy>();
 
 			// Act & assert
 			Assert.That(policy.GetPolicyType(), Is.EqualTo(typeof(IgnorePolicy)));

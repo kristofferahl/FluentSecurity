@@ -29,7 +29,7 @@ namespace FluentSecurity
 
 		public IConventionPolicyContainer AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			return AddPolicy(new LazyPolicy<TSecurityPolicy>());
+			return AddPolicy(new LazySecurityPolicy<TSecurityPolicy>());
 		}
 
 		public IConventionPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy

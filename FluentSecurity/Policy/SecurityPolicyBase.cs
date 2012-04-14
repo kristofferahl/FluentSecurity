@@ -32,9 +32,7 @@ namespace FluentSecurity.Policy
 			TSecurityContext customContext = null;
 
 			var contextType = typeof(TSecurityContext);
-			var constructors = contextType.GetConstructors();
-			var hasEmptyConstructor = constructors.Any(x => !x.GetParameters().Any());
-			if (hasEmptyConstructor)
+			if (contextType.HasEmptyConstructor())
 				customContext = Activator.CreateInstance<TSecurityContext>();
 			
 			return customContext;

@@ -80,9 +80,10 @@
     <Compile Include="Configuration\IAdvancedConfiguration.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="HttpContextRequestDescription.cs" />
+    <Compile Include="Policy\ILazySecurityPolicy.cs" />
     <Compile Include="IRequestDescription.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContext.cs" />
-    <Compile Include="Policy\LazyPolicy.cs" />
+    <Compile Include="Policy\LazySecurityPolicy.cs" />
     <Compile Include="Policy\RequireAllRolesPolicy.cs" />
     <Compile Include="Policy\DelegatePolicy.cs" />
     <Compile Include="Policy\Contexts\DelegateSecurityContext.cs" />

@@ -179,7 +179,7 @@ namespace FluentSecurity.Specification
 			_policyContainer.AddPolicy<SomePolicy>();
 
 			// Assert
-			Assert.That(_policyContainer.GetPolicies().Single().GetType(), Is.EqualTo(typeof(LazyPolicy<SomePolicy>)));
+			Assert.That(_policyContainer.GetPolicies().Single().GetType(), Is.EqualTo(typeof(LazySecurityPolicy<SomePolicy>)));
 		}
 
 		public class SomePolicy : ISecurityPolicy
