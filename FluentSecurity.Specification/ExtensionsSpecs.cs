@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
@@ -192,6 +193,31 @@ namespace FluentSecurity.Specification
 			{
 				return new EmptyResult();
 			}
+		}
+	}
+
+	[TestFixture]
+	[Category("ExtensionsSpecs")]
+	public class When_getting_the_policy_type_of_an_ISecurityPolicy
+	{
+		[Test]
+		public void Should_retun_the_type_of_normal_policies()
+		{
+			// Arrange
+			ISecurityPolicy policy = new IgnorePolicy();
+
+			// Act & assert
+			Assert.That(policy.GetPolicyType(), Is.EqualTo(typeof(IgnorePolicy)));
+		}
+
+		[Test]
+		public void Should_retun_the_type_of_lazy_policies()
+		{
+			// Arrange
+			ISecurityPolicy policy = new LazyPolicy<IgnorePolicy>();
+
+			// Act & assert
+			Assert.That(policy.GetPolicyType(), Is.EqualTo(typeof(IgnorePolicy)));
 		}
 	}
 }

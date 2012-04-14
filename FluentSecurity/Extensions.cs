@@ -92,14 +92,25 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
+		/// Gets the actual type of the ISecurityPolicy
+		/// </summary>
+		public static Type GetPolicyType(this ISecurityPolicy securityPolicy)
+		{
+			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
+			return lazySecurityPolicy != null
+				? lazySecurityPolicy.PolicyType
+				: securityPolicy.GetType();
+		}
+
+		/// <summary>
 		/// Performs an action on each item
 		/// </summary>
-		public static void Each<T>(this IEnumerable<T> items, Action<T> action)
+		internal static void Each<T>(this IEnumerable<T> items, Action<T> action)
 		{
 			foreach (var item in items)
 				action(item);
 		}
-
+		
 		/// <summary>
 		/// Returns true if the value is null or empty
 		/// </summary>
