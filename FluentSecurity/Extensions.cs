@@ -103,6 +103,35 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
+		/// Ensures we are working with the expected policy type. Takes care of loading and casting lazy policies.
+		/// </summary>
+		internal static TSecurityPolicy EnsurePolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
+		{
+			var policy = securityPolicy as TSecurityPolicy;
+			if (policy == null)
+			{
+				var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
+				if (lazySecurityPolicy != null && lazySecurityPolicy.PolicyType == typeof(TSecurityPolicy))
+					policy = lazySecurityPolicy.Load() as TSecurityPolicy;
+			}
+			return policy;
+		}
+
+		/// <summary>
+		/// Ensures we are working with the expected policy type. Takes care of loading and casting lazy policies.
+		/// </summary>
+		internal static bool IsPolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
+		{
+			var isExpectedType = securityPolicy is TSecurityPolicy;
+			if (!isExpectedType)
+			{
+				var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
+				isExpectedType = lazySecurityPolicy != null && lazySecurityPolicy.PolicyType == typeof (TSecurityPolicy);
+			}
+			return isExpectedType;
+		}
+
+		/// <summary>
 		/// Performs an action on each item
 		/// </summary>
 		internal static void Each<T>(this IEnumerable<T> items, Action<T> action)
@@ -110,7 +139,7 @@ namespace FluentSecurity
 			foreach (var item in items)
 				action(item);
 		}
-		
+
 		/// <summary>
 		/// Returns true if the value is null or empty
 		/// </summary>

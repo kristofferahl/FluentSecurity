@@ -23,13 +23,7 @@ namespace FluentSecurity.TestHelper.Expectations
 
 		protected override bool EvaluatePredicate(ISecurityPolicy securityPolicy)
 		{
-			var policy = securityPolicy as TSecurityPolicy;
-			if (policy == null)
-			{
-				var lazyPolicy = securityPolicy as ILazySecurityPolicy;
-				if (lazyPolicy != null && lazyPolicy.PolicyType == typeof(TSecurityPolicy))
-					policy = lazyPolicy.Load() as TSecurityPolicy;
-			}
+			var policy = securityPolicy.EnsurePolicyOf<TSecurityPolicy>();
 			return policy != null && Predicate.Invoke(policy);
 		}
 
