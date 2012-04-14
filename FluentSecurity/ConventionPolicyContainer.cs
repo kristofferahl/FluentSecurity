@@ -32,7 +32,7 @@ namespace FluentSecurity
 			return AddPolicy(new LazySecurityPolicy<TSecurityPolicy>());
 		}
 
-		public IConventionPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
+		public IConventionPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
 		{
 			foreach (var policyContainer in _policyContainers)
 				policyContainer.RemovePolicy(predicate);

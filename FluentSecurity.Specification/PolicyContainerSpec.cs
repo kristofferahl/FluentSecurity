@@ -231,6 +231,21 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_remove_lazy_policy()
+		{
+			// Arrange
+			_policyContainer.AddPolicy<Policy3>();
+
+			// Act
+			_policyContainer.RemovePolicy<Policy3>();
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().First(), Is.EqualTo(_policy1));
+			Assert.That(_policyContainer.GetPolicies().Last(), Is.EqualTo(_policy2));
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(2));
+		}
+
+		[Test]
 		public void Should_remove_policy_matching_predicate()
 		{
 			// Act
@@ -241,6 +256,21 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_remove_lazy_policy_matching_predicate()
+		{
+			// Arrange
+			_policyContainer.AddPolicy<Policy3>();
+
+			// Act
+			_policyContainer.RemovePolicy<Policy3>(p => p.Value == "SomeValue");
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().First(), Is.EqualTo(_policy1));
+			Assert.That(_policyContainer.GetPolicies().Last(), Is.EqualTo(_policy2));
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(2));
+		}
+
+		[Test]
 		public void Should_not_remove_policies_not_matching_predicate()
 		{
 			// Act
@@ -248,6 +278,22 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Should_not_remove_lazy_policy_not_matching_predicate()
+		{
+			// Arrange
+			_policyContainer.AddPolicy<Policy3>();
+
+			// Act
+			_policyContainer.RemovePolicy<Policy3>(p => p.Value == "X");
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().ElementAt(0), Is.EqualTo(_policy1));
+			Assert.That(_policyContainer.GetPolicies().ElementAt(1), Is.EqualTo(_policy2));
+			Assert.That(_policyContainer.GetPolicies().ElementAt(2).GetPolicyType(), Is.EqualTo(typeof(Policy3)));
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(3));
 		}
 
 		[Test]
@@ -284,6 +330,16 @@ namespace FluentSecurity.Specification
 
 		public class Policy2 : ISecurityPolicy
 		{
+			public PolicyResult Enforce(ISecurityContext context)
+			{
+				return PolicyResult.CreateSuccessResult(this);
+			}
+		}
+
+		public class Policy3 : ISecurityPolicy
+		{
+			public string Value = "SomeValue";
+
 			public PolicyResult Enforce(ISecurityContext context)
 			{
 				return PolicyResult.CreateSuccessResult(this);

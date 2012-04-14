@@ -80,15 +80,19 @@ namespace FluentSecurity
 			return AddPolicy(new LazySecurityPolicy<TSecurityPolicy>());
 		}
 
-		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
 		{
+			IEnumerable<ISecurityPolicy> matchingPolicies;
+			
 			if (predicate == null)
-				predicate = x => true;
-
-			var matchingPolicies = _policies.Where(p =>
-				p is TSecurityPolicy &&
-				predicate.Invoke((TSecurityPolicy)p)
-				).ToList();
+				matchingPolicies = _policies.Where(p => p.IsPolicyOf<TSecurityPolicy>()).ToList();
+			else
+			{
+				matchingPolicies = _policies.Where(p =>
+					p.IsPolicyOf<TSecurityPolicy>() &&
+					predicate.Invoke(p.EnsurePolicyOf<TSecurityPolicy>())
+					).ToList();
+			}
 			
 			foreach (var matchingPolicy in matchingPolicies)
 				_policies.Remove(matchingPolicy);
