@@ -75,6 +75,11 @@ namespace FluentSecurity
 			return this;
 		}
 
+		public IPolicyContainer AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
+		{
+			return AddPolicy(new LazyPolicy<TSecurityPolicy>());
+		}
+
 		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
 		{
 			if (predicate == null)

@@ -161,6 +161,38 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicContainerExtensionsSpec")]
+	public class When_adding_a_policy_of_T_to_a_policycontainer
+	{
+		private PolicyContainer _policyContainer;
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_policyContainer = TestDataFactory.CreateValidPolicyContainer();
+		}
+		
+		[Test]
+		public void Should_have_a_lazy_policy_of_type_SomePolicy()
+		{
+			// Act
+			_policyContainer.AddPolicy<SomePolicy>();
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().Single().GetType(), Is.EqualTo(typeof(LazyPolicy<SomePolicy>)));
+		}
+
+		public class SomePolicy : ISecurityPolicy
+		{
+			public PolicyResult Enforce(ISecurityContext context)
+			{
+				throw new NotImplementedException();
+			}
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicContainerExtensionsSpec")]
 	public class When_removing_policies_from_a_policy_container
 	{
 		private PolicyContainer _policyContainer;
