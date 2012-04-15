@@ -15,6 +15,7 @@ namespace FluentSecurity.Policy.ViolationHandlers
 			_conventions = new List<IPolicyViolationHandlerConvention>
 			{
 				new FindByPolicyNameConvention(policyViolationHandlers),
+				new FindConfiguredDefaultPolicyViolationHandlerConvention(policyViolationHandlers),
 				new FindDefaultPolicyViolationHandlerConvention(policyViolationHandlers)
 			};
 		}

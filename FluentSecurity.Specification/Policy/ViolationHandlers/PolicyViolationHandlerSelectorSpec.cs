@@ -103,12 +103,29 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 			Assert.That(handler2, Is.EqualTo(expectedHandler2));
 		}
 
-		public class DefaultPolicyViolationHandler : IPolicyViolationHandler
+		[Test]
+		public void Should_return_CustomDefaultPolicyViolationhandler_for_RequireRolePolicy()
 		{
-			public ActionResult Handle(PolicyViolationException exception)
+			// Arrange
+			SecurityConfigurator.Configure(configuration => configuration.DefaultPolicyViolationHandlerIs<CustomDefaultPolicyViolationHandler>());
+
+			var policyResult = PolicyResult.CreateFailureResult(new RequireRolePolicy("Role"), "Access denied");
+			var exception = new PolicyViolationException(policyResult);
+
+			var expectedHandler = new CustomDefaultPolicyViolationHandler();
+			var violationHandlers = new List<IPolicyViolationHandler>
 			{
-				throw new NotImplementedException();
-			}
+				new DenyAnonymousAccessPolicyViolationHandler(new EmptyResult()),
+				expectedHandler,
+				new DefaultPolicyViolationHandler()
+			};
+			var selector = new PolicyViolationHandlerSelector(violationHandlers);
+
+			// Act
+			var handler = selector.FindHandlerFor(exception);
+
+			// Assert
+			Assert.That(handler, Is.EqualTo(expectedHandler));
 		}
 	}
 }

@@ -143,6 +143,8 @@
     <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />
     <Compile Include="TestData\AdminController.cs" />
     <Compile Include="TestData\AssemblyScannerControllers.cs" />
+    <Compile Include="TestData\CustomDefaultPolicyViolationHandler.cs" />
+    <Compile Include="TestData\DefaultPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAnonymousAccessPolicyViolationHandler.cs" />
     <Compile Include="ExtensionsSpecs.cs" />

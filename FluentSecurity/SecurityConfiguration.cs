@@ -18,6 +18,7 @@ namespace FluentSecurity
 			Advanced = Expression.Advanced;
 			ExternalServiceLocator = Expression.ExternalServiceLocator;
 			IgnoreMissingConfiguration = Expression.ShouldIgnoreMissingConfiguration;
+			DefaultPolicyViolationHandler = Expression.DefaultPolicyViolationHandler;
 			PolicyContainers = Expression;
 		}
 
@@ -25,6 +26,9 @@ namespace FluentSecurity
 		public IAdvancedConfiguration Advanced { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
 		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
+		
+		public Type DefaultPolicyViolationHandler { get; private set; }
+
 		public bool IgnoreMissingConfiguration { get; private set; }
 
 		public string WhatDoIHave()

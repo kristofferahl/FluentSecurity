@@ -18,6 +18,7 @@ namespace FluentSecurity
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
+		internal Type DefaultPolicyViolationHandler { get; private set; }
 		private IPolicyAppender PolicyAppender { get; set; }
 
 		public AdvancedConfiguration Advanced { get; set; }
@@ -163,6 +164,11 @@ namespace FluentSecurity
 				throw new ArgumentNullException("securityServiceLocator");
 
 			ExternalServiceLocator = securityServiceLocator;
+		}
+
+		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
+		{
+			DefaultPolicyViolationHandler = typeof(TPolicyViolationHandler);
 		}
 	}
 }

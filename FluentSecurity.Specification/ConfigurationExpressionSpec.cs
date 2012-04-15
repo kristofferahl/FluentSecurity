@@ -59,6 +59,16 @@ namespace FluentSecurity.Specification
 			Assert.That(configurationExpression.Advanced, Is.TypeOf(expectedType));
 			Assert.That(configurationExpression.Advanced, Is.Not.Null);
 		}
+
+		[Test]
+		public void Should_not_have_DefaultPolicyViolationHandler_set()
+		{
+			// Act
+			var configurationExpression = Because();
+
+			// Assert
+			Assert.That(configurationExpression.DefaultPolicyViolationHandler, Is.Null);
+		}
 	}
 
 	[TestFixture]
@@ -367,6 +377,24 @@ namespace FluentSecurity.Specification
 			configurationExpression.For<BlogController>(x => x.Index());
 			var policyContainer = configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_I_specify_a_default_policy_violation_handler
+	{
+		[Test]
+		public void Should_have_DefaultPolicyViolationHandler_set()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.DefaultPolicyViolationHandlerIs<CustomDefaultPolicyViolationHandler>();
+
+			// Assert
+			Assert.That(configurationExpression.DefaultPolicyViolationHandler, Is.EqualTo(typeof(CustomDefaultPolicyViolationHandler)));
 		}
 	}
 
