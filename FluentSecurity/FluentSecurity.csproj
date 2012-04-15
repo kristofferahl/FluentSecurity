@@ -112,7 +112,7 @@
     <Compile Include="IWhatDoIHaveBuilder.cs" />
     <Compile Include="PolicyResult.cs" />
     <Compile Include="PolicyViolationException.cs" />
-    <Compile Include="PolicyViolationHandlerSelector.cs" />
+    <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
     <Compile Include="SecurityConfiguration.cs" />
     <Compile Include="DefaultPolicyAppender.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />

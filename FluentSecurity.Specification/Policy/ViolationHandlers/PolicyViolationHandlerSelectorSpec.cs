@@ -1,9 +1,10 @@
 using System;
 using FluentSecurity.Policy;
+using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
-namespace FluentSecurity.Specification
+namespace FluentSecurity.Specification.Policy.ViolationHandlers
 {
 	[TestFixture]
 	[Category("PolicyViolationHandlerSelectorSpec")]

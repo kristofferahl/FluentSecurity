@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FluentSecurity
+namespace FluentSecurity.Policy.ViolationHandlers
 {
 	public class PolicyViolationHandlerSelector : IPolicyViolationHandlerSelector
 	{

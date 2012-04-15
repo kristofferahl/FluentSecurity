@@ -121,7 +121,7 @@
     <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
-    <Compile Include="PolicyViolationHandlerSelectorSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContextSpec.cs" />
     <Compile Include="Policy\LazySecurityPolicySpec.cs" />
     <Compile Include="Policy\RequireAllRolesPolicySpec.cs" />
