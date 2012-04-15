@@ -58,6 +58,29 @@ namespace FluentSecurity.Specification
 			Assert.That(policyContainers[1].GetPolicies().First(), Is.EqualTo(policy));
 			Assert.That(policyContainers[2].GetPolicies().First(), Is.EqualTo(policy));
 		}
+
+		[Test]
+		public void Should_add_lazy_policy_to_policycontainers()
+		{
+			// Arrange
+			var controllerName = NameHelper.Controller<AdminController>();
+			var policyContainers = new List<IPolicyContainer>
+			{
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
+				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
+			};
+
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+
+			// Act
+			conventionPolicyContainer.AddPolicy<DenyAnonymousAccessPolicy>();
+
+			// Assert
+			Assert.That(policyContainers[0].GetPolicies().First(), Is.TypeOf<LazySecurityPolicy<DenyAnonymousAccessPolicy>>());
+			Assert.That(policyContainers[1].GetPolicies().First(), Is.TypeOf<LazySecurityPolicy<DenyAnonymousAccessPolicy>>());
+			Assert.That(policyContainers[2].GetPolicies().First(), Is.TypeOf<LazySecurityPolicy<DenyAnonymousAccessPolicy>>());
+		}
 	}
 
 	[TestFixture]

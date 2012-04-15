@@ -11,7 +11,8 @@ namespace FluentSecurity
 		string ActionName { get; }
 		IPolicyAppender PolicyAppender { get; }
 		IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy);
-		IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy;
+		IPolicyContainer AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy;
+		IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy;
 		IPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy;
 		IPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy;
 		IPolicyContainer ClearCacheStrategies();

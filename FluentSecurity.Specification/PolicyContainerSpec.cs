@@ -117,7 +117,7 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_Manager_set_to_DefaultPolicyAppender()
+		public void Should_have_PolicyAppender_set_to_DefaultPolicyAppender()
 		{
 			// Act
 			var policyContainer = Because();
@@ -161,6 +161,38 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicContainerExtensionsSpec")]
+	public class When_adding_a_policy_of_T_to_a_policycontainer
+	{
+		private PolicyContainer _policyContainer;
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_policyContainer = TestDataFactory.CreateValidPolicyContainer();
+		}
+		
+		[Test]
+		public void Should_have_a_lazy_policy_of_type_SomePolicy()
+		{
+			// Act
+			_policyContainer.AddPolicy<SomePolicy>();
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().Single().GetType(), Is.EqualTo(typeof(LazySecurityPolicy<SomePolicy>)));
+		}
+
+		public class SomePolicy : ISecurityPolicy
+		{
+			public PolicyResult Enforce(ISecurityContext context)
+			{
+				throw new NotImplementedException();
+			}
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicContainerExtensionsSpec")]
 	public class When_removing_policies_from_a_policy_container
 	{
 		private PolicyContainer _policyContainer;
@@ -199,6 +231,21 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_remove_lazy_policy()
+		{
+			// Arrange
+			_policyContainer.AddPolicy<Policy3>();
+
+			// Act
+			_policyContainer.RemovePolicy<Policy3>();
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().First(), Is.EqualTo(_policy1));
+			Assert.That(_policyContainer.GetPolicies().Last(), Is.EqualTo(_policy2));
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(2));
+		}
+
+		[Test]
 		public void Should_remove_policy_matching_predicate()
 		{
 			// Act
@@ -209,6 +256,21 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_remove_lazy_policy_matching_predicate()
+		{
+			// Arrange
+			_policyContainer.AddPolicy<Policy3>();
+
+			// Act
+			_policyContainer.RemovePolicy<Policy3>(p => p.Value == "SomeValue");
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().First(), Is.EqualTo(_policy1));
+			Assert.That(_policyContainer.GetPolicies().Last(), Is.EqualTo(_policy2));
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(2));
+		}
+
+		[Test]
 		public void Should_not_remove_policies_not_matching_predicate()
 		{
 			// Act
@@ -216,6 +278,22 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Should_not_remove_lazy_policy_not_matching_predicate()
+		{
+			// Arrange
+			_policyContainer.AddPolicy<Policy3>();
+
+			// Act
+			_policyContainer.RemovePolicy<Policy3>(p => p.Value == "X");
+
+			// Assert
+			Assert.That(_policyContainer.GetPolicies().ElementAt(0), Is.EqualTo(_policy1));
+			Assert.That(_policyContainer.GetPolicies().ElementAt(1), Is.EqualTo(_policy2));
+			Assert.That(_policyContainer.GetPolicies().ElementAt(2).GetPolicyType(), Is.EqualTo(typeof(Policy3)));
+			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(3));
 		}
 
 		[Test]
@@ -252,6 +330,16 @@ namespace FluentSecurity.Specification
 
 		public class Policy2 : ISecurityPolicy
 		{
+			public PolicyResult Enforce(ISecurityContext context)
+			{
+				return PolicyResult.CreateSuccessResult(this);
+			}
+		}
+
+		public class Policy3 : ISecurityPolicy
+		{
+			public string Value = "SomeValue";
+
 			public PolicyResult Enforce(ISecurityContext context)
 			{
 				return PolicyResult.CreateSuccessResult(this);
@@ -405,6 +493,202 @@ namespace FluentSecurity.Specification
 				var authenticated = context.CurrenUserAuthenticated();
 				var roles = context.CurrenUserRoles();
 				return PolicyResult.CreateSuccessResult(this);
+			}
+		}
+	}
+
+	[Category("PolicyContainerSpec")]
+	public class When_enforcing_lazy_policies
+	{
+		[Test]
+		public void Should_load_lazy_policy_exactly_twice_during_execution_with_caching_off()
+		{
+			// Arrange
+			var callsToContainer = 0;
+			var policy = new LazyLoadedPolicy();
+			FakeIoC.GetAllInstancesProvider = () =>
+			{
+				callsToContainer++;
+				return new List<object> { policy };
+			};
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
+			});
+			var context = new MockSecurityContext();
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy<LazyLoadedPolicy>();
+
+			// Act
+			policyContainer.EnforcePolicies(context);
+			policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(callsToContainer, Is.EqualTo(2));
+			Assert.That(policy.EnforceCallCount, Is.EqualTo(2), "Did not call enforce the expected amount of times");
+		}
+
+		[Test]
+		public void Should_load_lazy_policy_exactly_once_during_execution_and_caching_on()
+		{
+			// Arrange
+			var callsToContainer = 0;
+			var policy = new LazyLoadedPolicy();
+			FakeIoC.GetAllInstancesProvider = () =>
+			{
+				callsToContainer++;
+				return new List<object> { policy };
+			};
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
+				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
+			});
+			var context = new MockSecurityContext();
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy<LazyLoadedPolicy>();
+
+			// Act
+			policyContainer.EnforcePolicies(context);
+			policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(callsToContainer, Is.EqualTo(1));
+			Assert.That(policy.EnforceCallCount, Is.EqualTo(1), "Did not call enforce the expected amount of times");
+		}
+
+		[Test]
+		public void Should_load_lazy_policy_with_cache_key_exactly_twice_during_execution_with_caching_off()
+		{
+			// Arrange
+			var callsToContainer = 0;
+			var policy = new LazyLoadedPolicyWithCacheKey();
+			FakeIoC.GetAllInstancesProvider = () =>
+			{
+				callsToContainer++;
+				return new List<object> { policy };
+			};
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
+			});
+			var context = new MockSecurityContext();
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy<LazyLoadedPolicyWithCacheKey>();
+
+			// Act
+			policyContainer.EnforcePolicies(context);
+			policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(callsToContainer, Is.EqualTo(2));
+			Assert.That(policy.CacheKeyCallCount, Is.EqualTo(2), "Did not get the custom cache key the expected amount of times");
+			Assert.That(policy.EnforceCallCount, Is.EqualTo(2), "Did not call enforce the expected amount of times");
+		}
+
+		[Test]
+		public void Should_load_lazy_policy_with_cache_key_exactly_twice_during_execution_with_caching_on()
+		{
+			// Arrange
+			var callsToContainer = 0;
+			var policy = new LazyLoadedPolicyWithCacheKey();
+			FakeIoC.GetAllInstancesProvider = () =>
+			{
+				callsToContainer++;
+				return new List<object> { policy };
+			};
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
+				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
+			});
+			var context = new MockSecurityContext();
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy<LazyLoadedPolicyWithCacheKey>();
+
+			// Act
+			policyContainer.EnforcePolicies(context);
+			policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(callsToContainer, Is.EqualTo(2));
+			Assert.That(policy.CacheKeyCallCount, Is.EqualTo(2), "Did not get the custom cache key the expected amount of times");
+			Assert.That(policy.EnforceCallCount, Is.EqualTo(1), "Did not call enforce the expected amount of times");
+		}
+
+		[Test]
+		public void Should_enforce_lazy_policy_with_cache_key_exactly_twice_during_execution_with_caching_on()
+		{
+			// Arrange
+			var callsToContainer = 0;
+			var policy = new LazyLoadedPolicyWithCacheKey();
+			FakeIoC.GetAllInstancesProvider = () =>
+			{
+				callsToContainer++;
+				return new List<object> { policy };
+			};
+			SecurityConfigurator.Configure(configuration =>
+			{
+				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
+				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
+				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
+			});
+			var context = new MockSecurityContext();
+			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			policyContainer.AddPolicy<LazyLoadedPolicyWithCacheKey>();
+
+			// Act
+			policy.CacheKey = "101";
+			policyContainer.EnforcePolicies(context);
+			policyContainer.EnforcePolicies(context);
+			policyContainer.EnforcePolicies(context);
+
+			policy.CacheKey = "102";
+			policyContainer.EnforcePolicies(context);
+			policyContainer.EnforcePolicies(context);
+
+			// Assert
+			Assert.That(callsToContainer, Is.EqualTo(5));
+			Assert.That(policy.CacheKeyCallCount, Is.EqualTo(5), "Did not get the custom cache key the expected amount of times");
+			Assert.That(policy.EnforceCallCount, Is.EqualTo(2), "Did not call enforce the expected amount of times");
+		}
+
+		public class LazyLoadedPolicy : ISecurityPolicy
+		{
+			public int EnforceCallCount { get; private set; }
+
+			public PolicyResult Enforce(ISecurityContext context)
+			{
+				EnforceCallCount++;
+				return PolicyResult.CreateSuccessResult(this);
+			}
+		}
+
+		public class LazyLoadedPolicyWithCacheKey : ISecurityPolicy, ICacheKeyProvider
+		{
+			public string CacheKey { get; set; }
+			public int EnforceCallCount { get; private set; }
+			public int CacheKeyCallCount { get; private set; }
+
+			public LazyLoadedPolicyWithCacheKey()
+			{
+				CacheKey = "1";
+			}
+
+			public PolicyResult Enforce(ISecurityContext context)
+			{
+				EnforceCallCount++;
+				return PolicyResult.CreateSuccessResult(this);
+			}
+
+			public string Get(ISecurityContext securityContext)
+			{
+				CacheKeyCallCount++;
+				return CacheKey;
 			}
 		}
 	}

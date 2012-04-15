@@ -49,7 +49,7 @@ namespace FluentSecurity
 			var cache = SecurityCache.CacheProvider.Invoke();
 			
 			var results = new List<PolicyResult>();
-			foreach (var policy in _policies)
+			foreach (var policy in _policies.Select(NonLazyIfPolicyHasCacheKeyProvider()))
 			{
 				var strategy = GetExecutionCacheStrategyForPolicy(policy, defaultResultsCacheLifecycle);
 				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromStrategy(strategy, policy, context);
@@ -68,6 +68,11 @@ namespace FluentSecurity
 			return results.AsReadOnly();
 		}
 
+		private static Func<ISecurityPolicy, ISecurityPolicy> NonLazyIfPolicyHasCacheKeyProvider()
+		{
+			return policy => policy.IsCacheKeyProvider() ? policy.EnsureNonLazyPolicy() : policy;
+		}
+
 		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
 		{
 			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
@@ -75,15 +80,24 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainer AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			if (predicate == null)
-				predicate = x => true;
+			return AddPolicy(new LazySecurityPolicy<TSecurityPolicy>());
+		}
 
-			var matchingPolicies = _policies.Where(p =>
-				p is TSecurityPolicy &&
-				predicate.Invoke((TSecurityPolicy)p)
-				).ToList();
+		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
+		{
+			IEnumerable<ISecurityPolicy> matchingPolicies;
+			
+			if (predicate == null)
+				matchingPolicies = _policies.Where(p => p.IsPolicyOf<TSecurityPolicy>()).ToList();
+			else
+			{
+				matchingPolicies = _policies.Where(p =>
+					p.IsPolicyOf<TSecurityPolicy>() &&
+					predicate.Invoke(p.EnsureNonLazyPolicyOf<TSecurityPolicy>())
+					).ToList();
+			}
 			
 			foreach (var matchingPolicy in matchingPolicies)
 				_policies.Remove(matchingPolicy);
