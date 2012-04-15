@@ -70,7 +70,7 @@ namespace FluentSecurity
 
 		private static Func<ISecurityPolicy, ISecurityPolicy> NonLazyIfPolicyHasCacheKeyProvider()
 		{
-			return policy => policy.HasCacheKeyProvider() ? policy.EnsurePolicy() : policy;
+			return policy => policy.IsCacheKeyProvider() ? policy.EnsureNonLazyPolicy() : policy;
 		}
 
 		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
@@ -95,7 +95,7 @@ namespace FluentSecurity
 			{
 				matchingPolicies = _policies.Where(p =>
 					p.IsPolicyOf<TSecurityPolicy>() &&
-					predicate.Invoke(p.EnsurePolicyOf<TSecurityPolicy>())
+					predicate.Invoke(p.EnsureNonLazyPolicyOf<TSecurityPolicy>())
 					).ToList();
 			}
 			

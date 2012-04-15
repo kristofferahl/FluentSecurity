@@ -93,7 +93,7 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
-		/// Gets the actual type of the ISecurityPolicy
+		/// Gets the actual type of the ISecurityPolicy. Takes care of checking for lazy policies.
 		/// </summary>
 		public static Type GetPolicyType(this ISecurityPolicy securityPolicy)
 		{
@@ -106,7 +106,7 @@ namespace FluentSecurity
 		/// <summary>
 		/// Ensures we are working with the actual policy. Takes care of loading lazy policies.
 		/// </summary>
-		internal static ISecurityPolicy EnsurePolicy(this ISecurityPolicy securityPolicy)
+		internal static ISecurityPolicy EnsureNonLazyPolicy(this ISecurityPolicy securityPolicy)
 		{
 			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
 			return lazySecurityPolicy != null
@@ -117,13 +117,13 @@ namespace FluentSecurity
 		/// <summary>
 		/// Ensures we are working with the expected policy type. Takes care of loading and casting lazy policies.
 		/// </summary>
-		internal static TSecurityPolicy EnsurePolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
+		internal static TSecurityPolicy EnsureNonLazyPolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
 		{
-			return securityPolicy.EnsurePolicy() as TSecurityPolicy;
+			return securityPolicy.EnsureNonLazyPolicy() as TSecurityPolicy;
 		}
 
 		/// <summary>
-		/// Returns true if the policy is of the expected type
+		/// Returns true if the policy is of the expected type. Takes care of checking for lazy policies.
 		/// </summary>
 		/// <param name="securityPolicy">The policy</param>
 		/// <returns>A boolean</returns>
@@ -139,7 +139,7 @@ namespace FluentSecurity
 		/// </summary>
 		/// <param name="securityPolicy">The policy</param>
 		/// <returns>A boolean</returns>
-		internal static bool HasCacheKeyProvider(this ISecurityPolicy securityPolicy)
+		internal static bool IsCacheKeyProvider(this ISecurityPolicy securityPolicy)
 		{
 			return typeof (ICacheKeyProvider).IsAssignableFrom(securityPolicy.GetPolicyType());
 		}
