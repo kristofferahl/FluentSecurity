@@ -89,6 +89,7 @@
     <Compile Include="Policy\Contexts\DelegateSecurityContext.cs" />
     <Compile Include="Policy\Results\DelegatePolicyResult.cs" />
     <Compile Include="Policy\SecurityPolicyBase.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandler.cs" />
     <Compile Include="Policy\Contexts\SecurityContextWrapper.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\IPolicyViolationHandlerConvention.cs" />

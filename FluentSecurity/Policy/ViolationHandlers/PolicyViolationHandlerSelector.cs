@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Policy.ViolationHandlers
@@ -9,9 +10,12 @@ namespace FluentSecurity.Policy.ViolationHandlers
 
 		public PolicyViolationHandlerSelector(IEnumerable<IPolicyViolationHandler> policyViolationHandlers)
 		{
+			policyViolationHandlers = policyViolationHandlers.ToList();
+			
 			_conventions = new List<IPolicyViolationHandlerConvention>
 			{
-				new FindByPolicyNameConvention(policyViolationHandlers)
+				new FindByPolicyNameConvention(policyViolationHandlers),
+				new FindDefaultPolicyViolationHandlerConvention(policyViolationHandlers)
 			};
 		}
 
