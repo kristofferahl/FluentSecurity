@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentSecurity.Caching;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -103,32 +104,44 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
-		/// Ensures we are working with the expected policy type. Takes care of loading and casting lazy policies.
+		/// Ensures we are working with the actual policy. Takes care of loading lazy policies.
 		/// </summary>
-		internal static TSecurityPolicy EnsurePolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
+		internal static ISecurityPolicy EnsurePolicy(this ISecurityPolicy securityPolicy)
 		{
-			var policy = securityPolicy as TSecurityPolicy;
-			if (policy == null)
-			{
-				var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
-				if (lazySecurityPolicy != null && lazySecurityPolicy.PolicyType == typeof(TSecurityPolicy))
-					policy = lazySecurityPolicy.Load() as TSecurityPolicy;
-			}
-			return policy;
+			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
+			return lazySecurityPolicy != null
+				? lazySecurityPolicy.Load()
+				: securityPolicy;
 		}
 
 		/// <summary>
 		/// Ensures we are working with the expected policy type. Takes care of loading and casting lazy policies.
 		/// </summary>
+		internal static TSecurityPolicy EnsurePolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
+		{
+			return securityPolicy.EnsurePolicy() as TSecurityPolicy;
+		}
+
+		/// <summary>
+		/// Returns true if the policy is of the expected type
+		/// </summary>
+		/// <param name="securityPolicy">The policy</param>
+		/// <returns>A boolean</returns>
 		internal static bool IsPolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
 		{
-			var isExpectedType = securityPolicy is TSecurityPolicy;
-			if (!isExpectedType)
-			{
-				var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
-				isExpectedType = lazySecurityPolicy != null && lazySecurityPolicy.PolicyType == typeof (TSecurityPolicy);
-			}
-			return isExpectedType;
+			var isMatch = securityPolicy is TSecurityPolicy;
+			if (!isMatch) isMatch = securityPolicy.GetPolicyType() == typeof (TSecurityPolicy);
+			return isMatch;
+		}
+
+		/// <summary>
+		/// Returns true if the policy implements ICacheKeyProvider
+		/// </summary>
+		/// <param name="securityPolicy">The policy</param>
+		/// <returns>A boolean</returns>
+		internal static bool HasCacheKeyProvider(this ISecurityPolicy securityPolicy)
+		{
+			return typeof (ICacheKeyProvider).IsAssignableFrom(securityPolicy.GetPolicyType());
 		}
 
 		/// <summary>

@@ -49,7 +49,7 @@ namespace FluentSecurity
 			var cache = SecurityCache.CacheProvider.Invoke();
 			
 			var results = new List<PolicyResult>();
-			foreach (var policy in _policies)
+			foreach (var policy in _policies.Select(NonLazyIfPolicyHasCacheKeyProvider()))
 			{
 				var strategy = GetExecutionCacheStrategyForPolicy(policy, defaultResultsCacheLifecycle);
 				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromStrategy(strategy, policy, context);
@@ -66,6 +66,11 @@ namespace FluentSecurity
 			}
 
 			return results.AsReadOnly();
+		}
+
+		private static Func<ISecurityPolicy, ISecurityPolicy> NonLazyIfPolicyHasCacheKeyProvider()
+		{
+			return policy => policy.HasCacheKeyProvider() ? policy.EnsurePolicy() : policy;
 		}
 
 		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
