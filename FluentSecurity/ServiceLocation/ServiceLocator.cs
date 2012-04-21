@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentSecurity.Policy.ViolationHandlers;
 
@@ -57,9 +58,19 @@ namespace FluentSecurity.ServiceLocation
 			}
 		}
 
+		public object Resolve(Type typeToResolve)
+		{
+			return Container.Resolve(typeToResolve);
+		}
+
 		public TTypeToResolve Resolve<TTypeToResolve>()
 		{
 			return Container.Resolve<TTypeToResolve>();
+		}
+
+		public IEnumerable<object> ResolveAll(Type typeToResolve)
+		{
+			return Container.ResolveAll(typeToResolve);
 		}
 
 		public IEnumerable<TTypeToResolve> ResolveAll<TTypeToResolve>()

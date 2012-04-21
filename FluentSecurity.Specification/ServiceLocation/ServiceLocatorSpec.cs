@@ -122,10 +122,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 			var expectedInstance = TestDataFactory.CreateSecurityContext(true);
 			FakeIoC.Reset();
 			FakeIoC.GetInstanceProvider = () => new List<object> { expectedInstance };
-			SecurityConfigurator.Configure(configuration =>
-			{
-				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance);
-			});
+			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
 			var serviceLocator = new ServiceLocator();
 
 			// Act
@@ -133,6 +130,74 @@ namespace FluentSecurity.Specification.ServiceLocation
 
 			// Assert
 			Assert.That(instance, Is.EqualTo(expectedInstance));
+		}
+
+		[Test]
+		public void Should_resolve_single_instance_using_Resolve_with_generic_type()
+		{
+			// Arrange
+			var expectedInstance = new DefaultWhatDoIHaveBuilder();
+			FakeIoC.Reset();
+			FakeIoC.GetInstanceProvider = () => new List<object> { expectedInstance };
+			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
+			var serviceLocator = new ServiceLocator();
+
+			// Act
+			var instance = serviceLocator.Resolve<IWhatDoIHaveBuilder>();
+
+			// Assert
+			Assert.That(instance, Is.EqualTo(expectedInstance));
+		}
+
+		[Test]
+		public void Should_resolve_single_instance_using_Resolve_with_type()
+		{
+			// Arrange
+			var expectedInstance = new DefaultWhatDoIHaveBuilder();
+			FakeIoC.Reset();
+			FakeIoC.GetInstanceProvider = () => new List<object> { expectedInstance };
+			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
+			var serviceLocator = new ServiceLocator();
+
+			// Act
+			var instance = serviceLocator.Resolve(typeof(IWhatDoIHaveBuilder));
+
+			// Assert
+			Assert.That(instance, Is.EqualTo(expectedInstance));
+		}
+
+		[Test]
+		public void Should_resolve_all_instances_using_ResolveAll_with_generic_type()
+		{
+			// Arrange
+			var expectedInstance = new DefaultWhatDoIHaveBuilder();
+			FakeIoC.Reset();
+			FakeIoC.GetAllInstancesProvider = () => new List<object> { expectedInstance };
+			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
+			var serviceLocator = new ServiceLocator();
+
+			// Act
+			var instances = serviceLocator.ResolveAll<IWhatDoIHaveBuilder>();
+
+			// Assert
+			Assert.That(instances.Single(), Is.EqualTo(expectedInstance));
+		}
+
+		[Test]
+		public void Should_resolve_all_instances_using_ResolveAll_with_type()
+		{
+			// Arrange
+			var expectedInstance = new DefaultWhatDoIHaveBuilder();
+			FakeIoC.Reset();
+			FakeIoC.GetAllInstancesProvider = () => new List<object> { expectedInstance };
+			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
+			var serviceLocator = new ServiceLocator();
+
+			// Act
+			var instances = serviceLocator.ResolveAll(typeof(IWhatDoIHaveBuilder));
+
+			// Assert
+			Assert.That(instances.Single(), Is.EqualTo(expectedInstance));
 		}
 	}
 }
