@@ -78,8 +78,10 @@
     <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
     <Compile Include="Configuration\IAdvancedConfiguration.cs" />
+    <Compile Include="Conventions.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="HttpContextRequestDescription.cs" />
+    <Compile Include="IConvention.cs" />
     <Compile Include="Policy\ILazySecurityPolicy.cs" />
     <Compile Include="IRequestDescription.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContext.cs" />
@@ -89,12 +91,35 @@
     <Compile Include="Policy\Contexts\DelegateSecurityContext.cs" />
     <Compile Include="Policy\Results\DelegatePolicyResult.cs" />
     <Compile Include="Policy\SecurityPolicyBase.cs" />
-    <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerConvention.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsOfTypeConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerByNameConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\IPolicyViolationHandlerConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\LazyInstancePolicyViolationHandlerConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\LazyTypePolicyViolationHandlerConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerFilterConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandler.cs" />
     <Compile Include="Policy\Contexts\SecurityContextWrapper.cs" />
-    <Compile Include="Policy\ViolationHandlers\Conventions\IPolicyViolationHandlerConvention.cs" />
-    <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConvention.cs" />
-    <Compile Include="Policy\ViolationHandlers\Conventions\FindConfiguredDefaultPolicyViolationHandlerConvention.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\AssemblyScanner.cs" />
     <Compile Include="Builder.cs" />

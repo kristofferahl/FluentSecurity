@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers;
-using FluentSecurity.Specification.TestData;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy.ViolationHandlers
@@ -14,7 +12,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 	public class When_creating_a_PolicyViolationHandlerSelector
 	{
 		[Test]
-		public void Should_throw_when_violation_handlers_is_null()
+		public void Should_throw_when_conventions_is_null()
 		{
 			Assert.Throws<ArgumentNullException>(() => new PolicyViolationHandlerSelector(null));
 		}
@@ -25,107 +23,76 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 	public class When_selecting_a_policy_violation_handler
 	{
 		[Test]
-		public void Should_return_handler_for_DenyAnonymousAccessPolicy()
+		public void Should_return_first_handler_returned_by_convention()
 		{
-			// Arrange
-			var policy = new DenyAnonymousAccessPolicy();
-			var policyResult = PolicyResult.CreateFailureResult(policy, "Anonymous access denied");
-			var exception = new PolicyViolationException(policyResult);
-			var violationHandlers = Helpers.TestDataFactory.CreatePolicyViolationHandlers();
-			var selector = new PolicyViolationHandlerSelector(violationHandlers);
+			var expectedHandler = new ExceptionPolicyViolationHandler();
+			var convention1 = new MockConvention(null);
+			var convention2 = new MockConvention(expectedHandler);
+			var convention3 = new MockConvention(null);
+			var  conventions = new List<IPolicyViolationHandlerConvention>
+			{
+				convention1,
+				convention2,
+				convention3
+			};
 
-			// Act
-			var handler = selector.FindHandlerFor(exception);
-
-			// Assert
-			Assert.That(handler, Is.TypeOf(typeof(DenyAnonymousAccessPolicyViolationHandler)));
-		}
-
-		[Test]
-		public void Should_return_handler_for_DenyAuthenticatedAccessPolicy()
-		{
-			// Arrange
-			var policy = new DenyAuthenticatedAccessPolicy();
-			var policyResult = PolicyResult.CreateFailureResult(policy, "Authenticated access denied");
-			var exception = new PolicyViolationException(policyResult);
-			var violationHandlers = Helpers.TestDataFactory.CreatePolicyViolationHandlers();
-			var selector = new PolicyViolationHandlerSelector(violationHandlers);
-
-			// Act
-			var handler = selector.FindHandlerFor(exception);
-
-			// Assert
-			Assert.That(handler, Is.TypeOf(typeof(DenyAuthenticatedAccessPolicyViolationHandler)));
-		}
-
-		[Test]
-		public void Should_not_return_handler_for_RequireRolePolicy()
-		{
-			// Arrange
-			var policy = new RequireRolePolicy("Role");
+			var policy = new IgnorePolicy();
 			var policyResult = PolicyResult.CreateFailureResult(policy, "Access denied");
 			var exception = new PolicyViolationException(policyResult);
-			var violationHandlers = Helpers.TestDataFactory.CreatePolicyViolationHandlers();
-			var selector = new PolicyViolationHandlerSelector(violationHandlers);
-
-			// Act
-			var handler = selector.FindHandlerFor(exception);
-
-			// Assert
-			Assert.That(handler, Is.Null);
-		}
-
-		[Test]
-		public void Should_return_DefaultPolicyViolationhandler_for_RequireRolePolicy()
-		{
-			// Arrange
-			var policyResult1 = PolicyResult.CreateFailureResult(new DenyAnonymousAccessPolicy(), "Access denied");
-			var exception1 = new PolicyViolationException(policyResult1);
-
-			var policyResult2 = PolicyResult.CreateFailureResult(new RequireRolePolicy("Role"), "Access denied");
-			var exception2 = new PolicyViolationException(policyResult2);
-
-			var expectedHandler1 = new DenyAnonymousAccessPolicyViolationHandler(new EmptyResult());
-			var expectedHandler2 = new DefaultPolicyViolationHandler();
-			var violationHandlers = new List<IPolicyViolationHandler>
-			{
-				expectedHandler1,
-				expectedHandler2
-			};
-			var selector = new PolicyViolationHandlerSelector(violationHandlers);
-
-			// Act
-			var handler1 = selector.FindHandlerFor(exception1);
-			var handler2 = selector.FindHandlerFor(exception2);
-
-			// Assert
-			Assert.That(handler1, Is.EqualTo(expectedHandler1));
-			Assert.That(handler2, Is.EqualTo(expectedHandler2));
-		}
-
-		[Test]
-		public void Should_return_CustomDefaultPolicyViolationhandler_for_RequireRolePolicy()
-		{
-			// Arrange
-			SecurityConfigurator.Configure(configuration => configuration.DefaultPolicyViolationHandlerIs<CustomDefaultPolicyViolationHandler>());
-
-			var policyResult = PolicyResult.CreateFailureResult(new RequireRolePolicy("Role"), "Access denied");
-			var exception = new PolicyViolationException(policyResult);
-
-			var expectedHandler = new CustomDefaultPolicyViolationHandler();
-			var violationHandlers = new List<IPolicyViolationHandler>
-			{
-				new DenyAnonymousAccessPolicyViolationHandler(new EmptyResult()),
-				expectedHandler,
-				new DefaultPolicyViolationHandler()
-			};
-			var selector = new PolicyViolationHandlerSelector(violationHandlers);
+			var selector = new PolicyViolationHandlerSelector(conventions);
 
 			// Act
 			var handler = selector.FindHandlerFor(exception);
 
 			// Assert
 			Assert.That(handler, Is.EqualTo(expectedHandler));
+			Assert.That(convention1.WasCalled, Is.True);
+			Assert.That(convention2.WasCalled, Is.True);
+			Assert.That(convention3.WasCalled, Is.False);
+		}
+
+		[Test]
+		public void Should_return_null_when_no_convenion_returns_handler()
+		{
+			var expectedHandler = new ExceptionPolicyViolationHandler();
+			var convention1 = new MockConvention(null);
+			var convention2 = new MockConvention(null);
+			var conventions = new List<IPolicyViolationHandlerConvention>
+			{
+				convention1,
+				convention2
+			};
+
+			var policy = new IgnorePolicy();
+			var policyResult = PolicyResult.CreateFailureResult(policy, "Access denied");
+			var exception = new PolicyViolationException(policyResult);
+			var selector = new PolicyViolationHandlerSelector(conventions);
+
+			// Act
+			var handler = selector.FindHandlerFor(exception);
+
+			// Assert
+			Assert.That(handler, Is.Null);
+			Assert.That(convention1.WasCalled, Is.True);
+			Assert.That(convention2.WasCalled, Is.True);
+		}
+
+		public class MockConvention : IPolicyViolationHandlerConvention
+		{
+			private readonly IPolicyViolationHandler _handlerToReturn;
+
+			public bool WasCalled { get; private set; }
+
+			public MockConvention(IPolicyViolationHandler handlerToReturn)
+			{
+				_handlerToReturn = handlerToReturn;
+			}
+
+			public IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception)
+			{
+				WasCalled = true;
+				return _handlerToReturn;
+			}
 		}
 	}
 }

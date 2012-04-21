@@ -1,22 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
-	public class FindByPolicyNameConvention : IPolicyViolationHandlerConvention
+	public class FindByPolicyNameConvention : PolicyViolationHandlerFilterConvention
 	{
-		private readonly IEnumerable<IPolicyViolationHandler> _policyViolationHandlers;
-
-		public FindByPolicyNameConvention(IEnumerable<IPolicyViolationHandler> policyViolationHandlers)
+		public override IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<IPolicyViolationHandler> policyViolationHandlers)
 		{
-			if (policyViolationHandlers == null) throw new ArgumentNullException("policyViolationHandlers");
-			_policyViolationHandlers = policyViolationHandlers;
-		}
-
-		public IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception)
-		{
-			var matchingHandler = _policyViolationHandlers.SingleOrDefault(handler => HandlerIsMatchForPolicyName(handler, exception));
+			var matchingHandler = policyViolationHandlers.SingleOrDefault(handler => HandlerIsMatchForPolicyName(handler, exception));
 			return matchingHandler;
 		}
 

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
 using FluentSecurity.ServiceLocation;
 
@@ -18,7 +19,8 @@ namespace FluentSecurity
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
-		internal Type DefaultPolicyViolationHandler { get; private set; }
+		internal Conventions AppliedConventions { get; private set; }
+		
 		private IPolicyAppender PolicyAppender { get; set; }
 
 		public AdvancedConfiguration Advanced { get; set; }
@@ -26,7 +28,11 @@ namespace FluentSecurity
 		public ConfigurationExpression()
 		{
 			Advanced = new AdvancedConfiguration();
+			AppliedConventions = new Conventions();
 			PolicyAppender = new DefaultPolicyAppender();
+
+			AppliedConventions.Add(new FindByPolicyNameConvention());
+			AppliedConventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
 		}
 
 		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
@@ -168,7 +174,21 @@ namespace FluentSecurity
 
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
 		{
-			DefaultPolicyViolationHandler = typeof(TPolicyViolationHandler);
+			RemoveDefaultPolicyViolationHandlerConventions();
+			AppliedConventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<TPolicyViolationHandler>());
+		}
+
+		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandler) where TPolicyViolationHandler : class, IPolicyViolationHandler
+		{
+			RemoveDefaultPolicyViolationHandlerConventions();
+			AppliedConventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<TPolicyViolationHandler>(policyViolationHandler));
+		}
+
+		private void RemoveDefaultPolicyViolationHandlerConventions()
+		{
+			AppliedConventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
+			AppliedConventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
+			AppliedConventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsInstanceConvention<>)));
 		}
 	}
 }
