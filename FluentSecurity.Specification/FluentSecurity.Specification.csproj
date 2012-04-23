@@ -121,6 +121,11 @@
     <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConventionSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsOfTypeConventionSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConventionSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerByNameConventionSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContextSpec.cs" />
     <Compile Include="Policy\LazySecurityPolicySpec.cs" />

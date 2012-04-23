@@ -8,6 +8,7 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 
 		protected LazyInstancePolicyViolationHandlerConvention(Func<TPolicyViolationHandler> policyViolationHandlerFactory)
 		{
+			if (policyViolationHandlerFactory == null) throw new ArgumentNullException("policyViolationHandlerFactory");
 			_policyViolationHandlerFactory = policyViolationHandlerFactory;
 		}
 

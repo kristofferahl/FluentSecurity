@@ -4,6 +4,8 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
 	public abstract class PolicyViolationHandlerTypeConvention : IPolicyViolationHandlerConvention
 	{
+		public Func<Type, object> PolicyViolationHandlerProvider = t => ServiceLocation.ServiceLocator.Current.Resolve(t);
+
 		public abstract Type GetHandlerTypeFor(PolicyViolationException exception);
 
 		public IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception)
@@ -12,7 +14,7 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 			if (type != null)
 			{
 				if (typeof(IPolicyViolationHandler).IsAssignableFrom(type))
-					return ServiceLocation.ServiceLocator.Current.Resolve(type) as IPolicyViolationHandler;
+					return PolicyViolationHandlerProvider.Invoke(type) as IPolicyViolationHandler;
 			}
 			return null;
 		}
