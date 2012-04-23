@@ -58,16 +58,6 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(_securityConfiguration.Advanced, Is.Not.Null);
 		}
-
-		[Test]
-		public void Should_have_applied_conventions()
-		{
-			// Act
-			Because();
-
-			// Assert
-			Assert.That(_securityConfiguration.AppliedConventions, Is.Not.Null);
-		}
 	}
 
 	[TestFixture]

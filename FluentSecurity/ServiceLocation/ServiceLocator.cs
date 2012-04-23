@@ -23,7 +23,7 @@ namespace FluentSecurity.ServiceLocation
 			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), Lifecycle.Singleton);
 
 			container.Register<IPolicyViolationHandlerSelector>(ctx => new PolicyViolationHandlerSelector(
-				ctx.Resolve<ISecurityConfiguration>().AppliedConventions.OfType<IPolicyViolationHandlerConvention>()
+				ctx.Resolve<ISecurityConfiguration>().Advanced.Conventions.OfType<IPolicyViolationHandlerConvention>()
 				));
 
 			container.Register<IWhatDoIHaveBuilder>(ctx => new DefaultWhatDoIHaveBuilder(), Lifecycle.Singleton);

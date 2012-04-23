@@ -16,7 +16,6 @@ namespace FluentSecurity
 			Expression = expression;
 
 			Advanced = Expression.Advanced;
-			AppliedConventions = Expression.AppliedConventions;
 			ExternalServiceLocator = Expression.ExternalServiceLocator;
 			IgnoreMissingConfiguration = Expression.ShouldIgnoreMissingConfiguration;
 			PolicyContainers = Expression;
@@ -24,7 +23,6 @@ namespace FluentSecurity
 
 		internal ConfigurationExpression Expression { get; private set; }
 		public IAdvancedConfiguration Advanced { get; private set; }
-		public Conventions AppliedConventions { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
 		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 

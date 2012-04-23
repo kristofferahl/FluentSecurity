@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Configuration
@@ -27,6 +29,14 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_not_have_a_security_context_modifyer()
 		{
 			Assert.That(advancedConfiguration.SecurityContextModifyer, Is.Null);
+		}
+
+		[Test]
+		public void Should_have_conventions_for_default_PolicyViolationHandler_applied()
+		{
+			var conventions = advancedConfiguration.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
+			Assert.That(conventions.ElementAtOrDefault(0), Is.TypeOf<FindByPolicyNameConvention>());
+			Assert.That(conventions.ElementAtOrDefault(1), Is.TypeOf<FindDefaultPolicyViolationHandlerByNameConvention>());
 		}
 	}
 

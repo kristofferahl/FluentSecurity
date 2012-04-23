@@ -6,7 +6,6 @@ namespace FluentSecurity
 	public interface ISecurityConfiguration
 	{
 		IAdvancedConfiguration Advanced { get; }
-		Conventions AppliedConventions { get; }
 		IEnumerable<IPolicyContainer> PolicyContainers { get; }
 		ISecurityServiceLocator ExternalServiceLocator { get; }
 		bool IgnoreMissingConfiguration { get; }
