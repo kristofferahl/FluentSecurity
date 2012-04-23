@@ -10,6 +10,7 @@ namespace FluentSecurity.Configuration
 
 		internal ViolationHandlerExpression(ViolationsExpression violationsExpression)
 		{
+			if (violationsExpression == null) throw new ArgumentNullException("violationsExpression");
 			_violationsExpression = violationsExpression;
 		}
 

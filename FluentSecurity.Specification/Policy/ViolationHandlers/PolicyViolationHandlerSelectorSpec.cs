@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy.ViolationHandlers
@@ -75,24 +76,6 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 			Assert.That(handler, Is.Null);
 			Assert.That(convention1.WasCalled, Is.True);
 			Assert.That(convention2.WasCalled, Is.True);
-		}
-
-		public class MockConvention : IPolicyViolationHandlerConvention
-		{
-			private readonly IPolicyViolationHandler _handlerToReturn;
-
-			public bool WasCalled { get; private set; }
-
-			public MockConvention(IPolicyViolationHandler handlerToReturn)
-			{
-				_handlerToReturn = handlerToReturn;
-			}
-
-			public IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception)
-			{
-				WasCalled = true;
-				return _handlerToReturn;
-			}
 		}
 	}
 }

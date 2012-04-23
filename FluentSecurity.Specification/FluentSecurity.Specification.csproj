@@ -97,6 +97,8 @@
     <Compile Include="AssemblyScannerNamespaceSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
+    <Compile Include="Configuration\ViolationHandlerExpressionSpec.cs" />
+    <Compile Include="Configuration\ViolationsExpressionSpec.cs" />
     <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExceptionFactorySpec.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerByNameConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConventionSpec.cs" />
+    <Compile Include="TestData\MockConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContextSpec.cs" />
     <Compile Include="Policy\LazySecurityPolicySpec.cs" />
