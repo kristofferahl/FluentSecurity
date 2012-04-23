@@ -30,5 +30,11 @@ namespace FluentSecurity.Configuration
 		{
 			SecurityContextModifyer = modifyer;
 		}
+
+		public void Violations(Action<ViolationsExpression> violationsExpression)
+		{
+			if (violationsExpression == null) throw new ArgumentNullException("violationsExpression");
+			violationsExpression.Invoke(new ViolationsExpression(Conventions));
+		}
 	}
 }

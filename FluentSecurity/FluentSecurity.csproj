@@ -78,6 +78,8 @@
     <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
     <Compile Include="Configuration\IAdvancedConfiguration.cs" />
+    <Compile Include="Configuration\ViolationHandlerExpression.cs" />
+    <Compile Include="Configuration\ViolationsExpression.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="HttpContextRequestDescription.cs" />
@@ -112,6 +114,8 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyTypePolicyViolationHandlerConvention.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyTypeToPolicyViolationHandlerInstanceConvention.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyTypeToPolicyViolationHandlerTypeConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerFilterConvention.cs">
       <SubType>Code</SubType>
     </Compile>

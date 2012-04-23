@@ -117,10 +117,15 @@
     <Compile Include="Helpers\MvcMockHelpers.cs" />
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\ResetFixture.cs" />
+    <Compile Include="Helpers\TestingExtensions.cs" />
     <Compile Include="HttpContextRequestDescriptionSpec.cs" />
     <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\LazyInstancePolicyViolationHandlerConventionSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\LazyTypePolicyViolationHandlerConventionSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyTypeToPolicyViolationHandlerInstanceConventionSpec.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyTypeToPolicyViolationHandlerTypeConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsOfTypeConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConventionSpec.cs" />
