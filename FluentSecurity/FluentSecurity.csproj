@@ -79,7 +79,7 @@
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
     <Compile Include="Configuration\IAdvancedConfiguration.cs" />
     <Compile Include="Configuration\ViolationHandlerExpression.cs" />
-    <Compile Include="Configuration\ViolationsExpression.cs" />
+    <Compile Include="Configuration\ViolationConfigurationExpression.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="HttpContextRequestDescription.cs" />
@@ -122,6 +122,8 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConvention.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerInstanceConvention.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerTypeConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandler.cs" />
     <Compile Include="Policy\Contexts\SecurityContextWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

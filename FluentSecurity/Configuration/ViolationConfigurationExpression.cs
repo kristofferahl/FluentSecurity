@@ -5,11 +5,11 @@ using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class ViolationsExpression
+	public class ViolationConfigurationExpression
 	{
 		private readonly Conventions _conventions;
 
-		internal ViolationsExpression(Conventions conventions)
+		internal ViolationConfigurationExpression(Conventions conventions)
 		{
 			if (conventions == null) throw new ArgumentNullException("conventions");
 			_conventions = conventions;
@@ -38,6 +38,11 @@ namespace FluentSecurity.Configuration
 		public ViolationHandlerExpression<TSecurityPolicy> Of<TSecurityPolicy>() where TSecurityPolicy : class, ISecurityPolicy
 		{
 			return new ViolationHandlerExpression<TSecurityPolicy>(this);
+		}
+
+		public ViolationHandlerExpression Of(Func<PolicyResult, bool> predicate)
+		{
+			return new ViolationHandlerExpression(this, predicate);
 		}
 	}
 }

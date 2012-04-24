@@ -152,7 +152,7 @@ namespace FluentSecurity.Specification.Configuration
 		}
 
 		[Test]
-		public void Should_always_add_conventions_at_the_first_position()
+		public void Should_always_add_conventions_at_the_first_position_to_support_cascading_overrides()
 		{
 			// Act
 			_advancedConfiguration.Violations(violations =>
