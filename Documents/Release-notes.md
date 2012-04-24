@@ -7,8 +7,10 @@
 - (**Removed**) Removed PolicyExecutionMode and changed the default policy execution behavior to "stop on first violation".
 - (**Change**) Method HandleSecurityFor on ISecurityHandler now takes an instance of ISecurityContext as the last parameter.
 - (**Change**) Moved SecurityContextWrapper to the FluentSecurity.Policy.Contexts namespace.
+- (**Change**) Moved PolicyViolationHandlerSelector to the FluentSecurity.Policy.ViolationHandlers namespace.
 - (**Change**) Made the Each<T> extension internal as it was never intended to be public.
 - (**New**) Added support for using AllowAny to add an IgnorePolicy.
+- (**New**) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
 
 ## Caching
 - (**New**) Added support for changing the default cache lifecycle of policy results using the Advanced.SetDefaultResultsCacheLifecycle option.
@@ -30,3 +32,11 @@
 - (**New**) Added extension for getting the actual type of a policy (ISecurityPolicy.GetPolicyType).
 - (**New**) Added support for verifying existence of policies added using AddPolicy\<T\> (*TestHelper*).
 - (**New**) Added support for caching of policies added using AddPolicy\<T\>.
+
+## Policy violation handlers
+- (**Change**) Extracted existing conventions from PolicyViolationHandlerSelector to FindByPolicyNameConvention and FindDefaultPolicyViolationHandlerByNameConvention (IPolicyViolationHandlerConvention).
+- (**New**) Added support for setting a default policy violation handler (DefaultPolicyViolationHandlerIsInstanceConvention, DefaultPolicyViolationHandlerIsOfTypeConvention).
+- (**New**) Added support for specifying how violations are handled using configuration.Advanced.Violations(violations => {}).
+- (**New**) Added support for adding and removing conventions using configuration.Advanced.Violations(violations => {}).
+- (**New**) Added conventions PolicyTypeToPolicyViolationHandlerInstanceConvention, PolicyTypeToPolicyViolationHandlerTypeConvention, PredicateToPolicyViolationHandlerInstanceConvention and PredicateToPolicyViolationHandlerTypeConvention.
+- (**New**) Added base classes (PolicyViolationHandlerFilterConvention, PolicyViolationHandlerTypeConvention, LazyInstancePolicyViolationHandlerConvention, LazyTypePolicyViolationHandlerConvention) to help with creating custom conventions (IPolicyViolationHandlerConvention).
