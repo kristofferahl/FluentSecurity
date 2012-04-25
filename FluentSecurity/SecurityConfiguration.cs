@@ -25,6 +25,7 @@ namespace FluentSecurity
 		public IAdvancedConfiguration Advanced { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
 		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
+
 		public bool IgnoreMissingConfiguration { get; private set; }
 
 		public string WhatDoIHave()

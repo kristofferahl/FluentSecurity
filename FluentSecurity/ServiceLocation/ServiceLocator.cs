@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentSecurity.Policy.ViolationHandlers;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.ServiceLocation
 {
@@ -20,7 +23,7 @@ namespace FluentSecurity.ServiceLocation
 			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), Lifecycle.Singleton);
 
 			container.Register<IPolicyViolationHandlerSelector>(ctx => new PolicyViolationHandlerSelector(
-				ctx.ResolveAll<IPolicyViolationHandler>()
+				ctx.Resolve<ISecurityConfiguration>().Advanced.Conventions.OfType<IPolicyViolationHandlerConvention>()
 				));
 
 			container.Register<IWhatDoIHaveBuilder>(ctx => new DefaultWhatDoIHaveBuilder(), Lifecycle.Singleton);
@@ -57,9 +60,19 @@ namespace FluentSecurity.ServiceLocation
 			}
 		}
 
+		public object Resolve(Type typeToResolve)
+		{
+			return Container.Resolve(typeToResolve);
+		}
+
 		public TTypeToResolve Resolve<TTypeToResolve>()
 		{
 			return Container.Resolve<TTypeToResolve>();
+		}
+
+		public IEnumerable<object> ResolveAll(Type typeToResolve)
+		{
+			return Container.ResolveAll(typeToResolve);
 		}
 
 		public IEnumerable<TTypeToResolve> ResolveAll<TTypeToResolve>()

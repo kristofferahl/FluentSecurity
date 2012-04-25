@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using FluentSecurity.Configuration;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using Moq;
@@ -368,6 +369,51 @@ namespace FluentSecurity.Specification
 			var policyContainer = configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
 		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_I_specify_a_default_policy_violation_handler
+	{
+		[Test]
+		public void Should_clear_conflicting_conventions_and_add_convention_for_lazy_default_PolicyViolationHandler()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+			configurationExpression.Advanced.Conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
+			configurationExpression.Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<AnyPolicyViolationHandler>(() => new AnyPolicyViolationHandler()));
+			configurationExpression.Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<AnyPolicyViolationHandler>());
+
+			// Act
+			configurationExpression.DefaultPolicyViolationHandlerIs<CustomDefaultPolicyViolationHandler>();
+
+			// Assert
+			var conventions = configurationExpression.Advanced.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
+			Assert.That(conventions.Count(), Is.EqualTo(2));
+			Assert.That(conventions.First(), Is.TypeOf<FindByPolicyNameConvention>());
+			Assert.That(conventions.Last(), Is.TypeOf<DefaultPolicyViolationHandlerIsOfTypeConvention<CustomDefaultPolicyViolationHandler>>());
+		}
+
+		[Test]
+		public void Should_clear_conflicting_conventions_and_add_convention_for_lazy_default_PolicyViolationHandler_instance()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+			configurationExpression.Advanced.Conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
+			configurationExpression.Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<AnyPolicyViolationHandler>(() => new AnyPolicyViolationHandler()));
+			configurationExpression.Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<AnyPolicyViolationHandler>());
+
+			// Act
+			configurationExpression.DefaultPolicyViolationHandlerIs(() => new CustomDefaultPolicyViolationHandler());
+
+			// Assert
+			var conventions = configurationExpression.Advanced.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
+			Assert.That(conventions.Count(), Is.EqualTo(2));
+			Assert.That(conventions.First(), Is.TypeOf<FindByPolicyNameConvention>());
+			Assert.That(conventions.Last(), Is.TypeOf<DefaultPolicyViolationHandlerIsInstanceConvention<CustomDefaultPolicyViolationHandler>>());
+		}
+
+		public class AnyPolicyViolationHandler : DefaultPolicyViolationHandler {}
 	}
 
 	[TestFixture]

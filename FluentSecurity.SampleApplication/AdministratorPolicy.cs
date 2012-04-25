@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
-using FluentSecurity.Policy;
+﻿using FluentSecurity.Policy;
 using FluentSecurity.SampleApplication.Models;
 
 namespace FluentSecurity.SampleApplication
 {
-	public class AdministratorPolicy : RequireRolePolicy
+	public class AdministratorPolicy : ISecurityPolicy
 	{
-		public AdministratorPolicy() : base(new List<object> { UserRole.Administrator }.ToArray()) {}
+		public PolicyResult Enforce(ISecurityContext context)
+		{
+			var innerPolicy = new RequireRolePolicy(UserRole.Administrator);
+			var result = innerPolicy.Enforce(context);
+			
+			return result.ViolationOccured ? PolicyResult.CreateFailureResult(this, result.Message) : PolicyResult.CreateSuccessResult(this);
+		}
 	}
 }

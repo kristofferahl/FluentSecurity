@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
 using FluentSecurity.ServiceLocation;
 
@@ -18,6 +19,7 @@ namespace FluentSecurity
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
+		
 		private IPolicyAppender PolicyAppender { get; set; }
 
 		public AdvancedConfiguration Advanced { get; set; }
@@ -163,6 +165,25 @@ namespace FluentSecurity
 				throw new ArgumentNullException("securityServiceLocator");
 
 			ExternalServiceLocator = securityServiceLocator;
+		}
+
+		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
+		{
+			RemoveDefaultPolicyViolationHandlerConventions();
+			Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<TPolicyViolationHandler>());
+		}
+
+		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandler) where TPolicyViolationHandler : class, IPolicyViolationHandler
+		{
+			RemoveDefaultPolicyViolationHandlerConventions();
+			Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<TPolicyViolationHandler>(policyViolationHandler));
+		}
+
+		private void RemoveDefaultPolicyViolationHandlerConventions()
+		{
+			Advanced.Conventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
+			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
+			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsInstanceConvention<>)));
 		}
 	}
 }
