@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentSecurity.Policy;
 using FluentSecurity.Specification.TestData;
 using Moq;
 
@@ -17,7 +19,9 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static ISecurityContext CreateSecurityContext(bool authenticated, IEnumerable<object> roles = null)
 		{
+			var data = new ExpandoObject();
 			var context = new Mock<ISecurityContext>();
+			context.Setup(x => x.Data).Returns(data);
 			context.Setup(x => x.CurrenUserAuthenticated()).Returns(authenticated);
 			context.Setup(x => x.CurrenUserRoles()).Returns(roles);
 			return context.Object;
@@ -41,7 +45,16 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static SecurityConfiguration CreateValidSecurityConfiguration()
 		{
-			return new SecurityConfiguration(configuration => {});
+			return CreateValidSecurityConfiguration(expression => {});
+		}
+
+		public static SecurityConfiguration CreateValidSecurityConfiguration(Action<ConfigurationExpression> modifyer)
+		{
+			Action<ConfigurationExpression> configurationExpression = configuration =>
+			{
+				if (modifyer != null) modifyer.Invoke(configuration);
+			};
+			return new SecurityConfiguration(configurationExpression);
 		}
 
 		public static ConfigurationExpression CreateValidConfigurationExpression()
@@ -56,6 +69,11 @@ namespace FluentSecurity.Specification.Helpers
 			return new DefaultPolicyAppender();
 		}
 
+		public static PolicyViolationException CreateExceptionFor(ISecurityPolicy policy)
+		{
+			return new PolicyViolationException(PolicyResult.CreateFailureResult(policy, "Access denied"));
+		}
+
 		public static IPolicyAppender CreateFakePolicyAppender()
 		{
 			return new FakePolicyAppender();
@@ -68,6 +86,7 @@ namespace FluentSecurity.Specification.Helpers
 			
 			var violationHandlers = new List<IPolicyViolationHandler>
 			{
+				new DefaultPolicyViolationHandler(),
 				new DenyAnonymousAccessPolicyViolationHandler(viewResult),
 				new DenyAuthenticatedAccessPolicyViolationHandler(redirectResult)
 			};

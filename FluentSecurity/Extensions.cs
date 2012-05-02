@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentSecurity.Caching;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -21,9 +22,7 @@ namespace FluentSecurity
 		/// <returns>A policycontainer</returns>
 		public static IPolicyContainer GetContainerFor(this IEnumerable<IPolicyContainer> policyContainers, string controllerName, string actionName)
 		{
-			return policyContainers
-				.Where(x => x.ControllerName.ToLower() == controllerName.ToLower() && x.ActionName.ToLower() == actionName.ToLower())
-				.SingleOrDefault();
+			return policyContainers.SingleOrDefault(x => x.ControllerName.ToLower() == controllerName.ToLower() && x.ActionName.ToLower() == actionName.ToLower());
 		}
 
 		/// <summary>
@@ -94,9 +93,75 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
+		/// Gets the actual type of the ISecurityPolicy. Takes care of checking for lazy policies.
+		/// </summary>
+		public static Type GetPolicyType(this ISecurityPolicy securityPolicy)
+		{
+			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
+			return lazySecurityPolicy != null
+				? lazySecurityPolicy.PolicyType
+				: securityPolicy.GetType();
+		}
+
+		/// <summary>
+		/// Ensures we are working with the actual policy. Takes care of loading lazy policies.
+		/// </summary>
+		internal static ISecurityPolicy EnsureNonLazyPolicy(this ISecurityPolicy securityPolicy)
+		{
+			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
+			return lazySecurityPolicy != null
+				? lazySecurityPolicy.Load()
+				: securityPolicy;
+		}
+
+		/// <summary>
+		/// Ensures we are working with the expected policy type. Takes care of loading and casting lazy policies.
+		/// </summary>
+		internal static TSecurityPolicy EnsureNonLazyPolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
+		{
+			return securityPolicy.EnsureNonLazyPolicy() as TSecurityPolicy;
+		}
+
+		/// <summary>
+		/// Returns true if the policy is of the expected type. Takes care of checking for lazy policies.
+		/// </summary>
+		/// <param name="securityPolicy">The policy</param>
+		/// <returns>A boolean</returns>
+		internal static bool IsPolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
+		{
+			var isMatch = securityPolicy is TSecurityPolicy;
+			if (!isMatch) isMatch = securityPolicy.GetPolicyType() == typeof (TSecurityPolicy);
+			return isMatch;
+		}
+
+		/// <summary>
+		/// Returns true if the policy implements ICacheKeyProvider
+		/// </summary>
+		/// <param name="securityPolicy">The policy</param>
+		/// <returns>A boolean</returns>
+		internal static bool IsCacheKeyProvider(this ISecurityPolicy securityPolicy)
+		{
+			return typeof (ICacheKeyProvider).IsAssignableFrom(securityPolicy.GetPolicyType());
+		}
+
+		/// <summary>
+		/// Returns true when the object is a match for the specified generic type
+		/// </summary>
+		/// <param name="obj">The object to compare</param>
+		/// <param name="genericType">The generic typet to compare object to</param>
+		/// <returns>A boolean</returns>
+		internal static bool IsMatchForGenericType(this object obj, Type genericType)
+		{
+			if (!genericType.IsGenericType) throw new ArgumentException("The specified type is not a generic type", "genericType");
+			if (obj == null) return false;
+			var type = obj.GetType();
+			return type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
+		}
+
+		/// <summary>
 		/// Performs an action on each item
 		/// </summary>
-		public static void Each<T>(this IEnumerable<T> items, Action<T> action)
+		internal static void Each<T>(this IEnumerable<T> items, Action<T> action)
 		{
 			foreach (var item in items)
 				action(item);
@@ -110,6 +175,18 @@ namespace FluentSecurity
 		internal static bool IsNullOrEmpty(this string value)
 		{
 			return String.IsNullOrEmpty(value);
+		}
+
+		/// <summary>
+		/// Returns true if the type has an empty constructor
+		/// </summary>
+		/// <param name="type">The type</param>
+		/// <returns>A boolean</returns>
+		internal static bool HasEmptyConstructor(this Type type)
+		{
+			var constructors = type.GetConstructors();
+			var hasEmptyConstructor = constructors.Any(x => !x.GetParameters().Any());
+			return hasEmptyConstructor;
 		}
 
 		/// <summary>

@@ -5,7 +5,7 @@ namespace FluentSecurity.ServiceLocation
 {
 	public interface IContainer
 	{
-		void Register<TTypeToResolve>(Func<IContainer, object> instanceExpression, LifeCycle lifeCycle = LifeCycle.Transient);
+		void Register<TTypeToResolve>(Func<IContainer, object> instanceExpression, Lifecycle lifecycle = Lifecycle.Transient);
 		TTypeToResolve Resolve<TTypeToResolve>();
 		object Resolve(Type typeToResolve);
 		IEnumerable<TTypeToResolve> ResolveAll<TTypeToResolve>();

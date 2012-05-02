@@ -48,6 +48,16 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(_securityConfiguration.ExternalServiceLocator, Is.Null);
 		}
+
+		[Test]
+		public void Should_have_advanced_configuration()
+		{
+			// Act
+			Because();
+
+			// Assert
+			Assert.That(_securityConfiguration.Advanced, Is.Not.Null);
+		}
 	}
 
 	[TestFixture]

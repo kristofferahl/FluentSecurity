@@ -5,6 +5,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Mvc;
+using FluentSecurity.Caching;
+using FluentSecurity.Configuration;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
 using FluentSecurity.ServiceLocation;
 
@@ -16,10 +19,14 @@ namespace FluentSecurity
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
+		
 		private IPolicyAppender PolicyAppender { get; set; }
+
+		public AdvancedConfiguration Advanced { get; set; }
 
 		public ConfigurationExpression()
 		{
+			Advanced = new AdvancedConfiguration();
 			PolicyAppender = new DefaultPolicyAppender();
 		}
 
@@ -54,7 +61,7 @@ namespace FluentSecurity
 			var controllerType = typeof(TController);
 			var controllerTypes = new[] { controllerType };
 
-			return CreateConventionPolicyContainerFor(controllerTypes);
+			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller);
 		}
 
 		public IConventionPolicyContainer ForAllControllers()
@@ -96,7 +103,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes)
+		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
 		{
 			var policyContainers = new List<IPolicyContainer>();
 			foreach (var controllerType in controllerTypes)
@@ -109,20 +116,7 @@ namespace FluentSecurity
 					);
 			}
 
-			return new ConventionPolicyContainer(policyContainers);
-		}
-
-		[Obsolete("Will be removed for the 2.0 release")]
-		public void RemovePoliciesFor<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
-		{
-			var controllerName = typeof(TController).GetControllerName();
-			var actionName = actionExpression.GetActionName();
-
-			var policyContainer = _itemValues.GetContainerFor(controllerName, actionName);
-			if (policyContainer != null)
-			{
-				_itemValues.Remove(policyContainer);
-			}
+			return new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
 		}
 
 		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)
@@ -171,6 +165,25 @@ namespace FluentSecurity
 				throw new ArgumentNullException("securityServiceLocator");
 
 			ExternalServiceLocator = securityServiceLocator;
+		}
+
+		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
+		{
+			RemoveDefaultPolicyViolationHandlerConventions();
+			Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<TPolicyViolationHandler>());
+		}
+
+		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandler) where TPolicyViolationHandler : class, IPolicyViolationHandler
+		{
+			RemoveDefaultPolicyViolationHandlerConventions();
+			Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<TPolicyViolationHandler>(policyViolationHandler));
+		}
+
+		private void RemoveDefaultPolicyViolationHandlerConventions()
+		{
+			Advanced.Conventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
+			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
+			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsInstanceConvention<>)));
 		}
 	}
 }

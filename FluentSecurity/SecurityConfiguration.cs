@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentSecurity.Configuration;
 
 namespace FluentSecurity
 {
@@ -14,14 +15,17 @@ namespace FluentSecurity
 			configurationExpression(expression);
 			Expression = expression;
 
+			Advanced = Expression.Advanced;
 			ExternalServiceLocator = Expression.ExternalServiceLocator;
 			IgnoreMissingConfiguration = Expression.ShouldIgnoreMissingConfiguration;
 			PolicyContainers = Expression;
 		}
 
 		internal ConfigurationExpression Expression { get; private set; }
+		public IAdvancedConfiguration Advanced { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
 		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
+
 		public bool IgnoreMissingConfiguration { get; private set; }
 
 		public string WhatDoIHave()

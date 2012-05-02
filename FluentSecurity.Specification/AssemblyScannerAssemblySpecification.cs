@@ -19,11 +19,11 @@ namespace FluentSecurity.Specification
 		private static void AssertAllControllerActionsHasContainer(ConfigurationExpression configurationExpression)
 		{
 			Assert.That(configurationExpression.Count(), Is.EqualTo(12));
-			var blog = NameHelper<BlogController>.Controller();
-			var admin = NameHelper<AdminController>.Controller();
-			var root = NameHelper<TestData.AssemblyScannerControllers.RootController>.Controller();
-			var include = NameHelper<TestData.AssemblyScannerControllers.Include.IncludedController>.Controller();
-			var exclude = NameHelper<TestData.AssemblyScannerControllers.Exclude.ExcludedController>.Controller();
+			var blog = NameHelper.Controller<BlogController>();
+			var admin = NameHelper.Controller<AdminController>();
+			var root = NameHelper.Controller<TestData.AssemblyScannerControllers.RootController>();
+			var include = NameHelper.Controller<TestData.AssemblyScannerControllers.Include.IncludedController>();
+			var exclude = NameHelper.Controller<TestData.AssemblyScannerControllers.Exclude.ExcludedController>();
 
 			Assert.That(configurationExpression.GetContainerFor(blog, "Index"), Is.Not.Null);
 			Assert.That(configurationExpression.GetContainerFor(blog, "ListPosts"), Is.Not.Null);

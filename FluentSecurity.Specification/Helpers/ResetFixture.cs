@@ -1,3 +1,4 @@
+using FluentSecurity.Caching;
 using FluentSecurity.ServiceLocation;
 using NUnit.Framework;
 
@@ -9,9 +10,10 @@ namespace FluentSecurity.Specification // Do not change the namespace
 		[SetUp]
 		public void Reset()
 		{
-			PolicyExecutionMode.StopOnFirstViolation(false);
 			ServiceLocator.Reset();
 			ExceptionFactory.Reset();
+			SecurityCache.ClearCache(Lifecycle.HybridHttpContext);;
+			SecurityCache.ClearCache(Lifecycle.HybridHttpSession); ;
 		}
 	}
 }

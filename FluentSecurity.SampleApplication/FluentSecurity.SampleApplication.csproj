@@ -38,6 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -78,6 +79,7 @@
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="DefaultPolicyViolationHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -105,6 +107,7 @@
     <Content Include="Views\Example\MissingConfiguration.aspx" />
     <Content Include="Views\Example\RequireAdministratorRole.aspx" />
     <Content Include="Views\Example\RequirePublisherRole.aspx" />
+    <Content Include="Views\Shared\AccessDenied.aspx" />
     <Content Include="Web.config" />
     <Content Include="Skins\Default\Styles\Main.css" />
     <Content Include="Views\Home\Index.aspx" />

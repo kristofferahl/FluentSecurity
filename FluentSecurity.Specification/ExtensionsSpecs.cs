@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
@@ -192,6 +193,98 @@ namespace FluentSecurity.Specification
 			{
 				return new EmptyResult();
 			}
+		}
+	}
+
+	[TestFixture]
+	[Category("ExtensionsSpecs")]
+	public class When_getting_the_policy_type_of_an_ISecurityPolicy
+	{
+		[Test]
+		public void Should_retun_the_type_of_normal_policies()
+		{
+			// Arrange
+			ISecurityPolicy policy = new IgnorePolicy();
+
+			// Act & assert
+			Assert.That(policy.GetPolicyType(), Is.EqualTo(typeof(IgnorePolicy)));
+		}
+
+		[Test]
+		public void Should_retun_the_type_of_lazy_policies()
+		{
+			// Arrange
+			ISecurityPolicy policy = new LazySecurityPolicy<IgnorePolicy>();
+
+			// Act & assert
+			Assert.That(policy.GetPolicyType(), Is.EqualTo(typeof(IgnorePolicy)));
+		}
+	}
+
+	[TestFixture]
+	[Category("ExtensionsSpecs")]
+	public class When_matching_generic_types
+	{
+		[Test]
+		public void Should_be_false_when_obj_is_null()
+		{
+			// Arrange
+			object obj = null;
+
+			// Act
+			var result = obj.IsMatchForGenericType(typeof (List<>));
+
+			// Assert
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void Should_be_false_when_obj_is_not_a_generic_type()
+		{
+			// Arrange
+			object obj = new List();
+
+			// Act
+			var result = obj.IsMatchForGenericType(typeof(List<>));
+
+			// Assert
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void Should_be_false_when_obj_is_not_matching_generic_type()
+		{
+			// Arrange
+			object obj = new Collection<int>();
+
+			// Act
+			var result = obj.IsMatchForGenericType(typeof(List<>));
+
+			// Assert
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void Should_be_true_when_obj_is_not_matching_generic_type()
+		{
+			// Arrange
+			object obj = new List<int>();
+
+			// Act
+			var result = obj.IsMatchForGenericType(typeof(List<>));
+
+			// Assert
+			Assert.That(result, Is.True);
+		}
+
+		[Test]
+		public void Should_throw_when_generic_type_argument_is_not_a_generic_type()
+		{
+			// Arrange
+			object obj = new List<int>();
+
+			// Act & assert
+			Assert.Throws<ArgumentException>(() => obj.IsMatchForGenericType(typeof(List)));
 		}
 	}
 }

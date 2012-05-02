@@ -7,6 +7,12 @@ namespace FluentSecurity
 {
 	public static class PolicyContainerExtensions
 	{
+		public static IPolicyContainer AllowAny(this IPolicyContainer policyContainer)
+		{
+			policyContainer.AddPolicy(new IgnorePolicy());
+			return policyContainer;
+		}
+
 		public static IPolicyContainer DelegatePolicy(this IPolicyContainer policyContainer, string uniqueName, Func<DelegateSecurityContext, PolicyResult> policyDelegate, Func<PolicyViolationException, ActionResult> violationHandlerDelegate = null)
 		{
 			policyContainer.AddPolicy(new DelegatePolicy(uniqueName, policyDelegate, violationHandlerDelegate));

@@ -13,11 +13,14 @@ namespace FluentSecurity.Specification
 	[Category("SecurityHandlerSpec")]
 	public class When_handling_security
 	{
+		private MockSecurityContext _context;
+
 		[SetUp]
 		public void SetUp()
 		{
 			SecurityConfigurator.Reset();
 			FakeIoC.Reset();
+			_context = new MockSecurityContext();
 		}
 
 		[Test]
@@ -27,8 +30,8 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Assert
-			Assert.Throws<ArgumentException>(() => securityHandler.HandleSecurityFor(null, "A"));
-			Assert.Throws<ArgumentException>(() => securityHandler.HandleSecurityFor("", "A"));
+			Assert.Throws<ArgumentException>(() => securityHandler.HandleSecurityFor(null, "A", _context));
+			Assert.Throws<ArgumentException>(() => securityHandler.HandleSecurityFor("", "A", _context));
 		}
 
 		[Test]
@@ -38,8 +41,19 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Assert
-			Assert.Throws<ArgumentException>(() => securityHandler.HandleSecurityFor("A", null));
-			Assert.Throws<ArgumentException>(() => securityHandler.HandleSecurityFor("A", ""));
+			Assert.Throws<ArgumentException>(() => securityHandler.HandleSecurityFor("A", null, _context));
+			Assert.Throws<ArgumentException>(() => securityHandler.HandleSecurityFor("A", "", _context));
+		}
+
+		[Test]
+		public void Should_throw_ArgumentNulllException_when_security_context_is_null()
+		{
+			// Arrange
+			var securityHandler = new SecurityHandler();
+			const ISecurityContext securityContext = null;
+
+			// Assert
+			Assert.Throws<ArgumentNullException>(() => securityHandler.HandleSecurityFor("A", "A", securityContext));
 		}
 
 		[Test]
@@ -55,7 +69,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "Index"));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", SecurityContext.Current));
 		}
 
 		[Test]
@@ -79,7 +93,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var result = securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "Index");
+			var result = securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", SecurityContext.Current);
 
 			// Assert
 			Assert.That(result, Is.EqualTo(expectedActionResult));
@@ -109,7 +123,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "Index"));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", SecurityContext.Current));
 		}
 
 		[Test]
@@ -125,7 +139,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "Index"));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", SecurityContext.Current));
 			
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
@@ -157,7 +171,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "DeletePost"));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", SecurityContext.Current));
 		}
 
 		[Test]
@@ -174,7 +188,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "DeletePost"));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", SecurityContext.Current));
 
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
@@ -195,7 +209,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper<BlogController>.Controller(), "DeletePost"));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", SecurityContext.Current));
 
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
@@ -228,7 +242,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.Throws<ConfigurationErrorsException>(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action"));
+			Assert.Throws<ConfigurationErrorsException>(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action", SecurityContext.Current));
 		}
 
 		[Test]
@@ -245,7 +259,7 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action"));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action", SecurityContext.Current));
 		}
 	}
 }
