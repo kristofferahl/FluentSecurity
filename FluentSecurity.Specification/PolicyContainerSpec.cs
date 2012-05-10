@@ -120,7 +120,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_PolicyAppender_set_to_DefaultPolicyAppender()
 		{
 			// Act
-			var policyContainer = Because();
+			var policyContainer = (PolicyContainer) Because();
 
 			// Assert
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(_expectedPolicyAppender));

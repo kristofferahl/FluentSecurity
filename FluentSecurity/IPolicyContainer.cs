@@ -9,7 +9,6 @@ namespace FluentSecurity
 	{
 		string ControllerName { get; }
 		string ActionName { get; }
-		IPolicyAppender PolicyAppender { get; }
 		IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy);
 		IPolicyContainer AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy;
 		IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy;

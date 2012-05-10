@@ -9,6 +9,7 @@ namespace FluentSecurity
 {
 	public class PolicyContainer : IPolicyContainer
 	{
+		internal IPolicyAppender PolicyAppender;
 		internal readonly List<PolicyResultCacheStrategy> CacheStrategies;
 		internal Func<ISecurityConfiguration> SecurityConfigurationProvider;
 
@@ -31,14 +32,12 @@ namespace FluentSecurity
 			ActionName = actionName;
 			
 			PolicyAppender = policyAppender;
-
 			CacheStrategies = new List<PolicyResultCacheStrategy>();
 			SecurityConfigurationProvider = () => SecurityConfiguration.Current;
 		}
 
 		public string ControllerName { get; private set; }
 		public string ActionName { get; private set; }
-		public IPolicyAppender PolicyAppender { get; private set; }
 
 		public IEnumerable<PolicyResult> EnforcePolicies(ISecurityContext context)
 		{

@@ -100,7 +100,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainer = _configurationExpression.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
+			var policyContainer = (PolicyContainer) _configurationExpression.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.TypeOf(typeof(DefaultPolicyAppender)));
 		}
 	}
@@ -368,7 +368,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			configurationExpression.For<BlogController>(x => x.Index());
-			var policyContainer = configurationExpression.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
+			var policyContainer = (PolicyContainer) configurationExpression.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
 		}
 	}
