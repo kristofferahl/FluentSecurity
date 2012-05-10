@@ -13,8 +13,9 @@ using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
-	public class ConfigurationExpression : Builder<IPolicyContainer>
+	public class ConfigurationExpression
 	{
+		internal IList<IPolicyContainer> PolicyContainers { get; private set; } 
 		internal Func<bool> IsAuthenticated { get; private set; }
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
@@ -26,6 +27,7 @@ namespace FluentSecurity
 
 		public ConfigurationExpression()
 		{
+			PolicyContainers = new List<IPolicyContainer>();
 			Advanced = new AdvancedConfiguration();
 			PolicyAppender = new DefaultPolicyAppender();
 		}
@@ -42,7 +44,7 @@ namespace FluentSecurity
 		{
 			IPolicyContainer policyContainer;
 
-			var existingContainer = _itemValues.GetContainerFor(controllerName, actionName);
+			var existingContainer = PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (existingContainer != null)
 			{
 				policyContainer = existingContainer;
@@ -50,7 +52,7 @@ namespace FluentSecurity
 			else
 			{
 				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-				_itemValues.Add(policyContainer);
+				PolicyContainers.Add(policyContainer);
 			}
 
 			return policyContainer;
@@ -132,7 +134,7 @@ namespace FluentSecurity
 			if (rolesFunction == null)
 				throw new ArgumentNullException("rolesFunction");
 
-			if (_itemValues.Count > 0)
+			if (PolicyContainers.Count > 0)
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
 			Roles = rolesFunction;

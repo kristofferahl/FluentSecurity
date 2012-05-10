@@ -10,6 +10,7 @@
 - (**Change**) Moved SecurityContextWrapper to the FluentSecurity.Policy.Contexts namespace.
 - (**Change**) Moved PolicyViolationHandlerSelector to the FluentSecurity.Policy.ViolationHandlers namespace.
 - (**Change**) Made the Each<T> extension internal as it was never intended to be public.
+- (**Change**) Cleaned up the configuration API by hiding all the IList<T> related methods from ConfigurationExpression.
 - (**New**) Added support for using AllowAny to add an IgnorePolicy.
 - (**New**) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
 
