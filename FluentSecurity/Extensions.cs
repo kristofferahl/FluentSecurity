@@ -168,6 +168,16 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
+		/// Ensures we are working with a list of T
+		/// </summary>
+		internal static IList<T> EnsureIsList<T>(this IEnumerable<T> items)
+		{
+			return items == null
+				? new List<T>()
+				: (items as IList<T> ?? items.ToList());
+		}
+
+		/// <summary>
 		/// Returns true if the value is null or empty
 		/// </summary>
 		/// <param name="value">The value</param>
