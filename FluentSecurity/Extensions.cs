@@ -88,8 +88,18 @@ namespace FluentSecurity
 		///</summary>
 		public static string GetActionName(this LambdaExpression actionExpression)
 		{
+			return GetAction(actionExpression).Name;
+		}
+
+		/// <summary>
+		/// Gets the action MethodInfo for the specified action expression
+		/// </summary>
+		/// <param name="actionExpression"></param>
+		/// <returns></returns>
+		public static MethodInfo GetAction(this LambdaExpression actionExpression)
+		{
 			var expression = (MethodCallExpression)(actionExpression.Body is UnaryExpression ? ((UnaryExpression)actionExpression.Body).Operand : actionExpression.Body);
-			return expression.Method.Name;
+			return expression.Method;
 		}
 
 		/// <summary>
