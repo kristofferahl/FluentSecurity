@@ -64,6 +64,23 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller);
 		}
 
+		public IConventionPolicyContainer For<TController>(Func<MethodInfo, bool> actionsFilter) where TController : Controller
+		{
+			var controllerType = typeof(TController);
+			var controllerTypes = new[] { controllerType };
+
+			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller, actionsFilter);
+		}
+
+		public IConventionPolicyContainer For<TController>(IEnumerable<Expression<Func<TController, object>>> propertyExpressions) where TController : Controller
+		{
+			var controllerType = typeof(TController);
+			var controllerTypes = new[] { controllerType };
+
+			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller, 
+														f => propertyExpressions.Any(s => s.GetAction() == f));
+		}
+
 		public IConventionPolicyContainer ForAllControllers()
 		{
 			var assemblyScanner = new AssemblyScanner();
@@ -105,11 +122,17 @@ namespace FluentSecurity
 
 		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
 		{
+			return CreateConventionPolicyContainerFor(controllerTypes, defaultCacheLevel, null);
+		}
+
+		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel, Func<MethodInfo, bool> actionsFilter)
+		{
 			var policyContainers = new List<IPolicyContainer>();
-			foreach (var controllerType in controllerTypes)
+			foreach(var controllerType in controllerTypes)
 			{
 				var controllerName = controllerType.GetControllerName();
-				var actionMethods = controllerType.GetActionMethods();
+				var actionMethods = controllerType.GetActionMethods()
+					.Where(m => actionsFilter == null || actionsFilter(m));
 
 				policyContainers.AddRange(
 					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentSecurity.Configuration;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
@@ -118,6 +119,38 @@ namespace FluentSecurity.Specification
 			// Act
 			configurationExpression.For<BlogController>(x => x.Index());
 			configurationExpression.For<BlogController>(x => x.AddPost());
+
+			// Assert
+			Assert.That(configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "AddPost"), Is.Not.Null);
+			Assert.That(configurationExpression.ToList().Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Should_have_policycontainer_for_Blog_Index_and_AddPost_Using_Convention()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.For(new Expression<Func<BlogController, object>>[] 
+											{ x => x.Index(), 
+											  y => y.AddPost() });
+
+			// Assert
+			Assert.That(configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index"), Is.Not.Null);
+			Assert.That(configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "AddPost"), Is.Not.Null);
+			Assert.That(configurationExpression.ToList().Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Should_have_policycontainer_for_Blog_Index_and_AddPost_Using_Convention1()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.For<BlogController>(m => new [] { "Index", "AddPost" }.Contains(m.Name));
 
 			// Assert
 			Assert.That(configurationExpression.GetContainerFor(NameHelper.Controller<BlogController>(), "Index"), Is.Not.Null);
