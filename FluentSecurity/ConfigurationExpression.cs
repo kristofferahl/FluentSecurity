@@ -77,8 +77,21 @@ namespace FluentSecurity
 			var controllerType = typeof(TController);
 			var controllerTypes = new[] { controllerType };
 
-			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller, 
-														f => propertyExpressions.Any(s => s.GetAction() == f));
+			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller,
+														f => propertyExpressions.Any(s => AreMethodEquals(s.GetAction(),f)));
+		}
+
+		private static bool AreMethodEquals(MethodInfo left, MethodInfo right)
+		{
+			//http://ayende.com/blog/2658/method-equality
+			//http://stackoverflow.com/questions/4168489/methodinfo-equality-for-declaring-type
+
+			if(left.Equals(right)) return true;
+
+			left = left.ReflectedType == left.DeclaringType ? left : left.DeclaringType.GetMethod(left.Name, left.GetParameters().Select(p => p.ParameterType).ToArray());
+			right = right.ReflectedType == right.DeclaringType ? right : right.DeclaringType.GetMethod(right.Name, right.GetParameters().Select(p => p.ParameterType).ToArray());
+			
+			return left.Equals(right);
 		}
 
 		public IConventionPolicyContainer ForAllControllers()
