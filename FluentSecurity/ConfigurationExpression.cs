@@ -32,7 +32,7 @@ namespace FluentSecurity
 			PolicyAppender = new DefaultPolicyAppender();
 		}
 
-		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
+		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
 		{
 			var controllerName = typeof(TController).GetControllerName();
 			var actionName = propertyExpression.GetActionName();

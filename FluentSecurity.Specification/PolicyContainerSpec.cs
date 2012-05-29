@@ -125,7 +125,6 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(_expectedPolicyAppender));
 		}
-
 	}
 
 	[TestFixture]
