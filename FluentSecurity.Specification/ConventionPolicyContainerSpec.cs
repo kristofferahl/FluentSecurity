@@ -26,7 +26,7 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_when_policycontainers_is_empty()
 		{
 			Assert.DoesNotThrow(() =>
-				new ConventionPolicyContainer(new List<IPolicyContainer>())
+				new ConventionPolicyContainer(new List<IPolicyContainerConfiguration>())
 			);
 		}
 	}
@@ -40,14 +40,14 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var controllerName = NameHelper.Controller<AdminController>();
-			var policyContainers = new List<IPolicyContainer>
+			var policyContainers = new List<PolicyContainer>
 			{
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
 			var policy = new DenyAnonymousAccessPolicy();
 
 			// Act
@@ -64,14 +64,14 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var controllerName = NameHelper.Controller<AdminController>();
-			var policyContainers = new List<IPolicyContainer>
+			var policyContainers = new List<PolicyContainer>
 			{
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
 
 			// Act
 			conventionPolicyContainer.AddPolicy<DenyAnonymousAccessPolicy>();
@@ -91,11 +91,11 @@ namespace FluentSecurity.Specification
 		public void Should_delegate_work_to_policycontainers()
 		{
 			// Arrange
-			var policyContainer1 = new Mock<IPolicyContainer>();
-			var policyContainer2 = new Mock<IPolicyContainer>();
-			var policyContainer3 = new Mock<IPolicyContainer>();
+			var policyContainer1 = new Mock<IPolicyContainerConfiguration>();
+			var policyContainer2 = new Mock<IPolicyContainerConfiguration>();
+			var policyContainer3 = new Mock<IPolicyContainerConfiguration>();
 
-			var policyContainers = new List<IPolicyContainer>()
+			var policyContainers = new List<IPolicyContainerConfiguration>()
 			{
 				policyContainer1.Object,
 				policyContainer2.Object,
@@ -131,14 +131,14 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var controllerName = NameHelper.Controller<AdminController>();
-			var policyContainers = new List<IPolicyContainer>
+			var policyContainers = new List<PolicyContainer>
 			{
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers, By.Controller);
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList(), By.Controller);
 			const Cache expectedLifecycle = Cache.PerHttpRequest;
 			var expectedType = typeof(DenyAnonymousAccessPolicy);
 
@@ -146,7 +146,7 @@ namespace FluentSecurity.Specification
 			conventionPolicyContainer.Cache<DenyAnonymousAccessPolicy>(expectedLifecycle);
 
 			// Assert
-			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			var containers = policyContainers.ToList();
 			Assert.That(containers[0].CacheStrategies.Single().PolicyType, Is.EqualTo(expectedType));
 			Assert.That(containers[0].CacheStrategies.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
 			Assert.That(containers[0].CacheStrategies.Single().CacheLevel, Is.EqualTo(By.Controller));
@@ -168,14 +168,14 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var controllerName = NameHelper.Controller<AdminController>();
-			var policyContainers = new List<IPolicyContainer>
+			var policyContainers = new List<PolicyContainer>
 			{
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
 			const Cache expectedLifecycle = Cache.PerHttpRequest;
 			const By expectedLevel = By.ControllerAction;
 			var expectedType = typeof(DenyAnonymousAccessPolicy);
@@ -205,21 +205,21 @@ namespace FluentSecurity.Specification
 		public void Should_clear_all_cache_strategies()
 		{
 			var controllerName = NameHelper.Controller<AdminController>();
-			var policyContainers = new List<IPolicyContainer>
+			var policyContainers = new List<PolicyContainer>
 			{
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
 			conventionPolicyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest);
 
 			// Act
 			conventionPolicyContainer.ClearCacheStrategies();
 
 			// Assert
-			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			var containers = policyContainers.ToList();
 			Assert.That(containers[0].CacheStrategies.Any(), Is.False);
 			Assert.That(containers[1].CacheStrategies.Any(), Is.False);
 			Assert.That(containers[2].CacheStrategies.Any(), Is.False);
@@ -229,14 +229,14 @@ namespace FluentSecurity.Specification
 		public void Should_clear_all_cache_strategies_for_policy()
 		{
 			var controllerName = NameHelper.Controller<AdminController>();
-			var policyContainers = new List<IPolicyContainer>
+			var policyContainers = new List<PolicyContainer>
 			{
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "Index"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "ListPosts"),
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
 			conventionPolicyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest);
 			conventionPolicyContainer.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest);
 
@@ -244,7 +244,7 @@ namespace FluentSecurity.Specification
 			conventionPolicyContainer.ClearCacheStrategiesFor<RequireRolePolicy>();
 
 			// Assert
-			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			var containers = policyContainers.ToList();
 			Assert.That(containers[0].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
 			Assert.That(containers[1].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
 			Assert.That(containers[2].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));

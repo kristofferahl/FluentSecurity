@@ -3,7 +3,7 @@ using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
-	public interface IPolicyContainer : IPolicyContainerConfiguration
+	public interface IPolicyContainer
 	{
 		string ControllerName { get; }
 		string ActionName { get; }

@@ -40,14 +40,14 @@ namespace FluentSecurity
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
 
-		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
+		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
 		{
-			IPolicyContainer policyContainer;
+			PolicyContainer policyContainer;
 
 			var existingContainer = PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (existingContainer != null)
 			{
-				policyContainer = existingContainer;
+				policyContainer = (PolicyContainer) existingContainer;
 			}
 			else
 			{
@@ -107,7 +107,7 @@ namespace FluentSecurity
 
 		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
 		{
-			var policyContainers = new List<IPolicyContainer>();
+			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)
 			{
 				var controllerName = controllerType.GetControllerName();

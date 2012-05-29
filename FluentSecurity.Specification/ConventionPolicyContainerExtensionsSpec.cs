@@ -165,17 +165,17 @@ namespace FluentSecurity.Specification
 	public abstract class with_ConventionPolicyContainer
 	{
 		protected ConventionPolicyContainer _conventionPolicyContainer;
-		protected IList<IPolicyContainer> _policyContainers;
+		protected IList<PolicyContainer> _policyContainers;
 
 		[SetUp]
 		public void SetUp()
 		{
 			// Arrange
-			_policyContainers = new List<IPolicyContainer>
+			_policyContainers = new List<PolicyContainer>
 			{
 				TestDataFactory.CreateValidPolicyContainer()
 			};
-			_conventionPolicyContainer = new ConventionPolicyContainer(_policyContainers);
+			_conventionPolicyContainer = new ConventionPolicyContainer(_policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
 		}
 	}
 }

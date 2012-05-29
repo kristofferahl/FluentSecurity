@@ -7,7 +7,7 @@ using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
-	public class PolicyContainer : IPolicyContainer
+	public class PolicyContainer : IPolicyContainer, IPolicyContainerConfiguration
 	{
 		internal IPolicyAppender PolicyAppender;
 		internal readonly List<PolicyResultCacheStrategy> CacheStrategies;

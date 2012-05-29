@@ -8,9 +8,9 @@ namespace FluentSecurity
 	public class ConventionPolicyContainer : IConventionPolicyContainer
 	{
 		private readonly By _defaultCacheLevel;
-		private readonly IList<IPolicyContainer> _policyContainers;
+		private readonly IList<IPolicyContainerConfiguration> _policyContainers;
 
-		public ConventionPolicyContainer(IList<IPolicyContainer> policyContainers, By defaultCacheLevel = By.Policy)
+		public ConventionPolicyContainer(IList<IPolicyContainerConfiguration> policyContainers, By defaultCacheLevel = By.Policy)
 		{
 			if (policyContainers == null)
 				throw new ArgumentNullException("policyContainers", "A list of policycontainers was not provided");
