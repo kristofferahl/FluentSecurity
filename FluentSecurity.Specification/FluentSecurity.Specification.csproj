@@ -97,7 +97,7 @@
     <Compile Include="AssemblyScannerNamespaceSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
-    <Compile Include="Configuration\ViolationHandlerExpressionSpec.cs" />
+    <Compile Include="Configuration\ViolationHandlerConfigurationSpec.cs" />
     <Compile Include="Configuration\ViolationConfigurationSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExceptionFactorySpec.cs" />

@@ -4,9 +4,9 @@ using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class ViolationHandlerExpression<TSecurityPolicy> : ViolationHandlerExpressionBase where TSecurityPolicy : class, ISecurityPolicy
+	public class ViolationHandlerConfiguration<TSecurityPolicy> : ViolationHandlerConfigurationBase where TSecurityPolicy : class, ISecurityPolicy
 	{
-		internal ViolationHandlerExpression(ViolationConfiguration violationConfiguration) : base(violationConfiguration) {}
+		internal ViolationHandlerConfiguration(ViolationConfiguration violationConfiguration) : base(violationConfiguration) {}
 
 		public void IsHandledBy<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
 		{
@@ -19,11 +19,11 @@ namespace FluentSecurity.Configuration
 		}
 	}
 
-	public class ViolationHandlerExpression : ViolationHandlerExpressionBase
+	public class ViolationHandlerConfiguration : ViolationHandlerConfigurationBase
 	{
 		public Func<PolicyResult, bool> Predicate { get; private set; }
 
-		internal ViolationHandlerExpression(ViolationConfiguration violationConfiguration, Func<PolicyResult, bool> predicate) : base(violationConfiguration)
+		internal ViolationHandlerConfiguration(ViolationConfiguration violationConfiguration, Func<PolicyResult, bool> predicate) : base(violationConfiguration)
 		{
 			if (predicate == null) throw new ArgumentNullException("predicate");
 			Predicate = predicate;
@@ -40,11 +40,11 @@ namespace FluentSecurity.Configuration
 		}
 	}
 
-	public abstract class ViolationHandlerExpressionBase
+	public abstract class ViolationHandlerConfigurationBase
 	{
-		public ViolationConfiguration ViolationConfiguration { get; private set; }
+		protected ViolationConfiguration ViolationConfiguration { get; private set; }
 
-		internal ViolationHandlerExpressionBase(ViolationConfiguration violationConfiguration)
+		internal ViolationHandlerConfigurationBase(ViolationConfiguration violationConfiguration)
 		{
 			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
 			ViolationConfiguration = violationConfiguration;

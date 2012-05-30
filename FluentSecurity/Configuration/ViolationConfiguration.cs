@@ -35,14 +35,14 @@ namespace FluentSecurity.Configuration
 				_conventions.Remove(convention);
 		}
 
-		public ViolationHandlerExpression<TSecurityPolicy> Of<TSecurityPolicy>() where TSecurityPolicy : class, ISecurityPolicy
+		public ViolationHandlerConfiguration<TSecurityPolicy> Of<TSecurityPolicy>() where TSecurityPolicy : class, ISecurityPolicy
 		{
-			return new ViolationHandlerExpression<TSecurityPolicy>(this);
+			return new ViolationHandlerConfiguration<TSecurityPolicy>(this);
 		}
 
-		public ViolationHandlerExpression Of(Func<PolicyResult, bool> predicate)
+		public ViolationHandlerConfiguration Of(Func<PolicyResult, bool> predicate)
 		{
-			return new ViolationHandlerExpression(this, predicate);
+			return new ViolationHandlerConfiguration(this, predicate);
 		}
 	}
 }

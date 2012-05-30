@@ -78,7 +78,7 @@
     <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
     <Compile Include="Configuration\IAdvancedConfiguration.cs" />
-    <Compile Include="Configuration\ViolationHandlerExpression.cs" />
+    <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
     <Compile Include="Configuration\ViolationConfiguration.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="ExceptionFactory.cs" />
