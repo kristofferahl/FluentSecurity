@@ -40,24 +40,6 @@ namespace FluentSecurity
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
 
-		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
-		{
-			PolicyContainer policyContainer;
-
-			var existingContainer = PolicyContainers.GetContainerFor(controllerName, actionName);
-			if (existingContainer != null)
-			{
-				policyContainer = (PolicyContainer) existingContainer;
-			}
-			else
-			{
-				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-				PolicyContainers.Add(policyContainer);
-			}
-
-			return policyContainer;
-		}
-
 		public IPolicyContainerConfiguration For<TController>() where TController : Controller
 		{
 			var controllerType = typeof(TController);
@@ -119,6 +101,24 @@ namespace FluentSecurity
 			}
 
 			return new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
+		}
+
+		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
+		{
+			PolicyContainer policyContainer;
+
+			var existingContainer = PolicyContainers.GetContainerFor(controllerName, actionName);
+			if (existingContainer != null)
+			{
+				policyContainer = (PolicyContainer) existingContainer;
+			}
+			else
+			{
+				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
+				PolicyContainers.Add(policyContainer);
+			}
+
+			return policyContainer;
 		}
 
 		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)
