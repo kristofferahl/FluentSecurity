@@ -58,7 +58,7 @@ namespace FluentSecurity
 			return policyContainer;
 		}
 
-		public IConventionPolicyContainer For<TController>() where TController : Controller
+		public IPolicyContainerConfiguration For<TController>() where TController : Controller
 		{
 			var controllerType = typeof(TController);
 			var controllerTypes = new[] { controllerType };
@@ -66,7 +66,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller);
 		}
 
-		public IConventionPolicyContainer ForAllControllers()
+		public IPolicyContainerConfiguration ForAllControllers()
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.TheCallingAssembly();
@@ -76,7 +76,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInAssembly(Assembly assembly)
+		public IPolicyContainerConfiguration ForAllControllersInAssembly(Assembly assembly)
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.Assembly(assembly);
@@ -86,13 +86,13 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInAssemblyContainingType<TType>()
+		public IPolicyContainerConfiguration ForAllControllersInAssemblyContainingType<TType>()
 		{
 			var assembly = typeof (TType).Assembly;
 			return ForAllControllersInAssembly(assembly);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInNamespaceContainingType<TType>()
+		public IPolicyContainerConfiguration ForAllControllersInNamespaceContainingType<TType>()
 		{
 			var assembly = typeof (TType).Assembly;
 
@@ -105,7 +105,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
+		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
 		{
 			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)

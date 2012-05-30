@@ -241,7 +241,7 @@ namespace FluentSecurity.Specification
 			conventionPolicyContainer.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest);
 
 			// Act
-			conventionPolicyContainer.ClearCacheStrategiesFor<RequireRolePolicy>();
+			conventionPolicyContainer.ClearCacheStrategyFor<RequireRolePolicy>();
 
 			// Assert
 			var containers = policyContainers.ToList();

@@ -99,7 +99,6 @@
     <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
     <Compile Include="Configuration\ViolationHandlerExpressionSpec.cs" />
     <Compile Include="Configuration\ViolationConfigurationExpressionSpec.cs" />
-    <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
     <Compile Include="ExceptionFactorySpec.cs" />
     <Compile Include="Features\PolicyResultsCachingFeature.feature.cs">

@@ -5,7 +5,7 @@ using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
-	public class ConventionPolicyContainer : IConventionPolicyContainer
+	public class ConventionPolicyContainer : IPolicyContainerConfiguration
 	{
 		private readonly By _defaultCacheLevel;
 		private readonly IList<IPolicyContainerConfiguration> _policyContainers;
@@ -19,7 +19,7 @@ namespace FluentSecurity
 			_defaultCacheLevel = defaultCacheLevel;
 		}
 
-		public IConventionPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
+		public IPolicyContainerConfiguration AddPolicy(ISecurityPolicy securityPolicy)
 		{
 			foreach (var policyContainer in _policyContainers)
 				policyContainer.AddPolicy(securityPolicy);
@@ -27,12 +27,12 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IConventionPolicyContainer AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
 			return AddPolicy(new LazySecurityPolicy<TSecurityPolicy>());
 		}
 
-		public IConventionPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
+		public IPolicyContainerConfiguration RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
 		{
 			foreach (var policyContainer in _policyContainers)
 				policyContainer.RemovePolicy(predicate);
@@ -40,12 +40,12 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IConventionPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration Cache<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
 		{
 			return Cache<TSecurityPolicy>(lifecycle, _defaultCacheLevel);
 		}
 
-		public IConventionPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration Cache<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
 		{
 			foreach (var policyContainer in _policyContainers)
 				policyContainer.Cache<TSecurityPolicy>(lifecycle, level);
@@ -53,7 +53,7 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IConventionPolicyContainer ClearCacheStrategies()
+		public IPolicyContainerConfiguration ClearCacheStrategies()
 		{
 			foreach (var policyContainer in _policyContainers)
 				policyContainer.ClearCacheStrategies();
@@ -61,7 +61,7 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IConventionPolicyContainer ClearCacheStrategiesFor<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration ClearCacheStrategyFor<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
 			foreach (var policyContainer in _policyContainers)
 				policyContainer.ClearCacheStrategyFor<TSecurityPolicy>();
