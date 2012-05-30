@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentSecurity.Caching;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity

@@ -1,5 +1,6 @@
 using System;
 using System.Web.Mvc;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.Contexts;
 

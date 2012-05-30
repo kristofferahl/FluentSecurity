@@ -84,7 +84,7 @@
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="HttpContextRequestDescription.cs" />
     <Compile Include="IConvention.cs" />
-    <Compile Include="IPolicyContainerConfiguration.cs" />
+    <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
     <Compile Include="Policy\ILazySecurityPolicy.cs" />
     <Compile Include="IRequestDescription.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContext.cs" />

@@ -2,7 +2,7 @@ using System;
 using FluentSecurity.Caching;
 using FluentSecurity.Policy;
 
-namespace FluentSecurity
+namespace FluentSecurity.Configuration
 {
 	public interface IPolicyContainerConfiguration
 	{
