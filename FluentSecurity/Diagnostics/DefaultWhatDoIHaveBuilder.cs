@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text;
 
-namespace FluentSecurity
+namespace FluentSecurity.Diagnostics
 {
 	public class DefaultWhatDoIHaveBuilder : IWhatDoIHaveBuilder
 	{

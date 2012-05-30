@@ -142,7 +142,7 @@
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
     <Compile Include="ISecurityServiceLocator.cs" />
-    <Compile Include="IWhatDoIHaveBuilder.cs" />
+    <Compile Include="Diagnostics\IWhatDoIHaveBuilder.cs" />
     <Compile Include="PolicyResult.cs" />
     <Compile Include="PolicyViolationException.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
@@ -160,7 +160,7 @@
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />
-    <Compile Include="DefaultWhatDoIHaveBuilder.cs" />
+    <Compile Include="Diagnostics\DefaultWhatDoIHaveBuilder.cs" />
     <Compile Include="ServiceLocation\Container.cs" />
     <Compile Include="ExceptionPolicyViolationHandler.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
