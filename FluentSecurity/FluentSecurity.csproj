@@ -79,7 +79,7 @@
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
     <Compile Include="Configuration\IAdvancedConfiguration.cs" />
     <Compile Include="Configuration\ViolationHandlerExpression.cs" />
-    <Compile Include="Configuration\ViolationConfigurationExpression.cs" />
+    <Compile Include="Configuration\ViolationConfiguration.cs" />
     <Compile Include="Conventions.cs" />
     <Compile Include="ExceptionFactory.cs" />
     <Compile Include="HttpContextRequestDescription.cs" />

@@ -31,10 +31,10 @@ namespace FluentSecurity.Configuration
 			SecurityContextModifyer = modifyer;
 		}
 
-		public void Violations(Action<ViolationConfigurationExpression> violationConfigurationExpression)
+		public void Violations(Action<ViolationConfiguration> violationConfiguration)
 		{
-			if (violationConfigurationExpression == null) throw new ArgumentNullException("violationConfigurationExpression");
-			violationConfigurationExpression.Invoke(new ViolationConfigurationExpression(Conventions));
+			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
+			violationConfiguration.Invoke(new ViolationConfiguration(Conventions));
 		}
 	}
 }

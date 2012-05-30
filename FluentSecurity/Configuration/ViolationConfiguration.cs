@@ -5,11 +5,11 @@ using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class ViolationConfigurationExpression
+	public class ViolationConfiguration
 	{
 		private readonly Conventions _conventions;
 
-		internal ViolationConfigurationExpression(Conventions conventions)
+		internal ViolationConfiguration(Conventions conventions)
 		{
 			if (conventions == null) throw new ArgumentNullException("conventions");
 			_conventions = conventions;
