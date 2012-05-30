@@ -162,7 +162,7 @@
     <Compile Include="PolicyContainerExtensions.cs" />
     <Compile Include="Diagnostics\DefaultWhatDoIHaveBuilder.cs" />
     <Compile Include="ServiceLocation\Container.cs" />
-    <Compile Include="ExceptionPolicyViolationHandler.cs" />
+    <Compile Include="Policy\ViolationHandlers\ExceptionPolicyViolationHandler.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />
     <Compile Include="ServiceLocation\IContainerSource.cs" />
     <Compile Include="ServiceLocation\Lifecycles\HttpContextLifecycle.cs" />

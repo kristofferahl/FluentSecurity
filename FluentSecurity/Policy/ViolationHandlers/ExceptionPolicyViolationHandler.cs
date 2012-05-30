@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace FluentSecurity
+namespace FluentSecurity.Policy.ViolationHandlers
 {
 	public class ExceptionPolicyViolationHandler : IPolicyViolationHandler
 	{
