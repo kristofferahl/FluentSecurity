@@ -40,17 +40,13 @@ namespace FluentSecurity.Specification
 	{
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
 		private IgnorePolicy _ignorePolicy;
-		private List<ISecurityPolicy> _policies;
 
-		[SetUp]
-		public override void SetUp()
+		protected override void Context()
 		{
-			base.SetUp();
-
 			// Arrange
 			_denyAnonymousAccessPolicy = new DenyAnonymousAccessPolicy();
 			_ignorePolicy = new IgnorePolicy();
-			_policies = new List<ISecurityPolicy>
+			Policies = new List<ISecurityPolicy>
 			{
 				_denyAnonymousAccessPolicy
 			};
@@ -60,21 +56,21 @@ namespace FluentSecurity.Specification
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_ignorePolicy, _policies);
+			PolicyAppender.UpdatePolicies(_ignorePolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.False);
-			Assert.That(_policies.Count, Is.EqualTo(1));
+			Assert.That(Policies.Contains(_denyAnonymousAccessPolicy), Is.False);
+			Assert.That(Policies.Count, Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Should_add_ignorepolicy()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_ignorePolicy, _policies);
+			PolicyAppender.UpdatePolicies(_ignorePolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_ignorePolicy), Is.True);
+			Assert.That(Policies.Contains(_ignorePolicy), Is.True);
 		}
 	}
 
@@ -84,41 +80,37 @@ namespace FluentSecurity.Specification
 	{
 		private DenyAuthenticatedAccessPolicy _denyAuthenticatedAccessPolicy;
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
-		private List<ISecurityPolicy> _policies;
 
-		[SetUp]
-		public override void SetUp()
+		protected override void Context()
 		{
-			base.SetUp();
-
 			// Arrange
 			_denyAuthenticatedAccessPolicy = new DenyAuthenticatedAccessPolicy();
 			_denyAnonymousAccessPolicy = new DenyAnonymousAccessPolicy();
-			_policies = new List<ISecurityPolicy>
-				{
-					_denyAuthenticatedAccessPolicy
-				};
+			Policies = new List<ISecurityPolicy>
+			{
+				_denyAuthenticatedAccessPolicy
+			};
 		}
 
 		[Test]
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_denyAnonymousAccessPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_denyAnonymousAccessPolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_denyAuthenticatedAccessPolicy), Is.False);
-			Assert.That(_policies.Count, Is.EqualTo(1));
+			Assert.That(Policies.Contains(_denyAuthenticatedAccessPolicy), Is.False);
+			Assert.That(Policies.Count, Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Should_add_DenyAnonymousAccessPolicy()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_denyAnonymousAccessPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_denyAnonymousAccessPolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.True);
+			Assert.That(Policies.Contains(_denyAnonymousAccessPolicy), Is.True);
 		}
 	}
 
@@ -128,41 +120,37 @@ namespace FluentSecurity.Specification
 	{
 		private DenyAuthenticatedAccessPolicy _denyAuthenticatedAccessPolicy;
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
-		private List<ISecurityPolicy> _policies;
 
-		[SetUp]
-		public override void SetUp()
+		protected override void Context()
 		{
-			base.SetUp();
-
 			// Arrange
 			_denyAuthenticatedAccessPolicy = new DenyAuthenticatedAccessPolicy();
 			_denyAnonymousAccessPolicy = new DenyAnonymousAccessPolicy();
-			_policies = new List<ISecurityPolicy>
-				{
-					_denyAnonymousAccessPolicy
-				};
+			Policies = new List<ISecurityPolicy>
+			{
+				_denyAnonymousAccessPolicy
+			};
 		}
 
 		[Test]
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_denyAuthenticatedAccessPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_denyAuthenticatedAccessPolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.False);
-			Assert.That(_policies.Count, Is.EqualTo(1));
+			Assert.That(Policies.Contains(_denyAnonymousAccessPolicy), Is.False);
+			Assert.That(Policies.Count, Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Should_add_DenyAuthenticatedAccessPolicy()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_denyAuthenticatedAccessPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_denyAuthenticatedAccessPolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_denyAuthenticatedAccessPolicy), Is.True);
+			Assert.That(Policies.Contains(_denyAuthenticatedAccessPolicy), Is.True);
 		}
 	}
 
@@ -172,41 +160,37 @@ namespace FluentSecurity.Specification
 	{
 		private RequireRolePolicy _requireRolePolicy;
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
-		private List<ISecurityPolicy> _policies;
 
-		[SetUp]
-		public override void SetUp()
+		protected override void Context()
 		{
-			base.SetUp();
-
 			// Arrange
 			_requireRolePolicy = new RequireRolePolicy("Administrator");
 			_denyAnonymousAccessPolicy = new DenyAnonymousAccessPolicy();
-			_policies = new List<ISecurityPolicy>
-				{
-					_denyAnonymousAccessPolicy
-				};
+			Policies = new List<ISecurityPolicy>
+			{
+				_denyAnonymousAccessPolicy
+			};
 		}
 
 		[Test]
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_requireRolePolicy, _policies);
+			PolicyAppender.UpdatePolicies(_requireRolePolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.False);
-			Assert.That(_policies.Count, Is.EqualTo(1));
+			Assert.That(Policies.Contains(_denyAnonymousAccessPolicy), Is.False);
+			Assert.That(Policies.Count, Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Should_add_RequireRolePolicy()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_requireRolePolicy, _policies);
+			PolicyAppender.UpdatePolicies(_requireRolePolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_requireRolePolicy), Is.True);
+			Assert.That(Policies.Contains(_requireRolePolicy), Is.True);
 		}
 	}
 
@@ -216,52 +200,54 @@ namespace FluentSecurity.Specification
 	{
 		private RequireAllRolesPolicy _requireAllRolesPolicy;
 		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
-		private List<ISecurityPolicy> _policies;
 
-		[SetUp]
-		public override void SetUp()
+		protected override void Context()
 		{
-			base.SetUp();
-
 			// Arrange
 			_requireAllRolesPolicy = new RequireAllRolesPolicy("Administrator");
 			_denyAnonymousAccessPolicy = new DenyAnonymousAccessPolicy();
-			_policies = new List<ISecurityPolicy>
-				{
-					_denyAnonymousAccessPolicy
-				};
+			Policies = new List<ISecurityPolicy>
+			{
+				_denyAnonymousAccessPolicy
+			};
 		}
 
 		[Test]
 		public void Should_remove_all_existing_policies()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_requireAllRolesPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_requireAllRolesPolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_denyAnonymousAccessPolicy), Is.False);
-			Assert.That(_policies.Count, Is.EqualTo(1));
+			Assert.That(Policies.Contains(_denyAnonymousAccessPolicy), Is.False);
+			Assert.That(Policies.Count, Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Should_add_RequireRolePolicy()
 		{
 			// Act
-			PolicyAppender.UpdatePolicies(_requireAllRolesPolicy, _policies);
+			PolicyAppender.UpdatePolicies(_requireAllRolesPolicy, Policies);
 
 			// Assert
-			Assert.That(_policies.Contains(_requireAllRolesPolicy), Is.True);
+			Assert.That(Policies.Contains(_requireAllRolesPolicy), Is.True);
 		}
 	}
 
 	public abstract class with_DefaultPolicyAppender
 	{
+		protected List<ISecurityPolicy> Policies;
 		protected IPolicyAppender PolicyAppender;
 
 		[SetUp]
 		public virtual void SetUp()
 		{
+			Policies = new List<ISecurityPolicy>();
 			PolicyAppender = new DefaultPolicyAppender();
+
+			Context();
 		}
+
+		protected abstract void Context();
 	}
 }
