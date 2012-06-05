@@ -25,62 +25,12 @@ namespace FluentSecurity
 			return policyContainers.SingleOrDefault(x => x.ControllerName.ToLower() == controllerName.ToLower() && x.ActionName.ToLower() == actionName.ToLower());
 		}
 
-		/// <summary>
-		/// Gets the area name of the route
-		/// </summary>
-		/// <param name="routeData">Route data</param>
-		/// <returns>The name of the are</returns>
-		public static string GetAreaName(this RouteData routeData)
-		{
-			object value;
-			if (routeData.DataTokens.TryGetValue("area", out value))
-			{
-				return (value as string);
-			}
-			return GetAreaName(routeData.Route);
-		}
-
-		/// <summary>
-		/// Gets the area name of the route
-		/// </summary>
-		/// <param name="route">Route</param>
-		/// <returns>The name of the are</returns>
-		public static string GetAreaName(this RouteBase route)
-		{
-			var areRoute = route as IRouteWithArea;
-			if (areRoute != null)
-			{
-				return areRoute.Area;
-			}
-			var standardRoute = route as Route;
-			if ((standardRoute != null) && (standardRoute.DataTokens != null))
-			{
-				return (standardRoute.DataTokens["area"] as string) ?? string.Empty;
-			}
-			return string.Empty;
-		}
-
 		///<summary>
 		/// Gets the controller name for the specified controller type
 		///</summary>
 		public static string GetControllerName(this Type controllerType)
 		{
 			return controllerType.FullName;
-		}
-
-		/// <summary>
-		/// Gets actionmethods for the specified controller type
-		/// </summary>
-		public static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType)
-		{
-			return controllerType
-				.GetMethods(
-					BindingFlags.Public |
-					BindingFlags.Instance |
-					BindingFlags.DeclaredOnly
-				)
-				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
-				.AsEnumerable();
 		}
 
 		///<summary>
@@ -101,6 +51,56 @@ namespace FluentSecurity
 			return lazySecurityPolicy != null
 				? lazySecurityPolicy.PolicyType
 				: securityPolicy.GetType();
+		}
+
+		/// <summary>
+		/// Gets actionmethods for the specified controller type
+		/// </summary>
+		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType)
+		{
+			return controllerType
+				.GetMethods(
+					BindingFlags.Public |
+					BindingFlags.Instance |
+					BindingFlags.DeclaredOnly
+				)
+				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
+				.AsEnumerable();
+		}
+
+		/// <summary>
+		/// Gets the area name of the route
+		/// </summary>
+		/// <param name="routeData">Route data</param>
+		/// <returns>The name of the are</returns>
+		internal static string GetAreaName(this RouteData routeData)
+		{
+			object value;
+			if (routeData.DataTokens.TryGetValue("area", out value))
+			{
+				return (value as string);
+			}
+			return GetAreaName(routeData.Route);
+		}
+
+		/// <summary>
+		/// Gets the area name of the route
+		/// </summary>
+		/// <param name="route">Route</param>
+		/// <returns>The name of the are</returns>
+		internal static string GetAreaName(this RouteBase route)
+		{
+			var areRoute = route as IRouteWithArea;
+			if (areRoute != null)
+			{
+				return areRoute.Area;
+			}
+			var standardRoute = route as Route;
+			if ((standardRoute != null) && (standardRoute.DataTokens != null))
+			{
+				return (standardRoute.DataTokens["area"] as string) ?? string.Empty;
+			}
+			return string.Empty;
 		}
 
 		/// <summary>
