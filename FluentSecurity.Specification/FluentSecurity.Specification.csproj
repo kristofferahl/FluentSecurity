@@ -121,7 +121,7 @@
     <Compile Include="Helpers\TestingExtensions.cs" />
     <Compile Include="HttpContextRequestDescriptionSpec.cs" />
     <Compile Include="Helpers\MockSecurityContext.cs" />
-    <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
+    <Compile Include="Caching\PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyInstancePolicyViolationHandlerConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyTypePolicyViolationHandlerConventionSpec.cs" />
