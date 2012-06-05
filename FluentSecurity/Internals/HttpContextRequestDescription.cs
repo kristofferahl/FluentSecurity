@@ -2,7 +2,7 @@
 using System.Web;
 using System.Web.Routing;
 
-namespace FluentSecurity
+namespace FluentSecurity.Internals
 {
 	public class HttpContextRequestDescription : IRequestDescription
 	{

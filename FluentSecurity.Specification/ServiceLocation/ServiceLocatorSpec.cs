@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using FluentSecurity.Diagnostics;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;

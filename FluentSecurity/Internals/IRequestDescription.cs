@@ -1,4 +1,4 @@
-﻿namespace FluentSecurity
+﻿namespace FluentSecurity.Internals
 {
 	public interface IRequestDescription
 	{

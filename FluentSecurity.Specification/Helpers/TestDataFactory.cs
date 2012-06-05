@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.TestData;
 using Moq;

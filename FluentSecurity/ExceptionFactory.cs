@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Text;
+using FluentSecurity.Internals;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity

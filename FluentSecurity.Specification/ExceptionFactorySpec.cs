@@ -1,4 +1,5 @@
 using System.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 

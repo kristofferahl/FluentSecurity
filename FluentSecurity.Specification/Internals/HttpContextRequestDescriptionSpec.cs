@@ -1,9 +1,10 @@
 using System.Web;
 using System.Web.Routing;
+using FluentSecurity.Internals;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
-namespace FluentSecurity.Specification
+namespace FluentSecurity.Specification.Internals
 {
 	[TestFixture]
 	[Category("HttpContextRequestDescriptionSpec")]
