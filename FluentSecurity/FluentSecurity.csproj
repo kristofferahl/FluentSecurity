@@ -81,7 +81,7 @@
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
     <Compile Include="Configuration\ViolationConfiguration.cs" />
     <Compile Include="Conventions.cs" />
-    <Compile Include="ExceptionFactory.cs" />
+    <Compile Include="Internals\ExceptionFactory.cs" />
     <Compile Include="Internals\HttpContextRequestDescription.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />

@@ -100,7 +100,7 @@
     <Compile Include="Configuration\ViolationHandlerConfigurationSpec.cs" />
     <Compile Include="Configuration\ViolationConfigurationSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
-    <Compile Include="ExceptionFactorySpec.cs" />
+    <Compile Include="Internals\ExceptionFactorySpec.cs" />
     <Compile Include="Features\PolicyResultsCachingFeature.feature.cs">
       <DependentUpon>PolicyResultsCachingFeature.feature</DependentUpon>
       <SubType>Code</SubType>

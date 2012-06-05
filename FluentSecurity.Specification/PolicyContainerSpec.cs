@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Configuration;
 using System.Text;
-using FluentSecurity.Internals;
 using FluentSecurity.ServiceLocation;
 
-namespace FluentSecurity
+namespace FluentSecurity.Internals
 {
 	internal static class ExceptionFactory
 	{
-		public static Func<IRequestDescription> RequestDescriptionProvider;
+		internal static Func<IRequestDescription> RequestDescriptionProvider;
 
 		static ExceptionFactory()
 		{

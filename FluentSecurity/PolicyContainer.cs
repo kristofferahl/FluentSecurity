@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity

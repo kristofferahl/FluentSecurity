@@ -1,4 +1,5 @@
 using FluentSecurity.Caching;
+using FluentSecurity.Internals;
 using FluentSecurity.ServiceLocation;
 using NUnit.Framework;
 
