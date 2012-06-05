@@ -2,7 +2,7 @@
 {
 	public interface IRequestDescription
 	{
-		string AreName { get; }
+		string AreaName { get; }
 		string ControllerName { get; }
 		string ActionName { get; }
 	}

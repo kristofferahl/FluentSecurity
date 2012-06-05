@@ -53,7 +53,7 @@ namespace FluentSecurity.Specification
 			var requestDescription = new HttpContextRequestDescription();
 
 			// Assert
-			Assert.That(requestDescription.AreName, Is.EqualTo("AreaName"));
+			Assert.That(requestDescription.AreaName, Is.EqualTo("AreaName"));
 			Assert.That(requestDescription.ControllerName, Is.EqualTo("ControllerName"));
 			Assert.That(requestDescription.ActionName, Is.EqualTo("ActionName"));
 		}
@@ -69,7 +69,7 @@ namespace FluentSecurity.Specification
 			var requestDescription = new HttpContextRequestDescription();
 
 			// Assert
-			Assert.That(requestDescription.AreName, Is.EqualTo(""));
+			Assert.That(requestDescription.AreaName, Is.EqualTo(""));
 			Assert.That(requestDescription.ControllerName, Is.EqualTo("ControllerName"));
 			Assert.That(requestDescription.ActionName, Is.EqualTo("ActionName"));
 		}
