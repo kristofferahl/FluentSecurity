@@ -173,7 +173,7 @@
     <Compile Include="HandleSecurityAttributeSpec.cs" />
     <Compile Include="Helpers\MvcHelpers.cs" />
     <Compile Include="PolicyContainerSpec.cs" />
-    <Compile Include="DefaultPolicyAppenderSpec.cs" />
+    <Compile Include="Configuration\DefaultPolicyAppenderSpec.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicySpec.cs" />
     <Compile Include="Policy\IgnorePolicySpec.cs" />
     <Compile Include="Policy\RequireRolePolicySpec.cs" />

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using NUnit.Framework;
 
-namespace FluentSecurity.Specification
+namespace FluentSecurity.Specification.Configuration
 {
 	[TestFixture]
 	[Category("DefaultPolicyAppenderSpec")]

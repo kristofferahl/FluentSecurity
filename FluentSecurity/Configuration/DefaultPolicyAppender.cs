@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentSecurity.Policy;
 
-namespace FluentSecurity
+namespace FluentSecurity.Configuration
 {
 	public class DefaultPolicyAppender : IPolicyAppender
 	{

@@ -147,7 +147,7 @@
     <Compile Include="PolicyViolationException.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
     <Compile Include="SecurityConfiguration.cs" />
-    <Compile Include="DefaultPolicyAppender.cs" />
+    <Compile Include="Configuration\DefaultPolicyAppender.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
     <Compile Include="Policy\IgnorePolicy.cs" />
     <Compile Include="Policy\ISecurityPolicy.cs" />
