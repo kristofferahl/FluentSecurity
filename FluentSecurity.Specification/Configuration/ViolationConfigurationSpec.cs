@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;

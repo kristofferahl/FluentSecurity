@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 

@@ -1,5 +1,6 @@
 using System;
 using FluentSecurity.Caching;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
