@@ -10,8 +10,12 @@
 - (**Change**) Method HandleSecurityFor on ISecurityHandler now takes an instance of ISecurityContext as the last parameter.
 - (**Change**) Moved SecurityContextWrapper to the FluentSecurity.Policy.Contexts namespace.
 - (**Change**) Moved PolicyViolationHandlerSelector to the FluentSecurity.Policy.ViolationHandlers namespace.
-- (**Change**) Made the Each<T> extension internal as it was never intended to be public.
+- (**Change**) Made the Each\<T\>, GetActionMethods and GetAreaName extensions internal as they were never intended to be public.
 - (**Change**) Cleaned up the configuration API by hiding all the IList<T> related methods from ConfigurationExpression.
+- (**Change**) Split IPolicyContainer in two (IPolicyContainer and IPolicyContainerConfiguration).
+- (**Change**) Changed policy extensions so that they extend IPolicyContainerConfiguration instead of IPolicyContainer and IConventionPolicyContainer.
+- (**Change**) Moved IWhatDoIHaveBuilder and DefaultWhatDoIHaveBuilder to Diagnostics namespace.
+- (**Change**) Moved DefaultPolicyAppender to Configuration namespace.
 - (**New**) Added support for using AllowAny to add an IgnorePolicy.
 - (**New**) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
 
@@ -20,7 +24,7 @@
 - (**New**) Added support for providing custom cache keys for policies using the ICacheKeyProvider interface.
 - (**New**) Added support for specifying a cache lifecycle using CacheResultsOf\<TSecurityPolicy\>. Supported lifecycles are DoNotCache, PerHttpRequest, PerHttpSession.
 - (**New**) Added support for specifying a cache level using CacheResultsOf\<TSecurityPolicy\>. Supported levels are Controller, ControllerAction and Policy.
-- (**New**) Added support for clearing cache strategies using ClearCacheStrategies and ClearStrategiesFor\<TSecurityPolicy\>.
+- (**New**) Added support for clearing cache strategies using ClearCacheStrategies and ClearStrategyFor\<TSecurityPolicy\>.
 
 ## ISecurityContext
 - (**New**) Extended ISecurityContext with a Data property (dynamic) for adding and reading custom context data at runtime.
