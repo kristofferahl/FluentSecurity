@@ -3,7 +3,7 @@ using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
-namespace FluentSecurity.Specification
+namespace FluentSecurity.Specification.Caching
 {
 	[TestFixture]
 	[Category("PolicyResultCacheKeyBuilderSpec")]

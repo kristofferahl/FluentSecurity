@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.TestData;
 using Moq;
@@ -94,10 +96,10 @@ namespace FluentSecurity.Specification.Helpers
 			return violationHandlers;
 		}
 
-		public static IRequestDescription CreateRequestDescription(string areName = "Area")
+		public static IRequestDescription CreateRequestDescription(string areaName = "Area")
 		{
 			var mock = new Mock<IRequestDescription>();
-			mock.Setup(x => x.AreName).Returns(areName);
+			mock.Setup(x => x.AreaName).Returns(areaName);
 			mock.Setup(x => x.ControllerName).Returns("Controller");
 			mock.Setup(x => x.ActionName).Returns("Action");
 			return mock.Object;

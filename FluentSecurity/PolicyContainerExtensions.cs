@@ -1,5 +1,6 @@
 using System;
 using System.Web.Mvc;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.Contexts;
 
@@ -7,19 +8,19 @@ namespace FluentSecurity
 {
 	public static class PolicyContainerExtensions
 	{
-		public static IPolicyContainer AllowAny(this IPolicyContainer policyContainer)
+		public static IPolicyContainerConfiguration AllowAny(this IPolicyContainerConfiguration policyContainer)
 		{
 			policyContainer.AddPolicy(new IgnorePolicy());
 			return policyContainer;
 		}
 
-		public static IPolicyContainer DelegatePolicy(this IPolicyContainer policyContainer, string uniqueName, Func<DelegateSecurityContext, PolicyResult> policyDelegate, Func<PolicyViolationException, ActionResult> violationHandlerDelegate = null)
+		public static IPolicyContainerConfiguration DelegatePolicy(this IPolicyContainerConfiguration policyContainer, string uniqueName, Func<DelegateSecurityContext, PolicyResult> policyDelegate, Func<PolicyViolationException, ActionResult> violationHandlerDelegate = null)
 		{
 			policyContainer.AddPolicy(new DelegatePolicy(uniqueName, policyDelegate, violationHandlerDelegate));
 			return policyContainer;
 		}
 
-		public static IPolicyContainer DelegatePolicy(this IPolicyContainer policyContainer, string uniqueName, Func<DelegateSecurityContext, bool> policyDelegate, Func<PolicyViolationException, ActionResult> violationHandlerDelegate = null, string failureMessage = "Access denied")
+		public static IPolicyContainerConfiguration DelegatePolicy(this IPolicyContainerConfiguration policyContainer, string uniqueName, Func<DelegateSecurityContext, bool> policyDelegate, Func<PolicyViolationException, ActionResult> violationHandlerDelegate = null, string failureMessage = "Access denied")
 		{
 			Func<DelegateSecurityContext, PolicyResult> booleanPolicyDelegate =
 				context => policyDelegate.Invoke(context)
@@ -30,31 +31,31 @@ namespace FluentSecurity
 			return policyContainer;
 		}
 
-		public static IPolicyContainer DenyAnonymousAccess(this IPolicyContainer policyContainer)
+		public static IPolicyContainerConfiguration DenyAnonymousAccess(this IPolicyContainerConfiguration policyContainer)
 		{
 			policyContainer.AddPolicy(new DenyAnonymousAccessPolicy());
 			return policyContainer;
 		}
 
-		public static IPolicyContainer DenyAuthenticatedAccess(this IPolicyContainer policyContainer)
+		public static IPolicyContainerConfiguration DenyAuthenticatedAccess(this IPolicyContainerConfiguration policyContainer)
 		{
 			policyContainer.AddPolicy(new DenyAuthenticatedAccessPolicy());
 			return policyContainer;
 		}
 
-		public static IPolicyContainer Ignore(this IPolicyContainer policyContainer)
+		public static IPolicyContainerConfiguration Ignore(this IPolicyContainerConfiguration policyContainer)
 		{
 			policyContainer.AddPolicy(new IgnorePolicy());
 			return policyContainer;
 		}
 
-		public static IPolicyContainer RequireRole(this IPolicyContainer policyContainer, params object[] roles)
+		public static IPolicyContainerConfiguration RequireRole(this IPolicyContainerConfiguration policyContainer, params object[] roles)
 		{
 			policyContainer.AddPolicy(new RequireRolePolicy(roles));
 			return policyContainer;
 		}
 
-		public static IPolicyContainer RequireAllRoles(this IPolicyContainer policyContainer, params object[] roles)
+		public static IPolicyContainerConfiguration RequireAllRoles(this IPolicyContainerConfiguration policyContainer, params object[] roles)
 		{
 			policyContainer.AddPolicy(new RequireAllRolesPolicy(roles));
 			return policyContainer;

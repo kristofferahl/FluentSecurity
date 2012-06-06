@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;

@@ -107,8 +107,6 @@ namespace FluentSecurity.Specification
 	public class When_I_configure_fluent_security_for_Blog_Index_and_Blog_AddPost
 	{
 		private IEnumerable<IPolicyContainer> _policyContainers;
-		private DefaultPolicyAppender _defaultPolicyAppender;
-		private IPolicyAppender _fakePolicyAppender;
 		private readonly string _controllerName = NameHelper.Controller<BlogController>();
 		const string IndexActionName = "Index";
 		const string AddPostActionName = "AddPost";
@@ -117,9 +115,6 @@ namespace FluentSecurity.Specification
 		public void SetUp()
 		{
 			// Arrange
-			_defaultPolicyAppender = TestDataFactory.CreateValidPolicyAppender();
-			_fakePolicyAppender = TestDataFactory.CreateFakePolicyAppender();
-
 			SecurityConfigurator.Reset();
 
 			// Act
@@ -128,10 +123,7 @@ namespace FluentSecurity.Specification
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
 
-				configuration.SetPolicyAppender(_defaultPolicyAppender);
 				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
-
-				configuration.SetPolicyAppender(_fakePolicyAppender);
 				configuration.For<BlogController>(x => x.AddPost()).RequireRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
@@ -152,7 +144,6 @@ namespace FluentSecurity.Specification
 			Assert.That(container.ActionName, Is.EqualTo(IndexActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
 			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
-			Assert.That(container.PolicyAppender, Is.EqualTo(_defaultPolicyAppender));
 		}
 
 		[Test]
@@ -163,7 +154,6 @@ namespace FluentSecurity.Specification
 			Assert.That(container.ActionName, Is.EqualTo(AddPostActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
 			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(RequireRolePolicy)));
-			Assert.That(container.PolicyAppender, Is.EqualTo(_fakePolicyAppender));
 		}
 	}
 

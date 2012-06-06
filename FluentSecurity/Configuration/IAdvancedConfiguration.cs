@@ -1,5 +1,6 @@
 using System;
 using FluentSecurity.Caching;
+using FluentSecurity.Internals;
 
 namespace FluentSecurity.Configuration
 {

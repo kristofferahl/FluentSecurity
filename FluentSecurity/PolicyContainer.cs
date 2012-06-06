@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using FluentSecurity.Caching;
+using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
-	public class PolicyContainer : IPolicyContainer
+	public class PolicyContainer : IPolicyContainer, IPolicyContainerConfiguration
 	{
+		internal IPolicyAppender PolicyAppender;
 		internal readonly List<PolicyResultCacheStrategy> CacheStrategies;
 		internal Func<ISecurityConfiguration> SecurityConfigurationProvider;
 
@@ -31,14 +34,12 @@ namespace FluentSecurity
 			ActionName = actionName;
 			
 			PolicyAppender = policyAppender;
-
 			CacheStrategies = new List<PolicyResultCacheStrategy>();
 			SecurityConfigurationProvider = () => SecurityConfiguration.Current;
 		}
 
 		public string ControllerName { get; private set; }
 		public string ActionName { get; private set; }
-		public IPolicyAppender PolicyAppender { get; private set; }
 
 		public IEnumerable<PolicyResult> EnforcePolicies(ISecurityContext context)
 		{
@@ -73,19 +74,19 @@ namespace FluentSecurity
 			return policy => policy.IsCacheKeyProvider() ? policy.EnsureNonLazyPolicy() : policy;
 		}
 
-		public IPolicyContainer AddPolicy(ISecurityPolicy securityPolicy)
+		public IPolicyContainerConfiguration AddPolicy(ISecurityPolicy securityPolicy)
 		{
 			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
 
 			return this;
 		}
 
-		public IPolicyContainer AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
 			return AddPolicy(new LazySecurityPolicy<TSecurityPolicy>());
 		}
 
-		public IPolicyContainer RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
+		public IPolicyContainerConfiguration RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
 		{
 			IEnumerable<ISecurityPolicy> matchingPolicies;
 			
@@ -105,12 +106,12 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration Cache<TSecurityPolicy>(Cache lifecycle) where TSecurityPolicy : ISecurityPolicy
 		{
 			return Cache<TSecurityPolicy>(lifecycle, By.ControllerAction);
 		}
 
-		public IPolicyContainer Cache<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration Cache<TSecurityPolicy>(Cache lifecycle, By level) where TSecurityPolicy : ISecurityPolicy
 		{
 			var policyType = typeof (TSecurityPolicy);
 
@@ -122,13 +123,13 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IPolicyContainer ClearCacheStrategies()
+		public IPolicyContainerConfiguration ClearCacheStrategies()
 		{
 			CacheStrategies.Clear();
 			return this;
 		}
 
-		public IPolicyContainer ClearCacheStrategyFor<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration ClearCacheStrategyFor<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
 			var existingStrategy = GetExistingCacheStrategyForPolicy(typeof (TSecurityPolicy));
 			CacheStrategies.Remove(existingStrategy);

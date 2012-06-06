@@ -3,11 +3,11 @@ using System.Configuration;
 using System.Text;
 using FluentSecurity.ServiceLocation;
 
-namespace FluentSecurity
+namespace FluentSecurity.Internals
 {
 	internal static class ExceptionFactory
 	{
-		public static Func<IRequestDescription> RequestDescriptionProvider;
+		internal static Func<IRequestDescription> RequestDescriptionProvider;
 
 		static ExceptionFactory()
 		{
@@ -25,8 +25,8 @@ namespace FluentSecurity
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine();
-			var areName = requestDescription.AreName.IsNullOrEmpty() ? "(not set)" : requestDescription.AreName;
-			stringBuilder.AppendLine("Area: {0}".FormatWith(areName));
+			var areaName = requestDescription.AreaName.IsNullOrEmpty() ? "(not set)" : requestDescription.AreaName;
+			stringBuilder.AppendLine("Area: {0}".FormatWith(areaName));
 			stringBuilder.AppendLine("Controller: {0}".FormatWith(requestDescription.ControllerName));
 			stringBuilder.Append("Action: {0}".FormatWith(requestDescription.ActionName));
 			return stringBuilder.ToString();

@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using FluentSecurity.Internals;
+using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity

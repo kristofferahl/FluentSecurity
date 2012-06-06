@@ -13,8 +13,9 @@ using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
-	public class ConfigurationExpression : Builder<IPolicyContainer>
+	public class ConfigurationExpression
 	{
+		internal IList<IPolicyContainer> PolicyContainers { get; private set; } 
 		internal Func<bool> IsAuthenticated { get; private set; }
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
@@ -26,37 +27,20 @@ namespace FluentSecurity
 
 		public ConfigurationExpression()
 		{
+			PolicyContainers = new List<IPolicyContainer>();
 			Advanced = new AdvancedConfiguration();
 			PolicyAppender = new DefaultPolicyAppender();
 		}
 
-		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
+		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
 		{
 			var controllerName = typeof(TController).GetControllerName();
-			var actionName = propertyExpression.GetActionName();
+			var actionName = actionExpression.GetActionName();
 
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
 
-		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
-		{
-			IPolicyContainer policyContainer;
-
-			var existingContainer = _itemValues.GetContainerFor(controllerName, actionName);
-			if (existingContainer != null)
-			{
-				policyContainer = existingContainer;
-			}
-			else
-			{
-				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-				_itemValues.Add(policyContainer);
-			}
-
-			return policyContainer;
-		}
-
-		public IConventionPolicyContainer For<TController>() where TController : Controller
+		public IPolicyContainerConfiguration For<TController>() where TController : Controller
 		{
 			var controllerType = typeof(TController);
 			var controllerTypes = new[] { controllerType };
@@ -64,7 +48,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller);
 		}
 
-		public IConventionPolicyContainer ForAllControllers()
+		public IPolicyContainerConfiguration ForAllControllers()
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.TheCallingAssembly();
@@ -74,7 +58,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInAssembly(Assembly assembly)
+		public IPolicyContainerConfiguration ForAllControllersInAssembly(Assembly assembly)
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.Assembly(assembly);
@@ -84,13 +68,13 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInAssemblyContainingType<TType>()
+		public IPolicyContainerConfiguration ForAllControllersInAssemblyContainingType<TType>()
 		{
 			var assembly = typeof (TType).Assembly;
 			return ForAllControllersInAssembly(assembly);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInNamespaceContainingType<TType>()
+		public IPolicyContainerConfiguration ForAllControllersInNamespaceContainingType<TType>()
 		{
 			var assembly = typeof (TType).Assembly;
 
@@ -103,9 +87,9 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
+		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
 		{
-			var policyContainers = new List<IPolicyContainer>();
+			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)
 			{
 				var controllerName = controllerType.GetControllerName();
@@ -117,6 +101,24 @@ namespace FluentSecurity
 			}
 
 			return new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
+		}
+
+		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
+		{
+			PolicyContainer policyContainer;
+
+			var existingContainer = PolicyContainers.GetContainerFor(controllerName, actionName);
+			if (existingContainer != null)
+			{
+				policyContainer = (PolicyContainer) existingContainer;
+			}
+			else
+			{
+				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
+				PolicyContainers.Add(policyContainer);
+			}
+
+			return policyContainer;
 		}
 
 		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)
@@ -132,7 +134,7 @@ namespace FluentSecurity
 			if (rolesFunction == null)
 				throw new ArgumentNullException("rolesFunction");
 
-			if (_itemValues.Count > 0)
+			if (PolicyContainers.Count > 0)
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
 			Roles = rolesFunction;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using FluentSecurity.ServiceLocation.LifeCycles;
 using NUnit.Framework;
 
@@ -13,6 +14,7 @@ namespace FluentSecurity.Specification.ServiceLocation.LifeCycles
 		public void Should_return_false_when_not_available()
 		{
 			// Arrange
+			HttpContext.Current = null;
 			new HttpContextLifecycle(); // Will reset to original state
 
 			// Act

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using FluentSecurity.Caching;
+using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
@@ -120,12 +122,11 @@ namespace FluentSecurity.Specification
 		public void Should_have_PolicyAppender_set_to_DefaultPolicyAppender()
 		{
 			// Act
-			var policyContainer = Because();
+			var policyContainer = (PolicyContainer) Because();
 
 			// Assert
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(_expectedPolicyAppender));
 		}
-
 	}
 
 	[TestFixture]

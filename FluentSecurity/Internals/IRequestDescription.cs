@@ -1,8 +1,8 @@
-﻿namespace FluentSecurity
+﻿namespace FluentSecurity.Internals
 {
 	public interface IRequestDescription
 	{
-		string AreName { get; }
+		string AreaName { get; }
 		string ControllerName { get; }
 		string ActionName { get; }
 	}
