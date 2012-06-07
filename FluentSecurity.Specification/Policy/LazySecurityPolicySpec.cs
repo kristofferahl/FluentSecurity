@@ -151,7 +151,7 @@ namespace FluentSecurity.Specification.Policy
 	{
 		public override PolicyResult Enforce(MvcSecurityContext context)
 		{
-			return context.CurrenUserAuthenticated()
+			return context.CurrentUserIsAuthenticated()
 				? PolicyResult.CreateSuccessResult(this)
 				: PolicyResult.CreateFailureResult(this, "Access denied");
 		}
@@ -161,7 +161,7 @@ namespace FluentSecurity.Specification.Policy
 	{
 		public PolicyResult Enforce(ISecurityContext context)
 		{
-			return context.CurrenUserAuthenticated()
+			return context.CurrentUserIsAuthenticated()
 				? PolicyResult.CreateSuccessResult(this)
 				: PolicyResult.CreateFailureResult(this, "Access denied");
 		}

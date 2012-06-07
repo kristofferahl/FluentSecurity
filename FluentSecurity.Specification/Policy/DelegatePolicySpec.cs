@@ -163,8 +163,8 @@ namespace FluentSecurity.Specification.Policy
 
 			// Assert
 			Assert.That(typeof(ISecurityContext).IsAssignableFrom(delegateContext.GetType()), Is.True);
-			Assert.That(delegateContext.CurrenUserAuthenticated(), Is.EqualTo(context.CurrenUserAuthenticated()));
-			Assert.That(delegateContext.CurrenUserRoles(), Is.EqualTo(context.CurrenUserRoles()));
+			Assert.That(delegateContext.CurrentUserIsAuthenticated(), Is.EqualTo(context.CurrentUserIsAuthenticated()));
+			Assert.That(delegateContext.CurrentUserRoles(), Is.EqualTo(context.CurrentUserRoles()));
 		}
 	}
 }

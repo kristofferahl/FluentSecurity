@@ -4,7 +4,7 @@ namespace FluentSecurity.Policy
 	{
 		public PolicyResult Enforce(ISecurityContext context)
 		{
-			if (context.CurrenUserAuthenticated())
+			if (context.CurrentUserIsAuthenticated())
 			{
 				return PolicyResult.CreateFailureResult(this, "Authenticated access denied");
 			}

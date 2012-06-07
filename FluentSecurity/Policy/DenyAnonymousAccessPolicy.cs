@@ -4,7 +4,7 @@ namespace FluentSecurity.Policy
 	{
 		public PolicyResult Enforce(ISecurityContext context)
 		{
-			if (context.CurrenUserAuthenticated() == false)
+			if (context.CurrentUserIsAuthenticated() == false)
 			{
 				return PolicyResult.CreateFailureResult(this, "Anonymous access denied");
 			}

@@ -20,12 +20,12 @@ namespace FluentSecurity.Specification.Helpers
 
 		public dynamic Data { get; private set; }
 
-		public bool CurrenUserAuthenticated()
+		public bool CurrentUserIsAuthenticated()
 		{
 			return _isAuthenticated;
 		}
 
-		public IEnumerable<object> CurrenUserRoles()
+		public IEnumerable<object> CurrentUserRoles()
 		{
 			return _roles;
 		}

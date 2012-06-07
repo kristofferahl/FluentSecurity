@@ -22,13 +22,13 @@ namespace FluentSecurity.Policy
 
 		public PolicyResult Enforce(ISecurityContext context)
 		{
-			if (context.CurrenUserAuthenticated() == false)
+			if (context.CurrentUserIsAuthenticated() == false)
 				return PolicyResult.CreateFailureResult(this, "Anonymous access denied");
 
-			if (context.CurrenUserRoles() == null || context.CurrenUserRoles().Any() == false)
+			if (context.CurrentUserRoles() == null || context.CurrentUserRoles().Any() == false)
 				return PolicyResult.CreateFailureResult(this, "Access denied");
 
-			if (context.CurrenUserRoles().Any(role => _requiredRoles.Contains(role)) == false)
+			if (context.CurrentUserRoles().Any(role => _requiredRoles.Contains(role)) == false)
 			{
 				const string message = "Access requires one of the following roles: {0}.";
 				var formattedMessage = string.Format(message, GetRoles());

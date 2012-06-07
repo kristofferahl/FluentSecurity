@@ -27,12 +27,12 @@ namespace FluentSecurity
 			get { return _data; }
 		}
 
-		public bool CurrenUserAuthenticated()
+		public bool CurrentUserIsAuthenticated()
 		{
 			return _isAuthenticated();
 		}
 
-		public IEnumerable<object> CurrenUserRoles()
+		public IEnumerable<object> CurrentUserRoles()
 		{
 			return _roles != null ? _roles() : null;
 		}
