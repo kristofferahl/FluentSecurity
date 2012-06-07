@@ -20,14 +20,14 @@ namespace FluentSecurity.Policy.Contexts
 			get { return _securityContext.Data; }
 		}
 
-		public bool CurrenUserAuthenticated()
+		public bool CurrentUserIsAuthenticated()
 		{
-			return _securityContext.CurrenUserAuthenticated();
+			return _securityContext.CurrentUserIsAuthenticated();
 		}
 
-		public IEnumerable<object> CurrenUserRoles()
+		public IEnumerable<object> CurrentUserRoles()
 		{
-			return _securityContext.CurrenUserRoles();
+			return _securityContext.CurrentUserRoles();
 		}
 	}
 }

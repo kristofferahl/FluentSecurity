@@ -134,12 +134,12 @@ namespace FluentSecurity.Specification.Policy
 		{
 			public dynamic Data { get; set; }
 
-			public bool CurrenUserAuthenticated()
+			public bool CurrentUserIsAuthenticated()
 			{
 				return true;
 			}
 
-			public IEnumerable<object> CurrenUserRoles()
+			public IEnumerable<object> CurrentUserRoles()
 			{
 				return null;
 			}
