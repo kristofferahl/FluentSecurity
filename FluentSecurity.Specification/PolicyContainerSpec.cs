@@ -357,8 +357,8 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var context = MockRepository.GenerateMock<ISecurityContext>();
-			context.Expect(x => x.CurrenUserAuthenticated()).Return(true).Repeat.Once();
-			context.Expect(x => x.CurrenUserRoles()).Return(new List<object> { UserRole.Owner }.ToArray()).Repeat.Once();
+			context.Expect(x => x.CurrentUserIsAuthenticated()).Return(true).Repeat.Once();
+			context.Expect(x => x.CurrentUserRoles()).Return(new List<object> { UserRole.Owner }.ToArray()).Repeat.Once();
 			context.Replay();
 			
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
@@ -380,11 +380,11 @@ namespace FluentSecurity.Specification
 			const bool isAuthenticated = true;
 
 			var context = new Mock<ISecurityContext>();
-			context.Setup(x => x.CurrenUserAuthenticated()).Returns(isAuthenticated);
-			context.Setup(x => x.CurrenUserRoles()).Returns(roles);
+			context.Setup(x => x.CurrentUserIsAuthenticated()).Returns(isAuthenticated);
+			context.Setup(x => x.CurrentUserRoles()).Returns(roles);
 
 			var policy = new Mock<ISecurityPolicy>();
-			policy.Setup(x => x.Enforce(It.Is<ISecurityContext>(c => c.CurrenUserAuthenticated() == isAuthenticated && c.CurrenUserRoles() == roles))).Returns(PolicyResult.CreateSuccessResult(policy.Object));
+			policy.Setup(x => x.Enforce(It.Is<ISecurityContext>(c => c.CurrentUserIsAuthenticated() == isAuthenticated && c.CurrentUserRoles() == roles))).Returns(PolicyResult.CreateSuccessResult(policy.Object));
 
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.SecurityConfigurationProvider = TestDataFactory.CreateValidSecurityConfiguration;
@@ -491,8 +491,8 @@ namespace FluentSecurity.Specification
 			public PolicyResult Enforce(ISecurityContext context)
 			{
 				// NOTE: OK to leave like this as tests depends on it.
-				var authenticated = context.CurrenUserAuthenticated();
-				var roles = context.CurrenUserRoles();
+				var authenticated = context.CurrentUserIsAuthenticated();
+				var roles = context.CurrentUserRoles();
 				return PolicyResult.CreateSuccessResult(this);
 			}
 		}

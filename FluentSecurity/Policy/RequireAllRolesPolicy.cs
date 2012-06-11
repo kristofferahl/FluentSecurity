@@ -27,10 +27,10 @@ namespace FluentSecurity.Policy
 
 		public PolicyResult Enforce(ISecurityContext context)
 		{
-			if (context.CurrenUserAuthenticated() == false)
+			if (context.CurrentUserIsAuthenticated() == false)
 				return PolicyResult.CreateFailureResult(this, "Anonymous access denied");
 
-			var currentUserRoles = context.CurrenUserRoles().EnsureIsList();
+			var currentUserRoles = context.CurrentUserRoles().EnsureIsList();
 			if (currentUserRoles.Any() == false)
 				return PolicyResult.CreateFailureResult(this, "Access denied");
 

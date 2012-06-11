@@ -41,8 +41,8 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(context.Data, Is.TypeOf(typeof(ExpandoObject)));
-			Assert.That(context.CurrenUserAuthenticated(), Is.EqualTo(status));
-			Assert.That(context.CurrenUserRoles(), Is.EqualTo(roles));
+			Assert.That(context.CurrentUserIsAuthenticated(), Is.EqualTo(status));
+			Assert.That(context.CurrentUserRoles(), Is.EqualTo(roles));
 		}
 
 		[Test]
@@ -68,8 +68,8 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(context.Data, Is.TypeOf(typeof(ExpandoObject)));
-			Assert.That(context.CurrenUserAuthenticated(), Is.EqualTo(status));
-			Assert.That(context.CurrenUserRoles(), Is.EqualTo(roles));
+			Assert.That(context.CurrentUserIsAuthenticated(), Is.EqualTo(status));
+			Assert.That(context.CurrentUserRoles(), Is.EqualTo(roles));
 			Assert.AreSame(context, iocContext);
 		}
 	}

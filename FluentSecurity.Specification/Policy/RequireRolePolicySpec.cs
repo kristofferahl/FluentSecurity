@@ -74,16 +74,16 @@ namespace FluentSecurity.Specification.Policy
 			var roles = new object[1];
 			var policy = new RequireRolePolicy(roles);
 			var context = new Mock<ISecurityContext>();
-			context.Setup(x => x.CurrenUserAuthenticated()).Returns(true);
-			context.Setup(x => x.CurrenUserRoles()).Returns(roles);
+			context.Setup(x => x.CurrentUserIsAuthenticated()).Returns(true);
+			context.Setup(x => x.CurrentUserRoles()).Returns(roles);
 
 			// Act
 			var result = policy.Enforce(context.Object);
 
 			// Assert
 			Assert.That(result.ViolationOccured, Is.False);
-			context.Verify(x => x.CurrenUserAuthenticated(), Times.Exactly(1), "The authentication status should be resolved at most once.");
-			context.Verify(x => x.CurrenUserRoles(), Times.Exactly(1), "The roles should be resolved at most once.");
+			context.Verify(x => x.CurrentUserIsAuthenticated(), Times.Exactly(1), "The authentication status should be resolved at most once.");
+			context.Verify(x => x.CurrentUserRoles(), Times.Exactly(1), "The roles should be resolved at most once.");
 		}
 
 		[Test]
