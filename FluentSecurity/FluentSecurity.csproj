@@ -77,7 +77,7 @@
     <Compile Include="Caching\PolicyResultCacheExtensions.cs" />
     <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
-    <Compile Include="Configuration\IAdvancedConfiguration.cs" />
+    <Compile Include="IAdvanced.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
     <Compile Include="Configuration\ViolationConfiguration.cs" />
     <Compile Include="Internals\Conventions.cs" />

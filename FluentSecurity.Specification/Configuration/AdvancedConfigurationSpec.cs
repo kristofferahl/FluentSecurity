@@ -14,7 +14,7 @@ namespace FluentSecurity.Specification.Configuration
 	[Category("AdvancedConfigurationSpec")]
 	public class When_creating_a_new_advanced_configuration
 	{
-		private IAdvancedConfiguration _advancedConfiguration;
+		private AdvancedConfiguration _advancedConfiguration;
 
 		[SetUp]
 		public void SetUp()

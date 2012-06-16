@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FluentSecurity.Configuration;
 using FluentSecurity.Diagnostics;
 
 namespace FluentSecurity
@@ -22,7 +21,7 @@ namespace FluentSecurity
 		}
 
 		internal ConfigurationExpression Expression { get; private set; }
-		public IAdvancedConfiguration Advanced { get; private set; }
+		public IAdvanced Advanced { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
 		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 

@@ -5,7 +5,7 @@ using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class AdvancedConfiguration : IAdvancedConfiguration
+	public class AdvancedConfiguration : IAdvanced
 	{
 		internal AdvancedConfiguration()
 		{
