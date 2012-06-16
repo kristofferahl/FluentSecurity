@@ -186,10 +186,11 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_return_IPolicyContainerConfiguration()
+		public void Should_return_IPolicyContainerConfiguration_of_T()
 		{
 			Assert.That(_return, Is.Not.Null);
 			Assert.That(_return, Is.AssignableTo<IPolicyContainerConfiguration>());
+			Assert.That(_return, Is.AssignableTo<IPolicyContainerConfiguration<SomePolicy>>());
 		}
 
 		public class SomePolicy : ISecurityPolicy

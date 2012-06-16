@@ -28,9 +28,9 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public IPolicyContainerConfiguration AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
+		public IPolicyContainerConfiguration<TSecurityPolicy> AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			return AddPolicy(new LazySecurityPolicy<TSecurityPolicy>());
+			return new PolicyContainerConfigurationWrapper<TSecurityPolicy>(AddPolicy(new LazySecurityPolicy<TSecurityPolicy>()));
 		}
 
 		public IPolicyContainerConfiguration RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
