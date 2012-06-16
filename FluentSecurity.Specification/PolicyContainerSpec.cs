@@ -880,6 +880,27 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_add_policyresult_cache_strategy_for_Policy_T_with_lifecycle_set_to_DoNotCache()
+		{
+			const Cache expectedLifecycle = Cache.DoNotCache;
+			const string expectedControllerName = "Controller1";
+			const string expectedActionName = "Action1";
+
+			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+
+			// Act
+			policyContainer.AddPolicy<RequireRolePolicy>().DoNotCache();
+
+			// Assert
+			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
+			Assert.That(policyResultCacheStrategy.ControllerName, Is.EqualTo(expectedControllerName));
+			Assert.That(policyResultCacheStrategy.ActionName, Is.EqualTo(expectedActionName));
+			Assert.That(policyResultCacheStrategy.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(policyResultCacheStrategy.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheStrategy.CacheLevel, Is.EqualTo(By.ControllerAction));
+		}
+
+		[Test]
 		public void Should_add_policyresult_cache_strategy_for_RequireRolePolicy_with_lifecycle_set_to_PerHttpRequest()
 		{
 			const Cache expectedLifecycle = Cache.PerHttpRequest;
@@ -901,6 +922,27 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_add_policyresult_cache_strategy_for_Policy_T_with_lifecycle_set_to_PerHttpRequest()
+		{
+			const Cache expectedLifecycle = Cache.PerHttpRequest;
+			const string expectedControllerName = "Controller2";
+			const string expectedActionName = "Action2";
+
+			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+
+			// Act
+			policyContainer.AddPolicy<RequireRolePolicy>().CachePerHttpRequest();
+
+			// Assert
+			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
+			Assert.That(policyResultCacheStrategy.ControllerName, Is.EqualTo(expectedControllerName));
+			Assert.That(policyResultCacheStrategy.ActionName, Is.EqualTo(expectedActionName));
+			Assert.That(policyResultCacheStrategy.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(policyResultCacheStrategy.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheStrategy.CacheLevel, Is.EqualTo(By.ControllerAction));
+		}
+
+		[Test]
 		public void Should_add_policyresult_cache_strategy_for_RequireRolePolicy_with_lifecycle_set_to_PerHttpSession()
 		{
 			const Cache expectedLifecycle = Cache.PerHttpSession;
@@ -911,6 +953,27 @@ namespace FluentSecurity.Specification
 
 			// Act
 			policyContainer.Cache<RequireRolePolicy>(expectedLifecycle);
+
+			// Assert
+			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();
+			Assert.That(policyResultCacheStrategy.ControllerName, Is.EqualTo(expectedControllerName));
+			Assert.That(policyResultCacheStrategy.ActionName, Is.EqualTo(expectedActionName));
+			Assert.That(policyResultCacheStrategy.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(policyResultCacheStrategy.CacheLifecycle, Is.EqualTo(expectedLifecycle));
+			Assert.That(policyResultCacheStrategy.CacheLevel, Is.EqualTo(By.ControllerAction));
+		}
+
+		[Test]
+		public void Should_add_policyresult_cache_strategy_for_Policy_T_with_lifecycle_set_to_PerHttpSession()
+		{
+			const Cache expectedLifecycle = Cache.PerHttpSession;
+			const string expectedControllerName = "Controller3";
+			const string expectedActionName = "Action3";
+
+			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+
+			// Act
+			policyContainer.AddPolicy<RequireRolePolicy>().CachePerHttpSession();
 
 			// Assert
 			var policyResultCacheStrategy = policyContainer.CacheStrategies.Single();

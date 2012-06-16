@@ -47,5 +47,20 @@ namespace FluentSecurity.Configuration
 		{
 			return _inner.ClearCacheStrategyFor<TSecurityPolicy>();
 		}
+
+		public IPolicyContainerConfiguration DoNotCache()
+		{
+			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.DoNotCache);
+		}
+
+		public IPolicyContainerConfiguration CachePerHttpRequest()
+		{
+			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.PerHttpRequest);
+		}
+
+		public IPolicyContainerConfiguration CachePerHttpSession()
+		{
+			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.PerHttpSession);
+		}
 	}
 }
