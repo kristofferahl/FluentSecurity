@@ -131,32 +131,34 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicContainerExtensionsSpec")]
-	public class When_adding_two_policies_of_the_same_type_to_a_policycontainer
+	public class When_adding_a_policy_instance_to_a_policycontainer
 	{
+		private ISecurityPolicy _policy;
 		private PolicyContainer _policyContainer;
+		private IPolicyContainerConfiguration _return;
 
 		[SetUp]
 		public void SetUp()
 		{
 			// Arrange
+			_policy = new DenyAnonymousAccessPolicy();
 			_policyContainer = TestDataFactory.CreateValidPolicyContainer();
-		}
 
-		private void Because()
-		{
-			_policyContainer
-				.AddPolicy(new DenyAnonymousAccessPolicy())
-				.AddPolicy(new DenyAnonymousAccessPolicy());
+			// Act
+			_return = _policyContainer.AddPolicy(_policy);
 		}
 
 		[Test]
 		public void Should_have_1_policy()
 		{
-			// Act
-			Because();
+			Assert.That(_policyContainer.GetPolicies().Single(), Is.EqualTo(_policy));
+		}
 
-			// Assert
-			Assert.That(_policyContainer.GetPolicies().Count(), Is.EqualTo(1));
+		[Test]
+		public void Should_return_IPolicyContainerConfiguration()
+		{
+			Assert.That(_return, Is.Not.Null);
+			Assert.That(_return, Is.AssignableTo<IPolicyContainerConfiguration>());
 		}
 	}
 
@@ -165,22 +167,29 @@ namespace FluentSecurity.Specification
 	public class When_adding_a_policy_of_T_to_a_policycontainer
 	{
 		private PolicyContainer _policyContainer;
+		private IPolicyContainerConfiguration _return;
 
 		[SetUp]
 		public void SetUp()
 		{
 			// Arrange
 			_policyContainer = TestDataFactory.CreateValidPolicyContainer();
+
+			// Act
+			_return = _policyContainer.AddPolicy<SomePolicy>();
 		}
 		
 		[Test]
 		public void Should_have_a_lazy_policy_of_type_SomePolicy()
 		{
-			// Act
-			_policyContainer.AddPolicy<SomePolicy>();
-
-			// Assert
 			Assert.That(_policyContainer.GetPolicies().Single().GetType(), Is.EqualTo(typeof(LazySecurityPolicy<SomePolicy>)));
+		}
+
+		[Test]
+		public void Should_return_IPolicyContainerConfiguration()
+		{
+			Assert.That(_return, Is.Not.Null);
+			Assert.That(_return, Is.AssignableTo<IPolicyContainerConfiguration>());
 		}
 
 		public class SomePolicy : ISecurityPolicy
@@ -189,6 +198,71 @@ namespace FluentSecurity.Specification
 			{
 				throw new NotImplementedException();
 			}
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicContainerExtensionsSpec")]
+	public class When_adding_two_policies_of_the_same_type_to_a_policycontainer
+	{
+		[Test]
+		public void Should_have_1_policy_when_adding_policy_instances()
+		{
+			// Arrange
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
+
+			// Act
+			policyContainer
+				.AddPolicy(new DenyAnonymousAccessPolicy())
+				.AddPolicy(new DenyAnonymousAccessPolicy());
+
+			// Assert
+			Assert.That(policyContainer.GetPolicies().Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Should_have_1_policy_when_adding_policies_of_T()
+		{
+			// Arrange
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
+
+			// Act
+			policyContainer
+				.AddPolicy<DenyAnonymousAccessPolicy>()
+				.AddPolicy<DenyAnonymousAccessPolicy>();
+
+			// Assert
+			Assert.That(policyContainer.GetPolicies().Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Should_have_1_policy_when_adding_policy_instance_and_policy_of_T()
+		{
+			// Arrange
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
+
+			// Act
+			policyContainer
+				.AddPolicy(new DenyAnonymousAccessPolicy())
+				.AddPolicy<DenyAnonymousAccessPolicy>();
+
+			// Assert
+			Assert.That(policyContainer.GetPolicies().Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Should_have_1_policy_when_adding_policy_of_T_and_policy_instance()
+		{
+			// Arrange
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
+
+			// Act
+			policyContainer
+				.AddPolicy<DenyAnonymousAccessPolicy>()
+				.AddPolicy(new DenyAnonymousAccessPolicy());
+
+			// Assert
+			Assert.That(policyContainer.GetPolicies().Count(), Is.EqualTo(1));
 		}
 	}
 
