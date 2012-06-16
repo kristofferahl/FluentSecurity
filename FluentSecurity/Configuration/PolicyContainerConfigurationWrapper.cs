@@ -53,14 +53,29 @@ namespace FluentSecurity.Configuration
 			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.DoNotCache);
 		}
 
+		public IPolicyContainerConfiguration DoNotCache(By level)
+		{
+			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.DoNotCache, level);
+		}
+
 		public IPolicyContainerConfiguration CachePerHttpRequest()
 		{
 			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.PerHttpRequest);
 		}
 
+		public IPolicyContainerConfiguration CachePerHttpRequest(By level)
+		{
+			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.PerHttpRequest, level);
+		}
+
 		public IPolicyContainerConfiguration CachePerHttpSession()
 		{
 			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.PerHttpSession);
+		}
+
+		public IPolicyContainerConfiguration CachePerHttpSession(By level)
+		{
+			return _inner.Cache<TCurrentSecurityPolicy>(Caching.Cache.PerHttpSession, level);
 		}
 	}
 }

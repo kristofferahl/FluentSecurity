@@ -18,7 +18,10 @@ namespace FluentSecurity.Configuration
 	public interface IPolicyContainerConfiguration<TSecurityPolicy> : IPolicyContainerConfiguration where TSecurityPolicy : ISecurityPolicy
 	{
 		IPolicyContainerConfiguration DoNotCache();
+		IPolicyContainerConfiguration DoNotCache(By level);
 		IPolicyContainerConfiguration CachePerHttpRequest();
+		IPolicyContainerConfiguration CachePerHttpRequest(By level);
 		IPolicyContainerConfiguration CachePerHttpSession();
+		IPolicyContainerConfiguration CachePerHttpSession(By level);
 	}
 }
