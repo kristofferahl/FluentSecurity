@@ -9,5 +9,6 @@ namespace FluentSecurity.Configuration
 		Conventions Conventions { get; }
 		Cache DefaultResultsCacheLifecycle { get; }
 		Action<ISecurityContext> SecurityContextModifyer { get; }
+		bool ShouldIgnoreMissingConfiguration { get; }
 	}
 }

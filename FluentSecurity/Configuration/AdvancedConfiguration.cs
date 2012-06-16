@@ -16,20 +16,27 @@ namespace FluentSecurity.Configuration
 			};
 
 			SetDefaultResultsCacheLifecycle(Cache.DoNotCache);
+			ShouldIgnoreMissingConfiguration = false;
 		}
 
 		public Conventions Conventions { get; private set; }
 		public Cache DefaultResultsCacheLifecycle { get; private set; }
 		public Action<ISecurityContext> SecurityContextModifyer { get; private set; }
+		public bool ShouldIgnoreMissingConfiguration { get; private set; }
 
-		public void SetDefaultResultsCacheLifecycle(Cache lifecycle)
+		public void IgnoreMissingConfiguration()
 		{
-			DefaultResultsCacheLifecycle = lifecycle;
+			ShouldIgnoreMissingConfiguration = true;
 		}
 
 		public void ModifySecurityContext(Action<ISecurityContext> modifyer)
 		{
 			SecurityContextModifyer = modifyer;
+		}
+
+		public void SetDefaultResultsCacheLifecycle(Cache lifecycle)
+		{
+			DefaultResultsCacheLifecycle = lifecycle;
 		}
 
 		public void Violations(Action<ViolationConfiguration> violationConfiguration)

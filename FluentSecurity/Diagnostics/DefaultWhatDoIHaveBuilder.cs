@@ -9,7 +9,7 @@ namespace FluentSecurity.Diagnostics
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendFormat("Ignore missing configuration: {0}", configuration.IgnoreMissingConfiguration);
+			builder.AppendFormat("Ignore missing configuration: {0}", configuration.Advanced.ShouldIgnoreMissingConfiguration);
 
 			builder.AppendLine().AppendLine().AppendLine("------------------------------------------------------------------------------------").AppendLine();
 

@@ -250,11 +250,11 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_true()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(policy =>
+			SecurityConfigurator.Configure(configuration =>
 			{
-				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
-				policy.IgnoreMissingConfiguration();
-				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
+				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
+				configuration.Advanced.IgnoreMissingConfiguration();
+				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
 
 			var securityHandler = new SecurityHandler();

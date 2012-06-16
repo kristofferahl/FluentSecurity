@@ -28,16 +28,6 @@ namespace FluentSecurity.Specification
 			var containers = _securityConfiguration.PolicyContainers.Count();
 			Assert.That(containers, Is.EqualTo(0));
 		}
-
-		[Test]
-		public void Should_not_ignore_missing_configurations()
-		{
-			// Act
-			Because();
-
-			// Assert
-			Assert.That(_securityConfiguration.IgnoreMissingConfiguration, Is.False);
-		}
 		
 		[Test]
 		public void Should_not_have_ServiceLocator()
@@ -77,28 +67,6 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("SecurityConfigurationSpec")]
-	public class When_calling_configure_with_ignore_missing_configuration
-	{
-		private static SecurityConfiguration _securityConfiguration;
-
-		private static void Because()
-		{
-			_securityConfiguration = new SecurityConfiguration(policy => policy.IgnoreMissingConfiguration());
-		}
-
-		[Test]
-		public void Should_ignore_missing_configurations()
-		{
-			// Act
-			Because();
-
-			// Assert
-			Assert.That(_securityConfiguration.IgnoreMissingConfiguration, Is.True);
-		}
-	}
-
-	[TestFixture]
-	[Category("SecurityConfigurationSpec")]
 	public class When_I_check_what_I_have
 	{
 		[Test]
@@ -111,7 +79,7 @@ namespace FluentSecurity.Specification
 			var securityConfiguration = new SecurityConfiguration(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
-				configuration.IgnoreMissingConfiguration();
+				configuration.Advanced.IgnoreMissingConfiguration();
 				configuration.For<BlogController>(x => x.DeletePost(0)).DenyAnonymousAccess().RequireRole(UserRole.Owner, UserRole.Publisher);
 				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});

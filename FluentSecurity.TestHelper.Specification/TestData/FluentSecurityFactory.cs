@@ -10,7 +10,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
-				configuration.IgnoreMissingConfiguration();
+				configuration.Advanced.IgnoreMissingConfiguration();
 
 				configuration.For<SampleController>(x => x.Index()).DenyAuthenticatedAccess();
 				configuration.For<SampleController>(x => x.List()).DenyAnonymousAccess();
@@ -31,7 +31,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
-				configuration.IgnoreMissingConfiguration();
+				configuration.Advanced.IgnoreMissingConfiguration();
 			});
 
 			return SecurityConfiguration.Current;
@@ -42,7 +42,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
-				configuration.IgnoreMissingConfiguration();
+				configuration.Advanced.IgnoreMissingConfiguration();
 
 				configuration.For<SampleController>(x => x.Index());
 				configuration.For<SampleController>(x => x.List());
