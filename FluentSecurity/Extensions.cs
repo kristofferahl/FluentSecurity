@@ -22,7 +22,7 @@ namespace FluentSecurity
 		/// <returns>A policycontainer</returns>
 		public static IPolicyContainer GetContainerFor(this IEnumerable<IPolicyContainer> policyContainers, string controllerName, string actionName)
 		{
-			return policyContainers.SingleOrDefault(x => x.ControllerName.ToLower() == controllerName.ToLower() && x.ActionName.ToLower() == actionName.ToLower());
+			return policyContainers.SingleOrDefault(x => x.ControllerName.ToLowerInvariant() == controllerName.ToLowerInvariant() && x.ActionName.ToLowerInvariant() == actionName.ToLowerInvariant());
 		}
 
 		/// <summary>
