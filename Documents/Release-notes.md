@@ -2,6 +2,7 @@
 
 **NOTE: These changes/features will not be available until version 2.0 is released.**
 
+- (**Fixed**) Fixed issue with invariant culture.
 - (**Fixed**) Fixed issue with RequireRolePolicy and RequireAllRolesPolicy resolving roles 3 times/execution.
 - (**Fixed**) Fixed spelling of ISecurityContext methods.
 - (**Removed**) Removed RemovePoliciesFor from ConfigurationExpression. Use RemovePolicy on IPolicyContainer and IConventionPolicyContainer.
