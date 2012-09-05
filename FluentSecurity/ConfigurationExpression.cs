@@ -105,18 +105,18 @@ namespace FluentSecurity
 
 		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
 		{
-			var policyContainers = new List<IPolicyContainer>();
-			foreach (var controllerType in controllerTypes)
-			{
+				var policyContainers = new List<IPolicyContainer>();
+				foreach (var controllerType in controllerTypes)
+				{
 				var controllerName = controllerType.GetControllerName();
 				var actionMethods = controllerType.GetActionMethods();
-
+				
 				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
-					);
-			}
-
-			return new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
+				actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+				);
+				}
+				
+				return new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
 		}
 
 		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)

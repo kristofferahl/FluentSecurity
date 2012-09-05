@@ -1,0 +1,7 @@
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.TestHelper\bin\Debug\FluentSecurity.TestHelper.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.TestHelper\bin\Debug\FluentSecurity.TestHelper.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.TestHelper\bin\Debug\FluentSecurity.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.TestHelper\bin\Debug\FluentSecurity.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.TestHelper\obj\Debug\ResolveAssemblyReference.cache
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.TestHelper\obj\Debug\FluentSecurity.TestHelper.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.TestHelper\obj\Debug\FluentSecurity.TestHelper.pdb
