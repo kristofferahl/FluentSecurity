@@ -18,7 +18,7 @@ namespace FluentSecurity.Specification
 
 		private static void AssertAllControllerActionsHasContainer(ConfigurationExpression configurationExpression)
 		{
-			Assert.That(configurationExpression.Count(), Is.EqualTo(12));
+			Assert.That(configurationExpression.Count(), Is.EqualTo(13));
 			var blog = NameHelper.Controller<BlogController>();
 			var admin = NameHelper.Controller<AdminController>();
 			var root = NameHelper.Controller<TestData.AssemblyScannerControllers.RootController>();

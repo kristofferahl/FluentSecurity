@@ -1,0 +1,9 @@
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\bin\FluentSecurity.SampleApplication.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\bin\FluentSecurity.SampleApplication.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\bin\FluentSecurity.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\bin\System.Web.Mvc.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\bin\FluentSecurity.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\bin\System.Web.Mvc.xml
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\obj\Debug\ResolveAssemblyReference.cache
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\obj\Debug\FluentSecurity.SampleApplication.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication\obj\Debug\FluentSecurity.SampleApplication.pdb

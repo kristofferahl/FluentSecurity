@@ -98,6 +98,23 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(result, Is.EqualTo(expectedActionResult));
 		}
+		
+		[Test]
+		public void Should_not_throw_when_when_controllername_is_Dummy_and_actionname_is_View()
+		{
+			//Arrange
+				SecurityConfigurator.Configure(policy =>
+			{
+				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
+				policy.For<DummyController>(x => x.Show()).DenyAnonymousAccess();
+			});
+
+			var securityHandler = new SecurityHandler();
+			
+			//Act
+			//Assert
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<DummyController>(), "View", SecurityContext.Current));
+		}
 	}
 
 	[TestFixture]

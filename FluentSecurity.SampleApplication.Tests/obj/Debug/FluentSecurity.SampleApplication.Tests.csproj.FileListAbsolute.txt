@@ -1,0 +1,13 @@
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\FluentSecurity.SampleApplication.Tests.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\FluentSecurity.SampleApplication.Tests.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\FluentSecurity.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\FluentSecurity.SampleApplication.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\FluentSecurity.TestHelper.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\nunit.framework.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\FluentSecurity.SampleApplication.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\FluentSecurity.TestHelper.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\FluentSecurity.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\bin\Debug\nunit.framework.xml
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\obj\Debug\ResolveAssemblyReference.cache
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\obj\Debug\FluentSecurity.SampleApplication.Tests.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.SampleApplication.Tests\obj\Debug\FluentSecurity.SampleApplication.Tests.pdb

@@ -1,0 +1,7 @@
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity\obj\Debug\ResolveAssemblyReference.cache
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity\bin\Debug\FluentSecurity.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity\bin\Debug\FluentSecurity.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity\bin\Debug\System.Web.Mvc.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity\bin\Debug\System.Web.Mvc.xml
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity\obj\Debug\FluentSecurity.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity\obj\Debug\FluentSecurity.pdb

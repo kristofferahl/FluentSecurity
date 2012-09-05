@@ -1,0 +1,7 @@
+C:\Frameworks\MS.Net\FluentSecurity\src\Build\Output\TestData\DiagnosticsOutputExample.txt
+C:\Frameworks\MS.Net\FluentSecurity\src\Build\Output\FluentSecurity.Specification.dll.config
+C:\Frameworks\MS.Net\FluentSecurity\src\Build\Output\FluentSecurity.Specification.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\Build\Output\FluentSecurity.Specification.pdb
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.Specification\obj\Release\ResolveAssemblyReference.cache
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.Specification\obj\Release\FluentSecurity.Specification.dll
+C:\Frameworks\MS.Net\FluentSecurity\src\FluentSecurity.Specification\obj\Release\FluentSecurity.Specification.pdb

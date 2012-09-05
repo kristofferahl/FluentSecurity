@@ -43,7 +43,7 @@ namespace FluentSecurity.Specification.TestData
 		{
 			return Json(new {});
 		}
-
+		
 		private void PrivateMethodThatDoesNothing()
 		{
 		}
