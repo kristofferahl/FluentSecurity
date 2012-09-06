@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using FluentSecurity.Policy;
 using FluentSecurity.TestHelper.Expectations;
 using FluentSecurity.TestHelper.Specification.TestData;
 using NUnit.Framework;
@@ -116,6 +117,25 @@ namespace FluentSecurity.TestHelper.Specification
 
 			// Assert
 			Assert.That(_expectationExpression.Expectations.Count(), Is.EqualTo(2));
+		}
+	}
+	
+	[TestFixture]
+	[Category("ExpectationExpressionSpec")]
+	public class When_creating_an_expectation_expression_for_SampleController_AliasedAction
+	{
+		private ExpectationExpression<SampleController> _expectationExpression;
+
+		[SetUp]
+		public void SetUp()
+		{
+			_expectationExpression = new ExpectationExpression<SampleController>(x => x.ActualAction());
+		}
+
+		[Test]
+		public void Should_resolve_actual_action_to_aliased_action()
+		{
+			Assert.That(_expectationExpression.Action, Is.EqualTo("AliasedAction"));
 		}
 	}
 }
