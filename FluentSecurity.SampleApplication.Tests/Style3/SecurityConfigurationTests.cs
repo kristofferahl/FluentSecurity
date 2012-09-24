@@ -14,11 +14,12 @@ namespace FluentSecurity.SampleApplication.Tests.Style3
 		[Test]
 		public void Should_be_configured_correctly()
 		{
-			// Arrange
-			var configuration = Bootstrapper.SetupFluentSecurity();
+            // Arrange
+            var _configuration = Bootstrapper.SetupFluentSecurity();
+            
 
 			// Act
-			var results = configuration.Verify(expectations =>
+            var results = _configuration.Verify(expectations =>
 			{
 				expectations.Expect<HomeController>().Has<IgnorePolicy>();
 
@@ -56,11 +57,11 @@ namespace FluentSecurity.SampleApplication.Tests.Style3
 		[Test]
 		public void Should_be_configured_correctly()
 		{
-			// Arrange
-			var configuration = Bootstrapper.SetupFluentSecurity();
+            // Arrange
+            var _configuration = Bootstrapper.SetupFluentSecurity();
 
 			// Act
-			var results = configuration.Verify<AccountController>(expectations =>
+            var results = _configuration.Verify<AccountController>(expectations =>
 			{
 				expectations.Expect(x => x.LogInAsAdministrator()).Has<DenyAuthenticatedAccessPolicy>();
 				expectations.Expect(x => x.LogInAsPublisher()).Has<DenyAuthenticatedAccessPolicy>();

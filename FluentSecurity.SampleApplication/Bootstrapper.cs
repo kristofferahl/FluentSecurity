@@ -42,7 +42,11 @@ namespace FluentSecurity.SampleApplication
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>().DenyAnonymousAccess();
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).RequireRole(UserRole.Publisher);
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).RequireRole(UserRole.Administrator);
+
+                configuration.ForAllControllersInAssemblyThatInherit<Areas.ExampleArea.Controllers.BaseController>().RequireRole(UserRole.Administrator);
+
 			});
+
 			return SecurityConfiguration.Current;
 		}
 	}
