@@ -22,7 +22,7 @@ namespace FluentSecurity
 		
 		private IPolicyAppender PolicyAppender { get; set; }
 
-		public AdvancedConfiguration Advanced { get; set; }
+		public AdvancedConfiguration Advanced { get; private set; }
 
 		public ConfigurationExpression()
 		{
