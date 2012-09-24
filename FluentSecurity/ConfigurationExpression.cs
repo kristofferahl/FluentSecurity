@@ -19,11 +19,10 @@ namespace FluentSecurity
 		internal Func<bool> IsAuthenticated { get; private set; }
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
-		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
 		
 		private IPolicyAppender PolicyAppender { get; set; }
 
-		public AdvancedConfiguration Advanced { get; set; }
+		public AdvancedConfiguration Advanced { get; private set; }
 
 		public ConfigurationExpression()
 		{
@@ -138,11 +137,6 @@ namespace FluentSecurity
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
 			Roles = rolesFunction;
-		}
-
-		public void IgnoreMissingConfiguration()
-		{
-			ShouldIgnoreMissingConfiguration = true;
 		}
 
 		public void SetPolicyAppender(IPolicyAppender policyAppender)
