@@ -25,9 +25,10 @@
 ## Caching
 - (**New**) Added support for changing the default cache lifecycle of policy results using the Advanced.SetDefaultResultsCacheLifecycle option.
 - (**New**) Added support for providing custom cache keys for policies using the ICacheKeyProvider interface.
-- (**New**) Added support for specifying a cache lifecycle using CacheResultsOf\<TSecurityPolicy\>. Supported lifecycles are DoNotCache, PerHttpRequest, PerHttpSession.
-- (**New**) Added support for specifying a cache level using CacheResultsOf\<TSecurityPolicy\>. Supported levels are Controller, ControllerAction and Policy.
+- (**New**) Added support for specifying a cache lifecycle using Cache\<TSecurityPolicy\>. Supported lifecycles are DoNotCache, PerHttpRequest, PerHttpSession.
+- (**New**) Added support for specifying a cache level using Cache\<TSecurityPolicy\>. Supported levels are Controller, ControllerAction and Policy.
 - (**New**) Added support for clearing cache strategies using ClearCacheStrategies and ClearStrategyFor\<TSecurityPolicy\>.
+- (**New**) Added support for specifying cache lifecycle and strategy using method chaining after AddPolicy\<TSecurityPolicy\>.
 
 ## ISecurityContext
 - (**New**) Extended ISecurityContext with a Data property (dynamic) for adding and reading custom context data at runtime.

@@ -11,15 +11,15 @@ namespace FluentSecurity.Configuration
 			if (securityPolicyToAdd == null) throw new ArgumentNullException("securityPolicyToAdd");
 			if (policies == null) throw new ArgumentNullException("policies");
 
-			if (securityPolicyToAdd is IgnorePolicy)
+			if (securityPolicyToAdd.IsPolicyOf<IgnorePolicy>())
 				policies.Clear();
-			else if (securityPolicyToAdd is DenyAnonymousAccessPolicy)
+			else if (securityPolicyToAdd.IsPolicyOf<DenyAnonymousAccessPolicy>())
 				policies.Clear();
-			else if (securityPolicyToAdd is DenyAuthenticatedAccessPolicy)
+			else if (securityPolicyToAdd.IsPolicyOf<DenyAuthenticatedAccessPolicy>())
 				policies.Clear();
-			else if (securityPolicyToAdd is RequireRolePolicy)
+			else if (securityPolicyToAdd.IsPolicyOf<RequireRolePolicy>())
 				policies.Clear();
-			else if (securityPolicyToAdd is RequireAllRolesPolicy)
+			else if (securityPolicyToAdd.IsPolicyOf<RequireAllRolesPolicy>())
 				policies.Clear();
 			
 			policies.Add(securityPolicyToAdd);
