@@ -12,12 +12,15 @@ namespace FluentSecurity
 
 		private SecurityContext(ISecurityRuntime runtime)
 		{
+			Id = Guid.NewGuid();
 			_data = new ExpandoObject();
 			_runtime = runtime;
 
 			var modifyer = runtime.SecurityContextModifyer;
 			if (modifyer != null) modifyer.Invoke(this);
 		}
+
+		public Guid Id { get; private set; }
 
 		public dynamic Data
 		{

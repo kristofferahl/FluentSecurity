@@ -50,6 +50,7 @@
 - ( **New** ) Added support for modifying the ISecurityContext on creation using configuration.Advanced.ModifySecurityContext.
 - ( **New** ) Added support for working with a typed ISecurityContext in policies by inheriting from SecurityPolicyBase\<TSecurityContext\>.
 - ( **New** ) Added a MvcSecurityContext wrapper over ISecurityContext that makes it easier accessing route values in policies.
+- ( **New** ) Extended ISecurityContext with an Id property for diagnostics and debugging purposes.
 
 ## AddPolicy\<T\> and dependency injection for policies
 - ( **New** ) Added support for adding policies using AddPolicy\<T\>.
