@@ -77,6 +77,11 @@
     <Compile Include="Caching\PolicyResultCacheExtensions.cs" />
     <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
+    <Compile Include="Diagnostics\EventListeners.cs" />
+    <Compile Include="Diagnostics\Events\ISecurityEvent.cs" />
+    <Compile Include="Diagnostics\Events\SecurityRuntimePolicyEvent.cs" />
+    <Compile Include="Diagnostics\Events\SecurityConfigurationEvent.cs" />
+    <Compile Include="Diagnostics\Events\SecurityRuntimeEvent.cs" />
     <Compile Include="Configuration\SecurityProfile.cs" />
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
