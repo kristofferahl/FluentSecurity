@@ -7,13 +7,13 @@ namespace FluentSecurity
 {
 	public class SecurityContext : ISecurityContext
 	{
-		private readonly ExpandoObject _data;
 		private readonly ISecurityRuntime _runtime;
 
 		private SecurityContext(ISecurityRuntime runtime)
 		{
 			Id = Guid.NewGuid();
-			_data = new ExpandoObject();
+			Data = new ExpandoObject();
+
 			_runtime = runtime;
 
 			var modifyer = runtime.SecurityContextModifyer;
@@ -21,11 +21,7 @@ namespace FluentSecurity
 		}
 
 		public Guid Id { get; private set; }
-
-		public dynamic Data
-		{
-			get { return _data; }
-		}
+		public dynamic Data { get; private set; }
 
 		public bool CurrentUserIsAuthenticated()
 		{
