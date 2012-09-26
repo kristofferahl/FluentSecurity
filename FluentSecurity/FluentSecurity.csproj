@@ -77,6 +77,7 @@
     <Compile Include="Caching\PolicyResultCacheExtensions.cs" />
     <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
+    <Compile Include="Diagnostics\Publish.cs" />
     <Compile Include="Diagnostics\EventListeners.cs" />
     <Compile Include="Diagnostics\Events\ISecurityEvent.cs" />
     <Compile Include="Diagnostics\Events\SecurityRuntimePolicyEvent.cs" />
