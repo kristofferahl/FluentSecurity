@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Diagnostics.Events;
 using FluentSecurity.Specification.Helpers;
@@ -18,7 +19,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.RuntimeEventListener = events.Add;
+			EventListeners.Current = events.Add;
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
@@ -26,8 +27,36 @@ namespace FluentSecurity.Specification.Diagnostics
 
 			// Assert
 			var @event = events.Single();
-			Assert.That(@event.Id, Is.EqualTo(context.Id));
+			Assert.That(@event.CorrelationId, Is.EqualTo(context.Id));
 			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
+		}
+
+		[Test]
+		public void Should_produce_runtime_event_with_timing_when_event_listener_is_registered()
+		{
+			// Arrange
+			const int expectedMilliseconds = 13;
+			var expectedResult = new {};
+			const string expectedMessage = "Message";
+
+			var events = new List<ISecurityEvent>();
+			EventListeners.Current = events.Add;
+			var context = TestDataFactory.CreateSecurityContext(false);
+
+			// Act
+			var result = Publish.RuntimeEvent(() =>
+			{
+				Thread.Sleep(expectedMilliseconds + 5);
+				return expectedResult;
+			}, r => expectedMessage, context);
+
+			// Assert
+			Assert.That(result, Is.EqualTo(expectedResult));
+
+			var @event = events.Single();
+			Assert.That(@event.CorrelationId, Is.EqualTo(context.Id));
+			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
+			Assert.That(@event.CompletedInMilliseconds, Is.GreaterThanOrEqualTo(expectedMilliseconds));
 		}
 
 		[Test]
@@ -37,7 +66,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.RuntimePolicyEventListener = events.Add;
+			EventListeners.Register(events.Add);
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
@@ -45,8 +74,36 @@ namespace FluentSecurity.Specification.Diagnostics
 
 			// Assert
 			var @event = events.Single();
-			Assert.That(@event.Id, Is.EqualTo(context.Id));
+			Assert.That(@event.CorrelationId, Is.EqualTo(context.Id));
 			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
+		}
+
+		[Test]
+		public void Should_produce_runtime_policy_event_with_timing_when_event_listener_is_registered()
+		{
+			// Arrange
+			const int expectedMilliseconds = 9;
+			var expectedResult = new { };
+			const string expectedMessage = "Message";
+
+			var events = new List<ISecurityEvent>();
+			EventListeners.Register(events.Add);
+			var context = TestDataFactory.CreateSecurityContext(false);
+
+			// Act
+			var result = Publish.RuntimePolicyEvent(() =>
+			{
+				Thread.Sleep(expectedMilliseconds + 5);
+				return expectedResult;
+			}, r => expectedMessage, context);
+
+			// Assert
+			Assert.That(result, Is.EqualTo(expectedResult));
+
+			var @event = events.Single();
+			Assert.That(@event.CorrelationId, Is.EqualTo(context.Id));
+			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
+			Assert.That(@event.CompletedInMilliseconds, Is.GreaterThanOrEqualTo(expectedMilliseconds));
 		}
 
 		[Test]
@@ -56,7 +113,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.ConfigurationEventListener = events.Add;
+			EventListeners.Register(events.Add);
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
@@ -64,7 +121,7 @@ namespace FluentSecurity.Specification.Diagnostics
 
 			// Assert
 			var @event = events.Single();
-			Assert.That(@event.Id, Is.EqualTo(context.Id));
+			Assert.That(@event.CorrelationId, Is.EqualTo(context.Id));
 			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
 		}
 	}

@@ -10,15 +10,16 @@ namespace FluentSecurity.Diagnostics
 			Reset();
 		}
 
-		public static Action<SecurityRuntimeEvent> RuntimeEventListener;
-		public static Action<SecurityRuntimePolicyEvent> RuntimePolicyEventListener;
-		public static Action<SecurityConfigurationEvent> ConfigurationEventListener;
+		internal static Action<ISecurityEvent> Current;
+
+		public static void Register(Action<ISecurityEvent> eventListener)
+		{
+			Current = eventListener;
+		}
 
 		public static void Reset()
 		{
-			RuntimeEventListener = null;
-			RuntimePolicyEventListener = null;
-			ConfigurationEventListener = null;
+			Current = null;
 		}
 	}
 }
