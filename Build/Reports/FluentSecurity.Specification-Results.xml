@@ -1,0 +1,1575 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="D:\Projects\FluentSecurity\Build\Output\FluentSecurity.Specification.dll" total="386" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2012-10-03" time="00:51:06">
+  <environment nunit-version="2.6.0.12051" clr-version="2.0.50727.4927" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="D:\Projects\FluentSecurity\Build\Scripts" machine-name="NOTE-PC" user="note" user-domain="note-PC" />
+  <culture-info current-culture="ru-RU" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="D:\Projects\FluentSecurity\Build\Output\FluentSecurity.Specification.dll" executed="True" result="Success" success="True" time="5.013" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="FluentSecurity" executed="True" result="Success" success="True" time="5.002" asserts="0">
+        <results>
+          <test-suite type="SetUpFixture" name="Specification" executed="True" result="Success" success="True" time="5.001" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Configuration" executed="True" result="Success" success="True" time="0.956" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="When_adding_a_convention" executed="True" result="Success" success="True" time="0.039" asserts="0">
+                    <categories>
+                      <category name="ViolationConfigurationExpressionSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_adding_a_convention.Should_add_convention" executed="True" result="Success" success="True" time="0.022" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_adding_a_convention.Should_throw_when_convention_is_null" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_calling_Of_on_ViolationConfigurationExpression" executed="True" result="Success" success="True" time="0.012" asserts="0">
+                    <categories>
+                      <category name="ViolationConfigurationExpressionSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_calling_Of_on_ViolationConfigurationExpression.Should_not_add_any_convention_and_return_ViolationHandlerExpression_of_T" executed="True" result="Success" success="True" time="0.010" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_calling_Of_on_ViolationConfigurationExpression.Should_not_add_any_convention_and_return_ViolationHandlerExpression_with_predicate" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_creating_a_new_advanced_configuration" executed="True" result="Success" success="True" time="0.015" asserts="0">
+                    <categories>
+                      <category name="AdvancedConfigurationSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_new_advanced_configuration.Should_have_conventions_for_default_PolicyViolationHandler_applied" executed="True" result="Success" success="True" time="0.008" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_new_advanced_configuration.Should_have_default_policy_cache_lifecycle_set_to_DoNotCache" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_new_advanced_configuration.Should_not_have_a_security_context_modifyer" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_creating_a_ViolationConfigurationExpression" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="ViolationConfigurationExpressionSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_ViolationConfigurationExpression.Should_throw_when_conventions_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_creating_a_ViolationHandlerExpression" executed="True" result="Success" success="True" time="0.005" asserts="0">
+                    <categories>
+                      <category name="ViolationHandlerExpressionSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_ViolationHandlerExpression.Should_not_throw_when_ViolationExpression_is_not_null" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_ViolationHandlerExpression.Should_throw_when_expression_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_ViolationHandlerExpression.Should_throw_when_predicate_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_creating_a_ViolationHandlerExpression_of_T" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_ViolationHandlerExpression_of_T.Should_not_throw_when_expression_is_not_null" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_creating_a_ViolationHandlerExpression_of_T.Should_throw_when_expression_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_removing_a_convention" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                    <categories>
+                      <category name="ViolationConfigurationExpressionSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_removing_a_convention.Should_not_remove_conventions_not_matching_predicate" executed="True" result="Success" success="True" time="0.009" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_removing_a_convention.Should_not_remove_conventions_not_matching_type" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_removing_a_convention.Should_remove_conventions_matching_predicate" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_removing_a_convention.Should_remove_conventions_matching_type" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_removing_a_convention.Should_throw_when_predicate_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_setting_the_default_policy_results_cache_lifecycle" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                    <categories>
+                      <category name="AdvancedConfigurationSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_setting_the_default_policy_results_cache_lifecycle.Should_have_default_policy_cache_lifecycle_set_to_DoNotCache" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_setting_the_default_policy_results_cache_lifecycle.Should_have_default_policy_cache_lifecycle_set_to_PerHttpRequest" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_setting_the_default_policy_results_cache_lifecycle.Should_have_default_policy_cache_lifecycle_set_to_PerHttpSession" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_specifying_a_handler_factory_for_a_ViolationHandlerExpression" executed="True" result="Success" success="True" time="0.010" asserts="0">
+                    <categories>
+                      <category name="ViolationHandlerExpressionSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_handler_factory_for_a_ViolationHandlerExpression.Should_add_convention_for_predicate_to_instance" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_handler_factory_for_a_ViolationHandlerExpression.Should_add_convention_for_predicate_to_type" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_handler_factory_for_a_ViolationHandlerExpression.Should_throw_when_factory_method_is_null" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_specifying_a_handler_factory_for_a_ViolationHandlerExpression_of_T" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                    <categories>
+                      <category name="ViolationHandlerExpressionSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_handler_factory_for_a_ViolationHandlerExpression_of_T.Should_add_convention_for_predicate_to_instance" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_handler_factory_for_a_ViolationHandlerExpression_of_T.Should_add_convention_for_predicate_to_type" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_handler_factory_for_a_ViolationHandlerExpression_of_T.Should_throw_when_factory_method_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_specifying_a_security_context_modifyer" executed="True" result="Success" success="True" time="0.805" asserts="0">
+                    <categories>
+                      <category name="AdvancedConfigurationSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_security_context_modifyer.Should_modify_context_on_creation" executed="True" result="Success" success="True" time="0.801" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_security_context_modifyer.Should_not_throw_when_setting_the_modifyer_to_null" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_a_security_context_modifyer.Should_set_the_modifyer" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_specifying_how_violations_are_handled" executed="True" result="Success" success="True" time="0.011" asserts="0">
+                    <categories>
+                      <category name="AdvancedConfigurationSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_how_violations_are_handled.Should_add_convention_for_IgnorePolicy_and_Handler1" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_how_violations_are_handled.Should_add_convention_for_IgnorePolicy_and_Handler2" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_how_violations_are_handled.Should_always_add_conventions_at_the_first_position_to_support_cascading_overrides" executed="True" result="Success" success="True" time="0.004" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.Configuration.When_specifying_how_violations_are_handled.Should_throw_when_null_is_passed_to_Violations" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="Namespace" name="Features" executed="True" result="Success" success="True" time="0.720" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="CachingOfPolicyResultsFeature" description="Caching of PolicyResults" executed="True" result="Success" success="True" time="0.719" asserts="0">
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.CacheResultsOfPolicyForAllControllers" description="Cache results of policy for all controllers" executed="True" result="Success" success="True" time="0.222" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.CacheResultsOfPolicyForSpecificController" description="Cache results of policy for specific controller" executed="True" result="Success" success="True" time="0.010" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.CacheResultsOfPolicyForSpecificControllerAndAction" description="Cache results of policy for specific controller and action" executed="True" result="Success" success="True" time="0.010" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.ClearCacheStrategiesForSpecificController" description="Clear cache strategies for specific controller" executed="True" result="Success" success="True" time="0.011" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.ClearCacheStrategiesForSpecificControllerAction" description="Clear cache strategies for specific controller action" executed="True" result="Success" success="True" time="0.009" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.OverrideCacheLevelOfPolicyForAllControllers" description="Override cache level of policy for all controllers" executed="True" result="Success" success="True" time="0.009" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.OverrideCacheLevelOfPolicyForSpecificController" description="Override cache level of policy for specific controller" executed="True" result="Success" success="True" time="0.009" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.OverrideCacheLevelOfPolicyForSpecificControllerAction" description="Override cache level of policy for specific controller action" executed="True" result="Success" success="True" time="0.009" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.OverrideCacheLifecycleOfPolicyForSpecificControllerAndAction" description="Override cache lifecycle of policy for specific controller and action" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Features.CachingOfPolicyResultsFeature.OverrideCacheLifecyleOfPolicyForSpecificController" description="Override cache lifecyle of policy for specific controller" executed="True" result="Success" success="True" time="0.010" asserts="2" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="Namespace" name="Policy" executed="True" result="Success" success="True" time="0.772" asserts="0">
+                <results>
+                  <test-suite type="Namespace" name="Contexts" executed="True" result="Success" success="True" time="0.030" asserts="0">
+                    <results>
+                      <test-suite type="TestFixture" name="When_creating_an_MvcSecurityContext" executed="True" result="Success" success="True" time="0.030" asserts="0">
+                        <categories>
+                          <category name="MvcSecurityContextSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.Policy.Contexts.When_creating_an_MvcSecurityContext.Should_have_route_values_from_Data_RouteValues_property" executed="True" result="Success" success="True" time="0.027" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.Policy.Contexts.When_creating_an_MvcSecurityContext.Should_throw_when_inner_context_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                  <test-suite type="Namespace" name="Results" executed="True" result="Success" success="True" time="0.010" asserts="0">
+                    <results>
+                      <test-suite type="TestFixture" name="When_creating_a_DelegatePolicyResult" executed="True" result="Success" success="True" time="0.010" asserts="0">
+                        <categories>
+                          <category name="DelegatePolicyResultSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.Policy.Results.When_creating_a_DelegatePolicyResult.Should_have_values_from_policyresult_and_violation_handler" executed="True" result="Success" success="True" time="0.003" asserts="5" />
+                          <test-case name="FluentSecurity.Specification.Policy.Results.When_creating_a_DelegatePolicyResult.Should_have_values_from_policyresult_but_no_violation_handler" executed="True" result="Success" success="True" time="0.001" asserts="5" />
+                          <test-case name="FluentSecurity.Specification.Policy.Results.When_creating_a_DelegatePolicyResult.Should_throw_when_policyname_is_empty" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.Policy.Results.When_creating_a_DelegatePolicyResult.Should_throw_when_policyname_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                  <test-suite type="Namespace" name="ViolationHandlers" executed="True" result="Success" success="True" time="0.169" asserts="0">
+                    <results>
+                      <test-suite type="Namespace" name="Conventions" executed="True" result="Success" success="True" time="0.137" asserts="0">
+                        <results>
+                          <test-suite type="TestFixture" name="When_creating_a_DefaultPolicyViolationHandlerIsInstanceConvention" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                            <categories>
+                              <category name="DefaultPolicyViolationHandlerIsInstanceConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_creating_a_DefaultPolicyViolationHandlerIsInstanceConvention.Should_throw_when_factory_method_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_creating_a_LazyInstancePolicyViolationHandlerConvention" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                            <categories>
+                              <category name="LazyInstancePolicyViolationHandlerConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_creating_a_LazyInstancePolicyViolationHandlerConvention.Should_throw_when_predicate_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_creating_a_LazyTypePolicyViolationHandlerConvention" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                            <categories>
+                              <category name="LazyTypePolicyViolationHandlerConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_creating_a_LazyTypePolicyViolationHandlerConvention.Should_throw_when_predicate_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_getting_a_handler_using_PolicyTypeToPolicyViolationHandlerInstanceConvention" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                            <categories>
+                              <category name="PolicyTypeToPolicyViolationHandlerInstanceConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_handler_using_PolicyTypeToPolicyViolationHandlerInstanceConvention.Should_return_handler_when_policy_type_is_match" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_handler_using_PolicyTypeToPolicyViolationHandlerInstanceConvention.Should_return_handler_when_policy_type_is_not_match" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_getting_a_handler_using_PolicyTypeToPolicyViolationHandlerTypeConvention" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                            <categories>
+                              <category name="PolicyTypeToPolicyViolationHandlerTypeConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_handler_using_PolicyTypeToPolicyViolationHandlerTypeConvention.Should_return_handler_when_policy_type_is_match" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_handler_using_PolicyTypeToPolicyViolationHandlerTypeConvention.Should_return_handler_when_policy_type_is_not_match" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsInstanceConvention" executed="True" result="Success" success="True" time="0.010" asserts="0">
+                            <categories>
+                              <category name="DefaultPolicyViolationHandlerIsInstanceConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsInstanceConvention.Should_create_instance_of_Handler1_and_return_it" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsInstanceConvention.Should_create_instance_of_Handler2_and_return_it" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsInstanceConvention.Should_return_null_when_factory_method_returns_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsOfTypeConvention" executed="True" result="Success" success="True" time="0.010" asserts="0">
+                            <categories>
+                              <category name="DefaultPolicyViolationHandlerIsOfTypeConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsOfTypeConvention.Should_resolve_instance_of_Handler1_and_return_it" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsOfTypeConvention.Should_resolve_instance_of_Handler2_and_return_it" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsOfTypeConvention.Should_resolve_instances_from_container" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_getting_a_PolicyViolationHandler_using_FindByPolicyNameConvention" executed="True" result="Success" success="True" time="0.073" asserts="0">
+                            <categories>
+                              <category name="FindByPolicyNameConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_FindByPolicyNameConvention.Should_return_DenyAnonymousAccessPolicyViolationHandler_for_DenyAnonymousAccessPolicy" executed="True" result="Success" success="True" time="0.068" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_FindByPolicyNameConvention.Should_return_DenyAuthenticatedAccessPolicyViolationHandler_for_DenyAuthenticatedAccessPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_FindByPolicyNameConvention.Should_return_null_when_no_handler_is_a_match" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_getting_a_PolicyViolationHandler_using_FindDefaultPolicyViolationHandlerByNameConvention" executed="True" result="Success" success="True" time="0.010" asserts="0">
+                            <categories>
+                              <category name="FindDefaultPolicyViolationHandlerByNameConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_FindDefaultPolicyViolationHandlerByNameConvention.Should_return_DefaultPolicyViolationHandler_for_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_FindDefaultPolicyViolationHandlerByNameConvention.Should_return_DefaultPolicyViolationHandler_for_RequireRolePolicy" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_FindDefaultPolicyViolationHandlerByNameConvention.Should_return_null_when_no_handler_is_a_match" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite type="TestFixture" name="When_getting_a_PolicyViolationHandler_using_PolicyViolationHandlerTypeConvention" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                            <categories>
+                              <category name="PolicyViolationHandlerTypeConventionSpec" />
+                            </categories>
+                            <results>
+                              <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_PolicyViolationHandlerTypeConvention.Should_return_null_when_derrived_convention_returns_null_for_GetHandlerTypeFor" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_creating_a_PolicyViolationHandlerSelector" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                        <categories>
+                          <category name="PolicyViolationHandlerSelectorSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.When_creating_a_PolicyViolationHandlerSelector.Should_throw_when_conventions_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_handling_a_policy_violation_with_DelegatePolicyViolationHandler" executed="True" result="Success" success="True" time="0.009" asserts="0">
+                        <categories>
+                          <category name="DelegatePolicyViolationHandlerSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.When_handling_a_policy_violation_with_DelegatePolicyViolationHandler.Should_return_action_result_from_explicitly_set_violation_handler" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.When_handling_a_policy_violation_with_DelegatePolicyViolationHandler.Should_return_action_result_from_violation_handler_that_match_name" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.When_handling_a_policy_violation_with_DelegatePolicyViolationHandler.Should_throw_when_no_violation_handler_has_been_set_and_no_violation_handler_match_name" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_selecting_a_policy_violation_handler" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                        <categories>
+                          <category name="PolicyViolationHandlerSelectorSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.When_selecting_a_policy_violation_handler.Should_return_first_handler_returned_by_convention" executed="True" result="Success" success="True" time="0.002" asserts="4" />
+                          <test-case name="FluentSecurity.Specification.Policy.ViolationHandlers.When_selecting_a_policy_violation_handler.Should_return_null_when_no_convenion_returns_handler" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_comparing_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.012" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_comparing_RequireAllRolesPolicy.Should_be_equal" executed="True" result="Success" success="True" time="0.004" asserts="6" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_comparing_RequireAllRolesPolicy.Should_not_be_equal_when_comparing_to_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_comparing_RequireAllRolesPolicy.Should_not_be_equal_when_roles_count_differ" executed="True" result="Success" success="True" time="0.001" asserts="6" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_comparing_RequireAllRolesPolicy.Should_not_be_equal_when_roles_differ" executed="True" result="Success" success="True" time="0.002" asserts="6" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_comparing_RequireRolePolicy" executed="True" result="Success" success="True" time="0.009" asserts="0">
+                    <categories>
+                      <category name="RequireRolePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_comparing_RequireRolePolicy.Should_be_equal" executed="True" result="Success" success="True" time="0.003" asserts="6" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_comparing_RequireRolePolicy.Should_not_be_equal_when_comparing_to_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_comparing_RequireRolePolicy.Should_not_be_equal_when_roles_count_differ" executed="True" result="Success" success="True" time="0.002" asserts="6" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_comparing_RequireRolePolicy.Should_not_be_equal_when_roles_differ" executed="True" result="Success" success="True" time="0.001" asserts="6" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_creating_a_LazySecurityPolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="LazySecurityPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_creating_a_LazySecurityPolicy.Should_expose_the_actual_type" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_doing_tostring_for_a_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_doing_tostring_for_a_RequireAllRolesPolicy.Should_return_name_and_role" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_doing_tostring_for_a_RequireAllRolesPolicy.Should_return_name_and_roles" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_doing_tostring_for_a_RequireRolePolicy" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_doing_tostring_for_a_RequireRolePolicy.Should_return_name_and_role" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_doing_tostring_for_a_RequireRolePolicy.Should_return_name_and_roles" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_enforcing_a_LazySecurityPolicy" executed="True" result="Success" success="True" time="0.027" asserts="0">
+                    <categories>
+                      <category name="LazySecurityPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_a_LazySecurityPolicy.Should_load_and_enforce_policy_with_failed_result" executed="True" result="Success" success="True" time="0.003" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_a_LazySecurityPolicy.Should_load_and_enforce_policy_with_success_result" executed="True" result="Success" success="True" time="0.019" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_a_LazySecurityPolicy.Should_throw_when_no_policy_was_loaded" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_enforcing_polciy_using_SecurityPolicyBase" executed="True" result="Success" success="True" time="0.014" asserts="0">
+                    <categories>
+                      <category name="SecurityPolicyBaseSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_polciy_using_SecurityPolicyBase.Should_create_context_with_empty_contructor" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_polciy_using_SecurityPolicyBase.Should_create_context_with_security_context_as_the_only_contructor_argument" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_polciy_using_SecurityPolicyBase.Should_create_MvcSecurityContext_with_security_context_as_the_only_constructor_argument" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_polciy_using_SecurityPolicyBase.Should_get_context_from_external_service_locator" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_polciy_using_SecurityPolicyBase.Should_throw_when_context_can_not_be_created_or_resolved" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_enforcing_security_for_a_DelegatePolicy" executed="True" result="Success" success="True" time="0.317" asserts="0">
+                    <categories>
+                      <category name="DelegatePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_DelegatePolicy.Should_be_successful_when_delegate_returns_success" executed="True" result="Success" success="True" time="0.294" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_DelegatePolicy.Should_not_be_successful_when_delegate_returns_failure" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_DelegatePolicy.Should_pass_wrapped_security_context_to_delegate" executed="True" result="Success" success="True" time="0.017" asserts="3" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_enforcing_security_for_a_DenyAnonymousAccessPolicy" executed="True" result="Success" success="True" time="0.005" asserts="0">
+                    <categories>
+                      <category name="DenyAnonymousAccessPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_DenyAnonymousAccessPolicy.Should_be_successful_when_the_user_is_authenticated" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_DenyAnonymousAccessPolicy.Should_not_be_successful_when_the_user_is_anonymous" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_enforcing_security_for_a_DenyAuthenticatedAccessPolicy" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                    <categories>
+                      <category name="DenyAuthenticatedAccessPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_DenyAuthenticatedAccessPolicy.Should_be_successful_when_the_user_is_anonymous" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_DenyAuthenticatedAccessPolicy.Should_not_be_successful_when_the_user_is_authenticated" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_enforcing_security_for_a_IgnorePolicy" executed="True" result="Success" success="True" time="0.012" asserts="0">
+                    <categories>
+                      <category name="IgnorePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_IgnorePolicy.Should_be_successful_when_isAuthenticated_is_false" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_IgnorePolicy.Should_be_successful_when_isAuthenticated_is_true" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_IgnorePolicy.Should_be_successful_when_roles_are_passed" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_IgnorePolicy.Should_be_successful_when_roles_is_empty" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_IgnorePolicy.Should_be_successful_when_roles_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_enforcing_security_for_a_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.012" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_RequireAllRolesPolicy.Should_be_successful_when_isAuthenticated_is_true_and_user_has_all_required_roles" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_RequireAllRolesPolicy.Should_not_be_successful_when_isAuthenticated_is_false" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_RequireAllRolesPolicy.Should_not_be_successful_when_isAuthenticated_is_true_and_roles_are_null" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_RequireAllRolesPolicy.Should_not_be_successful_when_isAuthenticated_is_true_and_roles_does_not_match" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_enforcing_security_for_a_RequireRolePolicy" executed="True" result="Success" success="True" time="0.012" asserts="0">
+                    <categories>
+                      <category name="RequireRolePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_RequireRolePolicy.Should_be_successful_when_isAuthenticated_is_true_and_user_has_at_least_one_matching_role" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_RequireRolePolicy.Should_not_be_successful_when_isAuthenticated_is_false" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_RequireRolePolicy.Should_not_be_successful_when_isAuthenticated_is_true_and_roles_are_null" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_enforcing_security_for_a_RequireRolePolicy.Should_not_be_successful_when_isAuthenticated_is_true_and_roles_does_not_match" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_getting_the_hash_code_for_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.010" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_hash_code_for_RequireAllRolesPolicy.Should_be_the_same" executed="True" result="Success" success="True" time="0.003" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_hash_code_for_RequireAllRolesPolicy.Should_not_be_the_same_when_roles_count_differ" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_hash_code_for_RequireAllRolesPolicy.Should_not_be_the_same_when_roles_differ" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_hash_code_for_RequireAllRolesPolicy.Should_not_be_the_same_when_types_differ" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_getting_the_hash_code_for_RequireRolePolicy" executed="True" result="Success" success="True" time="0.009" asserts="0">
+                    <categories>
+                      <category name="RequireRolePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_hash_code_for_RequireRolePolicy.Should_be_the_same" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_hash_code_for_RequireRolePolicy.Should_not_be_the_same_when_roles_count_differ" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_hash_code_for_RequireRolePolicy.Should_not_be_the_same_when_roles_differ" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_hash_code_for_RequireRolePolicy.Should_not_be_the_same_when_types_differ" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_getting_the_name_of_a_DelegatePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="DelegatePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_name_of_a_DelegatePolicy.Should_return_expected_name" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_getting_the_required_roles_for_a_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_required_roles_for_a_RequireAllRolesPolicy.Should_return_expected_roles" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_getting_the_required_roles_for_a_RequireRolePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="RequireRolePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_getting_the_required_roles_for_a_RequireRolePolicy.Should_return_expected_roles" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_loading_a_LazySecurityPolicy" executed="True" result="Success" success="True" time="0.014" asserts="0">
+                    <categories>
+                      <category name="LazySecurityPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_loading_a_LazySecurityPolicy.Should_handle_loading_policy_from_container" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_loading_a_LazySecurityPolicy.Should_handle_loading_policy_with_empty_constructor" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_loading_a_LazySecurityPolicy.Should_handle_loading_policy_with_empty_constructor_based_on_SecurityPolicyBase" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.Policy.When_loading_a_LazySecurityPolicy.Should_return_null_when_loading_policy_with_constructor_arguments" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_an_array_with_one_required_role_to_the_constructor_of_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_an_array_with_one_required_role_to_the_constructor_of_RequireAllRolesPolicy.Should_not_throw" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_an_array_with_one_required_role_to_the_constructor_of_RequireRolePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="RequireRolePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_an_array_with_one_required_role_to_the_constructor_of_RequireRolePolicy.Should_not_throw" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_an_empty_array_to_the_constructor_of_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_an_empty_array_to_the_constructor_of_RequireAllRolesPolicy.Should_throw_ArgumentException" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_an_empty_array_to_the_constructor_of_RequireRolePolicy" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                    <categories>
+                      <category name="RequireRolePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_an_empty_array_to_the_constructor_of_RequireRolePolicy.Should_throw_ArgumentException" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_empty_string_as_name_to_the_constructor_of_DelegatePolicy" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                    <categories>
+                      <category name="DelegatePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_empty_string_as_name_to_the_constructor_of_DelegatePolicy.Should_throw_ArgumentException" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_null_as_name_to_the_constructor_of_DelegatePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="DelegatePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_null_as_name_to_the_constructor_of_DelegatePolicy.Should_throw_ArgumentException" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_null_as_policy_delegate_to_the_constructor_of_DelegatePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="DelegatePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_null_as_policy_delegate_to_the_constructor_of_DelegatePolicy.Should_throw_ArgumentNullException" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_null_as_violation_handler_delegate_to_the_constructor_of_DelegatePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="DelegatePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_null_as_violation_handler_delegate_to_the_constructor_of_DelegatePolicy.Should_not_have_delegate_set_for_violation_handler" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_null_to_the_constructor_of_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="RequireAllRolesPolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_null_to_the_constructor_of_RequireAllRolesPolicy.Should_throw_ArgumentNullException" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_passing_null_to_the_constructor_of_RequireRolePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="RequireRolePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_passing_null_to_the_constructor_of_RequireRolePolicy.Should_throw_ArgumentNullException" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_setting_the_policy_delegate_of_a_DelegatePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="DelegatePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_setting_the_policy_delegate_of_a_DelegatePolicy.Should_have_expected_delegate" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_setting_the_violation_handler_delegate_of_a_DelegatePolicy" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                    <categories>
+                      <category name="DelegatePolicySpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.Policy.When_setting_the_violation_handler_delegate_of_a_DelegatePolicy.Should_have_expected_delegate" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="Namespace" name="ServiceLocation" executed="True" result="Success" success="True" time="0.625" asserts="0">
+                <results>
+                  <test-suite type="Namespace" name="LifeCycles" executed="True" result="Success" success="True" time="0.089" asserts="0">
+                    <results>
+                      <test-suite type="TestFixture" name="When_checking_if_HttpContext_is_available_to_HttpContextLifecycle" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                        <categories>
+                          <category name="HttpContextLifecycleSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_checking_if_HttpContext_is_available_to_HttpContextLifecycle.Should_return_false_when_not_available" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_checking_if_HttpSession_is_available_for_HttpSessionLifecycle" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                        <categories>
+                          <category name="HttpSessionLifecycleSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_checking_if_HttpSession_is_available_for_HttpSessionLifecycle.Should_return_false_when_not_available" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_getting_the_cache_from_HttpContextLifecycle" executed="True" result="Success" success="True" time="0.009" asserts="0">
+                        <categories>
+                          <category name="HttpContextLifecycleSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HttpContextLifecycle.Should_return_existing_cache_when_context_is_available" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HttpContextLifecycle.Should_return_new_cache_when_context_is_available" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HttpContextLifecycle.Should_throw_when_context_is_not_available" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HttpContextLifecycle.Should_try_to_get_cache_from_context_when_context_is_available" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_getting_the_cache_from_HttpSessionLifecycle" executed="True" result="Success" success="True" time="0.009" asserts="0">
+                        <categories>
+                          <category name="HttpSessionLifecycleSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HttpSessionLifecycle.Should_return_existing_cache_when_session_is_available" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HttpSessionLifecycle.Should_return_new_cache_when_session_is_available" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HttpSessionLifecycle.Should_throw_when_session_is_not_available" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HttpSessionLifecycle.Should_try_to_get_cache_from_session_when_session_is_available" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_getting_the_cache_from_HybridHttpContextLifecycle" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                        <categories>
+                          <category name="HybridHttpContextLifecycleSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HybridHttpContextLifecycle.Should_return_cache_when_context_is_available" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HybridHttpContextLifecycle.Should_return_cache_when_context_is_not_available" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_getting_the_cache_from_HybridHttpSessionLifecycle" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                        <categories>
+                          <category name="HybridHttpSessionLifecycleSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HybridHttpSessionLifecycle.Should_return_cache_when_context_is_available" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_HybridHttpSessionLifecycle.Should_return_cache_when_session_is_not_available" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_getting_the_cache_from_ThreadLocalStorageLifecycle" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                        <categories>
+                          <category name="ThreadLocalStorageLifecycleSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_getting_the_cache_from_ThreadLocalStorageLifecycle.Should_get_different_caches_for_each_thread" executed="True" result="Success" success="True" time="0.003" asserts="8" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_setting_an_object_in_the_ObjectCache" executed="True" result="Success" success="True" time="0.040" asserts="0">
+                        <categories>
+                          <category name="ObjectCacheSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_setting_an_object_in_the_ObjectCache.Should_dispose_IDisposable_instances_when_cleared" executed="True" result="Success" success="True" time="0.035" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_setting_an_object_in_the_ObjectCache.Should_not_add_to_cache_when_instance_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_setting_an_object_in_the_ObjectCache.Should_throw_when_key_is_not_unique" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite type="TestFixture" name="When_using_NullObjectCache" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                        <categories>
+                          <category name="NullObjectCacheSpec" />
+                        </categories>
+                        <results>
+                          <test-case name="FluentSecurity.Specification.ServiceLocation.LifeCycles.When_using_NullObjectCache.Shoul_always_return_null" executed="True" result="Success" success="True" time="0.000" asserts="2" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_creating_a_new_servicelocator" executed="True" result="Success" success="True" time="0.462" asserts="0">
+                    <categories>
+                      <category name="ServiceLocatorSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_a_new_servicelocator.Should_have_single_singleton_instance_of_IPolicyViolationHandler" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_a_new_servicelocator.Should_have_single_singleton_instance_of_ISecurityConfiguration" executed="True" result="Success" success="True" time="0.000" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_a_new_servicelocator.Should_have_single_singleton_instance_of_ISecurityHandler" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_a_new_servicelocator.Should_have_single_singleton_instance_of_IWhatDoIHaveBuilder" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_a_new_servicelocator.Should_have_single_transient_instance_of_IPolicyViolationHandlerSelector" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_a_new_servicelocator.Should_have_single_transient_instance_of_IRequestDescription" executed="True" result="Success" success="True" time="0.447" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_a_new_servicelocator.Should_have_single_transient_instance_of_ISecurityContext" executed="True" result="Success" success="True" time="0.000" asserts="3" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_creating_an_external_servicelocator" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                    <categories>
+                      <category name="ExternalServiceLocatorSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_an_external_servicelocator.Should_not_throw_when_servicessource_is_null" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_creating_an_external_servicelocator.Should_throw_when_servicessource_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_getting_the_lifecycle" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                    <categories>
+                      <category name="LifecycleExtensionsSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_getting_the_lifecycle.Should_always_return_the_same_instance_of_each_lifecycle" executed="True" result="Success" success="True" time="0.001" asserts="4" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_getting_the_lifecycle.Should_get_hybrid_http_context_lifecycle" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_getting_the_lifecycle.Should_get_hybrid_http_session_lifecycle" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_getting_the_lifecycle.Should_get_singleton_lifecycle" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_getting_the_lifecycle.Should_get_transient_lifecycle" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_resolving_an_instance_of_ISecurityContext" executed="True" result="Success" success="True" time="0.022" asserts="0">
+                    <categories>
+                      <category name="ServiceLocatorSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_resolving_an_instance_of_ISecurityContext.Should_not_throw_when_instance_is_registered_in_an_external_IoC_container" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_resolving_an_instance_of_ISecurityContext.Should_resolve_all_instances_using_ResolveAll_with_generic_type" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_resolving_an_instance_of_ISecurityContext.Should_resolve_all_instances_using_ResolveAll_with_type" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_resolving_an_instance_of_ISecurityContext.Should_resolve_single_instance_using_Resolve_with_generic_type" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_resolving_an_instance_of_ISecurityContext.Should_resolve_single_instance_using_Resolve_with_type" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_resolving_an_instance_of_ISecurityContext.Should_throw_when_no_authentication_status_mechanism_has_been_provided" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="When_using_the_container" executed="True" result="Success" success="True" time="0.025" asserts="0">
+                    <categories>
+                      <category name="ContainerSpec" />
+                    </categories>
+                    <results>
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_all_instances" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_instances_from_primary_source" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_single_instance_from_primary_source" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_singleton_and_transient_object" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_singleton_object" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_singleton_object_with_context" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_the_first_registered_instance_as_the_default_instance" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_transient_object" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_resolve_transient_object_with_context" executed="True" result="Success" success="True" time="0.002" asserts="6" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_return_empty_list_when_resolving_type_that_is_not_registered" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                      <test-case name="FluentSecurity.Specification.ServiceLocation.When_using_the_container.Should_throw_when_resolving_type_that_is_not_registered" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_conventionpolicycontainter_for_all_controllers_in_assembly_containing_type" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_conventionpolicycontainter_for_all_controllers_in_assembly_containing_type.Should_have_policycontainers_for_all_controllers_and_all_actions" executed="True" result="Success" success="True" time="0.005" asserts="13" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_conventionpolicycontainter_for_all_controllers_in_calling_assembly" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_conventionpolicycontainter_for_all_controllers_in_calling_assembly.Should_have_policycontainers_for_all_controllers_and_all_actions" executed="True" result="Success" success="True" time="0.001" asserts="13" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_conventionpolicycontainter_for_all_controllers_in_namespace_containing_type" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_conventionpolicycontainter_for_all_controllers_in_namespace_containing_type.Should_have_policycontainers_for_all_controllers_and_all_actions_in_namespace_of_ClassInInvcludeNamespace" executed="True" result="Success" success="True" time="0.004" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_adding_a_conventionpolicycontainter_for_all_controllers_in_namespace_containing_type.Should_have_policycontainers_for_all_controllers_and_all_actions_in_namespace_of_ClassInRootNamespace" executed="True" result="Success" success="True" time="0.001" asserts="4" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_conventionpolicycontainter_for_all_controllers_in_specific_assembly" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_conventionpolicycontainter_for_all_controllers_in_specific_assembly.Should_have_policycontainers_for_all_controllers_and_all_actions" executed="True" result="Success" success="True" time="0.001" asserts="13" />
+                  <test-case name="FluentSecurity.Specification.When_adding_a_conventionpolicycontainter_for_all_controllers_in_specific_assembly.Should_throw_when_assembly_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_conventionpolicycontainter_for_the_Blog_controller" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_conventionpolicycontainter_for_the_Blog_controller.Should_have_6_policycontainers" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_adding_a_conventionpolicycontainter_for_the_Blog_controller.Should_have_policycontainers_for_all_actions" executed="True" result="Success" success="True" time="0.002" asserts="6" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_DelegatePolicy_to_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.020" asserts="0">
+                <categories>
+                  <category name="PolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_DelegatePolicy_to_a_conventionpolicycontainer.Should_have_a_complex_DelegatePolicy" executed="True" result="Success" success="True" time="0.003" asserts="4" />
+                  <test-case name="FluentSecurity.Specification.When_adding_a_DelegatePolicy_to_a_conventionpolicycontainer.Should_have_a_simple_DelegatePolicy" executed="True" result="Success" success="True" time="0.016" asserts="5" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_DelegatePolicy_to_a_policycontainer" executed="True" result="Success" success="True" time="0.007" asserts="0">
+                <categories>
+                  <category name="PolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_DelegatePolicy_to_a_policycontainer.Should_have_a_complex_DelegatePolicy" executed="True" result="Success" success="True" time="0.003" asserts="4" />
+                  <test-case name="FluentSecurity.Specification.When_adding_a_DelegatePolicy_to_a_policycontainer.Should_have_a_simple_DelegatePolicy" executed="True" result="Success" success="True" time="0.003" asserts="5" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_DenyAnonymousAccessPolicy_to_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_DenyAnonymousAccessPolicy_to_a_conventionpolicycontainer.Should_have_a_DenyAnonymousAccessPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_DenyAnonymousAccessPolicy_to_a_policycontainer" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="PolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_DenyAnonymousAccessPolicy_to_a_policycontainer.Should_have_a_DenyAnonymousAccessPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_DenyAuthenticatedAccessPolicy_to_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_DenyAuthenticatedAccessPolicy_to_a_conventionpolicycontainer.Should_have_a_DenyAuthenticatedAccessPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_DenyAuthenticatedAccessPolicy_to_a_policycontainer" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="PolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_DenyAuthenticatedAccessPolicy_to_a_policycontainer.Should_have_a_DenyAuthenticatedAccessPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_IgnorePolicy_to_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_IgnorePolicy_to_a_conventionpolicycontainer.Should_have_a_IgnorePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_IgnorePolicy_to_a_conventionpolicycontainer_using_AllowAny" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_IgnorePolicy_to_a_conventionpolicycontainer_using_AllowAny.Should_have_a_IgnorePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_IgnorePolicy_to_a_policycontainer" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="PolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_IgnorePolicy_to_a_policycontainer.Should_have_a_IgnorePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_IgnorePolicy_to_a_policycontainer_using_AllowAny" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="PolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_IgnorePolicy_to_a_policycontainer_using_AllowAny.Should_have_a_IgnorePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_policy_of_T_to_a_policycontainer" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="PolicContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_policy_of_T_to_a_policycontainer.Should_have_a_lazy_policy_of_type_SomePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_policy_to_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_policy_to_a_conventionpolicycontainer.Should_add_lazy_policy_to_policycontainers" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_adding_a_policy_to_a_conventionpolicycontainer.Should_add_policy_to_policycontainers" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_policycontainter_for_Blog_Index" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_policycontainter_for_Blog_Index.Should_have_PolicyAppender_set_to_PolicyAppender" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_adding_a_policycontainter_for_Blog_Index.Should_have_policycontainer_for_Blog_Index" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_policycontainter_for_Blog_Index_and_AddPost" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_policycontainter_for_Blog_Index_and_AddPost.Should_have_policycontainer_for_Blog_Index_and_AddPost" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_RequireAllRolesPolicy_to_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_RequireAllRolesPolicy_to_a_conventionpolicycontainer.Should_have_a_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_RequireAllRolesPolicy_to_a_policycontainer" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="PolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_RequireAllRolesPolicy_to_a_policycontainer.Should_have_a_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_RequireRolePolicy_to_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_RequireRolePolicy_to_a_conventionpolicycontainer.Should_have_a_RequireRolePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_a_RequireRolePolicy_to_a_policycontainer" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="PolicyContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_a_RequireRolePolicy_to_a_policycontainer.Should_have_a_RequireRolePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_two_containers_with_the_same_controller_and_action_name" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="SecurityConfiguratorSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_two_containers_with_the_same_controller_and_action_name.Should_have_1_policycontainer" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_adding_two_policies_of_the_same_type_to_a_policycontainer" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="PolicContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_adding_two_policies_of_the_same_type_to_a_policycontainer.Should_have_1_policy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_calling_configure_on_security_configurator" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="SecurityConfiguratorSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_calling_configure_on_security_configurator.Should_return_current_configuration" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_calling_configure_with_ignore_missing_configuration" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="SecurityConfigurationSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_calling_configure_with_ignore_missing_configuration.Should_ignore_missing_configurations" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_calling_reset_on_security_configurator" executed="True" result="Success" success="True" time="0.221" asserts="0">
+                <categories>
+                  <category name="SecurityConfiguratorSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_calling_reset_on_security_configurator.Should_create_new_configuration_instance" executed="True" result="Success" success="True" time="0.220" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_calling_set_configuration_on_security_configurator_passing_null_as_the_argument" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="SecurityConfigurationSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_calling_set_configuration_on_security_configurator_passing_null_as_the_argument.Should_throw" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_clearing_the_cache_strategies_of_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_clearing_the_cache_strategies_of_a_conventionpolicycontainer.Should_clear_all_cache_strategies" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_clearing_the_cache_strategies_of_a_conventionpolicycontainer.Should_clear_all_cache_strategies_for_policy" executed="True" result="Success" success="True" time="0.004" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_clearing_the_cache_strategy" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_clearing_the_cache_strategy.Should_clear_all_cache_strategies" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_clearing_the_cache_strategy.Should_clear_all_cache_strategies_for_policy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_cache_key_for_a_policy_that_implements_ICacheKeyProvider" executed="True" result="Success" success="True" time="0.016" asserts="0">
+                <categories>
+                  <category name="PolicyResultCacheKeyBuilderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_a_policy_that_implements_ICacheKeyProvider.Should_be_PolicyResult_BlogController_Post_BlogEditorPolicy_1_when_custom_cache_key_is_1" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_a_policy_that_implements_ICacheKeyProvider.Should_be_PolicyResult_BlogController_Post_BlogEditorPolicy_2_when_custom_cache_key_is_2" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_a_policy_that_implements_ICacheKeyProvider.Should_be_PolicyResult_BlogController_Post_BlogEditorPolicy_3_when_custom_cache_key_is_whitespace_3_whitespace" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_a_policy_that_implements_ICacheKeyProvider.Should_be_PolicyResult_BlogController_Post_BlogEditorPolicy_when_custom_cache_key_is_empty" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_a_policy_that_implements_ICacheKeyProvider.Should_be_PolicyResult_BlogController_Post_BlogEditorPolicy_when_custom_cache_key_is_null" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_a_policy_that_implements_ICacheKeyProvider.Should_be_PolicyResult_BlogController_Post_BlogEditorPolicy_when_custom_cache_key_is_whitespace" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_cache_key_for_AdminController_Login_TestPolicy" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                <categories>
+                  <category name="PolicyResultCacheKeyBuilderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_AdminController_Login_TestPolicy.Should_be_PolicyResult_AdminController_Login_TestPolicy" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_AdminController_Login_TestPolicy.Should_be_PolicyResult_AdminController_star_TestPolicy" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_AdminController_Login_TestPolicy.Should_be_PolicyResult_star_star_TestPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_cache_key_for_BlogController_Post_BlogAdminPolicy" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                <categories>
+                  <category name="PolicyResultCacheKeyBuilderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_BlogController_Post_BlogAdminPolicy.Should_be_PolicyResult_BlogController_Post_BlogAdminPolicy" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_BlogController_Post_BlogAdminPolicy.Should_be_PolicyResult_BlogController_star_TestPolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_cache_key_for_BlogController_Post_BlogAdminPolicy.Should_be_PolicyResult_star_star_TestPolicy" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_HttpContextRequestDescription" executed="True" result="Success" success="True" time="0.184" asserts="0">
+                <categories>
+                  <category name="HttpContextRequestDescriptionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_HttpContextRequestDescription.Should_have_areaname_controllername_and_actionname" executed="True" result="Success" success="True" time="0.046" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_HttpContextRequestDescription.Should_have_controllername_and_actionname" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_HttpContextRequestDescription.Should_have_default_httpcontextprovider" executed="True" result="Success" success="True" time="0.129" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_HttpContextRequestDescription.Should_return_httpcontext_from_httpcontextprovider" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_new_ConfigurationExpression" executed="True" result="Success" success="True" time="0.005" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_ConfigurationExpression.Should_have_Advanced_set_to_AdvancedConfigurationExpression" executed="True" result="Success" success="True" time="0.000" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_ConfigurationExpression.Should_have_PolicyAppender_set_to_DefaultPolicyAppender" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_ConfigurationExpression.Should_not_contain_any_policycontainers" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_new_HandleSecurityAttribute_using_the_default_constructor" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="HandleSecurityAttributeSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_HandleSecurityAttribute_using_the_default_constructor.Should_have_SecurityHandler_set" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_new_HandleSecurityAttribute_using_the_overloaded_constructor" executed="True" result="Success" success="True" time="0.014" asserts="0">
+                <categories>
+                  <category name="HandleSecurityAttributeSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_HandleSecurityAttribute_using_the_overloaded_constructor.Should_have_SecurityHandler_set" executed="True" result="Success" success="True" time="0.013" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_new_SecurityConfiguration" executed="True" result="Success" success="True" time="0.005" asserts="0">
+                <categories>
+                  <category name="SecurityConfigurationSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_SecurityConfiguration.Should_have_advanced_configuration" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_SecurityConfiguration.Should_not_contain_any_policycontainers" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_SecurityConfiguration.Should_not_have_ServiceLocator" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_SecurityConfiguration.Should_not_ignore_missing_configurations" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_new_SecurityConfiguration_passing_null_as_the_argument" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="SecurityConfigurationSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_new_SecurityConfiguration_passing_null_as_the_argument.Should_throw" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_policy_result" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                <categories>
+                  <category name="PolicyResultSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_policy_result.Should_be_successful_and_have_no_message" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_policy_result.Should_be_unsuccessful_and_have_a_message" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_policy_result.Should_throw_when_null_is_passed" executed="True" result="Success" success="True" time="0.000" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_PolicyViolationException" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="PolicyViolationExceptionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_PolicyViolationException.Should_have_PolicyResult_PolicyType_and_Message_set" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_creating_a_security_context" executed="True" result="Success" success="True" time="0.013" asserts="0">
+                <categories>
+                  <category name="SecurityContextSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_creating_a_security_context.Should_create_security_context_from_configuration" executed="True" result="Success" success="True" time="0.005" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_security_context.Should_create_security_context_from_external_ioc" executed="True" result="Success" success="True" time="0.005" asserts="4" />
+                  <test-case name="FluentSecurity.Specification.When_creating_a_security_context.Should_throw_when_security_has_not_been_configured" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_deriving_from_policy_result" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                <categories>
+                  <category name="PolicyResultSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_deriving_from_policy_result.Should_be_successful_and_have_no_message" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_deriving_from_policy_result.Should_be_unsuccessful_and_have_a_message" executed="True" result="Success" success="True" time="0.001" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_enforcing_lazy_policies" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_enforcing_lazy_policies.Should_enforce_lazy_policy_with_cache_key_exactly_twice_during_execution_with_caching_on" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_lazy_policies.Should_load_lazy_policy_exactly_once_during_execution_and_caching_on" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_lazy_policies.Should_load_lazy_policy_exactly_twice_during_execution_with_caching_off" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_lazy_policies.Should_load_lazy_policy_with_cache_key_exactly_twice_during_execution_with_caching_off" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_lazy_policies.Should_load_lazy_policy_with_cache_key_exactly_twice_during_execution_with_caching_on" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_enforcing_policies" executed="True" result="Success" success="True" time="0.188" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies.Should_enforce_policies_with_context" executed="True" result="Success" success="True" time="0.040" asserts="0" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies.Should_invoke_the_isautheticated_and_roles_functions" executed="True" result="Success" success="True" time="0.104" asserts="0" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies.Should_return_results" executed="True" result="Success" success="True" time="0.007" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies.Should_stop_on_first_violation_and_return_1_result" executed="True" result="Success" success="True" time="0.006" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies.Should_stop_on_first_violation_and_return_2_results" executed="True" result="Success" success="True" time="0.005" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies.Should_throw_ConfigurationErrorsException_when_a_container_has_no_policies" executed="True" result="Success" success="True" time="0.018" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_enforcing_policies_with_default_cache_lifecycle_set" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies_with_default_cache_lifecycle_set.Should_use_cache_lifecycle_specified_when_adding_a_policy" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_enforcing_policies_with_default_cache_lifecycle_set_to_DoNotCache" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies_with_default_cache_lifecycle_set_to_DoNotCache.Should_return_unique_results" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_enforcing_policies_with_default_cache_lifecycle_set_to_PerHttpRequest" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies_with_default_cache_lifecycle_set_to_PerHttpRequest.Should_return_the_same_results" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_enforcing_policies_with_default_cache_lifecycle_set_to_PerHttpSession" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_enforcing_policies_with_default_cache_lifecycle_set_to_PerHttpSession.Should_return_the_same_results" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_executing_OnActionExecuting" executed="True" result="Success" success="True" time="0.456" asserts="0">
+                <categories>
+                  <category name="HandleSecurityAttributeSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_executing_OnActionExecuting.Should_add_route_values_to_current_security_context" executed="True" result="Success" success="True" time="0.443" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_executing_OnActionExecuting.Should_call_HandleSecurityFor_with_the_controllername_Blog_and_actionname_Index_passing_the_current_security_context" executed="True" result="Success" success="True" time="0.012" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_executing_OnActionExecuting_and_the_security_handler_returns_an_action_result" executed="True" result="Success" success="True" time="0.009" asserts="0">
+                <categories>
+                  <category name="HandleSecurityAttributeSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_executing_OnActionExecuting_and_the_security_handler_returns_an_action_result.Should_set_the_result_of_the_filtercontext" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_getting_the_action_name" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                <categories>
+                  <category name="ExtensionsSpecs" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_getting_the_action_name.Should_handle_InstanceMethodCallExpression" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_getting_the_action_name.Should_handle_UnaryExpression" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_getting_the_are_name_from_route_data" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="ExtensionsSpecs" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_getting_the_are_name_from_route_data.Should_return_the_are_name_from_data_tokens" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_getting_the_area_name_from_route_base" executed="True" result="Success" success="True" time="0.014" asserts="0">
+                <categories>
+                  <category name="ExtensionsSpecs" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_getting_the_area_name_from_route_base.Should_return_emtpy_string_when_DataTokens_is_null" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_getting_the_area_name_from_route_base.Should_return_the_are_name_from_data_tokens" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_getting_the_area_name_from_route_base.Should_return_the_are_name_from_IRouteWithArea" executed="True" result="Success" success="True" time="0.008" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_getting_the_container" executed="True" result="Success" success="True" time="0.007" asserts="0">
+                <categories>
+                  <category name="ExtensionsSpecs" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_getting_the_container.Should_return_a_container_for_controller_actionthatdoesexist" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_getting_the_container.Should_return_a_container_for_controller_ActionThatDoesExist" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_getting_the_container.Should_return_a_container_for_Controller_actionthatdoesexist" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_getting_the_container.Should_return_a_container_for_Controller_ActionThatDoesExist" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_getting_the_container.Should_return_null_for_Controller_ActionThatDoesNotExists" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_getting_the_policy_type_of_an_ISecurityPolicy" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="ExtensionsSpecs" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_getting_the_policy_type_of_an_ISecurityPolicy.Should_retun_the_type_of_lazy_policies" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_getting_the_policy_type_of_an_ISecurityPolicy.Should_retun_the_type_of_normal_policies" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_handling_security" executed="True" result="Success" success="True" time="0.015" asserts="0">
+                <categories>
+                  <category name="SecurityHandlerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_handling_security.Should_not_throw_when_when_controllername_is_Blog_and_actionname_is_Index" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                  <test-case name="FluentSecurity.Specification.When_handling_security.Should_resolve_policy_violation_handler_for_exception_from_container" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_handling_security.Should_throw_ArgumentException_when_actionname_is_null_or_empty" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_handling_security.Should_throw_ArgumentException_when_controllername_is_null_or_empty" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_handling_security.Should_throw_ArgumentNulllException_when_security_context_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_handling_security_for_a_controller_and_action_that_has_no_container" executed="True" result="Success" success="True" time="0.007" asserts="0">
+                <categories>
+                  <category name="SecurityHandlerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_handling_security_for_a_controller_and_action_that_has_no_container.Should_not_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_true" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                  <test-case name="FluentSecurity.Specification.When_handling_security_for_a_controller_and_action_that_has_no_container.Should_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_false" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_handling_security_for_a_controlleraction_with_DenyAnonymousAccess" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                <categories>
+                  <category name="SecurityHandlerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_handling_security_for_a_controlleraction_with_DenyAnonymousAccess.Should_not_throw_exception_when_the_user_is_authenticated" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                  <test-case name="FluentSecurity.Specification.When_handling_security_for_a_controlleraction_with_DenyAnonymousAccess.Should_throw_when_the_user_is_anonymous" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_handling_security_for_a_controlleraction_with_RequireRole_Owner" executed="True" result="Success" success="True" time="0.011" asserts="0">
+                <categories>
+                  <category name="SecurityHandlerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_handling_security_for_a_controlleraction_with_RequireRole_Owner.Should_not_throw_exception_when_the_user_is_authenticated_with_role_Owner" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                  <test-case name="FluentSecurity.Specification.When_handling_security_for_a_controlleraction_with_RequireRole_Owner.Should_throw_when_the_user_does_not_have_the_role_Owner" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_handling_security_for_a_controlleraction_with_RequireRole_Owner.Should_throw_when_the_user_is_anonymous" executed="True" result="Success" success="True" time="0.003" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_add_policies_before_specifying_a_function_returning_roles" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_add_policies_before_specifying_a_function_returning_roles.Should_throw_ConfigurationErrorsException" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_check_what_I_have" executed="True" result="Success" success="True" time="0.013" asserts="0">
+                <categories>
+                  <category name="SecurityConfigurationSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_check_what_I_have.Should_return_the_current_configuration" executed="True" result="Success" success="True" time="0.012" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_configure_fluent_security_for_Blog_Index_and_Blog_AddPost" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                <categories>
+                  <category name="SecurityConfiguratorSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_configure_fluent_security_for_Blog_Index_and_Blog_AddPost.Should_have_policycontainer_for_Blog_AddPost" executed="True" result="Success" success="True" time="0.003" asserts="5" />
+                  <test-case name="FluentSecurity.Specification.When_I_configure_fluent_security_for_Blog_Index_and_Blog_AddPost.Should_have_policycontainer_for_Blog_Index" executed="True" result="Success" success="True" time="0.002" asserts="5" />
+                  <test-case name="FluentSecurity.Specification.When_I_configure_fluent_security_for_Blog_Index_and_Blog_AddPost.Should_have_two_policycontainers" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_create_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_create_a_conventionpolicycontainer.Should_not_throw_when_policycontainers_is_empty" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="FluentSecurity.Specification.When_I_create_a_conventionpolicycontainer.Should_throw_ArgumentNullException_when_policycontainers_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_create_a_valid_PolicyContainer" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_create_a_valid_PolicyContainer.Should_have_action_name_set_to_SomeAction" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_I_create_a_valid_PolicyContainer.Should_have_controller_name_set_to_SomeController" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_I_create_a_valid_PolicyContainer.Should_have_PolicyAppender_set_to_DefaultPolicyAppender" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_create_an_invalid_policycontainer" executed="True" result="Success" success="True" time="0.007" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_create_an_invalid_policycontainer.Should_throw_ArgumentException_when_actionname_is_empty" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_I_create_an_invalid_policycontainer.Should_throw_ArgumentException_when_actionname_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_I_create_an_invalid_policycontainer.Should_throw_ArgumentException_when_controllername_is_empty" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_I_create_an_invalid_policycontainer.Should_throw_ArgumentException_when_policy_manager_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_I_create_an_invalid_policycontainer.Should_throw_ArgumentException_when_the_controllername_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_pass_null_to_GetAuthenticationStatusFrom" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_pass_null_to_GetAuthenticationStatusFrom.Should_throw_ArgumentNullException" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_pass_null_to_GetRolesFrom" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_pass_null_to_GetRolesFrom.Should_throw_ArgumentNullException" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_set_external_servicelocators" executed="True" result="Success" success="True" time="0.028" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_set_external_servicelocators.Should_resolve_all_instances_from_services_locator" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_I_set_external_servicelocators.Should_resolve_all_instances_from_services_locator_and_resolve_single_instance_from_single_service_locator" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_I_set_external_servicelocators.Should_resolve_everything_from_implementation_of_ISecurityServiceLocator" executed="True" result="Success" success="True" time="0.015" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_I_set_external_servicelocators.Should_resolve_single_instance_from_services_locator" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_I_set_external_servicelocators.Should_throw_when_securityservicelocator_is_null" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                  <test-case name="FluentSecurity.Specification.When_I_set_external_servicelocators.Should_throw_when_serviceslocator_is_null" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_set_policyappender_to_instance_of_DefaultPolicyAppender" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_set_policyappender_to_instance_of_DefaultPolicyAppender.Should_have_policyappender_set_to_instance_of_DefaultPolicyAppender" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_set_policyappender_to_null" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_set_policyappender_to_null.Should_throw_ArgumentNullException" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_set_servicelocator_to_null" executed="True" result="Success" success="True" time="0.001" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_set_servicelocator_to_null.Should_throw_ArgumentNullException" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_I_specify_a_default_policy_violation_handler" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                <categories>
+                  <category name="ConfigurationExpressionSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_I_specify_a_default_policy_violation_handler.Should_clear_conflicting_conventions_and_add_convention_for_lazy_default_PolicyViolationHandler" executed="True" result="Success" success="True" time="0.004" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_I_specify_a_default_policy_violation_handler.Should_clear_conflicting_conventions_and_add_convention_for_lazy_default_PolicyViolationHandler_instance" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_matching_generic_types" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                <categories>
+                  <category name="ExtensionsSpecs" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_matching_generic_types.Should_be_false_when_obj_is_not_a_generic_type" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_matching_generic_types.Should_be_false_when_obj_is_not_matching_generic_type" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_matching_generic_types.Should_be_false_when_obj_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_matching_generic_types.Should_be_true_when_obj_is_not_matching_generic_type" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_matching_generic_types.Should_throw_when_generic_type_argument_is_not_a_generic_type" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_removing_a_policies_from_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.044" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_removing_a_policies_from_a_conventionpolicycontainer.Should_delegate_work_to_policycontainers" executed="True" result="Success" success="True" time="0.044" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_removing_policies_from_a_policy_container" executed="True" result="Success" success="True" time="0.027" asserts="0">
+                <categories>
+                  <category name="PolicContainerExtensionsSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_not_remove_any_policies" executed="True" result="Success" success="True" time="0.004" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_not_remove_lazy_policy_not_matching_predicate" executed="True" result="Success" success="True" time="0.004" asserts="4" />
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_not_remove_policies_not_matching_predicate" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_remove_all_policies" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_remove_lazy_policy" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_remove_lazy_policy_matching_predicate" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_remove_policy_matching_predicate" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_remove_policy1" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_removing_policies_from_a_policy_container.Should_remove_policy2" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_setting_the_cache_lifecycle" executed="True" result="Success" success="True" time="0.016" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle.Should_add_policyresult_cache_strategies_for_each_policy_type" executed="True" result="Success" success="True" time="0.003" asserts="11" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle.Should_add_policyresult_cache_strategy_for_DenyAnonymousAccessPolicy_with_lifecycle_set_to_PerHttpRequest" executed="True" result="Success" success="True" time="0.001" asserts="5" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle.Should_add_policyresult_cache_strategy_for_RequireRolePolicy_with_lifecycle_set_to_DoNotCache" executed="True" result="Success" success="True" time="0.002" asserts="5" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle.Should_add_policyresult_cache_strategy_for_RequireRolePolicy_with_lifecycle_set_to_PerHttpRequest" executed="True" result="Success" success="True" time="0.001" asserts="5" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle.Should_add_policyresult_cache_strategy_for_RequireRolePolicy_with_lifecycle_set_to_PerHttpSession" executed="True" result="Success" success="True" time="0.001" asserts="5" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle.Should_update_existing_policyresult_cache_strategies" executed="True" result="Success" success="True" time="0.002" asserts="5" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_setting_the_cache_lifecycle_and_cache_level" executed="True" result="Success" success="True" time="0.007" asserts="0">
+                <categories>
+                  <category name="PolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle_and_cache_level.Should_add_policyresult_cache_strategy_for_RequireRolePolicy_with_level_set_to_Controller" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle_and_cache_level.Should_add_policyresult_cache_strategy_for_RequireRolePolicy_with_level_set_to_ControllerAction" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle_and_cache_level.Should_add_policyresult_cache_strategy_for_RequireRolePolicy_with_level_set_to_Policy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle_and_cache_level.Should_update_existing_policyresult_cache_strategies" executed="True" result="Success" success="True" time="0.002" asserts="5" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_setting_the_cache_lifecycle_and_cache_level_for_a_policy_on_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle_and_cache_level_for_a_policy_on_a_conventionpolicycontainer.Should_add_policyresult_cache_strategy_to_policycontainers" executed="True" result="Success" success="True" time="0.006" asserts="9" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_setting_the_cache_lifecycle_for_a_policy_on_a_conventionpolicycontainer" executed="True" result="Success" success="True" time="0.005" asserts="0">
+                <categories>
+                  <category name="ConventionPolicyContainerSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_setting_the_cache_lifecycle_for_a_policy_on_a_conventionpolicycontainer.Should_add_policyresult_cache_strategy_to_policycontainers" executed="True" result="Success" success="True" time="0.005" asserts="9" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_setting_the_configuration_for_fluent_security" executed="True" result="Success" success="True" time="0.004" asserts="0">
+                <categories>
+                  <category name="SecurityConfiguratorSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_setting_the_configuration_for_fluent_security.Should_have_configuration" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_setting_the_configuration_for_fluent_security.Should_throw_ArgumentNullException_when_configuration_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_setting_the_configuration_to_null" executed="True" result="Success" success="True" time="0.002" asserts="0">
+                <categories>
+                  <category name="SecurityConfigurationSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_setting_the_configuration_to_null.Should_throw" executed="True" result="Success" success="True" time="0.002" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_updating_policies" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="DefaultPolicyAppenderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_updating_policies.Should_throw_ArgumentNullException_when_policies_is_null" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_updating_policies.Should_throw_ArgumentNullException_when_policy_to_add_is_null" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_updating_policies_with_a_DenyAnonymousAccessPolicy" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="DefaultPolicyAppenderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_a_DenyAnonymousAccessPolicy.Should_add_DenyAnonymousAccessPolicy" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_a_DenyAnonymousAccessPolicy.Should_remove_all_existing_policies" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_updating_policies_with_a_DenyAuthenticatedAccessPolicy" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="DefaultPolicyAppenderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_a_DenyAuthenticatedAccessPolicy.Should_add_DenyAuthenticatedAccessPolicy" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_a_DenyAuthenticatedAccessPolicy.Should_remove_all_existing_policies" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_updating_policies_with_a_RequireAllRolesPolicy" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="DefaultPolicyAppenderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_a_RequireAllRolesPolicy.Should_add_RequireRolePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_a_RequireAllRolesPolicy.Should_remove_all_existing_policies" executed="True" result="Success" success="True" time="0.000" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_updating_policies_with_a_RequireRolePolicy" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="DefaultPolicyAppenderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_a_RequireRolePolicy.Should_add_RequireRolePolicy" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_a_RequireRolePolicy.Should_remove_all_existing_policies" executed="True" result="Success" success="True" time="0.000" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_updating_policies_with_an_IgnorePolicy" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                <categories>
+                  <category name="DefaultPolicyAppenderSpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_an_IgnorePolicy.Should_add_ignorepolicy" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_updating_policies_with_an_IgnorePolicy.Should_remove_all_existing_policies" executed="True" result="Success" success="True" time="0.001" asserts="2" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="When_using_the_ExceptionFactory" executed="True" result="Success" success="True" time="0.012" asserts="0">
+                <categories>
+                  <category name="ExceptionFactorySpec" />
+                </categories>
+                <results>
+                  <test-case name="FluentSecurity.Specification.When_using_the_ExceptionFactory.Should_create_ConfigurationErrorException" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_using_the_ExceptionFactory.Should_create_request_description_string_with_arename" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_using_the_ExceptionFactory.Should_create_request_description_string_with_no_arename" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="FluentSecurity.Specification.When_using_the_ExceptionFactory.Should_have_request_description_provider" executed="True" result="Success" success="True" time="0.002" asserts="1" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
