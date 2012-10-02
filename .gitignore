@@ -5,5 +5,13 @@
 CommonAssemblyInfo.cs
 
 /Build/CodeCoverage/
+/Build/Output/
 NCover3.lic
 FluentSecurity.1.1.dotCover
+
+bin
+obj
+*.user
+*.suo
+_ReSharper.*
+packages/*/
