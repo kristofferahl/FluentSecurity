@@ -89,8 +89,22 @@ namespace FluentSecurity
 		public static string GetActionName(this LambdaExpression actionExpression)
 		{
 			var expression = (MethodCallExpression)(actionExpression.Body is UnaryExpression ? ((UnaryExpression)actionExpression.Body).Operand : actionExpression.Body);
-			return expression.Method.Name;
+            return expression.Method.GetActionName();
 		}
+
+        private static Type ActionNameAttributeType = typeof(ActionNameAttribute);
+
+        /// <summary>
+        /// Gets action name for the specified action method considering ActionName attribute
+        /// </summary>
+        public static String GetActionName(this MethodInfo actionMethod)
+        {
+            if (Attribute.IsDefined(actionMethod, ActionNameAttributeType))
+            {
+                return (Attribute.GetCustomAttribute(actionMethod, typeof(ActionNameAttribute)) as ActionNameAttribute).Name;
+            }
+            return actionMethod.Name;
+        }
 
 		/// <summary>
 		/// Gets the actual type of the ISecurityPolicy. Takes care of checking for lazy policies.

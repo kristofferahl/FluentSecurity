@@ -7,3 +7,29 @@ CommonAssemblyInfo.cs
 /Build/CodeCoverage/
 NCover3.lic
 FluentSecurity.1.1.dotCover
+
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Visual Studio files
+*.[Oo]bj
+*.pdb
+*.user
+*.suo
+*.[Cc]ache
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+
+#Tooling
+_ReSharper*/
+*.resharper
+[Tt]est[Rr]esult*
+
+#Project files
+[Bb]uild/[Oo]utput
+[Bb]uild/[Rr]eports
+[Bb]uild/[Pp]ackages
+[Ll]ogs/
