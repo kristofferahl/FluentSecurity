@@ -126,6 +126,63 @@ namespace FluentSecurity.Specification
 		}
 	}
 
+    [TestFixture]
+    [Category("ConfigurationExpressionSpec")]
+    public class When_adding_a_conventionpolicycontainer_for_the_Blog_controller_that_defines_additional_name_patterns
+    {
+
+        private ConfigurationExpression _configurationExpression;
+        private string proxyNamingFormat = "{0}Proxy";
+
+
+        [SetUp]
+        public void SetUp()
+        {
+            // Arrange
+            _configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+        }
+
+        private void Because()
+        {
+            _configurationExpression.For<BlogController>(proxyNamingFormat);
+        }
+
+        [Test]
+        public void Should_have_policycontainers_for_all_actions()
+        {
+            // Arrange
+            var expectedControllerName = NameHelper.Controller<BlogController>();
+            var expectedControllerProxyName = string.Format(proxyNamingFormat, expectedControllerName);
+
+            // Act
+            Because();
+
+            // Assert
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "Index"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerProxyName, "Index"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "ListPosts"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerProxyName, "ListPosts"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "AddPost"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerProxyName, "AddPost"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "EditPost"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerProxyName, "EditPost"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "DeletePost"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerProxyName, "DeletePost"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerName, "AjaxList"), Is.Not.Null);
+            Assert.That(_configurationExpression.GetContainerFor(expectedControllerProxyName, "AjaxList"), Is.Not.Null);
+        }
+
+        [Test]
+        public void Should_have_12_policycontainers()
+        {
+            // Act
+            Because();
+
+            // Assert
+            Assert.That(_configurationExpression.ToList().Count, Is.EqualTo(12));
+        }
+    }
+
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
 	public class When_adding_a_conventionpolicycontainter_for_the_Blog_controller
