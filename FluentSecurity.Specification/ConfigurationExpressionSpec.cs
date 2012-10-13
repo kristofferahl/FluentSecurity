@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using System.Web.Mvc;
 using FluentSecurity.Configuration;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Specification.Helpers;
@@ -107,6 +108,37 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_policycontainter_for_aliased_action
+	{
+		[Test]
+		public void Should_have_policycontainer_for_AliasedController_ActualAction()
+		{
+			// Arrange
+			var configurationExpression = new ConfigurationExpression();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<AliasedController>(x => x.ActualAction());
+
+			// Assert
+			var policyContainer = configurationExpression.PolicyContainers.First();
+
+			Assert.That(policyContainer.ActionName, Is.EqualTo("AliasedAction"));
+			Assert.That(configurationExpression.PolicyContainers.Count, Is.EqualTo(1));
+		}
+
+		private class AliasedController : Controller
+		{
+			[ActionName("AliasedAction")]
+			public ActionResult ActualAction()
+			{
+				return null;
+			}
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
 	public class When_adding_a_policycontainter_for_Blog_Index_and_AddPost
 	{
 		[Test]
@@ -172,6 +204,37 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(_configurationExpression.PolicyContainers.Count, Is.EqualTo(6));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_controller_with_aliased_action
+	{
+		[Test]
+		public void Should_have_policycontainer_for_AliasedController_ActualAction()
+		{
+			// Arrange
+			var configurationExpression = new ConfigurationExpression();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<AliasedController>();
+
+			// Assert
+			var policyContainer = configurationExpression.PolicyContainers.First();
+
+			Assert.That(policyContainer.ActionName, Is.EqualTo("AliasedAction"));
+			Assert.That(configurationExpression.PolicyContainers.Count, Is.EqualTo(1));
+		}
+
+		private class AliasedController : Controller
+		{
+			[ActionName("AliasedAction")]
+			public ActionResult ActualAction()
+			{
+				return null;
+			}
 		}
 	}
 

@@ -18,7 +18,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_return_0_expectation_groups_when_expressions_are_empty()
+		public void Should_return_0_expectation_groups_when_expressions_are_empty()
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression>();
@@ -32,7 +32,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_return_1_expectation_groups_for_1_expression()
+		public void Should_return_1_expectation_groups_for_1_expression()
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression> { new ExpectationExpression<AdminController>(x => x.Login()) };
@@ -46,7 +46,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_return_4_expectation_groups_for_1_expression()
+		public void Should_return_4_expectation_groups_for_1_expression()
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression> { new ExpectationExpression<AdminController>() };
@@ -60,7 +60,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_return_4_expectation_groups_for_2_expressions()
+		public void Should_return_4_expectation_groups_for_2_expressions()
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression>
@@ -78,7 +78,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_return_5_expectation_groups_for_2_expressions()
+		public void Should_return_5_expectation_groups_for_2_expressions()
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression>
@@ -96,7 +96,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_return_8_expectation_groups_for_2_expressions()
+		public void Should_return_9_expectation_groups_for_2_expressions()
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression>
@@ -110,7 +110,7 @@ namespace FluentSecurity.TestHelper.Specification
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);
 
 			// Assert
-			Assert.That(expectationGroups.Count(), Is.EqualTo(8));
+			Assert.That(expectationGroups.Count(), Is.EqualTo(9));
 		}
 	}
 }

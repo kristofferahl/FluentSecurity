@@ -42,7 +42,7 @@ namespace FluentSecurity.Specification.Helpers
 
 		private static string GetActionName(this LambdaExpression actionExpression)
 		{
-			return ((MethodCallExpression)actionExpression.Body).Method.Name;
+			return ((MethodCallExpression)actionExpression.Body).Method.GetActionName();
 		}
 	}
 }

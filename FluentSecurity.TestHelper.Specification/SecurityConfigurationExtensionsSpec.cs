@@ -57,6 +57,30 @@ namespace FluentSecurity.TestHelper.Specification
 
 			Assert.That(results.All(x => x.ExpectationsMet), results.ErrorMessages());
 		}
+		
+		[Test]
+		public void Should_verify_expectations_for_aliased_action()
+		{
+			SecurityConfigurator.Configure(configuration  => configuration.For<SampleController>(a => a.ActualAction()).DenyAnonymousAccess());
+			var policyExpectations = new PolicyExpectations();
+			
+			policyExpectations.For<SampleController>(a => a.ActualAction()).Has<DenyAnonymousAccessPolicy>();
+			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+			
+			Assert.That(results.Valid(), results.ErrorMessages());
+		}
+
+		[Test]
+		public void Should_verify_expectations_for_aliased_action_using_convention_expectations()
+		{
+			SecurityConfigurator.Configure(configuration => configuration.For<SampleController>().DenyAnonymousAccess());
+			var policyExpectations = new PolicyExpectations();
+			
+			policyExpectations.For<SampleController>().Has<DenyAnonymousAccessPolicy>();
+			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+
+			Assert.That(results.Valid(), results.ErrorMessages());
+		}
 	}
 
 	[TestFixture]

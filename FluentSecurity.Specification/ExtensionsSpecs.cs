@@ -199,6 +199,19 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(name, Is.EqualTo("InstanceMethodCallExpression"));
 		}
+		
+		[Test]
+		public void Should_consider_ActionNameAttibute()
+		{
+			// Arrange
+			Expression<Func<TestController, object>> expression = x => x.ActualAction();
+
+			// Act
+			var name = expression.GetActionName();
+
+			// Assert
+			Assert.That(name, Is.EqualTo("AliasAction"));
+		}
 
 		private class TestController
 		{
@@ -208,6 +221,12 @@ namespace FluentSecurity.Specification
 			}
 
 			public ActionResult InstanceMethodCallExpression()
+			{
+				return new EmptyResult();
+			}
+			
+			[ActionName("AliasAction")]
+			public ActionResult ActualAction()
 			{
 				return new EmptyResult();
 			}
