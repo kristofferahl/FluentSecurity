@@ -61,13 +61,12 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_verify_expectations_for_aliased_action()
 		{
-			SecurityConfigurator.Configure(configuration  => 
-               {
-				configuration.For<SampleController>(a => a.ActualAction()).DenyAnonymousAccess();
-               });
+			SecurityConfigurator.Configure(configuration  => configuration.For<SampleController>(a => a.ActualAction()).DenyAnonymousAccess());
 			var policyExpectations = new PolicyExpectations();
 			policyExpectations.For<SampleController>(a => a.ActualAction()).Has<DenyAnonymousAccessPolicy>();
+			
 			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+			
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}
 	}
