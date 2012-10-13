@@ -36,7 +36,7 @@ namespace FluentSecurity.TestHelper
 			if (String.IsNullOrEmpty(expectationExpression.Action))
 			{
 				var actionMethods = expectationExpression.Controller.GetActionMethods();
-				foreach (var expectationGroup in actionMethods.Select(actionMethod => new ExpectationGroup(expectationExpression.Controller, actionMethod.Name)))
+				foreach (var expectationGroup in actionMethods.Select(actionMethod => new ExpectationGroup(expectationExpression.Controller, actionMethod.GetActionName())))
 				{
 					expectationExpression.Expectations.Each(expectationGroup.ApplyExpectation);
 					groups.Add(expectationGroup);
