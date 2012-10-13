@@ -95,7 +95,7 @@ namespace FluentSecurity
 				var actionMethods = controllerType.GetActionMethods();
 
 				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.GetActionName()))
 					);
 			}
 
