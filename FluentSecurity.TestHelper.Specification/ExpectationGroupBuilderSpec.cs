@@ -96,7 +96,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_return_8_expectation_groups_for_2_expressions()
+		public void Should_have_return_9_expectation_groups_for_2_expressions()
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression>
@@ -110,7 +110,7 @@ namespace FluentSecurity.TestHelper.Specification
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);
 
 			// Assert
-			Assert.That(expectationGroups.Count(), Is.EqualTo(8));
+			Assert.That(expectationGroups.Count(), Is.EqualTo(9));
 		}
 	}
 }

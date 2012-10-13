@@ -23,5 +23,11 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 		{
 			return null;
 		}
+		
+		[ActionName("AliasedAction")]
+		public ActionResult ActualAction()
+		{
+			return null;
+		}
 	}
 }
