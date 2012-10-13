@@ -2,9 +2,9 @@
 
 **NOTE: These changes/features will not be available until version 2.0 is released.**
 
-- (**Fixed**) Fixed issue with invariant culture.
+- (**Fixed**) Fixed issue with invariant culture (thanks to tsvayer).
 - (**Fixed**) Fixed issue with RequireRolePolicy and RequireAllRolesPolicy resolving roles 3 times/execution.
-- (**Fixed**) Fixed spelling of ISecurityContext methods.
+- (**Fixed**) Fixed spelling of ISecurityContext methods (thanks to MariusSchulz).
 - (**Removed**) Removed RemovePoliciesFor from ConfigurationExpression. Use RemovePolicy on IPolicyContainer and IConventionPolicyContainer.
 - (**Removed**) Removed PolicyViolationException\<TSecurityPolicy\> as exceptions should be created based on PolicyResult.
 - (**Removed**) Removed PolicyExecutionMode and changed the default policy execution behavior to "stop on first violation".
