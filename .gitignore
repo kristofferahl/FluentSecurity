@@ -1,12 +1,11 @@
-/Build/Artifacts/
+#Project files
+/Build/Reports
+/Build/Output
 /Build/FluentSecurity.TestHelper.nuspec
 /Build/FluentSecurity.nuspec
+/Build/CodeCoverage/
 
 CommonAssemblyInfo.cs
-
-/Build/CodeCoverage/
-NCover3.lic
-FluentSecurity.1.1.dotCover
 
 #OS junk files
 [Tt]humbs.db
@@ -18,7 +17,7 @@ FluentSecurity.1.1.dotCover
 *.user
 *.suo
 *.[Cc]ache
-obj/
+[Oo]bj
 [Bb]in
 [Dd]ebug*/
 [Rr]elease*/
@@ -27,9 +26,5 @@ obj/
 _ReSharper*/
 *.resharper
 [Tt]est[Rr]esult*
-
-#Project files
-[Bb]uild/[Oo]utput
-[Bb]uild/[Rr]eports
-[Bb]uild/[Pp]ackages
-[Ll]ogs/
+NCover*.lic
+FluentSecurity.*.dotCover
