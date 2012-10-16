@@ -1,3 +1,5 @@
+; EditorConfig - http://editorconfig.org/
+
 ; Top-most EditorConfig file
 root = true
 
@@ -7,5 +9,5 @@ end_of_line = CRLF
 
 ; 4-column space indentation
 [*.*]
-indent_style = space
+indent_style = tab
 indent_size = 4
