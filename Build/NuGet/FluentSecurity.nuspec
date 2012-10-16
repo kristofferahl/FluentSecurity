@@ -8,7 +8,7 @@
 		<projectUrl>http://www.fluentsecurity.net/</projectUrl>
 		<licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<iconUrl>https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-32x32.png</iconUrl>
+		<iconUrl>https://github.com/kristofferahl/FluentSecurity/raw/develop/Documents/Fluent-Security-Logo-128x128.png</iconUrl>
 		<description>Fluent security configuration for ASP.NET MVC</description>
 		<tags>asp.net mvc .net40 security</tags>
 	</metadata>
