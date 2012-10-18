@@ -14,6 +14,8 @@ namespace FluentSecurity.Scanning
 
 		public ControllerTypeScanner(Type controllerType)
 		{
+			if (controllerType == null) throw new ArgumentNullException("controllerType");
+			
 			ControllerType = controllerType;
 		}
 

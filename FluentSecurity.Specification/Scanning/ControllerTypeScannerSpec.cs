@@ -1,10 +1,49 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using FluentSecurity.Scanning;
+using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Scanning
 {
+	[TestFixture]
+	[Category("ControllerTypeScannerSpec")]
+	public class When_creating_a_controller_type_scanner
+	{
+		[Test]
+		public void Should_set_the_controller_type_to_IController_for_empty_constructor()
+		{
+			// Arrange
+			var expectedType = typeof(IController);
+
+			// Act
+			var scanner = new ControllerTypeScanner();
+
+			// Assert
+			Assert.That(scanner.ControllerType, Is.EqualTo(expectedType));
+		}
+
+		[Test]
+		public void Should_throw_when_type_is_null()
+		{
+			Assert.Throws<ArgumentNullException>(() => new ControllerTypeScanner(null));
+		}
+
+		[Test]
+		public void Should_set_the_controller_type()
+		{
+			// Arrange
+			var expectedType = typeof (AdminController);
+			
+			// Act
+			var scanner = new ControllerTypeScanner(expectedType);
+
+			// Assert
+			Assert.That(scanner.ControllerType, Is.EqualTo(expectedType));
+		}
+	}
+
 	[TestFixture]
 	[Category("ControllerTypeScannerSpec")]
 	public class When_scanning_for_controllers
