@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using FluentSecurity.Specification.TestData.Controllers;
 using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers;
 using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers.Exclude;
 using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers.Include;

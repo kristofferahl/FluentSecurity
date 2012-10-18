@@ -155,7 +155,7 @@
     <Compile Include="ServiceLocation\LifeCycles\ObjectCacheSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />
-    <Compile Include="TestData\AdminController.cs" />
+    <Compile Include="TestData\Controllers\AdminController.cs" />
     <Compile Include="TestData\Controllers\AssemblyScannerControllers.cs" />
     <Compile Include="TestData\CustomDefaultPolicyViolationHandler.cs" />
     <Compile Include="TestData\DefaultPolicyViolationHandler.cs" />

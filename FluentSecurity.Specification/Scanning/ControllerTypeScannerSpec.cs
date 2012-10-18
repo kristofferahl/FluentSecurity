@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FluentSecurity.Scanning;
 using FluentSecurity.Specification.TestData;
+using FluentSecurity.Specification.TestData.Controllers;
 using FluentSecurity.Specification.TestData.Controllers.BaseControllers;
 using NUnit.Framework;
 
