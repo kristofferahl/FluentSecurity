@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FluentSecurity.Scanning;
 using FluentSecurity.Specification.TestData;
+using FluentSecurity.Specification.TestData.Controllers.BaseControllers;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Scanning
@@ -88,13 +89,5 @@ namespace FluentSecurity.Specification.Scanning
 			// Assert
 			Assert.That(result.Single(), Is.EqualTo(typeof(IneritingAbstractBaseController)));
 		}
-
-		public class IneritingBaseController : BaseController {}
-
-		public class IneritingAbstractBaseController : AbstractBaseController {}
-
-		public class BaseController : Controller {}
-		
-		public abstract class AbstractBaseController : Controller {}
 	}
 }

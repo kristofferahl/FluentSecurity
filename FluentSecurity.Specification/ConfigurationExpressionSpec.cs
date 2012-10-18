@@ -8,6 +8,9 @@ using FluentSecurity.Configuration;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers;
+using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers.Exclude;
+using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers.Include;
 using Moq;
 using NUnit.Framework;
 
@@ -302,13 +305,13 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			const string index = "Index";
-			var root = NameHelper.Controller<TestData.AssemblyScannerControllers.RootController>();
-			var include = NameHelper.Controller<TestData.AssemblyScannerControllers.Include.IncludedController>();
-			var exclude = NameHelper.Controller<TestData.AssemblyScannerControllers.Exclude.ExcludedController>();
+			var root = NameHelper.Controller<RootController>();
+			var include = NameHelper.Controller<IncludedController>();
+			var exclude = NameHelper.Controller<ExcludedController>();
 
 			// Act
 			Because(configurationExpression =>
-				configurationExpression.ForAllControllersInNamespaceContainingType<TestData.AssemblyScannerControllers.ClassInRootNamespace>()
+				configurationExpression.ForAllControllersInNamespaceContainingType<ClassInRootNamespace>()
 				);
 
 			// Assert
@@ -323,13 +326,13 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			const string index = "Index";
-			var root = NameHelper.Controller<TestData.AssemblyScannerControllers.RootController>();
-			var include = NameHelper.Controller<TestData.AssemblyScannerControllers.Include.IncludedController>();
-			var exclude = NameHelper.Controller<TestData.AssemblyScannerControllers.Exclude.ExcludedController>();
+			var root = NameHelper.Controller<RootController>();
+			var include = NameHelper.Controller<IncludedController>();
+			var exclude = NameHelper.Controller<ExcludedController>();
 
 			// Act
 			Because(configurationExpression =>
-				configurationExpression.ForAllControllersInNamespaceContainingType<TestData.AssemblyScannerControllers.Include.ClassInIncludeNamespace>()
+				configurationExpression.ForAllControllersInNamespaceContainingType<ClassInIncludeNamespace>()
 				);
 
 			// Assert
