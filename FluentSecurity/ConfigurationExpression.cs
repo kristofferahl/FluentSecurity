@@ -73,15 +73,15 @@ namespace FluentSecurity
 			return ForAllControllersInAssembly(assembly);
 		}
 
-		public IPolicyContainerConfiguration ForAllControllersInAssemblyThatInherit<TType>()
-				   where TType : IController
+		public IPolicyContainerConfiguration ForAllControllersInAssemblyThatInherit<TType>() where TType : Controller
 		{
-			var assembly = typeof(TType).Assembly;
+			var controllerType = typeof (TType);
+			var assembly = controllerType.Assembly;
 
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.Assembly(assembly);
-			assemblyScanner.With<ControllerTypeScanner>();
-			var controllerTypes = assemblyScanner.Scan<TType>();
+			assemblyScanner.With(new ControllerTypeScanner(controllerType));
+			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
