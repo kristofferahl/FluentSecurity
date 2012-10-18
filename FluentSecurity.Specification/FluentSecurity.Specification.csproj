@@ -169,7 +169,7 @@
     <Compile Include="Helpers\TestDataFactory.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="SecurityConfigurationSpec.cs" />
-    <Compile Include="TestData\BlogController.cs" />
+    <Compile Include="TestData\Controllers\BlogController.cs" />
     <Compile Include="TestData\PostForm.cs" />
     <Compile Include="TestData\UserRole.cs" />
     <Compile Include="HandleSecurityAttributeSpec.cs" />
