@@ -76,8 +76,7 @@ namespace FluentSecurity
 			return controllerType
 				.GetMethods(
 					BindingFlags.Public |
-					BindingFlags.Instance |
-					BindingFlags.DeclaredOnly
+					BindingFlags.Instance
 				)
 				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
 				.AsEnumerable();

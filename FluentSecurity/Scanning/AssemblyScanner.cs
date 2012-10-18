@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Web.Mvc;
 
 namespace FluentSecurity.Scanning
 {
@@ -68,6 +69,16 @@ namespace FluentSecurity.Scanning
 		{
 			var results = new List<Type>();
 			_scanners.Each(scanner => scanner.Scan(_assemblies).Where(type =>
+				_filters.Any() == false || _filters.Any(filter => filter.Invoke(type))).Each(results.Add)
+				);
+			return results;
+		}
+
+		public IEnumerable<Type> Scan<TController>()
+			where TController : IController
+		{
+			var results = new List<Type>();
+			_scanners.Each(scanner => scanner.Scan<TController>(_assemblies).Where(type =>
 				_filters.Any() == false || _filters.Any(filter => filter.Invoke(type))).Each(results.Add)
 				);
 			return results;
