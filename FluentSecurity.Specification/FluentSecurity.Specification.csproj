@@ -94,7 +94,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyScannerAssemblySpecification.cs" />
-    <Compile Include="AssemblyScannerNamespaceSpecification.cs" />
+    <Compile Include="AssemblyScannerBaseSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
     <Compile Include="Configuration\ViolationHandlerConfigurationSpec.cs" />

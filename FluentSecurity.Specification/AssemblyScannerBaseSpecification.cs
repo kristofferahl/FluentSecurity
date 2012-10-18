@@ -5,7 +5,7 @@ using FluentSecurity.Specification.Helpers;
 
 namespace FluentSecurity.Specification
 {
-	public abstract class AssemblyScannerNamespaceSpecification
+	public abstract class AssemblyScannerBaseSpecification
 	{
 		protected static void Because(Action<ConfigurationExpression> configurationExpression)
 		{
