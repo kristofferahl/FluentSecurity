@@ -151,5 +151,10 @@ namespace FluentSecurity
 		{
 			return CacheStrategies.SingleOrDefault(m => m.PolicyType == policyType);
 		}
+
+		public override string ToString()
+		{
+			return String.Format("{0} - {1} - {2}", base.ToString(), ControllerName, ActionName);
+		}
 	}
 }
