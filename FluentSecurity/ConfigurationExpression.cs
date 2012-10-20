@@ -73,13 +73,19 @@ namespace FluentSecurity
 			return ForAllControllersInAssembly(assembly);
 		}
 
-		public IPolicyContainerConfiguration ForAllControllersInheriting<TType>() where TType : Controller
+		public IPolicyContainerConfiguration ForAllControllersInheriting<TController>(params Assembly[] assemblies) where TController : Controller
 		{
-			var controllerType = typeof (TType);
-			var assembly = controllerType.Assembly;
+			if (assemblies == null) throw new ArgumentNullException("assemblies");
+			if (assemblies.Any(a => a == null)) throw new ArgumentException("Assemblies must not contain null values.", "assemblies");
+
+			var controllerType = typeof (TController);
+			
+			var assembliesToScan = assemblies.ToList();
+			if (!assembliesToScan.Any())
+				assembliesToScan.Add(controllerType.Assembly);
 
 			var assemblyScanner = new AssemblyScanner();
-			assemblyScanner.Assembly(assembly);
+			assembliesToScan.Each(assemblyScanner.Assembly);
 			assemblyScanner.With(new ControllerTypeScanner(controllerType));
 			var controllerTypes = assemblyScanner.Scan();
 

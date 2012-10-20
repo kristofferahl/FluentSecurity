@@ -338,6 +338,82 @@ namespace FluentSecurity.Specification
 			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "InheritedAction"), Is.Not.Null);
 			Assert.That(PolicyContainers.GetContainerFor(baseController, "InheritedAction"), Is.Null);
 		}
+
+		[Test]
+		public void Should_have_policycontainers_for_base_and_inheriting_controllers_and_all_actions_in_specified_assemblies()
+		{
+			// Arrange
+			var inerhitingController = NameHelper.Controller<IneritingBaseController>();
+			var baseController = NameHelper.Controller<BaseController>();
+
+			// Act
+			Because(configurationExpression =>
+					configurationExpression.ForAllControllersInheriting<BaseController>(GetType().Assembly, typeof(SecurityConfigurator).Assembly)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(3));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "FirstClassAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(baseController, "InheritedAction"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_no_policycontainers_for_base_and_inheriting_controllers_in_specified_assemblies()
+		{
+			// Act
+			Because(configurationExpression =>
+					configurationExpression.ForAllControllersInheriting<BaseController>(typeof(SecurityConfigurator).Assembly)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_inheriting_controllers_and_all_actions_in_specified_assemblies()
+		{
+			// Arrange
+			var inerhitingController = NameHelper.Controller<IneritingAbstractBaseController>();
+			var baseController = NameHelper.Controller<AbstractBaseController>();
+
+			// Act
+			Because(configurationExpression =>
+					configurationExpression.ForAllControllersInheriting<AbstractBaseController>(GetType().Assembly, typeof(SecurityConfigurator).Assembly)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(2));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "FirstClassAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(baseController, "InheritedAction"), Is.Null);
+		}
+
+		[Test]
+		public void Should_have_no_policycontainers_for_inheriting_controllers_in_specified_assemblies()
+		{
+			// Act
+			Because(configurationExpression =>
+					configurationExpression.ForAllControllersInheriting<AbstractBaseController>(typeof(SecurityConfigurator).Assembly)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Should_throw_when_assemblies_is_null()
+		{
+			var expression = new ConfigurationExpression();
+			Assert.Throws<ArgumentNullException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(null));
+		}
+
+		[Test]
+		public void Should_throw_when_assemblies_contains_null()
+		{
+			var expression = new ConfigurationExpression();
+			Assert.Throws<ArgumentException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(null, null));
+		}
 	}
 
 	[TestFixture]
