@@ -36,6 +36,10 @@ namespace FluentSecurity.SampleApplication
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>().DenyAnonymousAccess();
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).RequireRole(UserRole.Publisher);
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).RequireRole(UserRole.Administrator);
+
+				configuration.ForAllControllersInheriting<CrudController>().DenyAnonymousAccess();
+				configuration.For<BlogPostController>(p => p.Index()).Ignore();
+				configuration.For<BlogPostController>(p => p.Details()).Ignore();
 			});
 			return SecurityConfiguration.Current;
 		}

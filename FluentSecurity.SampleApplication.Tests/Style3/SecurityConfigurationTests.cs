@@ -42,6 +42,10 @@ namespace FluentSecurity.SampleApplication.Tests.Style3
 				expectations.Expect<Areas.ExampleArea.Controllers.HomeController>(x => x.Index()).Has<DenyAnonymousAccessPolicy>();
 				expectations.Expect<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).Has(new RequireRolePolicy(UserRole.Administrator));
 				expectations.Expect<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).Has(new RequireRolePolicy(UserRole.Publisher));
+
+				expectations.Expect<BlogPostController>().Has<DenyAnonymousAccessPolicy>();
+				expectations.Expect<BlogPostController>(p => p.Index()).Has<IgnorePolicy>().DoesNotHave<DenyAnonymousAccessPolicy>();
+				expectations.Expect<BlogPostController>(p => p.Details()).Has<IgnorePolicy>().DoesNotHave<DenyAnonymousAccessPolicy>();
 			});
 
 			// Assert

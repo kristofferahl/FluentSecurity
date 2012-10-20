@@ -69,10 +69,12 @@
     </Compile>
     <Compile Include="AdministratorPolicy.cs" />
     <Compile Include="Areas\ExampleArea\Controllers\HomeController.cs" />
+    <Compile Include="Controllers\BlogPostController.cs" />
     <Compile Include="Areas\ExampleArea\ExampleAreaAreaRegistration.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CrudController.cs" />
     <Compile Include="Controllers\ExampleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Default.aspx.cs">

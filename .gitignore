@@ -1,9 +1,9 @@
 #Project files
 /Build/Reports
 /Build/Output
+/Build/CodeCoverage
 /Build/FluentSecurity.TestHelper.nuspec
 /Build/FluentSecurity.nuspec
-/Build/CodeCoverage/
 
 CommonAssemblyInfo.cs
 
