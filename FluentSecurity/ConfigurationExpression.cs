@@ -73,7 +73,7 @@ namespace FluentSecurity
 			return ForAllControllersInAssembly(assembly);
 		}
 
-		public IPolicyContainerConfiguration ForAllControllersInAssemblyThatInherit<TType>() where TType : Controller
+		public IPolicyContainerConfiguration ForAllControllersInheriting<TType>() where TType : Controller
 		{
 			var controllerType = typeof (TType);
 			var assembly = controllerType.Assembly;

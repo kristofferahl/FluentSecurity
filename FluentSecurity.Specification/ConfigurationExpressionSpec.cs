@@ -310,7 +310,7 @@ namespace FluentSecurity.Specification
 
 			// Act
 			Because(configurationExpression =>
-					configurationExpression.ForAllControllersInAssemblyThatInherit<BaseController>()
+					configurationExpression.ForAllControllersInheriting<BaseController>()
 				);
 
 			// Assert
@@ -329,7 +329,7 @@ namespace FluentSecurity.Specification
 
 			// Act
 			Because(configurationExpression =>
-					configurationExpression.ForAllControllersInAssemblyThatInherit<AbstractBaseController>()
+					configurationExpression.ForAllControllersInheriting<AbstractBaseController>()
 				);
 
 			// Assert
