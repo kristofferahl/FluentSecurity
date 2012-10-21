@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Web;
 using FluentSecurity.SampleApplication.Controllers;
 using FluentSecurity.SampleApplication.Models;
@@ -14,14 +13,9 @@ namespace FluentSecurity.SampleApplication
 				configuration.GetAuthenticationStatusFrom(Helpers.SecurityHelper.UserIsAuthenticated);
 				configuration.GetRolesFrom(Helpers.SecurityHelper.UserRoles);
 
-				configuration.ResolveServicesUsing(type =>
-				{
-					var results = new List<object>();
-					if (type == typeof(IPolicyViolationHandler)) results.Add(new DefaultPolicyViolationHandler());
-					return results;
-				});
-
+				configuration.DefaultPolicyViolationHandlerIs(() => new DefaultPolicyViolationHandler());
 				configuration.Advanced.ModifySecurityContext(context => context.Data.QueryString = HttpContext.Current.Request.QueryString);
+
 				configuration.For<HomeController>().Ignore();
 
 				configuration.For<AccountController>(x => x.LogInAsAdministrator()).DenyAuthenticatedAccess();
@@ -42,6 +36,11 @@ namespace FluentSecurity.SampleApplication
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>().DenyAnonymousAccess();
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).RequireRole(UserRole.Publisher);
 				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).RequireRole(UserRole.Administrator);
+
+				configuration.ForAllControllersInheriting<CrudController>().DenyAnonymousAccess();
+				configuration.ForAllControllersInheriting<CrudController>(x => x.Delete()).RequireRole(UserRole.Administrator);
+				configuration.For<BlogPostController>(x => x.Index()).Ignore();
+				configuration.For<BlogPostController>(x => x.Details()).Ignore();
 			});
 			return SecurityConfiguration.Current;
 		}

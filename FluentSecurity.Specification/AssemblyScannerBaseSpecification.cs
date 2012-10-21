@@ -5,7 +5,7 @@ using FluentSecurity.Specification.Helpers;
 
 namespace FluentSecurity.Specification
 {
-	public abstract class AssemblyScannerNamespaceSpecification
+	public abstract class AssemblyScannerBaseSpecification
 	{
 		protected static void Because(Action<ConfigurationExpression> configurationExpression)
 		{
@@ -13,7 +13,7 @@ namespace FluentSecurity.Specification
 			PolicyContainers = Enumerable.Empty<IPolicyContainer>();
 			var expression = TestDataFactory.CreateValidConfigurationExpression();
 			configurationExpression(expression);
-			PolicyContainers = expression.ToList();
+			PolicyContainers = expression.PolicyContainers;
 		}
 
 		protected static IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }

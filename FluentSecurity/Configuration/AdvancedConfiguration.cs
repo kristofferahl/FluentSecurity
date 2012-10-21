@@ -1,10 +1,11 @@
 using System;
 using FluentSecurity.Caching;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class AdvancedConfiguration : IAdvancedConfiguration
+	public class AdvancedConfiguration : IAdvanced
 	{
 		internal AdvancedConfiguration()
 		{
@@ -15,15 +16,17 @@ namespace FluentSecurity.Configuration
 			};
 
 			SetDefaultResultsCacheLifecycle(Cache.DoNotCache);
+			ShouldIgnoreMissingConfiguration = false;
 		}
 
 		public Conventions Conventions { get; private set; }
 		public Cache DefaultResultsCacheLifecycle { get; private set; }
 		public Action<ISecurityContext> SecurityContextModifyer { get; private set; }
+		public bool ShouldIgnoreMissingConfiguration { get; private set; }
 
-		public void SetDefaultResultsCacheLifecycle(Cache lifecycle)
+		public void IgnoreMissingConfiguration()
 		{
-			DefaultResultsCacheLifecycle = lifecycle;
+			ShouldIgnoreMissingConfiguration = true;
 		}
 
 		public void ModifySecurityContext(Action<ISecurityContext> modifyer)
@@ -31,10 +34,15 @@ namespace FluentSecurity.Configuration
 			SecurityContextModifyer = modifyer;
 		}
 
-		public void Violations(Action<ViolationConfigurationExpression> violationConfigurationExpression)
+		public void SetDefaultResultsCacheLifecycle(Cache lifecycle)
 		{
-			if (violationConfigurationExpression == null) throw new ArgumentNullException("violationConfigurationExpression");
-			violationConfigurationExpression.Invoke(new ViolationConfigurationExpression(Conventions));
+			DefaultResultsCacheLifecycle = lifecycle;
+		}
+
+		public void Violations(Action<ViolationConfiguration> violationConfiguration)
+		{
+			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
+			violationConfiguration.Invoke(new ViolationConfiguration(Conventions));
 		}
 	}
 }

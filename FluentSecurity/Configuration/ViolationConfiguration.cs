@@ -1,15 +1,16 @@
 using System;
 using System.Linq;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class ViolationConfigurationExpression
+	public class ViolationConfiguration
 	{
 		private readonly Conventions _conventions;
 
-		internal ViolationConfigurationExpression(Conventions conventions)
+		internal ViolationConfiguration(Conventions conventions)
 		{
 			if (conventions == null) throw new ArgumentNullException("conventions");
 			_conventions = conventions;
@@ -35,14 +36,14 @@ namespace FluentSecurity.Configuration
 				_conventions.Remove(convention);
 		}
 
-		public ViolationHandlerExpression<TSecurityPolicy> Of<TSecurityPolicy>() where TSecurityPolicy : class, ISecurityPolicy
+		public ViolationHandlerConfiguration<TSecurityPolicy> Of<TSecurityPolicy>() where TSecurityPolicy : class, ISecurityPolicy
 		{
-			return new ViolationHandlerExpression<TSecurityPolicy>(this);
+			return new ViolationHandlerConfiguration<TSecurityPolicy>(this);
 		}
 
-		public ViolationHandlerExpression Of(Func<PolicyResult, bool> predicate)
+		public ViolationHandlerConfiguration Of(Func<PolicyResult, bool> predicate)
 		{
-			return new ViolationHandlerExpression(this, predicate);
+			return new ViolationHandlerConfiguration(this, predicate);
 		}
 	}
 }

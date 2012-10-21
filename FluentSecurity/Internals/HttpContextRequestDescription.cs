@@ -2,7 +2,7 @@
 using System.Web;
 using System.Web.Routing;
 
-namespace FluentSecurity
+namespace FluentSecurity.Internals
 {
 	public class HttpContextRequestDescription : IRequestDescription
 	{
@@ -12,7 +12,7 @@ namespace FluentSecurity
 		public HttpContextRequestDescription()
 		{
 			var route = GetRoute();
-			AreName = route.GetAreaName();
+			AreaName = route.GetAreaName();
 			ControllerName = (string)route.Values["controller"];
 			ActionName = (string)route.Values["action"];
 		}
@@ -24,7 +24,7 @@ namespace FluentSecurity
 			return routeData ?? new RouteData();
 		}
 
-		public string AreName { get; private set; }
+		public string AreaName { get; private set; }
 		public string ControllerName { get; private set; }
 		public string ActionName { get; private set; }
 	}

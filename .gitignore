@@ -1,9 +1,30 @@
-/Build/Artifacts/
+#Project files
+/Build/Reports
+/Build/Output
+/Build/CodeCoverage
 /Build/FluentSecurity.TestHelper.nuspec
 /Build/FluentSecurity.nuspec
 
 CommonAssemblyInfo.cs
 
-/Build/CodeCoverage/
-NCover3.lic
-FluentSecurity.1.1.dotCover
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Visual Studio files
+*.[Oo]bj
+*.pdb
+*.user
+*.suo
+*.[Cc]ache
+[Oo]bj
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+
+#Tooling
+_ReSharper*/
+*.resharper
+[Tt]est[Rr]esult*
+NCover*.lic
+FluentSecurity.*.dotCover

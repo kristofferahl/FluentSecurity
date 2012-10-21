@@ -94,14 +94,13 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyScannerAssemblySpecification.cs" />
-    <Compile Include="AssemblyScannerNamespaceSpecification.cs" />
+    <Compile Include="AssemblyScannerBaseSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
-    <Compile Include="Configuration\ViolationHandlerExpressionSpec.cs" />
-    <Compile Include="Configuration\ViolationConfigurationExpressionSpec.cs" />
-    <Compile Include="ConventionPolicyContainerExtensionsSpec.cs" />
+    <Compile Include="Configuration\ViolationHandlerConfigurationSpec.cs" />
+    <Compile Include="Configuration\ViolationConfigurationSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
-    <Compile Include="ExceptionFactorySpec.cs" />
+    <Compile Include="Internals\ExceptionFactorySpec.cs" />
     <Compile Include="Features\PolicyResultsCachingFeature.feature.cs">
       <DependentUpon>PolicyResultsCachingFeature.feature</DependentUpon>
       <SubType>Code</SubType>
@@ -120,9 +119,9 @@
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\ResetFixture.cs" />
     <Compile Include="Helpers\TestingExtensions.cs" />
-    <Compile Include="HttpContextRequestDescriptionSpec.cs" />
+    <Compile Include="Internals\HttpContextRequestDescriptionSpec.cs" />
     <Compile Include="Helpers\MockSecurityContext.cs" />
-    <Compile Include="PolicyResultCacheKeyBuilderSpec.cs" />
+    <Compile Include="Caching\PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyInstancePolicyViolationHandlerConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyTypePolicyViolationHandlerConventionSpec.cs" />
@@ -133,6 +132,8 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerByNameConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConventionSpec.cs" />
+    <Compile Include="Scanning\ControllerTypeScannerSpec.cs" />
+    <Compile Include="TestData\Controllers\BaseControllers.cs" />
     <Compile Include="TestData\MockConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContextSpec.cs" />
@@ -154,8 +155,8 @@
     <Compile Include="ServiceLocation\LifeCycles\ObjectCacheSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />
-    <Compile Include="TestData\AdminController.cs" />
-    <Compile Include="TestData\AssemblyScannerControllers.cs" />
+    <Compile Include="TestData\Controllers\AdminController.cs" />
+    <Compile Include="TestData\Controllers\AssemblyScannerControllers.cs" />
     <Compile Include="TestData\CustomDefaultPolicyViolationHandler.cs" />
     <Compile Include="TestData\DefaultPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />
@@ -168,13 +169,13 @@
     <Compile Include="Helpers\TestDataFactory.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="SecurityConfigurationSpec.cs" />
-    <Compile Include="TestData\BlogController.cs" />
+    <Compile Include="TestData\Controllers\BlogController.cs" />
     <Compile Include="TestData\PostForm.cs" />
     <Compile Include="TestData\UserRole.cs" />
     <Compile Include="HandleSecurityAttributeSpec.cs" />
     <Compile Include="Helpers\MvcHelpers.cs" />
     <Compile Include="PolicyContainerSpec.cs" />
-    <Compile Include="DefaultPolicyAppenderSpec.cs" />
+    <Compile Include="Configuration\DefaultPolicyAppenderSpec.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicySpec.cs" />
     <Compile Include="Policy\IgnorePolicySpec.cs" />
     <Compile Include="Policy\RequireRolePolicySpec.cs" />

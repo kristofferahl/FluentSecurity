@@ -1,6 +1,6 @@
 using System.Web.Mvc;
 
-namespace FluentSecurity.Specification.TestData
+namespace FluentSecurity.Specification.TestData.Controllers
 {
 	public class AdminController : Controller
 	{

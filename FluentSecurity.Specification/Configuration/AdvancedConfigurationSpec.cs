@@ -14,12 +14,18 @@ namespace FluentSecurity.Specification.Configuration
 	[Category("AdvancedConfigurationSpec")]
 	public class When_creating_a_new_advanced_configuration
 	{
-		private IAdvancedConfiguration _advancedConfiguration;
+		private AdvancedConfiguration _advancedConfiguration;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_advancedConfiguration = new AdvancedConfiguration();
+		}
+
+		[Test]
+		public void Should_not_ignore_missing_configurations()
+		{
+			Assert.That(_advancedConfiguration.ShouldIgnoreMissingConfiguration, Is.False);
 		}
 
 		[Test]
@@ -40,6 +46,24 @@ namespace FluentSecurity.Specification.Configuration
 			var conventions = _advancedConfiguration.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
 			Assert.That(conventions.ElementAtOrDefault(0), Is.TypeOf<FindByPolicyNameConvention>());
 			Assert.That(conventions.ElementAtOrDefault(1), Is.TypeOf<FindDefaultPolicyViolationHandlerByNameConvention>());
+		}
+	}
+
+	[TestFixture]
+	[Category("AdvancedConfigurationSpec")]
+	public class When_ignoring_missing_configuration
+	{
+		[Test]
+		public void Should_ignore_missing_configurations()
+		{
+			// Arrange
+			var advancedConfiguration = new AdvancedConfiguration();
+
+			// Act
+			advancedConfiguration.IgnoreMissingConfiguration();
+
+			// Assert
+			Assert.That(advancedConfiguration.ShouldIgnoreMissingConfiguration, Is.True);
 		}
 	}
 

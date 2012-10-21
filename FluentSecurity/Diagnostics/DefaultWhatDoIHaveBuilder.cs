@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text;
 
-namespace FluentSecurity
+namespace FluentSecurity.Diagnostics
 {
 	public class DefaultWhatDoIHaveBuilder : IWhatDoIHaveBuilder
 	{
@@ -9,7 +9,7 @@ namespace FluentSecurity
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendFormat("Ignore missing configuration: {0}", configuration.IgnoreMissingConfiguration);
+			builder.AppendFormat("Ignore missing configuration: {0}", configuration.Advanced.ShouldIgnoreMissingConfiguration);
 
 			builder.AppendLine().AppendLine().AppendLine("------------------------------------------------------------------------------------").AppendLine();
 

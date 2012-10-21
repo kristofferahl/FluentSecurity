@@ -1,4 +1,5 @@
 using FluentSecurity.Caching;
+using FluentSecurity.Internals;
 using FluentSecurity.ServiceLocation;
 using NUnit.Framework;
 
@@ -12,8 +13,8 @@ namespace FluentSecurity.Specification // Do not change the namespace
 		{
 			ServiceLocator.Reset();
 			ExceptionFactory.Reset();
-			SecurityCache.ClearCache(Lifecycle.HybridHttpContext);;
-			SecurityCache.ClearCache(Lifecycle.HybridHttpSession); ;
+			SecurityCache.ClearCache(Lifecycle.HybridHttpContext);
+			SecurityCache.ClearCache(Lifecycle.HybridHttpSession);
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy
@@ -66,6 +67,25 @@ namespace FluentSecurity.Specification.Policy
 	[Category("RequireAllRolesPolicySpec")]
 	public class When_enforcing_security_for_a_RequireAllRolesPolicy
 	{
+		[Test]
+		public void Should_resolve_authentication_status_and_roles_exactly_once()
+		{
+			// Arrange
+			var roles = new object[1];
+			var policy = new RequireAllRolesPolicy(roles);
+			var context = new Mock<ISecurityContext>();
+			context.Setup(x => x.CurrentUserIsAuthenticated()).Returns(true);
+			context.Setup(x => x.CurrentUserRoles()).Returns(roles);
+
+			// Act
+			var result = policy.Enforce(context.Object);
+
+			// Assert
+			Assert.That(result.ViolationOccured, Is.False);
+			context.Verify(x => x.CurrentUserIsAuthenticated(), Times.Exactly(1), "The authentication status should be resolved at most once.");
+			context.Verify(x => x.CurrentUserRoles(), Times.Exactly(1), "The roles should be resolved at most once.");
+		}
+
 		[Test]
 		public void Should_not_be_successful_when_isAuthenticated_is_false()
 		{

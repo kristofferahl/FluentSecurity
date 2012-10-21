@@ -5,7 +5,7 @@ namespace FluentSecurity
 	public interface ISecurityContext
 	{
 		dynamic Data { get; }
-		bool CurrenUserAuthenticated();
-		IEnumerable<object> CurrenUserRoles();
+		bool CurrentUserIsAuthenticated();
+		IEnumerable<object> CurrentUserRoles();
 	}
 }

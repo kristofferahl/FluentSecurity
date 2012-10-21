@@ -22,7 +22,67 @@ namespace FluentSecurity
 		/// <returns>A policycontainer</returns>
 		public static IPolicyContainer GetContainerFor(this IEnumerable<IPolicyContainer> policyContainers, string controllerName, string actionName)
 		{
-			return policyContainers.SingleOrDefault(x => x.ControllerName.ToLower() == controllerName.ToLower() && x.ActionName.ToLower() == actionName.ToLower());
+			return policyContainers.SingleOrDefault(x => x.ControllerName.ToLowerInvariant() == controllerName.ToLowerInvariant() && x.ActionName.ToLowerInvariant() == actionName.ToLowerInvariant());
+		}
+
+		///<summary>
+		/// Gets the controller name for the specified controller type
+		///</summary>
+		public static string GetControllerName(this Type controllerType)
+		{
+			return controllerType.FullName;
+		}
+
+		///<summary>
+		/// Gets the action name for the specified action expression
+		///</summary>
+		public static string GetActionName(this LambdaExpression actionExpression)
+		{
+			var expression = (MethodCallExpression)(actionExpression.Body is UnaryExpression ? ((UnaryExpression)actionExpression.Body).Operand : actionExpression.Body);
+			return expression.Method.GetActionName();
+		}
+
+		/// <summary>
+		/// Gets action name for the specified action method considering ActionName attribute
+		/// </summary>
+		public static String GetActionName(this MethodInfo actionMethod)
+		{
+			if (Attribute.IsDefined(actionMethod, ActionNameAttributeType))
+			{
+				var actionNameAttribute = (ActionNameAttribute) Attribute.GetCustomAttribute(actionMethod, typeof (ActionNameAttribute));
+				return actionNameAttribute.Name;
+			}
+			return actionMethod.Name;
+		}
+
+		private static readonly Type ActionNameAttributeType = typeof(ActionNameAttribute);
+
+		/// <summary>
+		/// Gets the actual type of the ISecurityPolicy. Takes care of checking for lazy policies.
+		/// </summary>
+		public static Type GetPolicyType(this ISecurityPolicy securityPolicy)
+		{
+			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
+			return lazySecurityPolicy != null
+				? lazySecurityPolicy.PolicyType
+				: securityPolicy.GetType();
+		}
+
+		/// <summary>
+		/// Gets actionmethods for the specified controller type
+		/// </summary>
+		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType, Func<string, bool> actionFilter = null)
+		{
+			if (actionFilter == null) actionFilter = actionName => true;
+			
+			return controllerType
+				.GetMethods(
+					BindingFlags.Public |
+					BindingFlags.Instance
+				)
+				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
+				.Where(x => actionFilter.Invoke(x.GetActionName()))
+				.ToList();
 		}
 
 		/// <summary>
@@ -30,7 +90,7 @@ namespace FluentSecurity
 		/// </summary>
 		/// <param name="routeData">Route data</param>
 		/// <returns>The name of the are</returns>
-		public static string GetAreaName(this RouteData routeData)
+		internal static string GetAreaName(this RouteData routeData)
 		{
 			object value;
 			if (routeData.DataTokens.TryGetValue("area", out value))
@@ -45,7 +105,7 @@ namespace FluentSecurity
 		/// </summary>
 		/// <param name="route">Route</param>
 		/// <returns>The name of the are</returns>
-		public static string GetAreaName(this RouteBase route)
+		internal static string GetAreaName(this RouteBase route)
 		{
 			var areRoute = route as IRouteWithArea;
 			if (areRoute != null)
@@ -58,49 +118,6 @@ namespace FluentSecurity
 				return (standardRoute.DataTokens["area"] as string) ?? string.Empty;
 			}
 			return string.Empty;
-		}
-
-		///<summary>
-		/// Gets the controller name for the specified controller type
-		///</summary>
-		public static string GetControllerName(this Type controllerType)
-		{
-			return controllerType.FullName;
-		}
-
-		/// <summary>
-		/// Gets actionmethods for the specified controller type
-		/// </summary>
-		public static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType)
-		{
-			return controllerType
-				.GetMethods(
-					BindingFlags.Public |
-					BindingFlags.Instance |
-					BindingFlags.DeclaredOnly
-				)
-				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
-				.AsEnumerable();
-		}
-
-		///<summary>
-		/// Gets the action name for the specified action expression
-		///</summary>
-		public static string GetActionName(this LambdaExpression actionExpression)
-		{
-			var expression = (MethodCallExpression)(actionExpression.Body is UnaryExpression ? ((UnaryExpression)actionExpression.Body).Operand : actionExpression.Body);
-			return expression.Method.Name;
-		}
-
-		/// <summary>
-		/// Gets the actual type of the ISecurityPolicy. Takes care of checking for lazy policies.
-		/// </summary>
-		public static Type GetPolicyType(this ISecurityPolicy securityPolicy)
-		{
-			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
-			return lazySecurityPolicy != null
-				? lazySecurityPolicy.PolicyType
-				: securityPolicy.GetType();
 		}
 
 		/// <summary>
@@ -165,6 +182,16 @@ namespace FluentSecurity
 		{
 			foreach (var item in items)
 				action(item);
+		}
+
+		/// <summary>
+		/// Ensures we are working with a list of T
+		/// </summary>
+		internal static IList<T> EnsureIsList<T>(this IEnumerable<T> items)
+		{
+			return items == null
+				? new List<T>()
+				: (items as IList<T> ?? items.ToList());
 		}
 
 		/// <summary>

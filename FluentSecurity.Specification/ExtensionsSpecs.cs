@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Policy;
@@ -21,9 +23,9 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			_containers = new Collection<IPolicyContainer>
-            {
-            	TestDataFactory.CreateValidPolicyContainer("Controller", "ActionThatDoesExist")
-            };
+			{
+				TestDataFactory.CreateValidPolicyContainer("Controller", "ActionThatDoesExist")
+			};
 		}
 
 		[Test]
@@ -73,6 +75,22 @@ namespace FluentSecurity.Specification
 			var policyContainer = _containers.GetContainerFor("controller", "actionthatdoesexist");
 
 			// Assert
+			Assert.That(policyContainer, Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_return_a_container_for_Controller_ActIonThatDoesExist_EN()
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			var policyContainer = _containers.GetContainerFor("Controller", "ActIonThatDoesExist");
+			Assert.That(policyContainer, Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_return_a_container_for_Controller_ActIonThatDoesExist_TR()
+		{
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
+			var policyContainer = _containers.GetContainerFor("Controller", "ActIonThatDoesExist");
 			Assert.That(policyContainer, Is.Not.Null);
 		}
 	}
@@ -181,6 +199,19 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(name, Is.EqualTo("InstanceMethodCallExpression"));
 		}
+		
+		[Test]
+		public void Should_consider_ActionNameAttibute()
+		{
+			// Arrange
+			Expression<Func<TestController, object>> expression = x => x.ActualAction();
+
+			// Act
+			var name = expression.GetActionName();
+
+			// Assert
+			Assert.That(name, Is.EqualTo("AliasAction"));
+		}
 
 		private class TestController
 		{
@@ -190,6 +221,12 @@ namespace FluentSecurity.Specification
 			}
 
 			public ActionResult InstanceMethodCallExpression()
+			{
+				return new EmptyResult();
+			}
+			
+			[ActionName("AliasAction")]
+			public ActionResult ActualAction()
 			{
 				return new EmptyResult();
 			}

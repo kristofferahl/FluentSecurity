@@ -13,58 +13,41 @@ using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
-	public class ConfigurationExpression : Builder<IPolicyContainer>
+	public class ConfigurationExpression
 	{
+		internal IList<IPolicyContainer> PolicyContainers { get; private set; } 
 		internal Func<bool> IsAuthenticated { get; private set; }
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
-		internal bool ShouldIgnoreMissingConfiguration { get; private set; }
 		
 		private IPolicyAppender PolicyAppender { get; set; }
 
-		public AdvancedConfiguration Advanced { get; set; }
+		public AdvancedConfiguration Advanced { get; private set; }
 
 		public ConfigurationExpression()
 		{
+			PolicyContainers = new List<IPolicyContainer>();
 			Advanced = new AdvancedConfiguration();
 			PolicyAppender = new DefaultPolicyAppender();
 		}
 
-		public IPolicyContainer For<TController>(Expression<Func<TController, object>> propertyExpression) where TController : Controller
+		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
 		{
 			var controllerName = typeof(TController).GetControllerName();
-			var actionName = propertyExpression.GetActionName();
+			var actionName = actionExpression.GetActionName();
 
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
 
-		private IPolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
-		{
-			IPolicyContainer policyContainer;
-
-			var existingContainer = _itemValues.GetContainerFor(controllerName, actionName);
-			if (existingContainer != null)
-			{
-				policyContainer = existingContainer;
-			}
-			else
-			{
-				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-				_itemValues.Add(policyContainer);
-			}
-
-			return policyContainer;
-		}
-
-		public IConventionPolicyContainer For<TController>() where TController : Controller
+		public IPolicyContainerConfiguration For<TController>() where TController : Controller
 		{
 			var controllerType = typeof(TController);
 			var controllerTypes = new[] { controllerType };
 
-			return CreateConventionPolicyContainerFor(controllerTypes, By.Controller);
+			return CreateConventionPolicyContainerFor(controllerTypes, defaultCacheLevel: By.Controller);
 		}
 
-		public IConventionPolicyContainer ForAllControllers()
+		public IPolicyContainerConfiguration ForAllControllers()
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.TheCallingAssembly();
@@ -74,7 +57,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInAssembly(Assembly assembly)
+		public IPolicyContainerConfiguration ForAllControllersInAssembly(Assembly assembly)
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.Assembly(assembly);
@@ -84,13 +67,46 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInAssemblyContainingType<TType>()
+		public IPolicyContainerConfiguration ForAllControllersInAssemblyContainingType<TType>()
 		{
 			var assembly = typeof (TType).Assembly;
 			return ForAllControllersInAssembly(assembly);
 		}
 
-		public IConventionPolicyContainer ForAllControllersInNamespaceContainingType<TType>()
+		public IPolicyContainerConfiguration ForAllControllersInheriting<TController>(Expression<Func<TController, object>> actionExpression, params Assembly[] assemblies) where TController : Controller
+		{
+			if (actionExpression == null) throw new ArgumentNullException("actionExpression");
+			var actionName = actionExpression.GetActionName();
+			return ForAllControllersInheriting<TController>(action => action == actionName, assemblies);
+		}
+
+		public IPolicyContainerConfiguration ForAllControllersInheriting<TController>(params Assembly[] assemblies) where TController : Controller
+		{
+			Func<string, bool> actionFilter = actionName => true;
+			return ForAllControllersInheriting<TController>(actionFilter, assemblies);
+		}
+
+		private IPolicyContainerConfiguration ForAllControllersInheriting<TController>(Func<string, bool> actionFilter, IEnumerable<Assembly> assemblies) where TController : Controller
+		{
+			if (assemblies == null) throw new ArgumentNullException("assemblies");
+			
+			var assembliesToScan = assemblies.ToList();
+			if (assembliesToScan.Any(a => a == null)) throw new ArgumentException("Assemblies must not contain null values.", "assemblies");
+
+			var controllerType = typeof (TController);
+			
+			if (!assembliesToScan.Any())
+				assembliesToScan.Add(controllerType.Assembly);
+
+			var assemblyScanner = new AssemblyScanner();
+			assembliesToScan.Each(assemblyScanner.Assembly);
+			assemblyScanner.With(new ControllerTypeScanner(controllerType));
+			var controllerTypes = assemblyScanner.Scan();
+
+			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
+		}
+
+		public IPolicyContainerConfiguration ForAllControllersInNamespaceContainingType<TType>()
 		{
 			var assembly = typeof (TType).Assembly;
 
@@ -103,20 +119,38 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		private IConventionPolicyContainer CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, By defaultCacheLevel = By.Policy)
+		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<string, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
 		{
-			var policyContainers = new List<IPolicyContainer>();
+			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)
 			{
 				var controllerName = controllerType.GetControllerName();
-				var actionMethods = controllerType.GetActionMethods();
+				var actionMethods = controllerType.GetActionMethods(actionFilter);
 
 				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.Name))
+					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.GetActionName()))
 					);
 			}
 
 			return new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
+		}
+
+		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
+		{
+			PolicyContainer policyContainer;
+
+			var existingContainer = PolicyContainers.GetContainerFor(controllerName, actionName);
+			if (existingContainer != null)
+			{
+				policyContainer = (PolicyContainer) existingContainer;
+			}
+			else
+			{
+				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
+				PolicyContainers.Add(policyContainer);
+			}
+
+			return policyContainer;
 		}
 
 		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)
@@ -132,15 +166,10 @@ namespace FluentSecurity
 			if (rolesFunction == null)
 				throw new ArgumentNullException("rolesFunction");
 
-			if (_itemValues.Count > 0)
+			if (PolicyContainers.Count > 0)
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
 			Roles = rolesFunction;
-		}
-
-		public void IgnoreMissingConfiguration()
-		{
-			ShouldIgnoreMissingConfiguration = true;
 		}
 
 		public void SetPolicyAppender(IPolicyAppender policyAppender)
