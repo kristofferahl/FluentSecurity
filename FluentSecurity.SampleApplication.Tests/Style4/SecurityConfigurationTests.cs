@@ -40,8 +40,9 @@ namespace FluentSecurity.SampleApplication.Tests.Style4
 			expectations.For<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).Has(new RequireRolePolicy(UserRole.Publisher));
 
 			expectations.For<BlogPostController>().Has<DenyAnonymousAccessPolicy>();
-			expectations.For<BlogPostController>(p => p.Index()).Has<IgnorePolicy>().DoesNotHave<DenyAnonymousAccessPolicy>();
-			expectations.For<BlogPostController>(p => p.Details()).Has<IgnorePolicy>().DoesNotHave<DenyAnonymousAccessPolicy>();
+			expectations.For<BlogPostController>(x => x.Index()).Has<IgnorePolicy>().DoesNotHave<DenyAnonymousAccessPolicy>();
+			expectations.For<BlogPostController>(x => x.Details()).Has<IgnorePolicy>().DoesNotHave<DenyAnonymousAccessPolicy>();
+			expectations.For<BlogPostController>(x => x.Delete()).Has(new RequireRolePolicy(UserRole.Administrator)).DoesNotHave<DenyAnonymousAccessPolicy>();
 
 			var results = expectations.VerifyAll(Bootstrapper.SetupFluentSecurity());
 

@@ -71,15 +71,18 @@ namespace FluentSecurity
 		/// <summary>
 		/// Gets actionmethods for the specified controller type
 		/// </summary>
-		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType)
+		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType, Func<string, bool> actionFilter = null)
 		{
+			if (actionFilter == null) actionFilter = actionName => true;
+			
 			return controllerType
 				.GetMethods(
 					BindingFlags.Public |
 					BindingFlags.Instance
 				)
 				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
-				.AsEnumerable();
+				.Where(x => actionFilter.Invoke(x.GetActionName()))
+				.ToList();
 		}
 
 		/// <summary>
