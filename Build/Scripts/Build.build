@@ -37,7 +37,7 @@
 		Properties used when creating the common assembly info file
 	-->
 	<property name="project.version.number" value="2.0.0" />
-	<property name="project.version.label" value="2.0.0-alpha1" /><!-- Example: 1.0.0-beta1 -->
+	<property name="project.version.label" value="2.0.0-alpha2" /><!-- Example: 1.0.0-beta1 -->
 	<property name="project.config" value="release" />
 	
 	<!-- PROJECTS TO BUILD
