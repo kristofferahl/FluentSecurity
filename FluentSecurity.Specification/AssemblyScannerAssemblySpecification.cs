@@ -2,6 +2,10 @@
 using System.Linq;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using FluentSecurity.Specification.TestData.Controllers;
+using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers;
+using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers.Exclude;
+using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers.Include;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification
@@ -20,12 +24,12 @@ namespace FluentSecurity.Specification
 		{
 			var policyContainers = configurationExpression.PolicyContainers;
 
-			Assert.That(policyContainers.Count(), Is.EqualTo(12));
+			Assert.That(policyContainers.Count(), Is.EqualTo(17));
 			var blog = NameHelper.Controller<BlogController>();
 			var admin = NameHelper.Controller<AdminController>();
-			var root = NameHelper.Controller<TestData.AssemblyScannerControllers.RootController>();
-			var include = NameHelper.Controller<TestData.AssemblyScannerControllers.Include.IncludedController>();
-			var exclude = NameHelper.Controller<TestData.AssemblyScannerControllers.Exclude.ExcludedController>();
+			var root = NameHelper.Controller<RootController>();
+			var include = NameHelper.Controller<IncludedController>();
+			var exclude = NameHelper.Controller<ExcludedController>();
 
 			Assert.That(policyContainers.GetContainerFor(blog, "Index"), Is.Not.Null);
 			Assert.That(policyContainers.GetContainerFor(blog, "ListPosts"), Is.Not.Null);

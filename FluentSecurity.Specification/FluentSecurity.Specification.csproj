@@ -94,7 +94,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyScannerAssemblySpecification.cs" />
-    <Compile Include="AssemblyScannerNamespaceSpecification.cs" />
+    <Compile Include="AssemblyScannerBaseSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
     <Compile Include="Configuration\ViolationHandlerConfigurationSpec.cs" />
@@ -132,6 +132,8 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerByNameConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConventionSpec.cs" />
+    <Compile Include="Scanning\ControllerTypeScannerSpec.cs" />
+    <Compile Include="TestData\Controllers\BaseControllers.cs" />
     <Compile Include="TestData\MockConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelectorSpec.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContextSpec.cs" />
@@ -153,8 +155,8 @@
     <Compile Include="ServiceLocation\LifeCycles\ObjectCacheSpec.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycleSpec.cs" />
     <Compile Include="ServiceLocation\ServiceLocatorSpec.cs" />
-    <Compile Include="TestData\AdminController.cs" />
-    <Compile Include="TestData\AssemblyScannerControllers.cs" />
+    <Compile Include="TestData\Controllers\AdminController.cs" />
+    <Compile Include="TestData\Controllers\AssemblyScannerControllers.cs" />
     <Compile Include="TestData\CustomDefaultPolicyViolationHandler.cs" />
     <Compile Include="TestData\DefaultPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />
@@ -167,7 +169,7 @@
     <Compile Include="Helpers\TestDataFactory.cs" />
     <Compile Include="PolicyContainerExtensionsSpec.cs" />
     <Compile Include="SecurityConfigurationSpec.cs" />
-    <Compile Include="TestData\BlogController.cs" />
+    <Compile Include="TestData\Controllers\BlogController.cs" />
     <Compile Include="TestData\PostForm.cs" />
     <Compile Include="TestData\UserRole.cs" />
     <Compile Include="HandleSecurityAttributeSpec.cs" />

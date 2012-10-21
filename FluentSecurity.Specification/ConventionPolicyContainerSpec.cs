@@ -6,6 +6,7 @@ using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using FluentSecurity.Specification.TestData.Controllers;
 using Moq;
 using NUnit.Framework;
 
