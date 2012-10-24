@@ -441,6 +441,23 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_have_policycontainers_for_inheriting_controllers_of_generic_base_controller()
+		{
+			// Arrange
+			var inerhitingController = NameHelper.Controller<InheritingGenericBaseController>();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<BaseEntity>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(2));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "FirstClassAction"), Is.Not.Null);
+		}
+
+		[Test]
 		public void Should_throw_when_action_expresion_is_null()
 		{
 			var expression = new ConfigurationExpression();

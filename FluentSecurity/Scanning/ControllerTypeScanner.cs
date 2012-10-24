@@ -24,11 +24,43 @@ namespace FluentSecurity.Scanning
 			var results = new List<Type>();
 			foreach (var assembly in assemblies)
 			{
-				var controllerTypes = assembly.GetExportedTypes().Where(type => ControllerType.IsAssignableFrom(type)).ToList();
+				var controllerTypes = ControllerType.IsGenericType
+					? assembly.GetExportedTypes().Where(IsAssignableFromGenericType).ToList()
+					: assembly.GetExportedTypes().Where(type => ControllerType.IsAssignableFrom(type)).ToList();
+
 				var filteredControllerTypes = controllerTypes.Where(type => !type.IsAbstract);
 				results.AddRange(filteredControllerTypes);
 			}
 			return results;
+		}
+
+		private bool IsAssignableFromGenericType(Type instanceType)
+		{
+			if (!instanceType.IsGenericType && instanceType.BaseType == null)
+				return false;
+
+			var baseType = instanceType.BaseType;
+			if (baseType == null)
+				return false;
+
+			if (!baseType.IsGenericType || baseType.GetGenericTypeDefinition() != ControllerType.GetGenericTypeDefinition())
+				return false;
+
+			var instanceTs = baseType.GetGenericArguments();
+			var genericTs = ControllerType.GetGenericArguments();
+
+			if (instanceTs.Length != genericTs.Length)
+				return false;
+
+			for (var i = 0; i < genericTs.Length; ++i)
+			{
+				var instanceT = instanceTs.ElementAt(i);
+				var genericT = genericTs.ElementAt(i);
+				if (!genericT.IsAssignableFrom(instanceT))
+					return false;
+			}
+
+			return true;
 		}
 	}
 }
