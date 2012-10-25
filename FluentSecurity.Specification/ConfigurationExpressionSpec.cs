@@ -441,6 +441,72 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_have_policycontainers_for_inheriting_controllers_of_generic_base_controller_of_FirstInheritingEntity_FirstInheritingBaseViewModel()
+		{
+			// Arrange
+			var inerhitingController = NameHelper.Controller<FirstInheritingGenericBaseController>();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<FirstInheritingEntity, FirstInheritingBaseViewModel>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(2));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "FirstClassAction"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_inheriting_controllers_of_generic_base_controller_of_SecondInheritingEntity_SecondInheritingBaseViewModel()
+		{
+			// Arrange
+			var inerhitingController = NameHelper.Controller<SecondInheritingGenericBaseController>();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<SecondInheritingEntity, SecondInheritingBaseViewModel>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(2));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "FirstClassAction"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_inheriting_controllers_of_generic_base_controller_of_BaseEntity_BaseViewModel()
+		{
+			// Arrange
+			var inerhitingController1 = NameHelper.Controller<FirstInheritingGenericBaseController>();
+			var inerhitingController2 = NameHelper.Controller<SecondInheritingGenericBaseController>();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<BaseEntity, BaseViewModel>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(4));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController1, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController1, "FirstClassAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController2, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController2, "FirstClassAction"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_no_policycontainers_for_inheriting_controllers_of_generic_base_controller_of_BaseEntity_OtherViewModel()
+		{
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<BaseEntity, OtherViewModel>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
 		public void Should_throw_when_action_expresion_is_null()
 		{
 			var expression = new ConfigurationExpression();
@@ -461,6 +527,8 @@ namespace FluentSecurity.Specification
 			var expression = new ConfigurationExpression();
 			Assert.Throws<ArgumentException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(x => x.InheritedAction(), null, null));
 		}
+
+		public class OtherViewModel : BaseViewModel {}
 	}
 
 	[TestFixture]

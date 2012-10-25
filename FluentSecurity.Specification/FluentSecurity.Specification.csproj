@@ -122,6 +122,7 @@
     <Compile Include="Internals\HttpContextRequestDescriptionSpec.cs" />
     <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="Caching\PolicyResultCacheKeyBuilderSpec.cs" />
+    <Compile Include="Internals\TypeExtensionsSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyInstancePolicyViolationHandlerConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyTypePolicyViolationHandlerConventionSpec.cs" />

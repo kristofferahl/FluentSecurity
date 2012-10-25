@@ -24,7 +24,7 @@ namespace FluentSecurity.Specification
 		{
 			var policyContainers = configurationExpression.PolicyContainers;
 
-			Assert.That(policyContainers.Count(), Is.EqualTo(17));
+			Assert.That(policyContainers.Count(), Is.EqualTo(21));
 			var blog = NameHelper.Controller<BlogController>();
 			var admin = NameHelper.Controller<AdminController>();
 			var root = NameHelper.Controller<RootController>();
