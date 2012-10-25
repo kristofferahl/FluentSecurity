@@ -58,10 +58,10 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		public IPolicyContainerConfiguration ForAllControllersInAssembly(Assembly assembly)
+		public IPolicyContainerConfiguration ForAllControllersInAssembly(params Assembly[] assemblies)
 		{
 			var assemblyScanner = new AssemblyScanner();
-			assemblyScanner.Assembly(assembly);
+			assemblyScanner.Assemblies(assemblies);
 			assemblyScanner.With<ControllerTypeScanner>();
 			var controllerTypes = assemblyScanner.Scan();
 
@@ -89,18 +89,14 @@ namespace FluentSecurity
 
 		private IPolicyContainerConfiguration ForAllControllersInheriting<TController>(Func<string, bool> actionFilter, IEnumerable<Assembly> assemblies) where TController : Controller
 		{
-			if (assemblies == null) throw new ArgumentNullException("assemblies");
-			
-			var assembliesToScan = assemblies.ToList();
-			if (assembliesToScan.Any(a => a == null)) throw new ArgumentException("Assemblies must not contain null values.", "assemblies");
-
 			var controllerType = typeof (TController);
-			
+
+			var assembliesToScan = assemblies.ToList();
 			if (!assembliesToScan.Any())
 				assembliesToScan.Add(controllerType.Assembly);
 
 			var assemblyScanner = new AssemblyScanner();
-			assembliesToScan.Each(assemblyScanner.Assembly);
+			assemblyScanner.Assemblies(assembliesToScan);
 			assemblyScanner.With(new ControllerTypeScanner(controllerType));
 			var controllerTypes = assemblyScanner.Scan();
 
