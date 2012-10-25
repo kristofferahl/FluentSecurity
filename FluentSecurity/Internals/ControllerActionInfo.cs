@@ -5,15 +5,15 @@ namespace FluentSecurity.Internals
 {
 	public class ControllerActionInfo
 	{
-		public Type Controller { get; private set; }
-		public string Action { get; private set; }
-		public Type ActionResult { get; private set; }
+		public Type ControllerType { get; private set; }
+		public string ActionName { get; private set; }
+		public Type ActionResultType { get; private set; }
 
 		internal ControllerActionInfo(Type controller, MethodInfo action)
 		{
-			Controller = controller;
-			Action = action.GetActionName();
-			ActionResult = action.ReturnType;
+			ControllerType = controller;
+			ActionName = action.GetActionName();
+			ActionResultType = action.ReturnType;
 		}
 	}
 }

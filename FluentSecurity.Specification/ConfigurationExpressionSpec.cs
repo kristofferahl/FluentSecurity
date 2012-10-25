@@ -607,7 +607,7 @@ namespace FluentSecurity.Specification
 
 			// Act
 			Because(configurationExpression =>
-				configurationExpression.ForActionsMatching(x => x.Action == expectedActionName)
+				configurationExpression.ForActionsMatching(x => x.ActionName == expectedActionName)
 				);
 
 			// Assert
@@ -623,7 +623,7 @@ namespace FluentSecurity.Specification
 
 			// Act
 			Because(configurationExpression =>
-				configurationExpression.ForActionsMatching(x => x.Action.StartsWith("Edit"), GetType().Assembly)
+				configurationExpression.ForActionsMatching(x => x.ActionName.StartsWith("Edit"), GetType().Assembly)
 				);
 
 			// Assert
@@ -640,8 +640,8 @@ namespace FluentSecurity.Specification
 			// Act
 			Because(configurationExpression =>
 				configurationExpression.ForActionsMatching(x =>
-					x.Action == expectedActionName &&
-					x.Controller == typeof(BlogController)
+					x.ActionName == expectedActionName &&
+					x.ControllerType == typeof(BlogController)
 					)
 				);
 
@@ -669,9 +669,9 @@ namespace FluentSecurity.Specification
 			Because(configurationExpression =>
 				configurationExpression.ForActionsMatching(x =>
 				{
-					Assert.That(x.Controller, Is.Not.Null);
-					Assert.That(x.Action, Is.Not.Empty);
-					Assert.True(typeof(ActionResult).IsAssignableFrom(x.ActionResult));
+					Assert.That(x.ControllerType, Is.Not.Null);
+					Assert.That(x.ActionName, Is.Not.Empty);
+					Assert.True(typeof(ActionResult).IsAssignableFrom(x.ActionResultType));
 					return false;
 				}));
 

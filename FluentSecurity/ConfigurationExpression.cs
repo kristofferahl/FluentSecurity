@@ -100,7 +100,7 @@ namespace FluentSecurity
 			assemblyScanner.With(new ControllerTypeScanner(controllerType));
 			var controllerTypes = assemblyScanner.Scan();
 
-			Func<ControllerActionInfo, bool> filter = info => actionFilter.Invoke(info.Action);
+			Func<ControllerActionInfo, bool> filter = info => actionFilter.Invoke(info.ActionName);
 
 			return CreateConventionPolicyContainerFor(controllerTypes, filter);
 		}
