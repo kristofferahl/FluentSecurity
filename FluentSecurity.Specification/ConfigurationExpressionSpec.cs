@@ -265,18 +265,37 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
 		{
 			// Act & assert
+			var assemblyWithoutControllers = typeof (SecurityConfigurator).Assembly;
 			Because(configurationExpression =>
-				configurationExpression.ForAllControllersInAssembly(GetType().Assembly)
+				configurationExpression.ForAllControllersInAssembly(GetType().Assembly, assemblyWithoutControllers)
 				);
 		}
 
 		[Test]
-		public void Should_throw_when_assembly_is_null()
+		public void Should_throw_when_assemblies_is_null()
 		{
 			// Act & assert
 			Assert.Throws<ArgumentNullException>(() =>
 				Because(configurationExpression =>
 					configurationExpression.ForAllControllersInAssembly(null)
+					)
+				);
+		}
+
+		[Test]
+		public void Should_throw_when_assembly_list_contains_null_assembly()
+		{
+			// Arrange
+			var assemblies = new List<Assembly>
+			{
+				GetType().Assembly,
+				null
+			}.ToArray();
+
+			// Act & assert
+			Assert.Throws<ArgumentException>(() =>
+				Because(configurationExpression =>
+					configurationExpression.ForAllControllersInAssembly(assemblies)
 					)
 				);
 		}

@@ -18,6 +18,16 @@ namespace FluentSecurity.Scanning
 			_assemblies.Add(assembly);
 		}
 
+		public void Assemblies(IEnumerable<Assembly> assemblies)
+		{
+			if (assemblies == null) throw new ArgumentNullException("assemblies");
+
+			var assembliesToScan = assemblies.ToList();
+			if (assembliesToScan.Any(a => a == null)) throw new ArgumentException("Assemblies must not contain null values.", "assemblies");
+
+			assembliesToScan.ForEach(Assembly);
+		}
+
 		public void TheCallingAssembly()
 		{
 			var callingAssembly = FindCallingAssembly();
