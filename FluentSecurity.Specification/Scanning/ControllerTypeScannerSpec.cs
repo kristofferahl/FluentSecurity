@@ -60,7 +60,7 @@ namespace FluentSecurity.Specification.Scanning
 			var result = scanner.Scan(new[] { GetType().Assembly }).ToList();
 
 			// Assert
-			Assert.That(result.Count(), Is.EqualTo(9));
+			Assert.That(result.Count(), Is.EqualTo(10));
 		}
 
 		[Test]

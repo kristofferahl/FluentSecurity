@@ -20,7 +20,15 @@ namespace FluentSecurity.Specification.TestData.Controllers
 			}
 		}
 
-		public class InheritingGenericBaseController : GenericBaseController<InheritingEntity>
+		public class FirstInheritingGenericBaseController : GenericBaseController<FirstInheritingEntity, FirstInheritingBaseViewModel>
+		{
+			public ActionResult FirstClassAction()
+			{
+				return null;
+			}
+		}
+
+		public class SecondInheritingGenericBaseController : GenericBaseController<SecondInheritingEntity, SecondInheritingBaseViewModel>
 		{
 			public ActionResult FirstClassAction()
 			{
@@ -44,7 +52,9 @@ namespace FluentSecurity.Specification.TestData.Controllers
 			}
 		}
 
-		public abstract class GenericBaseController<T> : Controller where T : BaseEntity
+		public abstract class GenericBaseController<TEntity, TViewModel> : Controller
+			where TEntity : BaseEntity
+			where TViewModel : BaseViewModel
 		{
 			public ActionResult InheritedAction()
 			{
@@ -52,8 +62,16 @@ namespace FluentSecurity.Specification.TestData.Controllers
 			}
 		}
 
-		public class InheritingEntity : BaseEntity {}
+		public class SecondInheritingEntity : BaseEntity {}
 
-		public class BaseEntity {}
+		public class FirstInheritingEntity : BaseEntity {}
+
+		public abstract class BaseEntity {}
+
+		public class SecondInheritingBaseViewModel : BaseViewModel {}
+
+		public class FirstInheritingBaseViewModel : BaseViewModel {}
+
+		public abstract class BaseViewModel {}
 	}
 }
