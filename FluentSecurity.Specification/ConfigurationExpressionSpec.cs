@@ -597,6 +597,90 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_actions_matching : AssemblyScannerBaseSpecification
+	{
+		[Test]
+		public void Should_have_policycontainers_for_all_Delete_actions_in_calling_assembly()
+		{
+			// Arrange
+			const string expectedActionName = "DeletePost";
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x => x.Action == expectedActionName)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), expectedActionName), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_all_actions_starting_with_Edit_in_the_specified_assembly()
+		{
+			// Arrange
+			const string expectedActionName = "EditPost";
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x => x.Action.StartsWith("Edit"), GetType().Assembly)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), expectedActionName), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_all_Index_actions_where_controller_is_BlogController()
+		{
+			// Arrange
+			const string expectedActionName = "Index";
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x =>
+					x.Action == expectedActionName &&
+					x.Controller == typeof(BlogController)
+					)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), expectedActionName), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_not_have_any_policycontainers()
+		{
+			// Act & Assert
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x => false)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Should_expose_Action_and_ControllerType()
+		{
+			// Act & Assert
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x =>
+				{
+					Assert.That(x.Action, Is.Not.Empty);
+					Assert.That(x.Controller, Is.Not.Null);
+					return false;
+				}));
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
 	public class When_I_pass_null_to_GetAuthenticationStatusFrom
 	{
 		[Test]

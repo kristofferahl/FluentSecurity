@@ -100,7 +100,9 @@ namespace FluentSecurity
 			assemblyScanner.With(new ControllerTypeScanner(controllerType));
 			var controllerTypes = assemblyScanner.Scan();
 
-			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
+			Func<ControllerActionInfo, bool> filter = info => actionFilter.Invoke(info.Action);
+
+			return CreateConventionPolicyContainerFor(controllerTypes, filter);
 		}
 
 		public IPolicyContainerConfiguration ForAllControllersInNamespaceContainingType<TType>()
@@ -116,7 +118,23 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
-		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<string, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
+		public IPolicyContainerConfiguration ForActionsMatching(Func<ControllerActionInfo, bool> actionFilter, params Assembly[] assemblies)
+		{
+			var assemblyScanner = new AssemblyScanner();
+			var assembliesToScan = assemblies.ToList();
+			
+			if (assembliesToScan.Any()) 
+				assemblyScanner.Assemblies(assemblies);
+			else
+				assemblyScanner.TheCallingAssembly();
+
+			assemblyScanner.With<ControllerTypeScanner>();
+			var controllerTypes = assemblyScanner.Scan();
+
+			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
+		}
+
+		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
 		{
 			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)
