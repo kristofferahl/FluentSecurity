@@ -191,18 +191,6 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
-		/// Returns true if the type has an empty constructor
-		/// </summary>
-		/// <param name="type">The type</param>
-		/// <returns>A boolean</returns>
-		internal static bool HasEmptyConstructor(this Type type)
-		{
-			var constructors = type.GetConstructors();
-			var hasEmptyConstructor = constructors.Any(x => !x.GetParameters().Any());
-			return hasEmptyConstructor;
-		}
-
-		/// <summary>
 		/// Returns a formatted string
 		/// </summary>
 		/// <param name="format">The format</param>

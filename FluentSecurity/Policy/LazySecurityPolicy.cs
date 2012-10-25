@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentSecurity.Internals;
 
 namespace FluentSecurity.Policy
 {

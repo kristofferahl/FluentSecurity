@@ -8,6 +8,44 @@ namespace FluentSecurity.Specification.Internals
 {
 	[TestFixture]
 	[Category("TypeExtensionsSpec")]
+	public class When_checking_for_empty_constructor
+	{
+		[Test]
+		public void Should_be_false()
+		{
+			// Arrange
+			var type = typeof(ClassWithNonEmptyConstructor);
+
+			// Act
+			var result = type.HasEmptyConstructor();
+
+			// Assert
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void Should_be_true()
+		{
+			// Arrange
+			var type = typeof(ClassWithEmptyConstructor);
+
+			// Act
+			var result = type.HasEmptyConstructor();
+
+			// Assert
+			Assert.That(result, Is.True);
+		}
+
+		public class ClassWithNonEmptyConstructor
+		{
+			public ClassWithNonEmptyConstructor(string value) { }
+		}
+
+		public class ClassWithEmptyConstructor { }
+	}
+
+	[TestFixture]
+	[Category("TypeExtensionsSpec")]
 	public class When_checking_if_Type_A_is_assignable_from_generic_Type_B
 	{
 		[Test]

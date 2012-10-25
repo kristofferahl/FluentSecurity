@@ -5,6 +5,13 @@ namespace FluentSecurity.Internals
 {
 	public static class TypeExtensions
 	{
+		internal static bool HasEmptyConstructor(this Type type)
+		{
+			var constructors = type.GetConstructors();
+			var hasEmptyConstructor = constructors.Any(x => !x.GetParameters().Any());
+			return hasEmptyConstructor;
+		}
+
 		internal static bool IsMatchForGenericType(this object obj, Type genericType)
 		{
 			if (!genericType.IsGenericType) throw new ArgumentException("The specified type is not a generic type", "genericType");
