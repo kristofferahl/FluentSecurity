@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using NUnit.Framework;
 using FluentSecurity.Internals;
 
 namespace FluentSecurity.Specification.Internals
@@ -271,5 +274,72 @@ namespace FluentSecurity.Specification.Internals
 			where T1 : BaseType
 			where T2 : class
 		{}
+	}
+
+	[TestFixture]
+	[Category("TypeExtensionsSpec")]
+	public class When_matching_generic_types
+	{
+		[Test]
+		public void Should_be_false_when_obj_is_null()
+		{
+			// Arrange
+			object obj = null;
+
+			// Act
+			var result = obj.IsMatchForGenericType(typeof(List<>));
+
+			// Assert
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void Should_be_false_when_obj_is_not_a_generic_type()
+		{
+			// Arrange
+			object obj = new List();
+
+			// Act
+			var result = obj.IsMatchForGenericType(typeof(List<>));
+
+			// Assert
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void Should_be_false_when_obj_is_not_matching_generic_type()
+		{
+			// Arrange
+			object obj = new Collection<int>();
+
+			// Act
+			var result = obj.IsMatchForGenericType(typeof(List<>));
+
+			// Assert
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void Should_be_true_when_obj_is_not_matching_generic_type()
+		{
+			// Arrange
+			object obj = new List<int>();
+
+			// Act
+			var result = obj.IsMatchForGenericType(typeof(List<>));
+
+			// Assert
+			Assert.That(result, Is.True);
+		}
+
+		[Test]
+		public void Should_throw_when_generic_type_argument_is_not_a_generic_type()
+		{
+			// Arrange
+			object obj = new List<int>();
+
+			// Act & assert
+			Assert.Throws<ArgumentException>(() => obj.IsMatchForGenericType(typeof(List)));
+		}
 	}
 }

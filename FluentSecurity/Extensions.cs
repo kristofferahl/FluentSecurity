@@ -162,20 +162,6 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
-		/// Returns true when the object is a match for the specified generic type
-		/// </summary>
-		/// <param name="obj">The object to compare</param>
-		/// <param name="genericType">The generic typet to compare object to</param>
-		/// <returns>A boolean</returns>
-		internal static bool IsMatchForGenericType(this object obj, Type genericType)
-		{
-			if (!genericType.IsGenericType) throw new ArgumentException("The specified type is not a generic type", "genericType");
-			if (obj == null) return false;
-			var type = obj.GetType();
-			return type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
-		}
-
-		/// <summary>
 		/// Performs an action on each item
 		/// </summary>
 		internal static void Each<T>(this IEnumerable<T> items, Action<T> action)

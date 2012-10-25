@@ -5,6 +5,14 @@ namespace FluentSecurity.Internals
 {
 	public static class TypeExtensions
 	{
+		internal static bool IsMatchForGenericType(this object obj, Type genericType)
+		{
+			if (!genericType.IsGenericType) throw new ArgumentException("The specified type is not a generic type", "genericType");
+			if (obj == null) return false;
+			var type = obj.GetType();
+			return type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
+		}
+
 		internal static bool IsAssignableFromGenericType(this Type firstType, Type secondType)
 		{
 			if (!firstType.IsGenericType)

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
 using FluentSecurity.ServiceLocation;
