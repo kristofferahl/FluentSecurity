@@ -7,6 +7,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Caching;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -71,9 +72,9 @@ namespace FluentSecurity
 		/// <summary>
 		/// Gets actionmethods for the specified controller type
 		/// </summary>
-		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType, Func<string, bool> actionFilter = null)
+		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType, Func<ControllerActionInfo, bool> actionFilter = null)
 		{
-			if (actionFilter == null) actionFilter = actionName => true;
+			if (actionFilter == null) actionFilter = info => true;
 			
 			return controllerType
 				.GetMethods(
@@ -81,7 +82,7 @@ namespace FluentSecurity
 					BindingFlags.Instance
 				)
 				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
-				.Where(x => actionFilter.Invoke(x.GetActionName()))
+				.Where(action => actionFilter.Invoke(new ControllerActionInfo(controllerType, action)))
 				.ToList();
 		}
 
