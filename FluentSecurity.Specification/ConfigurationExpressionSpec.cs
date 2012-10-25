@@ -663,14 +663,15 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_expose_Action_and_ControllerType()
+		public void Should_expose_Controller_Action_and_ActionResult()
 		{
 			// Act & Assert
 			Because(configurationExpression =>
 				configurationExpression.ForActionsMatching(x =>
 				{
-					Assert.That(x.Action, Is.Not.Empty);
 					Assert.That(x.Controller, Is.Not.Null);
+					Assert.That(x.Action, Is.Not.Empty);
+					Assert.True(typeof(ActionResult).IsAssignableFrom(x.ActionResult));
 					return false;
 				}));
 
