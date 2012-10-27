@@ -265,18 +265,37 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainers_for_all_controllers_and_all_actions()
 		{
 			// Act & assert
+			var assemblyWithoutControllers = typeof (SecurityConfigurator).Assembly;
 			Because(configurationExpression =>
-				configurationExpression.ForAllControllersInAssembly(GetType().Assembly)
+				configurationExpression.ForAllControllersInAssembly(GetType().Assembly, assemblyWithoutControllers)
 				);
 		}
 
 		[Test]
-		public void Should_throw_when_assembly_is_null()
+		public void Should_throw_when_assemblies_is_null()
 		{
 			// Act & assert
 			Assert.Throws<ArgumentNullException>(() =>
 				Because(configurationExpression =>
 					configurationExpression.ForAllControllersInAssembly(null)
+					)
+				);
+		}
+
+		[Test]
+		public void Should_throw_when_assembly_list_contains_null_assembly()
+		{
+			// Arrange
+			var assemblies = new List<Assembly>
+			{
+				GetType().Assembly,
+				null
+			}.ToArray();
+
+			// Act & assert
+			Assert.Throws<ArgumentException>(() =>
+				Because(configurationExpression =>
+					configurationExpression.ForAllControllersInAssembly(assemblies)
 					)
 				);
 		}
@@ -441,6 +460,72 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
+		public void Should_have_policycontainers_for_inheriting_controllers_of_generic_base_controller_of_FirstInheritingEntity_FirstInheritingBaseViewModel()
+		{
+			// Arrange
+			var inerhitingController = NameHelper.Controller<FirstInheritingGenericBaseController>();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<FirstInheritingEntity, FirstInheritingBaseViewModel>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(2));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "FirstClassAction"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_inheriting_controllers_of_generic_base_controller_of_SecondInheritingEntity_SecondInheritingBaseViewModel()
+		{
+			// Arrange
+			var inerhitingController = NameHelper.Controller<SecondInheritingGenericBaseController>();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<SecondInheritingEntity, SecondInheritingBaseViewModel>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(2));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController, "FirstClassAction"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_inheriting_controllers_of_generic_base_controller_of_BaseEntity_BaseViewModel()
+		{
+			// Arrange
+			var inerhitingController1 = NameHelper.Controller<FirstInheritingGenericBaseController>();
+			var inerhitingController2 = NameHelper.Controller<SecondInheritingGenericBaseController>();
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<BaseEntity, BaseViewModel>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(4));
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController1, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController1, "FirstClassAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController2, "InheritedAction"), Is.Not.Null);
+			Assert.That(PolicyContainers.GetContainerFor(inerhitingController2, "FirstClassAction"), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_no_policycontainers_for_inheriting_controllers_of_generic_base_controller_of_BaseEntity_OtherViewModel()
+		{
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForAllControllersInheriting<GenericBaseController<BaseEntity, OtherViewModel>>()
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
 		public void Should_throw_when_action_expresion_is_null()
 		{
 			var expression = new ConfigurationExpression();
@@ -461,6 +546,8 @@ namespace FluentSecurity.Specification
 			var expression = new ConfigurationExpression();
 			Assert.Throws<ArgumentException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(x => x.InheritedAction(), null, null));
 		}
+
+		public class OtherViewModel : BaseViewModel {}
 	}
 
 	[TestFixture]
@@ -505,6 +592,91 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(PolicyContainers.Count(), Is.EqualTo(1));
 			Assert.That(PolicyContainers.GetContainerFor(include, index), Is.Not.Null);
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_all_actions_matching : AssemblyScannerBaseSpecification
+	{
+		[Test]
+		public void Should_have_policycontainers_for_all_Delete_actions_in_calling_assembly()
+		{
+			// Arrange
+			const string expectedActionName = "DeletePost";
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x => x.ActionName == expectedActionName)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), expectedActionName), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_all_actions_starting_with_Edit_in_the_specified_assembly()
+		{
+			// Arrange
+			const string expectedActionName = "EditPost";
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x => x.ActionName.StartsWith("Edit"), GetType().Assembly)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), expectedActionName), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_have_policycontainers_for_all_Index_actions_where_controller_is_BlogController()
+		{
+			// Arrange
+			const string expectedActionName = "Index";
+
+			// Act
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x =>
+					x.ActionName == expectedActionName &&
+					x.ControllerType == typeof(BlogController)
+					)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), expectedActionName), Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_not_have_any_policycontainers()
+		{
+			// Act & Assert
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x => false)
+				);
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Should_expose_Controller_Action_and_ActionResult()
+		{
+			// Act & Assert
+			Because(configurationExpression =>
+				configurationExpression.ForActionsMatching(x =>
+				{
+					Assert.That(x.ControllerType, Is.Not.Null);
+					Assert.That(x.ActionName, Is.Not.Empty);
+					Assert.True(typeof(ActionResult).IsAssignableFrom(x.ActionResultType));
+					return false;
+				}));
+
+			// Assert
+			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
 		}
 	}
 

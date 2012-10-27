@@ -4,7 +4,7 @@
 http://www.fluentsecurity.net/
 
 ## Documentation
-See the Wiki for [documentation of Fluent Security](/kristofferahl/FluentSecurity/wiki/)
+See the Wiki for [documentation of Fluent Security](http://www.fluentsecurity.net/wiki/)
 
 ## Source code
 https://github.com/kristofferahl/FluentSecurity
@@ -18,6 +18,7 @@ MIT (http://opensource.org/licenses/mit-license.php)
 
 ## Contact
 Kristoffer Ahl (project founder)  
-Email: fluent-security@77dynamite.com  
-Twitter: http://twitter.com/kristofferahl  
+Email: mail@fluentsecurity.net  
+Twitter: https://twitter.com/FluentSecurity | http://twitter.com/kristofferahl  
+Blog: http://kristofferahl.tumblr.com/  
 Website: http://www.77dynamite.com/

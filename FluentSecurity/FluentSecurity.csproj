@@ -81,11 +81,13 @@
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
     <Compile Include="Configuration\ViolationConfiguration.cs" />
+    <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="Internals\Conventions.cs" />
     <Compile Include="Internals\ExceptionFactory.cs" />
     <Compile Include="Internals\HttpContextRequestDescription.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
+    <Compile Include="Internals\TypeExtensions.cs" />
     <Compile Include="Policy\ILazySecurityPolicy.cs" />
     <Compile Include="Internals\IRequestDescription.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContext.cs" />

@@ -36,8 +36,10 @@
 	<!-- COMMON ASSEMBLY INFO
 		Properties used when creating the common assembly info file
 	-->
-	<property name="project.version.number" value="2.0.0" />
-	<property name="project.version.label" value="2.0.0-alpha2" /><!-- Example: 1.0.0-beta1 -->
+	<property name="build.number" value="0" />
+	<property name="project.version.number" value="2.0.0.${build.number}" />
+	<property name="project.version.label" value="2.0.0-alpha3" /><!-- Example: 1.0.0-beta1 -->
+	<property name="project.version.label" value="${project.version.label}-build${build.number}" if="${build.number != '0'}" />
 	<property name="project.config" value="release" />
 	
 	<!-- PROJECTS TO BUILD
@@ -103,8 +105,8 @@
 	
 	<target name="AssemblyInfo" description="Create CommonAssemblyInfo">
 	
-		<property name="assembly-version" value="${project.version.number}.0000" />
-		<property name="assembly-file-version" value="${project.version.number}.0000" />
+		<property name="assembly-version" value="${project.version.number}" />
+		<property name="assembly-file-version" value="${project.version.number}" />
 
 		<asminfo output="..\..\CommonAssemblyInfo.cs" language="CSharp" verbose="${verbose}">
 			<imports>

@@ -7,6 +7,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Caching;
+using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -71,9 +72,9 @@ namespace FluentSecurity
 		/// <summary>
 		/// Gets actionmethods for the specified controller type
 		/// </summary>
-		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType, Func<string, bool> actionFilter = null)
+		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType, Func<ControllerActionInfo, bool> actionFilter = null)
 		{
-			if (actionFilter == null) actionFilter = actionName => true;
+			if (actionFilter == null) actionFilter = info => true;
 			
 			return controllerType
 				.GetMethods(
@@ -81,7 +82,7 @@ namespace FluentSecurity
 					BindingFlags.Instance
 				)
 				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
-				.Where(x => actionFilter.Invoke(x.GetActionName()))
+				.Where(action => actionFilter.Invoke(new ControllerActionInfo(controllerType, action)))
 				.ToList();
 		}
 
@@ -162,20 +163,6 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
-		/// Returns true when the object is a match for the specified generic type
-		/// </summary>
-		/// <param name="obj">The object to compare</param>
-		/// <param name="genericType">The generic typet to compare object to</param>
-		/// <returns>A boolean</returns>
-		internal static bool IsMatchForGenericType(this object obj, Type genericType)
-		{
-			if (!genericType.IsGenericType) throw new ArgumentException("The specified type is not a generic type", "genericType");
-			if (obj == null) return false;
-			var type = obj.GetType();
-			return type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
-		}
-
-		/// <summary>
 		/// Performs an action on each item
 		/// </summary>
 		internal static void Each<T>(this IEnumerable<T> items, Action<T> action)
@@ -202,18 +189,6 @@ namespace FluentSecurity
 		internal static bool IsNullOrEmpty(this string value)
 		{
 			return String.IsNullOrEmpty(value);
-		}
-
-		/// <summary>
-		/// Returns true if the type has an empty constructor
-		/// </summary>
-		/// <param name="type">The type</param>
-		/// <returns>A boolean</returns>
-		internal static bool HasEmptyConstructor(this Type type)
-		{
-			var constructors = type.GetConstructors();
-			var hasEmptyConstructor = constructors.Any(x => !x.GetParameters().Any());
-			return hasEmptyConstructor;
 		}
 
 		/// <summary>

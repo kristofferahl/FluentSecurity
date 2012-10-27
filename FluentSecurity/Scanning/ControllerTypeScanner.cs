@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
+using FluentSecurity.Internals;
 
 namespace FluentSecurity.Scanning
 {
@@ -24,7 +25,10 @@ namespace FluentSecurity.Scanning
 			var results = new List<Type>();
 			foreach (var assembly in assemblies)
 			{
-				var controllerTypes = assembly.GetExportedTypes().Where(type => ControllerType.IsAssignableFrom(type)).ToList();
+				var controllerTypes = ControllerType.IsGenericType
+					? assembly.GetExportedTypes().Where(type => ControllerType.IsAssignableFromGenericType(type)).ToList()
+					: assembly.GetExportedTypes().Where(type => ControllerType.IsAssignableFrom(type)).ToList();
+
 				var filteredControllerTypes = controllerTypes.Where(type => !type.IsAbstract);
 				results.AddRange(filteredControllerTypes);
 			}

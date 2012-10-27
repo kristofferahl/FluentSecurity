@@ -72,9 +72,17 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_return_the_current_configuration()
 		{
-			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			var fullFilePath = Path.Combine(baseDirectory, "TestData", "DiagnosticsOutputExample.txt");
-			var expectedOutput = File.ReadAllText(fullFilePath);
+			const string expectedOutput = @"Ignore missing configuration: True
+
+------------------------------------------------------------------------------------
+
+FluentSecurity.Specification.TestData.BlogController > DeletePost
+	FluentSecurity.Policy.RequireRolePolicy (Owner or Publisher)
+
+FluentSecurity.Specification.TestData.BlogController > Index
+	FluentSecurity.Policy.DenyAnonymousAccessPolicy
+
+------------------------------------------------------------------------------------";
 
 			var securityConfiguration = new SecurityConfiguration(configuration =>
 			{
