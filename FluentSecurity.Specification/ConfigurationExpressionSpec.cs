@@ -686,17 +686,20 @@ namespace FluentSecurity.Specification
 	public class When_scanning_for_profiles
 	{
 		[Test]
-		public void Should_scan_using_profile_scanner()
+		public void Should_scan_for_profiles_using_profile_scanner()
 		{
 			// Arrange
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
-			ProfileScanner scanner = null;
 
 			// Act
-			configurationExpression.Scan(scan => { scanner = scan; });
+			configurationExpression.Scan(scan =>
+			{
+				scan.AssembliesFromApplicationBaseDirectory(assembly => assembly.Equals(GetType().Assembly));
+				scan.LookForProfiles();
+			});
 
 			// Assert
-			Assert.That(scanner, Is.Not.Null);
+			Assert.That(configurationExpression.Profiles.Count(), Is.EqualTo(2));
 		}
 	}
 

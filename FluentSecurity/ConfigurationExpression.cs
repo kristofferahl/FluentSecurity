@@ -16,6 +16,7 @@ namespace FluentSecurity
 {
 	public class ConfigurationExpression
 	{
+		internal IList<Type> Profiles { get; private set; }
 		internal IList<IPolicyContainer> PolicyContainers { get; private set; } 
 		internal Func<bool> IsAuthenticated { get; private set; }
 		internal Func<IEnumerable<object>> Roles { get; private set; }
@@ -27,6 +28,7 @@ namespace FluentSecurity
 
 		public ConfigurationExpression()
 		{
+			Profiles = new List<Type>();
 			PolicyContainers = new List<IPolicyContainer>();
 			Advanced = new AdvancedConfiguration();
 			PolicyAppender = new DefaultPolicyAppender();
@@ -230,9 +232,12 @@ namespace FluentSecurity
 			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsInstanceConvention<>)));
 		}
 
-		public void Scan(Action<ProfileScanner> scanner)
+		public void Scan(Action<ProfileScanner> scan)
 		{
-			scanner.Invoke(new ProfileScanner());
+			var profileScanner = new ProfileScanner();
+			scan.Invoke(profileScanner);
+			var profiles = profileScanner.Scan().ToList();
+			profiles.ForEach(Profiles.Add);
 		}
 	}
 }
