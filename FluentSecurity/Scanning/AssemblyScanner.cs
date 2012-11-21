@@ -6,11 +6,16 @@ using System.Reflection;
 
 namespace FluentSecurity.Scanning
 {
-	internal class AssemblyScanner
+	public class AssemblyScanner
 	{
 		private readonly List<Assembly> _assemblies = new List<Assembly>();
 		private readonly List<ITypeScanner> _scanners = new List<ITypeScanner>();
 		private readonly IList<Func<Type, bool>> _filters = new List<Func<Type, bool>>();
+
+		public IEnumerable<Assembly> ScannerAssemblies
+		{
+			get { return _assemblies; }
+		}
 
 		public void Assembly(Assembly assembly)
 		{

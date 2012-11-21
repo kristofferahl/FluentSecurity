@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace FluentSecurity.Scanning
 {
-	internal interface ITypeScanner
+	public interface ITypeScanner
 	{
 		IEnumerable<Type> Scan(IEnumerable<Assembly> assemblies);
 	}
