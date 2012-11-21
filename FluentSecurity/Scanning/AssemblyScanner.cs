@@ -12,7 +12,7 @@ namespace FluentSecurity.Scanning
 		private readonly List<ITypeScanner> _scanners = new List<ITypeScanner>();
 		private readonly IList<Func<Type, bool>> _filters = new List<Func<Type, bool>>();
 
-		public IEnumerable<Assembly> ScannerAssemblies
+		public IEnumerable<Assembly> AssembliesToScan
 		{
 			get { return _assemblies; }
 		}

@@ -27,7 +27,7 @@ namespace FluentSecurity.Specification.Scanning
 			scanner.AssembliesFromApplicationBaseDirectory();
 
 			// Assert
-			Assert.That(scanner.ScannerAssemblies.Count(), Is.EqualTo(expectedAssembliesCount));
+			Assert.That(scanner.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
 		}
 
 		[Test]
@@ -41,7 +41,7 @@ namespace FluentSecurity.Specification.Scanning
 			scanner.AssembliesFromApplicationBaseDirectory(assembly => assembly.FullName.StartsWith("FluentSecurity."));
 
 			// Assert
-			Assert.That(scanner.ScannerAssemblies.Count(), Is.EqualTo(expectedAssembliesCount));
+			Assert.That(scanner.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
 		}
 	}
 }
