@@ -229,5 +229,10 @@ namespace FluentSecurity
 			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
 			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsInstanceConvention<>)));
 		}
+
+		public void Scan(Action<ProfileScanner> scanner)
+		{
+			scanner.Invoke(new ProfileScanner());
+		}
 	}
 }

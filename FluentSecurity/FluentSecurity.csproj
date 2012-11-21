@@ -137,6 +137,7 @@
     <Compile Include="ConventionPolicyContainer.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Scanning\ITypeScanner.cs" />
+    <Compile Include="Scanning\ProfileScanner.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityConfiguration.cs" />

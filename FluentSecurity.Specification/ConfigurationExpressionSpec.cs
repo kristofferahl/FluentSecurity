@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using FluentSecurity.Configuration;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.Scanning;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers;
@@ -677,6 +678,25 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(PolicyContainers.Count(), Is.EqualTo(0));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_scanning_for_profiles
+	{
+		[Test]
+		public void Should_scan_using_profile_scanner()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+			ProfileScanner scanner = null;
+
+			// Act
+			configurationExpression.Scan(scan => { scanner = scan; });
+
+			// Assert
+			Assert.That(scanner, Is.Not.Null);
 		}
 	}
 
