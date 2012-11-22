@@ -17,7 +17,7 @@ namespace FluentSecurity
 			Expression = expression;
 
 			Advanced = Expression.Model;
-			ExternalServiceLocator = Expression.ExternalServiceLocator;
+			ExternalServiceLocator = Expression.Model.ExternalServiceLocator;
 			PolicyContainers = Expression.Model.PolicyContainers;
 		}
 

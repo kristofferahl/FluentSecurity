@@ -4,7 +4,7 @@ namespace FluentSecurity.Configuration
 	{
 		public RootConfigurationExpression()
 		{
-			Initialize(new SecurityModel(), new DefaultPolicyAppender());
+			Initialize(new SecurityModel());
 		}
 	}
 }

@@ -97,7 +97,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = _configurationExpression.Model.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			
 			Assert.That(policyContainer, Is.Not.Null);
-			Assert.That(_configurationExpression.Model.PolicyContainers.Count, Is.EqualTo(1));
+			Assert.That(_configurationExpression.Model.PolicyContainers.Count(), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -130,7 +130,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = configurationExpression.Model.PolicyContainers.First();
 
 			Assert.That(policyContainer.ActionName, Is.EqualTo("AliasedAction"));
-			Assert.That(configurationExpression.Model.PolicyContainers.Count, Is.EqualTo(1));
+			Assert.That(configurationExpression.Model.PolicyContainers.Count(), Is.EqualTo(1));
 		}
 
 		private class AliasedController : Controller
@@ -158,7 +158,7 @@ namespace FluentSecurity.Specification
 			configurationExpression.For<BlogController>(x => x.AddPost());
 
 			// Assert
-			var policyContainers = configurationExpression.Model.PolicyContainers;
+			var policyContainers = configurationExpression.Model.PolicyContainers.ToList();
 			Assert.That(policyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index"), Is.Not.Null);
 			Assert.That(policyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "AddPost"), Is.Not.Null);
 			Assert.That(policyContainers.Count, Is.EqualTo(2));
@@ -193,7 +193,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainers = _configurationExpression.Model.PolicyContainers;
+			var policyContainers = _configurationExpression.Model.PolicyContainers.ToList();
 			Assert.That(policyContainers.GetContainerFor(expectedControllerName, "Index"), Is.Not.Null);
 			Assert.That(policyContainers.GetContainerFor(expectedControllerName, "ListPosts"), Is.Not.Null);
 			Assert.That(policyContainers.GetContainerFor(expectedControllerName, "AddPost"), Is.Not.Null);
@@ -209,7 +209,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			Assert.That(_configurationExpression.Model.PolicyContainers.Count, Is.EqualTo(6));
+			Assert.That(_configurationExpression.Model.PolicyContainers.Count(), Is.EqualTo(6));
 		}
 	}
 
@@ -231,7 +231,7 @@ namespace FluentSecurity.Specification
 			var policyContainer = configurationExpression.Model.PolicyContainers.First();
 
 			Assert.That(policyContainer.ActionName, Is.EqualTo("AliasedAction"));
-			Assert.That(configurationExpression.Model.PolicyContainers.Count, Is.EqualTo(1));
+			Assert.That(configurationExpression.Model.PolicyContainers.Count(), Is.EqualTo(1));
 		}
 
 		private class AliasedController : Controller
@@ -970,9 +970,7 @@ namespace FluentSecurity.Specification
 	{
 		protected static ISecurityServiceLocator GetExternalServiceLocator(ConfigurationExpression configurationExpression)
 		{
-			var serviceLocatorProperty = configurationExpression.GetType().GetProperty("ExternalServiceLocator", BindingFlags.Instance | BindingFlags.NonPublic);
-			var serviceLocator = serviceLocatorProperty.GetValue(configurationExpression, null);
-			return (ISecurityServiceLocator) serviceLocator;
+			return configurationExpression.Model.ExternalServiceLocator;
 		}
 	}
 }

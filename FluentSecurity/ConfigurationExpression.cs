@@ -17,26 +17,22 @@ namespace FluentSecurity
 {
 	public class ConfigurationExpression
 	{
+		public AdvancedConfiguration Advanced { get; private set; }
+
 		internal SecurityModel Model { get; private set; }
 
-		internal Func<bool> IsAuthenticated { get; private set; }
-		internal Func<IEnumerable<object>> Roles { get; private set; }
-		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
-		
 		private IPolicyAppender PolicyAppender { get; set; }
-
-		public AdvancedConfiguration Advanced { get; private set; }
 
 		public ConfigurationExpression()
 		{
-			Initialize(new SecurityModel(), new DefaultPolicyAppender());
+			Initialize(new SecurityModel());
 		}
 
-		internal void Initialize(SecurityModel model, IPolicyAppender policyAppender)
+		internal void Initialize(SecurityModel model)
 		{
 			Model = model;
 			Advanced = new AdvancedConfiguration(Model);
-			PolicyAppender = policyAppender;
+			PolicyAppender = new DefaultPolicyAppender();
 		}
 
 		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
@@ -152,7 +148,7 @@ namespace FluentSecurity
 		private void ApplyProfile(Type profileType)
 		{
 			var profile = Activator.CreateInstance(profileType) as SecurityProfile;
-			if (profile != null) profile.Apply(Model, PolicyAppender);
+			if (profile != null) Model.ApplyConfiguration(profile);
 		}
 
 		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
@@ -173,41 +169,28 @@ namespace FluentSecurity
 
 		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
 		{
-			PolicyContainer policyContainer;
-
-			var existingContainer = Model.PolicyContainers.GetContainerFor(controllerName, actionName);
-			if (existingContainer != null)
-			{
-				policyContainer = (PolicyContainer) existingContainer;
-			}
-			else
-			{
-				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-				Model.PolicyContainers.Add(policyContainer);
-			}
-
-			return policyContainer;
+			return Model.AddPolicyContainer(new PolicyContainer(controllerName, actionName, PolicyAppender));
 		}
 
 		// TODO: Evaluate the need to move this to RootConfigurationExpression.
-		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)
+		public void GetAuthenticationStatusFrom(Func<bool> authenticationExpression)
 		{
-			if (isAuthenticatedFunction == null)
-				throw new ArgumentNullException("isAuthenticatedFunction");
+			if (authenticationExpression == null)
+				throw new ArgumentNullException("authenticationExpression");
 
-			IsAuthenticated = isAuthenticatedFunction;
+			Model.IsAuthenticated = authenticationExpression;
 		}
 
 		// TODO: Evaluate the need to move this to RootConfigurationExpression.
-		public void GetRolesFrom(Func<IEnumerable<object>> rolesFunction)
+		public void GetRolesFrom(Func<IEnumerable<object>> rolesExpression)
 		{
-			if (rolesFunction == null)
-				throw new ArgumentNullException("rolesFunction");
+			if (rolesExpression == null)
+				throw new ArgumentNullException("rolesExpression");
 
-			if (Model.PolicyContainers.Count > 0)
+			if (Model.PolicyContainers.Any())
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
-			Roles = rolesFunction;
+			Model.Roles = rolesExpression;
 		}
 
 		public void SetPolicyAppender(IPolicyAppender policyAppender)
@@ -224,7 +207,7 @@ namespace FluentSecurity
 			if (servicesLocator == null)
 				throw new ArgumentNullException("servicesLocator");
 
-			ExternalServiceLocator = new ExternalServiceLocator(servicesLocator, singleServiceLocator);
+			ResolveServicesUsing(new ExternalServiceLocator(servicesLocator, singleServiceLocator));
 		}
 
 		// TODO: Evaluate the need to move this to RootConfigurationExpression.
@@ -233,7 +216,7 @@ namespace FluentSecurity
 			if (securityServiceLocator == null)
 				throw new ArgumentNullException("securityServiceLocator");
 
-			ExternalServiceLocator = securityServiceLocator;
+			Model.ExternalServiceLocator = securityServiceLocator;
 		}
 
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler

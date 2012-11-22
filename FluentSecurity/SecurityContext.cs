@@ -16,8 +16,8 @@ namespace FluentSecurity
 		private SecurityContext(ConfigurationExpression configurationExpression)
 		{
 			_data = new ExpandoObject();
-			_isAuthenticated = configurationExpression.IsAuthenticated;
-			_roles = configurationExpression.Roles;
+			_isAuthenticated = configurationExpression.Model.IsAuthenticated;
+			_roles = configurationExpression.Model.Roles;
 
 			var modifyer = configurationExpression.Model.SecurityContextModifyer;
 			if (modifyer != null) modifyer.Invoke(this);
@@ -54,7 +54,7 @@ namespace FluentSecurity
 			if (securityConfiguration != null)
 			{
 				var configurationExpression = securityConfiguration.Expression;
-				var externalServiceLocator = configurationExpression.ExternalServiceLocator;
+				var externalServiceLocator = configurationExpression.Model.ExternalServiceLocator;
 				if (externalServiceLocator != null)
 					context = externalServiceLocator.Resolve(typeof(ISecurityContext)) as ISecurityContext;
 
@@ -77,7 +77,7 @@ namespace FluentSecurity
 
 		private static bool CanCreateSecurityContextFromConfigurationExpression(ConfigurationExpression expression)
 		{
-			return expression.IsAuthenticated != null;
+			return expression.Model.IsAuthenticated != null;
 		}
 	}
 }

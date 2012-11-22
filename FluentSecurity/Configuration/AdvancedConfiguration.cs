@@ -38,13 +38,13 @@ namespace FluentSecurity.Configuration
 		public void Violations(Action<ViolationConfiguration> violationConfiguration)
 		{
 			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
-			_model.ApplyViolationConfiguration(violationConfiguration);
+			_model.ApplyConfiguration(violationConfiguration);
 		}
 
 		public void Conventions(Action<ConventionConfiguration> conventions)
 		{
 			if (conventions == null) throw new ArgumentNullException("conventions");
-			_model.ApplyConventions(conventions);
+			_model.ApplyConfiguration(conventions);
 		}
 	}
 }
