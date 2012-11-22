@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using FluentSecurity.Configuration;
 
-namespace FluentSecurity.Scanning
+namespace FluentSecurity.Scanning.TypeScanners
 {
 	internal class ProfileTypeScanner : ITypeScanner
 	{

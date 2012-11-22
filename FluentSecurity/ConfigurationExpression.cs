@@ -10,6 +10,7 @@ using FluentSecurity.Configuration;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
+using FluentSecurity.Scanning.TypeScanners;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity

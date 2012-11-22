@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using FluentSecurity.Scanning;
-using FluentSecurity.Specification.TestData;
+using FluentSecurity.Scanning.TypeScanners;
 using FluentSecurity.Specification.TestData.Controllers;
 using FluentSecurity.Specification.TestData.Controllers.BaseControllers;
 using NUnit.Framework;
 
-namespace FluentSecurity.Specification.Scanning
+namespace FluentSecurity.Specification.Scanning.TypeScanners
 {
 	[TestFixture]
 	[Category("ControllerTypeScannerSpec")]

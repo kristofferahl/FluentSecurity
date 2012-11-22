@@ -1,3 +1,5 @@
+using FluentSecurity.Scanning.TypeScanners;
+
 namespace FluentSecurity.Scanning
 {
 	public class ProfileScanner : AssemblyScanner
