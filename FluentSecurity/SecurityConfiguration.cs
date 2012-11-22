@@ -14,14 +14,15 @@ namespace FluentSecurity
 
 			var expression = new RootConfigurationExpression();
 			configurationExpression.Invoke(expression);
-			Expression = expression;
+			Model = expression.Model;
 
-			Advanced = Expression.Model;
-			ExternalServiceLocator = Expression.Model.ExternalServiceLocator;
-			PolicyContainers = Expression.Model.PolicyContainers;
+			Advanced = Model;
+			ExternalServiceLocator = Model.ExternalServiceLocator;
+			PolicyContainers = Model.PolicyContainers;
 		}
 
-		internal ConfigurationExpression Expression { get; private set; }
+		internal SecurityModel Model { get; private set; }
+
 		public IAdvanced Advanced { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
 		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
