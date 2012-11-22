@@ -7,14 +7,14 @@ namespace FluentSecurity
 {
 	public class SecurityConfiguration : ISecurityConfiguration
 	{
-		public SecurityConfiguration(Action<RootConfigurationExpression> configurationExpression)
+		public SecurityConfiguration(Action<RootConfiguration> configurationExpression)
 		{
 			if (configurationExpression == null)
 				throw new ArgumentNullException("configurationExpression");
 
-			var expression = new RootConfigurationExpression();
-			configurationExpression.Invoke(expression);
-			Model = expression.Model;
+			var configuration = new RootConfiguration();
+			configurationExpression.Invoke(configuration);
+			Model = configuration.Model;
 
 			Advanced = Model;
 			ExternalServiceLocator = Model.ExternalServiceLocator;
