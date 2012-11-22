@@ -33,13 +33,10 @@ namespace FluentSecurity.SampleApplication
 					context => HttpContext.Current.Request.IsLocal
 					);
 
-				configuration.For<Areas.ExampleArea.Controllers.HomeController>().DenyAnonymousAccess();
-				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).RequireRole(UserRole.Publisher);
-				configuration.For<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).RequireRole(UserRole.Administrator);
-
 				configuration.Scan(scan =>
 				{
-					
+					scan.AssembliesFromApplicationBaseDirectory();
+					scan.LookForProfiles();
 				});
 
 				configuration.ForAllControllersInheriting<CrudController>().DenyAnonymousAccess();

@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="AdministratorPolicy.cs" />
     <Compile Include="Areas\ExampleArea\Controllers\HomeController.cs" />
+    <Compile Include="Areas\ExampleArea\ExampleAreaProfile.cs" />
     <Compile Include="Controllers\BlogPostController.cs" />
     <Compile Include="Areas\ExampleArea\ExampleAreaAreaRegistration.cs" />
     <Compile Include="Bootstrapper.cs" />
