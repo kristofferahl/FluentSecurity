@@ -19,10 +19,16 @@ namespace FluentSecurity.Scanning
 			get { return _assemblies; }
 		}
 
-		public void Assembly(Assembly assembly)
+		private void AddAssembly(Assembly assembly)
 		{
 			if (assembly == null) throw new ArgumentNullException("assembly");
-			_assemblies.Add(assembly);
+			if (!_assemblies.Contains(assembly))
+				_assemblies.Add(assembly);
+		}
+
+		public void Assembly(Assembly assembly)
+		{
+			AddAssembly(assembly);
 		}
 
 		public void Assemblies(IEnumerable<Assembly> assemblies)
@@ -38,7 +44,7 @@ namespace FluentSecurity.Scanning
 		public void TheCallingAssembly()
 		{
 			var callingAssembly = FindCallingAssembly();
-			if (callingAssembly != null) _assemblies.Add(callingAssembly);
+			if (callingAssembly != null) Assembly(callingAssembly);
 		}
 
 		private static Assembly FindCallingAssembly()

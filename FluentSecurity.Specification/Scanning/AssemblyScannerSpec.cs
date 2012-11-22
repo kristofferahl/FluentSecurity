@@ -19,6 +19,21 @@ namespace FluentSecurity.Specification.Scanning
 			// Act & Assert
 			Assert.Throws<ArgumentNullException>(() => scanner.Assembly(null));
 		}
+
+		[Test]
+		public void Should_only_add_unique_assemblies()
+		{
+			// Arrange
+			var scanner = new AssemblyScanner();
+			var assembly = GetType().Assembly;
+
+			// Act
+			scanner.Assembly(assembly);
+			scanner.Assembly(assembly);
+
+			// Assert
+			Assert.That(scanner.AssembliesToScan.Single(), Is.EqualTo(assembly));
+		}
 	}
 
 	[TestFixture]
