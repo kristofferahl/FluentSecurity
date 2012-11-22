@@ -29,12 +29,26 @@ namespace FluentSecurity.Specification.Scanning
 
 		public class TestProfile1 : SecurityProfile
 		{
-			public override void Configure() {}
+			public override void Configure()
+			{
+				Scan(scan =>
+				{
+					scan.Assembly(GetType().Assembly);
+					scan.LookForProfiles();
+				});
+			}
 		}
 
 		public class TestProfile2 : SecurityProfile
 		{
-			public override void Configure() {}
+			public override void Configure()
+			{
+				Scan(scan =>
+				{
+					scan.Assembly(GetType().Assembly);
+					scan.LookForProfiles();
+				});
+			}
 		}
 	}
 }

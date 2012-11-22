@@ -681,7 +681,7 @@ namespace FluentSecurity.Specification
 	public class When_scanning_for_profiles
 	{
 		[Test]
-		public void Should_scan_for_profiles_using_profile_scanner()
+		public void Should_scan_for_profiles_avoiding_infinite_loop()
 		{
 			// Arrange
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();

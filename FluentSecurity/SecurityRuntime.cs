@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 
@@ -7,7 +8,7 @@ namespace FluentSecurity
 {
 	internal class SecurityRuntime : ISecurityRuntime
 	{
-		private readonly List<Type> _profiles = new List<Type>();
+		private readonly List<ProfileImport> _profiles = new List<ProfileImport>();
 		private readonly List<IPolicyContainer> _policyContainers = new List<IPolicyContainer>();
 		private readonly List<IConvention> _conventions = new List<IConvention>();
 
@@ -15,7 +16,7 @@ namespace FluentSecurity
 		public Func<IEnumerable<object>> Roles { get; internal set; }
 		public ISecurityServiceLocator ExternalServiceLocator { get; internal set; }
 
-		public IEnumerable<Type> Profiles { get { return _profiles.AsReadOnly(); } }
+		public IEnumerable<Type> Profiles { get { return _profiles.Where(pi => pi.Completed).Select(pi => pi.Type); } }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get { return _policyContainers.AsReadOnly(); } }
 		public IEnumerable<IConvention> Conventions { get { return _conventions.AsReadOnly(); } }
 
@@ -49,12 +50,15 @@ namespace FluentSecurity
 			if (profileConfiguration == null) throw new ArgumentNullException("profileConfiguration");
 			
 			var profileType = profileConfiguration.GetType();
-			if (_profiles.Contains(profileType)) return;
+			if (_profiles.Any(pi => pi.Type == profileType)) return;
+
+			var profileImport = new ProfileImport(profileType);
+			_profiles.Add(profileImport);
 
 			profileConfiguration.Initialize(this);
 			profileConfiguration.Configure();
 			
-			_profiles.Add(profileType);
+			profileImport.MarkCompleted();
 		}
 
 		public PolicyContainer AddPolicyContainer(PolicyContainer policyContainer)
