@@ -8,14 +8,14 @@ namespace FluentSecurity
 	public class SecurityContext : ISecurityContext
 	{
 		private readonly ExpandoObject _data;
-		private readonly SecurityModel _model;
+		private readonly SecurityRuntime _runtime;
 
-		private SecurityContext(SecurityModel model)
+		private SecurityContext(SecurityRuntime runtime)
 		{
 			_data = new ExpandoObject();
-			_model = model;
+			_runtime = runtime;
 
-			var modifyer = model.SecurityContextModifyer;
+			var modifyer = runtime.SecurityContextModifyer;
 			if (modifyer != null) modifyer.Invoke(this);
 		}
 
@@ -26,12 +26,12 @@ namespace FluentSecurity
 
 		public bool CurrentUserIsAuthenticated()
 		{
-			return _model.IsAuthenticated.Invoke();
+			return _runtime.IsAuthenticated.Invoke();
 		}
 
 		public IEnumerable<object> CurrentUserRoles()
 		{
-			return _model.Roles != null ? _model.Roles.Invoke() : null;
+			return _runtime.Roles != null ? _runtime.Roles.Invoke() : null;
 		}
 
 		public static ISecurityContext Current
@@ -49,13 +49,13 @@ namespace FluentSecurity
 			var securityConfiguration = configuration as SecurityConfiguration;
 			if (securityConfiguration != null)
 			{
-				var externalServiceLocator = securityConfiguration.Model.ExternalServiceLocator;
+				var externalServiceLocator = securityConfiguration.Runtime.ExternalServiceLocator;
 				if (externalServiceLocator != null)
 					context = externalServiceLocator.Resolve(typeof(ISecurityContext)) as ISecurityContext;
 
 				if (context == null)
 				{
-					if (securityConfiguration.Model.IsAuthenticated == null)
+					if (securityConfiguration.Runtime.IsAuthenticated == null)
 						throw new ConfigurationErrorsException(
 							@"
 							The current configuration is invalid! Before using Fluent Security you must do one of the following.
@@ -63,7 +63,7 @@ namespace FluentSecurity
 							2) Register an instance of ISecurityContext in your IoC-container and register your container using ResolveServicesUsing().
 							");
 
-					context = new SecurityContext(securityConfiguration.Model);
+					context = new SecurityContext(securityConfiguration.Runtime);
 				}
 			}
 			

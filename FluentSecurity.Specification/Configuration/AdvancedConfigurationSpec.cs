@@ -24,7 +24,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_conventions_for_default_PolicyViolationHandler_applied()
 		{
 			// Arrange
-			var securityModel = new SecurityModel();
+			var securityModel = new SecurityRuntime();
 
 			// Act
 			new AdvancedConfiguration(securityModel);
@@ -44,7 +44,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_ignore_missing_configurations()
 		{
 			// Arrange
-			var model = new SecurityModel();
+			var model = new SecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
@@ -63,7 +63,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_default_policy_cache_lifecycle_set_to_PerHttpSession()
 		{
 			// Arrange
-			var model = new SecurityModel();
+			var model = new SecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
@@ -77,7 +77,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_default_policy_cache_lifecycle_set_to_PerHttpRequest()
 		{
 			// Arrange
-			var model = new SecurityModel();
+			var model = new SecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
@@ -91,7 +91,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_default_policy_cache_lifecycle_set_to_DoNotCache()
 		{
 			// Arrange
-			var model = new SecurityModel();
+			var model = new SecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
@@ -110,7 +110,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_throw_when_action_is_null()
 		{
 			// Arrange
-			var model = new SecurityModel();
+			var model = new SecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act & Assert
@@ -121,7 +121,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_add_convention()
 		{
 			// Arrange
-			var model = new SecurityModel();
+			var model = new SecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 			var expectedConvention = new MockConvention();
 
@@ -136,7 +136,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_remove_convention()
 		{
 			// Arrange
-			var model = new SecurityModel();
+			var model = new SecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 			var convention = new MockConvention();
 			advancedConfiguration.Conventions(conventions => conventions.Add(convention));
@@ -153,7 +153,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_remove_matching_convention()
 		{
 			// Arrange
-			var model = new SecurityModel();
+			var model = new SecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 			Assert.That(model.Conventions.Any(c => c is FindByPolicyNameConvention), Is.True);
 
@@ -215,14 +215,14 @@ namespace FluentSecurity.Specification.Configuration
 	[Category("AdvancedConfigurationSpec")]
 	public class When_specifying_how_violations_are_handled
 	{
-		private SecurityModel _model;
+		private SecurityRuntime _runtime;
 		private AdvancedConfiguration _advancedConfiguration;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_model = new SecurityModel();
-			_advancedConfiguration = new AdvancedConfiguration(_model);
+			_runtime = new SecurityRuntime();
+			_advancedConfiguration = new AdvancedConfiguration(_runtime);
 		}
 
 		[Test]
@@ -243,9 +243,9 @@ namespace FluentSecurity.Specification.Configuration
 			});
 
 			// Assert
-			Assert.That(_model.Conventions.ElementAt(0).As<Convention>().ExpectedIndex, Is.EqualTo(0));
-			Assert.That(_model.Conventions.ElementAt(1).As<Convention>().ExpectedIndex, Is.EqualTo(1));
-			Assert.That(_model.Conventions.ElementAt(2).As<Convention>().ExpectedIndex, Is.EqualTo(2));
+			Assert.That(_runtime.Conventions.ElementAt(0).As<Convention>().ExpectedIndex, Is.EqualTo(0));
+			Assert.That(_runtime.Conventions.ElementAt(1).As<Convention>().ExpectedIndex, Is.EqualTo(1));
+			Assert.That(_runtime.Conventions.ElementAt(2).As<Convention>().ExpectedIndex, Is.EqualTo(2));
 		}
 
 		[Test]
@@ -255,7 +255,7 @@ namespace FluentSecurity.Specification.Configuration
 			_advancedConfiguration.Violations(violations => violations.Of<IgnorePolicy>().IsHandledBy<Handler1>());
 
 			// Assert
-			Assert.That(_model.Conventions.First(), Is.InstanceOf<PolicyTypeToPolicyViolationHandlerTypeConvention<IgnorePolicy, Handler1>>());
+			Assert.That(_runtime.Conventions.First(), Is.InstanceOf<PolicyTypeToPolicyViolationHandlerTypeConvention<IgnorePolicy, Handler1>>());
 		}
 
 		[Test]
@@ -265,7 +265,7 @@ namespace FluentSecurity.Specification.Configuration
 			_advancedConfiguration.Violations(violations => violations.Of<IgnorePolicy>().IsHandledBy(() => new Handler2()));
 
 			// Assert
-			Assert.That(_model.Conventions.First(), Is.InstanceOf<PolicyTypeToPolicyViolationHandlerInstanceConvention<IgnorePolicy, Handler2>>());
+			Assert.That(_runtime.Conventions.First(), Is.InstanceOf<PolicyTypeToPolicyViolationHandlerInstanceConvention<IgnorePolicy, Handler2>>());
 		}
 
 		public class Convention : IPolicyViolationHandlerConvention

@@ -142,7 +142,7 @@
     <Compile Include="Scanning\TypeScanners\ITypeScanner.cs" />
     <Compile Include="Scanning\ProfileScanner.cs" />
     <Compile Include="Scanning\TypeScanners\ProfileTypeScanner.cs" />
-    <Compile Include="SecurityModel.cs" />
+    <Compile Include="SecurityRuntime.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityConfiguration.cs" />

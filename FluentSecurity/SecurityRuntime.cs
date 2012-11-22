@@ -5,7 +5,7 @@ using FluentSecurity.Configuration;
 
 namespace FluentSecurity
 {
-	internal class SecurityModel : IAdvanced
+	internal class SecurityRuntime : IAdvanced
 	{
 		private readonly List<Type> _profiles = new List<Type>();
 		private readonly List<IPolicyContainer> _policyContainers = new List<IPolicyContainer>();
@@ -23,7 +23,7 @@ namespace FluentSecurity
 		public Action<ISecurityContext> SecurityContextModifyer { get; internal set; }
 		public bool ShouldIgnoreMissingConfiguration { get; internal set; }
 
-		public SecurityModel()
+		public SecurityRuntime()
 		{
 			ShouldIgnoreMissingConfiguration = false;
 			DefaultResultsCacheLifecycle = Cache.DoNotCache;

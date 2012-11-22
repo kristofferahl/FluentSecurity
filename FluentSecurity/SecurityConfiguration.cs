@@ -14,14 +14,14 @@ namespace FluentSecurity
 
 			var configuration = new RootConfiguration();
 			configurationExpression.Invoke(configuration);
-			Model = configuration.Model;
+			Runtime = configuration.Runtime;
 
-			Advanced = Model;
-			ExternalServiceLocator = Model.ExternalServiceLocator;
-			PolicyContainers = Model.PolicyContainers;
+			Advanced = Runtime;
+			ExternalServiceLocator = Runtime.ExternalServiceLocator;
+			PolicyContainers = Runtime.PolicyContainers;
 		}
 
-		internal SecurityModel Model { get; private set; }
+		internal SecurityRuntime Runtime { get; private set; }
 
 		public IAdvanced Advanced { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }

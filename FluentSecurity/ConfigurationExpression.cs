@@ -19,14 +19,14 @@ namespace FluentSecurity
 	{
 		public AdvancedConfiguration Advanced { get; private set; }
 
-		internal SecurityModel Model { get; private set; }
+		internal SecurityRuntime Runtime { get; private set; }
 		
 		internal IPolicyAppender PolicyAppender { get; set; }
 
-		internal void Initialize(SecurityModel model)
+		internal void Initialize(SecurityRuntime runtime)
 		{
-			Model = model;
-			Advanced = new AdvancedConfiguration(Model);
+			Runtime = runtime;
+			Advanced = new AdvancedConfiguration(Runtime);
 			PolicyAppender = new DefaultPolicyAppender();
 		}
 
@@ -143,7 +143,7 @@ namespace FluentSecurity
 		private void ApplyProfile(Type profileType)
 		{
 			var profile = Activator.CreateInstance(profileType) as SecurityProfile;
-			if (profile != null) Model.ApplyConfiguration(profile);
+			if (profile != null) Runtime.ApplyConfiguration(profile);
 		}
 
 		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
@@ -164,7 +164,7 @@ namespace FluentSecurity
 
 		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
 		{
-			return Model.AddPolicyContainer(new PolicyContainer(controllerName, actionName, PolicyAppender));
+			return Runtime.AddPolicyContainer(new PolicyContainer(controllerName, actionName, PolicyAppender));
 		}
 
 		// TODO: Evaluate the need to move this to RootConfigurationExpression.
@@ -173,7 +173,7 @@ namespace FluentSecurity
 			if (authenticationExpression == null)
 				throw new ArgumentNullException("authenticationExpression");
 
-			Model.IsAuthenticated = authenticationExpression;
+			Runtime.IsAuthenticated = authenticationExpression;
 		}
 
 		// TODO: Evaluate the need to move this to RootConfigurationExpression.
@@ -182,10 +182,10 @@ namespace FluentSecurity
 			if (rolesExpression == null)
 				throw new ArgumentNullException("rolesExpression");
 
-			if (Model.PolicyContainers.Any())
+			if (Runtime.PolicyContainers.Any())
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
-			Model.Roles = rolesExpression;
+			Runtime.Roles = rolesExpression;
 		}
 
 		public void SetPolicyAppender(IPolicyAppender policyAppender)
@@ -211,7 +211,7 @@ namespace FluentSecurity
 			if (securityServiceLocator == null)
 				throw new ArgumentNullException("securityServiceLocator");
 
-			Model.ExternalServiceLocator = securityServiceLocator;
+			Runtime.ExternalServiceLocator = securityServiceLocator;
 		}
 
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler

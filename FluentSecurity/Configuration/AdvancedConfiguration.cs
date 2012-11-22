@@ -6,12 +6,12 @@ namespace FluentSecurity.Configuration
 {
 	public class AdvancedConfiguration
 	{
-		private readonly SecurityModel _model;
+		private readonly SecurityRuntime _runtime;
 
-		internal AdvancedConfiguration(SecurityModel model)
+		internal AdvancedConfiguration(SecurityRuntime runtime)
 		{
-			if (model == null) throw new ArgumentNullException("model");
-			_model = model;
+			if (runtime == null) throw new ArgumentNullException("runtime");
+			_runtime = runtime;
 
 			Conventions(conventions =>
 			{
@@ -22,29 +22,29 @@ namespace FluentSecurity.Configuration
 
 		public void IgnoreMissingConfiguration()
 		{
-			_model.ShouldIgnoreMissingConfiguration = true;
+			_runtime.ShouldIgnoreMissingConfiguration = true;
 		}
 
 		public void ModifySecurityContext(Action<ISecurityContext> modifyer)
 		{
-			_model.SecurityContextModifyer = modifyer;
+			_runtime.SecurityContextModifyer = modifyer;
 		}
 
 		public void SetDefaultResultsCacheLifecycle(Cache lifecycle)
 		{
-			_model.DefaultResultsCacheLifecycle = lifecycle;
+			_runtime.DefaultResultsCacheLifecycle = lifecycle;
 		}
 
 		public void Violations(Action<ViolationConfiguration> violationConfiguration)
 		{
 			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
-			_model.ApplyConfiguration(violationConfiguration);
+			_runtime.ApplyConfiguration(violationConfiguration);
 		}
 
 		public void Conventions(Action<ConventionConfiguration> conventions)
 		{
 			if (conventions == null) throw new ArgumentNullException("conventions");
-			_model.ApplyConfiguration(conventions);
+			_runtime.ApplyConfiguration(conventions);
 		}
 	}
 }

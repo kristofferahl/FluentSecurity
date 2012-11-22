@@ -4,7 +4,7 @@ namespace FluentSecurity.Configuration
 	{
 		public RootConfiguration()
 		{
-			Initialize(new SecurityModel());
+			Initialize(new SecurityRuntime());
 		}
 	}
 }
