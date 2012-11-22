@@ -13,7 +13,7 @@ namespace FluentSecurity.Specification
 			PolicyContainers = Enumerable.Empty<IPolicyContainer>();
 			var expression = TestDataFactory.CreateValidConfigurationExpression();
 			configurationExpression(expression);
-			PolicyContainers = expression.PolicyContainers;
+			PolicyContainers = expression.Model.PolicyContainers;
 		}
 
 		protected static IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }

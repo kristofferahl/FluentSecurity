@@ -22,7 +22,7 @@ namespace FluentSecurity.Specification
 
 		private static void AssertAllControllerActionsHasContainer(ConfigurationExpression configurationExpression)
 		{
-			var policyContainers = configurationExpression.PolicyContainers;
+			var policyContainers = configurationExpression.Model.PolicyContainers;
 
 			Assert.That(policyContainers.Count(), Is.EqualTo(21));
 			var blog = NameHelper.Controller<BlogController>();

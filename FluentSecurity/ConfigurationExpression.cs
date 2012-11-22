@@ -19,12 +19,6 @@ namespace FluentSecurity
 	{
 		internal SecurityModel Model { get; private set; }
 
-		// TODO: Remove property and delegate to Model.
-		internal IList<IPolicyContainer> PolicyContainers
-		{
-			get { return Model.PolicyContainers; }
-		}
-
 		internal Func<bool> IsAuthenticated { get; private set; }
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
@@ -186,7 +180,7 @@ namespace FluentSecurity
 		{
 			PolicyContainer policyContainer;
 
-			var existingContainer = PolicyContainers.GetContainerFor(controllerName, actionName);
+			var existingContainer = Model.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (existingContainer != null)
 			{
 				policyContainer = (PolicyContainer) existingContainer;
@@ -194,7 +188,7 @@ namespace FluentSecurity
 			else
 			{
 				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-				PolicyContainers.Add(policyContainer);
+				Model.PolicyContainers.Add(policyContainer);
 			}
 
 			return policyContainer;
@@ -213,7 +207,7 @@ namespace FluentSecurity
 			if (rolesFunction == null)
 				throw new ArgumentNullException("rolesFunction");
 
-			if (PolicyContainers.Count > 0)
+			if (Model.PolicyContainers.Count > 0)
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
 			Roles = rolesFunction;

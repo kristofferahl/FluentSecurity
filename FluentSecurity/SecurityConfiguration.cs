@@ -18,7 +18,7 @@ namespace FluentSecurity
 
 			Advanced = Expression.Advanced;
 			ExternalServiceLocator = Expression.ExternalServiceLocator;
-			PolicyContainers = Expression.PolicyContainers;
+			PolicyContainers = Expression.Model.PolicyContainers;
 		}
 
 		internal ConfigurationExpression Expression { get; private set; }
