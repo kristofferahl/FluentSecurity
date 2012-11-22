@@ -29,14 +29,13 @@ namespace FluentSecurity
 
 		public ConfigurationExpression()
 		{
-			// TODO: Ensure advanced configuration is working with the SecurityModel.
-			Advanced = new AdvancedConfiguration();
 			Initialize(new SecurityModel(), new DefaultPolicyAppender());
 		}
 
 		internal void Initialize(SecurityModel model, IPolicyAppender policyAppender)
 		{
 			Model = model;
+			Advanced = new AdvancedConfiguration(Model);
 			PolicyAppender = policyAppender;
 		}
 
@@ -190,6 +189,7 @@ namespace FluentSecurity
 			return policyContainer;
 		}
 
+		// TODO: Evaluate the need to move this to RootConfigurationExpression.
 		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)
 		{
 			if (isAuthenticatedFunction == null)
@@ -198,6 +198,7 @@ namespace FluentSecurity
 			IsAuthenticated = isAuthenticatedFunction;
 		}
 
+		// TODO: Evaluate the need to move this to RootConfigurationExpression.
 		public void GetRolesFrom(Func<IEnumerable<object>> rolesFunction)
 		{
 			if (rolesFunction == null)
@@ -217,6 +218,7 @@ namespace FluentSecurity
 			PolicyAppender = policyAppender;
 		}
 
+		// TODO: Evaluate the need to move this to RootConfigurationExpression.
 		public void ResolveServicesUsing(Func<Type, IEnumerable<object>> servicesLocator, Func<Type, object> singleServiceLocator = null)
 		{
 			if (servicesLocator == null)
@@ -225,6 +227,7 @@ namespace FluentSecurity
 			ExternalServiceLocator = new ExternalServiceLocator(servicesLocator, singleServiceLocator);
 		}
 
+		// TODO: Evaluate the need to move this to RootConfigurationExpression.
 		public void ResolveServicesUsing(ISecurityServiceLocator securityServiceLocator)
 		{
 			if (securityServiceLocator == null)
@@ -236,20 +239,27 @@ namespace FluentSecurity
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
 		{
 			RemoveDefaultPolicyViolationHandlerConventions();
-			Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<TPolicyViolationHandler>());
+			Advanced.Conventions(conventions =>
+				conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<TPolicyViolationHandler>())
+				);
 		}
 
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandler) where TPolicyViolationHandler : class, IPolicyViolationHandler
 		{
 			RemoveDefaultPolicyViolationHandlerConventions();
-			Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<TPolicyViolationHandler>(policyViolationHandler));
+			Advanced.Conventions(conventions =>
+				conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<TPolicyViolationHandler>(policyViolationHandler))
+				);
 		}
 
 		private void RemoveDefaultPolicyViolationHandlerConventions()
 		{
-			Advanced.Conventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
-			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
-			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsInstanceConvention<>)));
+			Advanced.Conventions(conventions =>
+			{
+				conventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
+				conventions.RemoveAll(c => c.IsMatchForGenericType(typeof (DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
+				conventions.RemoveAll(c => c.IsMatchForGenericType(typeof (DefaultPolicyViolationHandlerIsInstanceConvention<>)));
+			});
 		}
 	}
 }

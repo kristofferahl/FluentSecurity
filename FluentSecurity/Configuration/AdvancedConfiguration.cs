@@ -1,48 +1,52 @@
 using System;
+using System.Collections.Generic;
 using FluentSecurity.Caching;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class AdvancedConfiguration : IAdvanced
+	public class AdvancedConfiguration
 	{
-		internal AdvancedConfiguration()
+		private readonly SecurityModel _model;
+
+		internal AdvancedConfiguration(SecurityModel model)
 		{
-			Conventions = new Conventions
+			if (model == null) throw new ArgumentNullException("model");
+
+			_model = model;
+			_model.Conventions.AddRange(new List<IConvention>
 			{
 				new FindByPolicyNameConvention(),
 				new FindDefaultPolicyViolationHandlerByNameConvention()
-			};
-
-			SetDefaultResultsCacheLifecycle(Cache.DoNotCache);
-			ShouldIgnoreMissingConfiguration = false;
+			});
 		}
-
-		public Conventions Conventions { get; private set; }
-		public Cache DefaultResultsCacheLifecycle { get; private set; }
-		public Action<ISecurityContext> SecurityContextModifyer { get; private set; }
-		public bool ShouldIgnoreMissingConfiguration { get; private set; }
 
 		public void IgnoreMissingConfiguration()
 		{
-			ShouldIgnoreMissingConfiguration = true;
+			_model.ShouldIgnoreMissingConfiguration = true;
 		}
 
 		public void ModifySecurityContext(Action<ISecurityContext> modifyer)
 		{
-			SecurityContextModifyer = modifyer;
+			_model.SecurityContextModifyer = modifyer;
 		}
 
 		public void SetDefaultResultsCacheLifecycle(Cache lifecycle)
 		{
-			DefaultResultsCacheLifecycle = lifecycle;
+			_model.DefaultResultsCacheLifecycle = lifecycle;
 		}
 
 		public void Violations(Action<ViolationConfiguration> violationConfiguration)
 		{
 			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
-			violationConfiguration.Invoke(new ViolationConfiguration(Conventions));
+			violationConfiguration.Invoke(new ViolationConfiguration(_model.Conventions));
+		}
+
+		public void Conventions(Action<Conventions> conventions)
+		{
+			if (conventions == null) throw new ArgumentNullException("conventions");
+			conventions.Invoke(_model.Conventions);
 		}
 	}
 }

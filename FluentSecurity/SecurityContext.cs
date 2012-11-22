@@ -12,13 +12,14 @@ namespace FluentSecurity
 		private readonly Func<bool> _isAuthenticated;
 		private readonly Func<IEnumerable<object>> _roles;
 
+		// TODO: Create context from SecurityModel
 		private SecurityContext(ConfigurationExpression configurationExpression)
 		{
 			_data = new ExpandoObject();
 			_isAuthenticated = configurationExpression.IsAuthenticated;
 			_roles = configurationExpression.Roles;
 
-			var modifyer = configurationExpression.Advanced.SecurityContextModifyer;
+			var modifyer = configurationExpression.Model.SecurityContextModifyer;
 			if (modifyer != null) modifyer.Invoke(this);
 		}
 
