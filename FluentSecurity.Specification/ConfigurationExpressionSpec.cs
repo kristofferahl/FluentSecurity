@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Web.Mvc;
 using FluentSecurity.Configuration;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
-using FluentSecurity.Scanning;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using FluentSecurity.Specification.TestData.Controllers.AssemblyScannerControllers;
@@ -25,7 +24,7 @@ namespace FluentSecurity.Specification
 	{
 		private static ConfigurationExpression Because()
 		{
-			return new ConfigurationExpression();
+			return new RootConfiguration();
 		}
 
 		[Test]
@@ -49,9 +48,7 @@ namespace FluentSecurity.Specification
 			var configurationExpression = Because();
 
 			// Assert
-			var policyAppenderProperty = configurationExpression.GetType().GetProperty("PolicyAppender", BindingFlags.Instance | BindingFlags.NonPublic);
-			var policyAppender = policyAppenderProperty.GetValue(configurationExpression, null);
-			Assert.That(policyAppender, Is.TypeOf(expectedPolicyAppenderType));
+			Assert.That(configurationExpression.PolicyAppender, Is.TypeOf(expectedPolicyAppenderType));
 		}
 
 		[Test]
@@ -78,7 +75,7 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			_configurationExpression = new ConfigurationExpression();
+			_configurationExpression = new RootConfiguration();
 			_configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 		}
 
@@ -120,7 +117,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_AliasedController_ActualAction()
 		{
 			// Arrange
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -221,7 +218,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_AliasedController_ActualAction()
 		{
 			// Arrange
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -529,7 +526,7 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_throw_when_action_expresion_is_null()
 		{
-			var expression = new ConfigurationExpression();
+			var expression = new RootConfiguration();
 			Expression<Func<AbstractBaseController, object>> actionExpression = null;
 			Assert.Throws<ArgumentNullException>(() => expression.ForAllControllersInheriting(actionExpression));
 		}
@@ -537,14 +534,14 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_throw_when_assemblies_is_null()
 		{
-			var expression = new ConfigurationExpression();
+			var expression = new RootConfiguration();
 			Assert.Throws<ArgumentNullException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(x => x.InheritedAction(), null));
 		}
 
 		[Test]
 		public void Should_throw_when_assemblies_contains_null()
 		{
-			var expression = new ConfigurationExpression();
+			var expression = new RootConfiguration();
 			Assert.Throws<ArgumentException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(x => x.InheritedAction(), null, null));
 		}
 
@@ -581,9 +578,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			const string index = "Index";
-			var root = NameHelper.Controller<RootController>();
 			var include = NameHelper.Controller<IncludedController>();
-			var exclude = NameHelper.Controller<ExcludedController>();
 
 			// Act
 			Because(configurationExpression =>
@@ -726,7 +721,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ConfigurationErrorsException()
 		{
 			// Arrange
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 			configurationExpression.For<BlogController>(x => x.Index());
 

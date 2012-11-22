@@ -15,15 +15,15 @@ using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
-	public class ConfigurationExpression
+	public abstract class ConfigurationExpression
 	{
 		public AdvancedConfiguration Advanced { get; private set; }
 
 		internal SecurityModel Model { get; private set; }
+		
+		internal IPolicyAppender PolicyAppender { get; set; }
 
-		private IPolicyAppender PolicyAppender { get; set; }
-
-		public ConfigurationExpression()
+		protected ConfigurationExpression()
 		{
 			Initialize(new SecurityModel());
 		}
