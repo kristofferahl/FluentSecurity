@@ -694,7 +694,30 @@ namespace FluentSecurity.Specification
 			});
 
 			// Assert
-			Assert.That(configurationExpression.Runtime.Profiles.Count(), Is.EqualTo(2));
+			Assert.That(configurationExpression.Runtime.Profiles.Count(), Is.EqualTo(3));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_applying_a_profile
+	{
+		[Test]
+		public void Should_add_profile()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.ApplyProfile<EmptyProfile>();
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.Profiles.Single(), Is.EqualTo(typeof(EmptyProfile)));
+		}
+
+		public class EmptyProfile : SecurityProfile
+		{
+			public override void Configure() {}
 		}
 	}
 
