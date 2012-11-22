@@ -6,6 +6,7 @@ namespace FluentSecurity.Configuration
 		{
 			Initialize(model, policyAppender);
 			Configure();
+			model.Profiles.Add(GetType());
 		}
 
 		public abstract void Configure();

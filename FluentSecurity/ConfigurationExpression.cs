@@ -153,11 +153,7 @@ namespace FluentSecurity
 		private void ApplyProfile(Type profileType)
 		{
 			var profile = Activator.CreateInstance(profileType) as SecurityProfile;
-			if (profile != null)
-			{
-				profile.Apply(Model, PolicyAppender);
-				Model.Profiles.Add(profileType);
-			}
+			if (profile != null) profile.Apply(Model, PolicyAppender);
 		}
 
 		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
