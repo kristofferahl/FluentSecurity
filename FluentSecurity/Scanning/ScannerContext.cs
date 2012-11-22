@@ -26,21 +26,21 @@ namespace FluentSecurity.Scanning
 			get { return _filters; }
 		}
 
-		public void AddAssembly(Assembly assembly)
+		internal void AddAssembly(Assembly assembly)
 		{
 			if (assembly == null) throw new ArgumentNullException("assembly");
 			if (!_assemblies.Contains(assembly))
 				_assemblies.Add(assembly);
 		}
 
-		public void AddTypeScanner(ITypeScanner typeScanner)
+		internal void AddTypeScanner(ITypeScanner typeScanner)
 		{
 			if (typeScanner == null) throw new ArgumentNullException("typeScanner");
 			if (!_typeScanners.Contains(typeScanner))
 				_typeScanners.Add(typeScanner);
 		}
 
-		public void AddFilter(Func<Type, bool> filter)
+		internal void AddFilter(Func<Type, bool> filter)
 		{
 			if (filter == null) throw new ArgumentNullException("filter");
 			_filters.Add(filter);

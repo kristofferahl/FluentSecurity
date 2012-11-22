@@ -8,31 +8,17 @@ namespace FluentSecurity.Specification.Scanning
 {
 	[TestFixture]
 	[Category("AssemblyScannerSpec")]
-	public class When_adding_assembly_to_assembly_scanner
+	public class When_creating_an_assembly_scanner
 	{
 		[Test]
-		public void Should_throw_when_null()
+		public void Should_have_scanner_context()
 		{
-			// Arrange
-			var scanner = new AssemblyScanner();
-
-			// Act & Assert
-			Assert.Throws<ArgumentNullException>(() => scanner.Assembly(null));
-		}
-
-		[Test]
-		public void Should_only_add_unique_assemblies()
-		{
-			// Arrange
-			var scanner = new AssemblyScanner();
-			var assembly = GetType().Assembly;
-
 			// Act
-			scanner.Assembly(assembly);
-			scanner.Assembly(assembly);
+			var scanner = new AssemblyScanner();
 
 			// Assert
-			Assert.That(scanner.AssembliesToScan.Single(), Is.EqualTo(assembly));
+			Assert.That(scanner.Context, Is.Not.Null);
+			Assert.That(scanner.Context, Is.TypeOf<ScannerContext>());
 		}
 	}
 
@@ -57,7 +43,7 @@ namespace FluentSecurity.Specification.Scanning
 			scanner.AssembliesFromApplicationBaseDirectory();
 
 			// Assert
-			Assert.That(scanner.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
+			Assert.That(scanner.Context.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
 		}
 
 		[Test]
@@ -71,7 +57,7 @@ namespace FluentSecurity.Specification.Scanning
 			scanner.AssembliesFromApplicationBaseDirectory(assembly => assembly.FullName.StartsWith("FluentSecurity."));
 
 			// Assert
-			Assert.That(scanner.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
+			Assert.That(scanner.Context.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
 		}
 	}
 }

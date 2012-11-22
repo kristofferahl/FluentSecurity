@@ -10,25 +10,16 @@ namespace FluentSecurity.Scanning
 {
 	public class AssemblyScanner
 	{
-		private readonly List<Assembly> _assemblies = new List<Assembly>();
-		private readonly List<ITypeScanner> _scanners = new List<ITypeScanner>();
-		private readonly IList<Func<Type, bool>> _filters = new List<Func<Type, bool>>();
+		public ScannerContext Context { get; private set; }
 
-		public IEnumerable<Assembly> AssembliesToScan
+		public AssemblyScanner()
 		{
-			get { return _assemblies; }
-		}
-
-		private void AddAssembly(Assembly assembly)
-		{
-			if (assembly == null) throw new ArgumentNullException("assembly");
-			if (!_assemblies.Contains(assembly))
-				_assemblies.Add(assembly);
+			Context = new ScannerContext();
 		}
 
 		public void Assembly(Assembly assembly)
 		{
-			AddAssembly(assembly);
+			Context.AddAssembly(assembly);
 		}
 
 		public void Assemblies(IEnumerable<Assembly> assemblies)
@@ -98,7 +89,7 @@ namespace FluentSecurity.Scanning
 
 		public void With(ITypeScanner typeScanner)
 		{
-			_scanners.Add(typeScanner);
+			Context.AddTypeScanner(typeScanner);
 		}
 
 		public void With<TTypeScanner>() where TTypeScanner : ITypeScanner, new()
@@ -114,14 +105,14 @@ namespace FluentSecurity.Scanning
 				var expectedNamespace = typeof (T).Namespace ?? "";
 				return currentNamespace.StartsWith(expectedNamespace);
 			};
-			_filters.Add(predicate);
+			Context.AddFilter(predicate);
 		}
 
 		public IEnumerable<Type> Scan()
 		{
 			var results = new List<Type>();
-			_scanners.Each(scanner => scanner.Scan(_assemblies).Where(type =>
-				_filters.Any() == false || _filters.Any(filter => filter.Invoke(type))).Each(results.Add)
+			Context.TypeScanners.Each(scanner => scanner.Scan(Context.AssembliesToScan).Where(type =>
+				Context.Filters.Any() == false || Context.Filters.Any(filter => filter.Invoke(type))).Each(results.Add)
 				);
 			return results;
 		}
