@@ -1,4 +1,5 @@
 using System.Web;
+using FluentSecurity.SampleApplication.Areas.ExampleArea;
 using FluentSecurity.SampleApplication.Controllers;
 using FluentSecurity.SampleApplication.Models;
 
@@ -36,13 +37,11 @@ namespace FluentSecurity.SampleApplication
 				configuration.Scan(scan =>
 				{
 					scan.AssembliesFromApplicationBaseDirectory();
+					scan.IncludeNamespaceContainingType<ExampleAreaAreaRegistration>();
 					scan.LookForProfiles();
 				});
 
-				configuration.ForAllControllersInheriting<CrudController>().DenyAnonymousAccess();
-				configuration.ForAllControllersInheriting<CrudController>(x => x.Delete()).RequireRole(UserRole.Administrator);
-				configuration.For<BlogPostController>(x => x.Index()).Ignore();
-				configuration.For<BlogPostController>(x => x.Details()).Ignore();
+				configuration.ApplyProfile<CrudControllerProfile>();
 			});
 			return SecurityConfiguration.Current;
 		}
