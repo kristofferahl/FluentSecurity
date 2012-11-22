@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using FluentSecurity.Configuration;
 using FluentSecurity.Diagnostics;
 
 namespace FluentSecurity
 {
 	public class SecurityConfiguration : ISecurityConfiguration
 	{
-		public SecurityConfiguration(Action<ConfigurationExpression> configurationExpression)
+		public SecurityConfiguration(Action<RootConfigurationExpression> configurationExpression)
 		{
 			if (configurationExpression == null)
 				throw new ArgumentNullException("configurationExpression");
 
-			var expression = new ConfigurationExpression();
-			configurationExpression(expression);
+			var expression = new RootConfigurationExpression();
+			configurationExpression.Invoke(expression);
 			Expression = expression;
 
 			Advanced = Expression.Advanced;

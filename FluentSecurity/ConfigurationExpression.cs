@@ -17,8 +17,14 @@ namespace FluentSecurity
 {
 	public class ConfigurationExpression
 	{
-		internal IList<Type> Profiles { get; private set; }
-		internal IList<IPolicyContainer> PolicyContainers { get; private set; } 
+		internal SecurityModel Model { get; private set; }
+
+		// TODO: Remove property and delegate to Model.
+		internal IList<IPolicyContainer> PolicyContainers
+		{
+			get { return Model.PolicyContainers; }
+		}
+
 		internal Func<bool> IsAuthenticated { get; private set; }
 		internal Func<IEnumerable<object>> Roles { get; private set; }
 		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
@@ -29,10 +35,15 @@ namespace FluentSecurity
 
 		public ConfigurationExpression()
 		{
-			Profiles = new List<Type>();
-			PolicyContainers = new List<IPolicyContainer>();
+			// TODO: Ensure advanced configuration is working with the SecurityModel.
 			Advanced = new AdvancedConfiguration();
-			PolicyAppender = new DefaultPolicyAppender();
+			Initialize(new SecurityModel(), new DefaultPolicyAppender());
+		}
+
+		internal void Initialize(SecurityModel model, IPolicyAppender policyAppender)
+		{
+			Model = model;
+			PolicyAppender = policyAppender;
 		}
 
 		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
@@ -137,6 +148,24 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
 		}
 
+		public void Scan(Action<ProfileScanner> scan)
+		{
+			var profileScanner = new ProfileScanner();
+			scan.Invoke(profileScanner);
+			var profiles = profileScanner.Scan().ToList();
+			profiles.ForEach(ApplyProfile);
+		}
+
+		private void ApplyProfile(Type profileType)
+		{
+			var profile = Activator.CreateInstance(profileType) as SecurityProfile;
+			if (profile != null)
+			{
+				profile.Apply(Model, PolicyAppender);
+				Model.Profiles.Add(profileType);
+			}
+		}
+
 		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
 		{
 			var policyContainers = new List<IPolicyContainerConfiguration>();
@@ -231,14 +260,6 @@ namespace FluentSecurity
 			Advanced.Conventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
 			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
 			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsInstanceConvention<>)));
-		}
-
-		public void Scan(Action<ProfileScanner> scan)
-		{
-			var profileScanner = new ProfileScanner();
-			scan.Invoke(profileScanner);
-			var profiles = profileScanner.Scan().ToList();
-			profiles.ForEach(Profiles.Add);
 		}
 	}
 }

@@ -28,7 +28,14 @@ namespace FluentSecurity.Specification.Scanning
 			Assert.That(profiles.Last(), Is.EqualTo(typeof(TestProfile2)));
 		}
 
-		public class TestProfile1 : SecurityProfile {}
-		public class TestProfile2 : SecurityProfile {}
+		public class TestProfile1 : SecurityProfile
+		{
+			public override void Configure() {}
+		}
+
+		public class TestProfile2 : SecurityProfile
+		{
+			public override void Configure() {}
+		}
 	}
 }

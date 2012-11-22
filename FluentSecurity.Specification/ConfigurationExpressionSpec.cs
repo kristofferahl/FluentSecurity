@@ -699,7 +699,7 @@ namespace FluentSecurity.Specification
 			});
 
 			// Assert
-			Assert.That(configurationExpression.Profiles.Count(), Is.EqualTo(2));
+			Assert.That(configurationExpression.Model.Profiles.Count(), Is.EqualTo(2));
 		}
 	}
 

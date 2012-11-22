@@ -61,7 +61,7 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static ConfigurationExpression CreateValidConfigurationExpression()
 		{
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfigurationExpression();
 			configurationExpression.GetAuthenticationStatusFrom(ValidIsAuthenticatedFunction);
 			return configurationExpression;
 		}
