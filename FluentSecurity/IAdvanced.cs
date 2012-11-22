@@ -1,12 +1,12 @@
 using System;
+using System.Collections.Generic;
 using FluentSecurity.Caching;
-using FluentSecurity.Internals;
 
 namespace FluentSecurity
 {
 	public interface IAdvanced
 	{
-		Conventions Conventions { get; }
+		IEnumerable<IConvention> Conventions { get; }
 		Cache DefaultResultsCacheLifecycle { get; }
 		Action<ISecurityContext> SecurityContextModifyer { get; }
 		bool ShouldIgnoreMissingConfiguration { get; }

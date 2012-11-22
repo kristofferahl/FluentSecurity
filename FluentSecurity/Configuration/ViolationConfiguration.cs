@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
@@ -30,10 +29,11 @@ namespace FluentSecurity.Configuration
 		public void RemoveConventions(Func<IPolicyViolationHandlerConvention, bool> predicate)
 		{
 			if (predicate == null) throw new ArgumentNullException("predicate");
-
-			var conventionsToRemove = _conventions.OfType<IPolicyViolationHandlerConvention>().Where(predicate).ToList();
-			foreach (var convention in conventionsToRemove)
-				_conventions.Remove(convention);
+			
+			_conventions.RemoveAll(convention =>
+				convention is IPolicyViolationHandlerConvention &&
+				predicate.Invoke(convention as IPolicyViolationHandlerConvention)
+				);
 		}
 
 		public ViolationHandlerConfiguration<TSecurityPolicy> Of<TSecurityPolicy>() where TSecurityPolicy : class, ISecurityPolicy

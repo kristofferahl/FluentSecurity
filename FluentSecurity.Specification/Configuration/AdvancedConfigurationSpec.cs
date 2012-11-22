@@ -139,6 +139,8 @@ namespace FluentSecurity.Specification.Configuration
 			var model = new SecurityModel();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 			var convention = new MockConvention();
+			advancedConfiguration.Conventions(conventions => conventions.Add(convention));
+			Assert.That(model.Conventions.Contains(convention), Is.True);
 
 			// Act
 			advancedConfiguration.Conventions(conventions => conventions.Remove(convention));

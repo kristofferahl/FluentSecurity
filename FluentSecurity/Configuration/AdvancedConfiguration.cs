@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using FluentSecurity.Caching;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
@@ -13,12 +12,12 @@ namespace FluentSecurity.Configuration
 		internal AdvancedConfiguration(SecurityModel model)
 		{
 			if (model == null) throw new ArgumentNullException("model");
-
 			_model = model;
-			_model.Conventions.AddRange(new List<IConvention>
+
+			Conventions(conventions =>
 			{
-				new FindByPolicyNameConvention(),
-				new FindDefaultPolicyViolationHandlerByNameConvention()
+				conventions.Add(new FindByPolicyNameConvention());
+				conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
 			});
 		}
 
@@ -40,13 +39,13 @@ namespace FluentSecurity.Configuration
 		public void Violations(Action<ViolationConfiguration> violationConfiguration)
 		{
 			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
-			violationConfiguration.Invoke(new ViolationConfiguration(_model.Conventions));
+			_model.ApplyViolationConfiguration(violationConfiguration);
 		}
 
 		public void Conventions(Action<Conventions> conventions)
 		{
 			if (conventions == null) throw new ArgumentNullException("conventions");
-			conventions.Invoke(_model.Conventions);
+			_model.ApplyConventions(conventions);
 		}
 	}
 }
