@@ -140,9 +140,9 @@ namespace FluentSecurity
 			profiles.ForEach(ApplyProfile);
 		}
 
-		public void ApplyProfile<TProfile>() where TProfile : SecurityProfile, new()
+		public void ApplyProfile<TSecurityProfile>() where TSecurityProfile : SecurityProfile, new()
 		{
-			var profile = new TProfile();
+			var profile = new TSecurityProfile();
 			Runtime.ApplyConfiguration(profile);
 		}
 
