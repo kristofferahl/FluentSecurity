@@ -66,10 +66,15 @@ namespace FluentSecurity.Scanning
 		{
 			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			AssembliesFromPath(baseDirectory, assemblyFilter);
+
+			var binDirectory = AppDomain.CurrentDomain.SetupInformation.PrivateBinPath;
+			AssembliesFromPath(binDirectory, assemblyFilter);
 		}
 
-		private void AssembliesFromPath(string path, Predicate<Assembly> assemblyFilter)
+		public void AssembliesFromPath(string path, Predicate<Assembly> assemblyFilter)
 		{
+			if (!Directory.Exists(path)) return;
+
 			var assemblyPaths = Directory.GetFiles(path).Where(file =>
 			{
 				var extension = Path.GetExtension(file);
