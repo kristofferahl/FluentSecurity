@@ -12,7 +12,7 @@ namespace FluentSecurity.Policy
 
 		public ISecurityPolicy Load()
 		{
-			var externalServiceLocator = SecurityConfiguration.Current.ExternalServiceLocator;
+			var externalServiceLocator = SecurityConfiguration.Current.Runtime.ExternalServiceLocator;
 			if (externalServiceLocator != null)
 			{
 				var securityPolicy = externalServiceLocator.Resolve(PolicyType) as ISecurityPolicy;

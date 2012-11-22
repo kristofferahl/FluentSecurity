@@ -5,7 +5,7 @@ using FluentSecurity.Configuration;
 
 namespace FluentSecurity
 {
-	internal class SecurityRuntime : IAdvanced
+	internal class SecurityRuntime : ISecurityRuntime
 	{
 		private readonly List<Type> _profiles = new List<Type>();
 		private readonly List<IPolicyContainer> _policyContainers = new List<IPolicyContainer>();

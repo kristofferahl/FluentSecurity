@@ -8,9 +8,9 @@ namespace FluentSecurity
 	public class SecurityContext : ISecurityContext
 	{
 		private readonly ExpandoObject _data;
-		private readonly SecurityRuntime _runtime;
+		private readonly ISecurityRuntime _runtime;
 
-		private SecurityContext(SecurityRuntime runtime)
+		private SecurityContext(ISecurityRuntime runtime)
 		{
 			_data = new ExpandoObject();
 			_runtime = runtime;

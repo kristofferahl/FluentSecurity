@@ -25,14 +25,14 @@ namespace FluentSecurity.ServiceLocation
 			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), Lifecycle.Singleton);
 
 			container.Register<IPolicyViolationHandlerSelector>(ctx => new PolicyViolationHandlerSelector(
-				ctx.Resolve<ISecurityConfiguration>().Advanced.Conventions.OfType<IPolicyViolationHandlerConvention>()
+				ctx.Resolve<ISecurityConfiguration>().Runtime.Conventions.OfType<IPolicyViolationHandlerConvention>()
 				));
 
 			container.Register<IWhatDoIHaveBuilder>(ctx => new DefaultWhatDoIHaveBuilder(), Lifecycle.Singleton);
 
 			container.Register<IRequestDescription>(ctx => new HttpContextRequestDescription());
 
-			container.SetPrimarySource(ctx => ctx.Resolve<ISecurityConfiguration>().ExternalServiceLocator);
+			container.SetPrimarySource(ctx => ctx.Resolve<ISecurityConfiguration>().Runtime.ExternalServiceLocator);
 
 			Container = container;
 		}
