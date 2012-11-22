@@ -23,11 +23,6 @@ namespace FluentSecurity
 		
 		internal IPolicyAppender PolicyAppender { get; set; }
 
-		protected ConfigurationExpression()
-		{
-			Initialize(new SecurityModel());
-		}
-
 		internal void Initialize(SecurityModel model)
 		{
 			Model = model;
