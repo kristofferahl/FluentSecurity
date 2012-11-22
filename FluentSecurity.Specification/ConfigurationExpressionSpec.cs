@@ -715,6 +715,20 @@ namespace FluentSecurity.Specification
 			Assert.That(configurationExpression.Runtime.Profiles.Single(), Is.EqualTo(typeof(EmptyProfile)));
 		}
 
+		[Test]
+		public void Should_only_add_unique_profiles()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.ApplyProfile<EmptyProfile>();
+			configurationExpression.ApplyProfile<EmptyProfile>();
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.Profiles.Single(), Is.EqualTo(typeof(EmptyProfile)));
+		}
+
 		public class EmptyProfile : SecurityProfile
 		{
 			public override void Configure() {}

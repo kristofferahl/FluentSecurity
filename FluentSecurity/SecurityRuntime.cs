@@ -47,9 +47,14 @@ namespace FluentSecurity
 		public void ApplyConfiguration(SecurityProfile profileConfiguration)
 		{
 			if (profileConfiguration == null) throw new ArgumentNullException("profileConfiguration");
+			
+			var profileType = profileConfiguration.GetType();
+			if (_profiles.Contains(profileType)) return;
+
 			profileConfiguration.Initialize(this);
 			profileConfiguration.Configure();
-			_profiles.Add(profileConfiguration.GetType());
+			
+			_profiles.Add(profileType);
 		}
 
 		public PolicyContainer AddPolicyContainer(PolicyContainer policyContainer)

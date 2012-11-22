@@ -15,6 +15,7 @@ namespace FluentSecurity.Specification.Scanning
 			// Arrange
 			var scanner = new ProfileScanner();
 			scanner.AssembliesFromApplicationBaseDirectory(assembly => assembly.FullName.StartsWith("FluentSecurity."));
+			scanner.IncludeNamespaceContainingType<When_scanning_for_profiles>();
 
 			// Act
 			scanner.LookForProfiles();
