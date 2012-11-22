@@ -1,6 +1,5 @@
 using System;
 using FluentSecurity.Caching;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
@@ -42,7 +41,7 @@ namespace FluentSecurity.Configuration
 			_model.ApplyViolationConfiguration(violationConfiguration);
 		}
 
-		public void Conventions(Action<Conventions> conventions)
+		public void Conventions(Action<ConventionConfiguration> conventions)
 		{
 			if (conventions == null) throw new ArgumentNullException("conventions");
 			_model.ApplyConventions(conventions);

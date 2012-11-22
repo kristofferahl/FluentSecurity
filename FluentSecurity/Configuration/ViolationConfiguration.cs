@@ -1,5 +1,4 @@
 using System;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
@@ -7,18 +6,18 @@ namespace FluentSecurity.Configuration
 {
 	public class ViolationConfiguration
 	{
-		private readonly Conventions _conventions;
+		private readonly ConventionConfiguration _conventionConfiguration;
 
-		internal ViolationConfiguration(Conventions conventions)
+		internal ViolationConfiguration(ConventionConfiguration conventionConfiguration)
 		{
-			if (conventions == null) throw new ArgumentNullException("conventions");
-			_conventions = conventions;
+			if (conventionConfiguration == null) throw new ArgumentNullException("conventionConfiguration");
+			_conventionConfiguration = conventionConfiguration;
 		}
 
 		public void AddConvention(IPolicyViolationHandlerConvention convention)
 		{
 			if (convention == null) throw new ArgumentNullException("convention");
-			_conventions.Insert(0, convention);
+			_conventionConfiguration.Insert(0, convention);
 		}
 
 		public void RemoveConventions<TPolicyViolationHandlerConvention>() where TPolicyViolationHandlerConvention : class, IPolicyViolationHandlerConvention
@@ -30,7 +29,7 @@ namespace FluentSecurity.Configuration
 		{
 			if (predicate == null) throw new ArgumentNullException("predicate");
 			
-			_conventions.RemoveAll(convention =>
+			_conventionConfiguration.RemoveAll(convention =>
 				convention is IPolicyViolationHandlerConvention &&
 				predicate.Invoke(convention as IPolicyViolationHandlerConvention)
 				);

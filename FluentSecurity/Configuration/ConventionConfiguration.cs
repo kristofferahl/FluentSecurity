@@ -1,16 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
-namespace FluentSecurity.Internals
+namespace FluentSecurity.Configuration
 {
-	public class Conventions : IEnumerable<IConvention>
+	public class ConventionConfiguration
 	{
 		private readonly List<IConvention> _conventions = new List<IConvention>();
 
-		internal Conventions() {}
-
-		internal Conventions(List<IConvention> conventions)
+		internal ConventionConfiguration(List<IConvention> conventions)
 		{
 			_conventions = conventions;
 		}
@@ -33,16 +30,6 @@ namespace FluentSecurity.Internals
 		public void Insert(int index, IConvention convention)
 		{
 			_conventions.Insert(index, convention);
-		}
-
-		public IEnumerator<IConvention> GetEnumerator()
-		{
-			return _conventions.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
 		}
 	}
 }

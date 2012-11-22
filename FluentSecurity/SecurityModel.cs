@@ -30,15 +30,15 @@ namespace FluentSecurity
 			DefaultResultsCacheLifecycle = Cache.DoNotCache;
 		}
 
-		public void ApplyConventions(Action<Conventions> conventionConfiguration)
+		public void ApplyConventions(Action<ConventionConfiguration> conventionConfiguration)
 		{
-			var configuration = new Conventions(_conventions);
+			var configuration = new ConventionConfiguration(_conventions);
 			conventionConfiguration.Invoke(configuration);
 		}
 
 		public void ApplyViolationConfiguration(Action<ViolationConfiguration> violationConfiguration)
 		{
-			var conventionsConfiguration = new Conventions(_conventions);
+			var conventionsConfiguration = new ConventionConfiguration(_conventions);
 			var configuration = new ViolationConfiguration(conventionsConfiguration);
 			violationConfiguration.Invoke(configuration);
 		}
