@@ -14,36 +14,23 @@ namespace FluentSecurity.Specification.Configuration
 	[Category("AdvancedConfigurationSpec")]
 	public class When_creating_a_new_advanced_configuration
 	{
-		private AdvancedConfiguration _advancedConfiguration;
-
-		[SetUp]
-		public void SetUp()
-		{
-			_advancedConfiguration = new AdvancedConfiguration();
-		}
-
 		[Test]
-		public void Should_not_ignore_missing_configurations()
+		public void Should_throw_when_model_is_null()
 		{
-			Assert.That(_advancedConfiguration.ShouldIgnoreMissingConfiguration, Is.False);
-		}
-
-		[Test]
-		public void Should_have_default_policy_cache_lifecycle_set_to_DoNotCache()
-		{
-			Assert.That(_advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.DoNotCache));
-		}
-
-		[Test]
-		public void Should_not_have_a_security_context_modifyer()
-		{
-			Assert.That(_advancedConfiguration.SecurityContextModifyer, Is.Null);
+			Assert.Throws<ArgumentNullException>(() => new AdvancedConfiguration(null));
 		}
 
 		[Test]
 		public void Should_have_conventions_for_default_PolicyViolationHandler_applied()
 		{
-			var conventions = _advancedConfiguration.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
+			// Arrange
+			var securityModel = new SecurityRuntime();
+
+			// Act
+			new AdvancedConfiguration(securityModel);
+
+			// Assert
+			var conventions = securityModel.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
 			Assert.That(conventions.ElementAtOrDefault(0), Is.TypeOf<FindByPolicyNameConvention>());
 			Assert.That(conventions.ElementAtOrDefault(1), Is.TypeOf<FindDefaultPolicyViolationHandlerByNameConvention>());
 		}
@@ -57,13 +44,14 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_ignore_missing_configurations()
 		{
 			// Arrange
-			var advancedConfiguration = new AdvancedConfiguration();
+			var model = new SecurityRuntime();
+			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
 			advancedConfiguration.IgnoreMissingConfiguration();
 
 			// Assert
-			Assert.That(advancedConfiguration.ShouldIgnoreMissingConfiguration, Is.True);
+			Assert.That(model.ShouldIgnoreMissingConfiguration, Is.True);
 		}
 	}
 
@@ -75,39 +63,105 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_default_policy_cache_lifecycle_set_to_PerHttpSession()
 		{
 			// Arrange
-			var advancedConfiguration = new AdvancedConfiguration();
+			var model = new SecurityRuntime();
+			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
 			advancedConfiguration.SetDefaultResultsCacheLifecycle(Cache.PerHttpSession);
 
 			// Assert
-			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.PerHttpSession));
+			Assert.That(model.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.PerHttpSession));
 		}
 
 		[Test]
 		public void Should_have_default_policy_cache_lifecycle_set_to_PerHttpRequest()
 		{
 			// Arrange
-			var advancedConfiguration = new AdvancedConfiguration();
+			var model = new SecurityRuntime();
+			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
 			advancedConfiguration.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
 			
 			// Assert
-			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.PerHttpRequest));
+			Assert.That(model.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.PerHttpRequest));
 		}
 
 		[Test]
 		public void Should_have_default_policy_cache_lifecycle_set_to_DoNotCache()
 		{
 			// Arrange
-			var advancedConfiguration = new AdvancedConfiguration();
+			var model = new SecurityRuntime();
+			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
 			advancedConfiguration.SetDefaultResultsCacheLifecycle(Cache.DoNotCache);
 
 			// Assert
-			Assert.That(advancedConfiguration.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.DoNotCache));
+			Assert.That(model.DefaultResultsCacheLifecycle, Is.EqualTo(Cache.DoNotCache));
+		}
+	}
+
+	[TestFixture]
+	[Category("AdvancedConfigurationSpec")]
+	public class When_modifying_conventions_using_advanced_configuration
+	{
+		[Test]
+		public void Should_throw_when_action_is_null()
+		{
+			// Arrange
+			var model = new SecurityRuntime();
+			var advancedConfiguration = new AdvancedConfiguration(model);
+
+			// Act & Assert
+			Assert.Throws<ArgumentNullException>(() => advancedConfiguration.Conventions(null));
+		}
+
+		[Test]
+		public void Should_add_convention()
+		{
+			// Arrange
+			var model = new SecurityRuntime();
+			var advancedConfiguration = new AdvancedConfiguration(model);
+			var expectedConvention = new MockConvention();
+
+			// Act
+			advancedConfiguration.Conventions(conventions => conventions.Add(expectedConvention));
+
+			// Assert
+			Assert.That(model.Conventions.Contains(expectedConvention), Is.True);
+		}
+
+		[Test]
+		public void Should_remove_convention()
+		{
+			// Arrange
+			var model = new SecurityRuntime();
+			var advancedConfiguration = new AdvancedConfiguration(model);
+			var convention = new MockConvention();
+			advancedConfiguration.Conventions(conventions => conventions.Add(convention));
+			Assert.That(model.Conventions.Contains(convention), Is.True);
+
+			// Act
+			advancedConfiguration.Conventions(conventions => conventions.Remove(convention));
+
+			// Assert
+			Assert.That(model.Conventions.Contains(convention), Is.False);
+		}
+
+		[Test]
+		public void Should_remove_matching_convention()
+		{
+			// Arrange
+			var model = new SecurityRuntime();
+			var advancedConfiguration = new AdvancedConfiguration(model);
+			Assert.That(model.Conventions.Any(c => c is FindByPolicyNameConvention), Is.True);
+
+			// Act
+			advancedConfiguration.Conventions(conventions => conventions.RemoveAll(c => c is FindByPolicyNameConvention));
+
+			// Assert
+			Assert.That(model.Conventions.Any(c => c is FindByPolicyNameConvention), Is.False);
 		}
 	}
 
@@ -138,7 +192,7 @@ namespace FluentSecurity.Specification.Configuration
 		[Test]
 		public void Should_set_the_modifyer()
 		{
-			Assert.That(SecurityConfiguration.Current.Advanced.SecurityContextModifyer, Is.EqualTo(_expectedModifyer));
+			Assert.That(SecurityConfiguration.Current.Runtime.SecurityContextModifyer, Is.EqualTo(_expectedModifyer));
 		}
 
 		[Test]
@@ -161,12 +215,14 @@ namespace FluentSecurity.Specification.Configuration
 	[Category("AdvancedConfigurationSpec")]
 	public class When_specifying_how_violations_are_handled
 	{
+		private SecurityRuntime _runtime;
 		private AdvancedConfiguration _advancedConfiguration;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_advancedConfiguration = new AdvancedConfiguration();
+			_runtime = new SecurityRuntime();
+			_advancedConfiguration = new AdvancedConfiguration(_runtime);
 		}
 
 		[Test]
@@ -187,9 +243,9 @@ namespace FluentSecurity.Specification.Configuration
 			});
 
 			// Assert
-			Assert.That(_advancedConfiguration.Conventions.ElementAt(0).As<Convention>().ExpectedIndex, Is.EqualTo(0));
-			Assert.That(_advancedConfiguration.Conventions.ElementAt(1).As<Convention>().ExpectedIndex, Is.EqualTo(1));
-			Assert.That(_advancedConfiguration.Conventions.ElementAt(2).As<Convention>().ExpectedIndex, Is.EqualTo(2));
+			Assert.That(_runtime.Conventions.ElementAt(0).As<Convention>().ExpectedIndex, Is.EqualTo(0));
+			Assert.That(_runtime.Conventions.ElementAt(1).As<Convention>().ExpectedIndex, Is.EqualTo(1));
+			Assert.That(_runtime.Conventions.ElementAt(2).As<Convention>().ExpectedIndex, Is.EqualTo(2));
 		}
 
 		[Test]
@@ -199,7 +255,7 @@ namespace FluentSecurity.Specification.Configuration
 			_advancedConfiguration.Violations(violations => violations.Of<IgnorePolicy>().IsHandledBy<Handler1>());
 
 			// Assert
-			Assert.That(_advancedConfiguration.Conventions.First(), Is.InstanceOf<PolicyTypeToPolicyViolationHandlerTypeConvention<IgnorePolicy, Handler1>>());
+			Assert.That(_runtime.Conventions.First(), Is.InstanceOf<PolicyTypeToPolicyViolationHandlerTypeConvention<IgnorePolicy, Handler1>>());
 		}
 
 		[Test]
@@ -209,7 +265,7 @@ namespace FluentSecurity.Specification.Configuration
 			_advancedConfiguration.Violations(violations => violations.Of<IgnorePolicy>().IsHandledBy(() => new Handler2()));
 
 			// Assert
-			Assert.That(_advancedConfiguration.Conventions.First(), Is.InstanceOf<PolicyTypeToPolicyViolationHandlerInstanceConvention<IgnorePolicy, Handler2>>());
+			Assert.That(_runtime.Conventions.First(), Is.InstanceOf<PolicyTypeToPolicyViolationHandlerInstanceConvention<IgnorePolicy, Handler2>>());
 		}
 
 		public class Convention : IPolicyViolationHandlerConvention

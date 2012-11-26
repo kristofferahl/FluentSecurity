@@ -1,0 +1,31 @@
+﻿<%@ Master Inherits="System.Web.Mvc.ViewMasterPage" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head runat="server">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="content-language" content="en" />
+    <title><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></title>
+    <meta name="copyright" content="Copyright (c) 2009 Spinit AB" />
+	<meta name="author" content="Spinit AB" />
+    <link href="../../Skins/Default/Styles/Main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="Wrapper">
+	<div id="Header">
+		<div id="Branding">Fluent Security sample app</div>
+		<ul id="Main-Navigation">
+			<li><a href="/">Home</a></li>
+			
+		</ul>
+	</div>
+	<div id="Content">
+        <div id="Main-Content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>
+    </div>
+	<div id="Footer" class="vcard">
+		<a href="http://www.spinit.se/" class="fn url">Kristoffer Ahl</a>, <a href="mailto:fluent-security@77dynamite.com" class="email">fluent-security@77dynamite.com</a>
+	</div>
+</div>
+</body>
+</html>

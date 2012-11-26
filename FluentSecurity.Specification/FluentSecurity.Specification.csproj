@@ -97,6 +97,7 @@
     <Compile Include="AssemblyScannerBaseSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
+    <Compile Include="Configuration\SecurityProfileSpec.cs" />
     <Compile Include="Configuration\ViolationHandlerConfigurationSpec.cs" />
     <Compile Include="Configuration\ViolationConfigurationSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
@@ -133,7 +134,11 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerByNameConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConventionSpec.cs" />
-    <Compile Include="Scanning\ControllerTypeScannerSpec.cs" />
+    <Compile Include="Scanning\AssemblyScannerSpec.cs" />
+    <Compile Include="Scanning\ScannerContextSpec.cs" />
+    <Compile Include="Scanning\TypeScanners\ControllerTypeScannerSpec.cs" />
+    <Compile Include="Scanning\ProfileScannerSpec.cs" />
+    <Compile Include="SecurityModelSpec.cs" />
     <Compile Include="TestData\Controllers\BaseControllers.cs" />
     <Compile Include="TestData\MockConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelectorSpec.cs" />

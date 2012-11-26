@@ -46,7 +46,7 @@ namespace FluentSecurity
 			if (_policies.Count.Equals(0))
 				throw ExceptionFactory.CreateConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
-			var defaultResultsCacheLifecycle = SecurityConfigurationProvider.Invoke().Advanced.DefaultResultsCacheLifecycle;
+			var defaultResultsCacheLifecycle = SecurityConfigurationProvider.Invoke().Runtime.DefaultResultsCacheLifecycle;
 			var cache = SecurityCache.CacheProvider.Invoke();
 			
 			var results = new List<PolicyResult>();

@@ -36,7 +36,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			Assert.That(_securityConfiguration.ExternalServiceLocator, Is.Null);
+			Assert.That(_securityConfiguration.Runtime.ExternalServiceLocator, Is.Null);
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			Assert.That(_securityConfiguration.Advanced, Is.Not.Null);
+			Assert.That(_securityConfiguration.Runtime, Is.Not.Null);
 		}
 	}
 

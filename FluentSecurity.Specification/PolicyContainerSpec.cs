@@ -127,6 +127,16 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(_expectedPolicyAppender));
 		}
+
+		[Test]
+		public void Should_override_ToString()
+		{
+			// Act
+			var policyContainer = (PolicyContainer)Because();
+
+			// Assert
+			Assert.That(policyContainer.ToString(), Is.EqualTo("FluentSecurity.PolicyContainer - SomeController - SomeAction"));
+		}
 	}
 
 	[TestFixture]

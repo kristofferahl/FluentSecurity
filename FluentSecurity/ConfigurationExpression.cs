@@ -10,25 +10,23 @@ using FluentSecurity.Configuration;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
+using FluentSecurity.Scanning.TypeScanners;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
-	public class ConfigurationExpression
+	public abstract class ConfigurationExpression
 	{
-		internal IList<IPolicyContainer> PolicyContainers { get; private set; } 
-		internal Func<bool> IsAuthenticated { get; private set; }
-		internal Func<IEnumerable<object>> Roles { get; private set; }
-		internal ISecurityServiceLocator ExternalServiceLocator { get; private set; }
-		
-		private IPolicyAppender PolicyAppender { get; set; }
-
 		public AdvancedConfiguration Advanced { get; private set; }
 
-		public ConfigurationExpression()
+		internal SecurityRuntime Runtime { get; private set; }
+		
+		internal IPolicyAppender PolicyAppender { get; set; }
+
+		internal void Initialize(SecurityRuntime runtime)
 		{
-			PolicyContainers = new List<IPolicyContainer>();
-			Advanced = new AdvancedConfiguration();
+			Runtime = runtime;
+			Advanced = new AdvancedConfiguration(Runtime);
 			PolicyAppender = new DefaultPolicyAppender();
 		}
 
@@ -48,7 +46,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes, defaultCacheLevel: By.Controller);
 		}
 
-		public IPolicyContainerConfiguration ForAllControllers()
+		public virtual IPolicyContainerConfiguration ForAllControllers()
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.TheCallingAssembly();
@@ -134,7 +132,27 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
 		}
 
-		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
+		public void Scan(Action<ProfileScanner> scan)
+		{
+			var profileScanner = new ProfileScanner();
+			scan.Invoke(profileScanner);
+			var profiles = profileScanner.Scan().ToList();
+			profiles.ForEach(ApplyProfile);
+		}
+
+		public void ApplyProfile<TSecurityProfile>() where TSecurityProfile : SecurityProfile, new()
+		{
+			var profile = new TSecurityProfile();
+			Runtime.ApplyConfiguration(profile);
+		}
+
+		private void ApplyProfile(Type profileType)
+		{
+			var profile = Activator.CreateInstance(profileType) as SecurityProfile;
+			if (profile != null) Runtime.ApplyConfiguration(profile);
+		}
+
+		internal IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
 		{
 			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)
@@ -152,39 +170,26 @@ namespace FluentSecurity
 
 		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
 		{
-			PolicyContainer policyContainer;
-
-			var existingContainer = PolicyContainers.GetContainerFor(controllerName, actionName);
-			if (existingContainer != null)
-			{
-				policyContainer = (PolicyContainer) existingContainer;
-			}
-			else
-			{
-				policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-				PolicyContainers.Add(policyContainer);
-			}
-
-			return policyContainer;
+			return Runtime.AddPolicyContainer(new PolicyContainer(controllerName, actionName, PolicyAppender));
 		}
 
-		public void GetAuthenticationStatusFrom(Func<bool> isAuthenticatedFunction)
+		public void GetAuthenticationStatusFrom(Func<bool> authenticationExpression)
 		{
-			if (isAuthenticatedFunction == null)
-				throw new ArgumentNullException("isAuthenticatedFunction");
+			if (authenticationExpression == null)
+				throw new ArgumentNullException("authenticationExpression");
 
-			IsAuthenticated = isAuthenticatedFunction;
+			Runtime.IsAuthenticated = authenticationExpression;
 		}
 
-		public void GetRolesFrom(Func<IEnumerable<object>> rolesFunction)
+		public void GetRolesFrom(Func<IEnumerable<object>> rolesExpression)
 		{
-			if (rolesFunction == null)
-				throw new ArgumentNullException("rolesFunction");
+			if (rolesExpression == null)
+				throw new ArgumentNullException("rolesExpression");
 
-			if (PolicyContainers.Count > 0)
+			if (Runtime.PolicyContainers.Any())
 				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
 
-			Roles = rolesFunction;
+			Runtime.Roles = rolesExpression;
 		}
 
 		public void SetPolicyAppender(IPolicyAppender policyAppender)
@@ -200,7 +205,7 @@ namespace FluentSecurity
 			if (servicesLocator == null)
 				throw new ArgumentNullException("servicesLocator");
 
-			ExternalServiceLocator = new ExternalServiceLocator(servicesLocator, singleServiceLocator);
+			ResolveServicesUsing(new ExternalServiceLocator(servicesLocator, singleServiceLocator));
 		}
 
 		public void ResolveServicesUsing(ISecurityServiceLocator securityServiceLocator)
@@ -208,26 +213,33 @@ namespace FluentSecurity
 			if (securityServiceLocator == null)
 				throw new ArgumentNullException("securityServiceLocator");
 
-			ExternalServiceLocator = securityServiceLocator;
+			Runtime.ExternalServiceLocator = securityServiceLocator;
 		}
 
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
 		{
 			RemoveDefaultPolicyViolationHandlerConventions();
-			Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<TPolicyViolationHandler>());
+			Advanced.Conventions(conventions =>
+				conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<TPolicyViolationHandler>())
+				);
 		}
 
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandler) where TPolicyViolationHandler : class, IPolicyViolationHandler
 		{
 			RemoveDefaultPolicyViolationHandlerConventions();
-			Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<TPolicyViolationHandler>(policyViolationHandler));
+			Advanced.Conventions(conventions =>
+				conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<TPolicyViolationHandler>(policyViolationHandler))
+				);
 		}
 
 		private void RemoveDefaultPolicyViolationHandlerConventions()
 		{
-			Advanced.Conventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
-			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
-			Advanced.Conventions.RemoveAll(c => c.IsMatchForGenericType(typeof(DefaultPolicyViolationHandlerIsInstanceConvention<>)));
+			Advanced.Conventions(conventions =>
+			{
+				conventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
+				conventions.RemoveAll(c => c.IsMatchForGenericType(typeof (DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
+				conventions.RemoveAll(c => c.IsMatchForGenericType(typeof (DefaultPolicyViolationHandlerIsInstanceConvention<>)));
+			});
 		}
 	}
 }

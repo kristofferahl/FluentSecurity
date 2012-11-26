@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.TestHelper",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.TestHelper.Specification", "FluentSecurity.TestHelper.Specification\FluentSecurity.TestHelper.Specification.csproj", "{2C5E08EC-362A-4A9F-BC7E-AA44B4589995}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplication", "FluentSecurity.SampleApplication\FluentSecurity.SampleApplication.csproj", "{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplication", "SampleApplication\FluentSecurity.SampleApplication\FluentSecurity.SampleApplication.csproj", "{C061FCA0-BF28-4803-B55B-F8725DAF3EA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplication.Tests", "FluentSecurity.SampleApplication.Tests\FluentSecurity.SampleApplication.Tests.csproj", "{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.SampleApplication.Tests", "SampleApplication\FluentSecurity.SampleApplication.Tests\FluentSecurity.SampleApplication.Tests.csproj", "{56EB339E-9C71-4374-B8DF-5B7AC80DC97A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -32,7 +32,7 @@ namespace FluentSecurity
 				return null;
 			}
 
-			if (configuration.Advanced.ShouldIgnoreMissingConfiguration)
+			if (configuration.Runtime.ShouldIgnoreMissingConfiguration)
 				return null;
 
 			throw ExceptionFactory.CreateConfigurationErrorsException("Security has not been configured for controller {0}, action {1}".FormatWith(controllerName, actionName));

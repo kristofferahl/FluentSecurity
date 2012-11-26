@@ -61,9 +61,15 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static ConfigurationExpression CreateValidConfigurationExpression()
 		{
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(ValidIsAuthenticatedFunction);
 			return configurationExpression;
+		}
+
+		public static ViolationConfiguration CreatedValidViolationConfiguration(List<IConvention> conventions = null)
+		{
+			if (conventions == null) conventions = new List<IConvention>();
+			return new ViolationConfiguration(new ConventionConfiguration(conventions));
 		}
 
 		public static DefaultPolicyAppender CreateValidPolicyAppender()

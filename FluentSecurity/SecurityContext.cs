@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Dynamic;
 using FluentSecurity.ServiceLocation;
@@ -9,16 +8,14 @@ namespace FluentSecurity
 	public class SecurityContext : ISecurityContext
 	{
 		private readonly ExpandoObject _data;
-		private readonly Func<bool> _isAuthenticated;
-		private readonly Func<IEnumerable<object>> _roles;
+		private readonly ISecurityRuntime _runtime;
 
-		private SecurityContext(ConfigurationExpression configurationExpression)
+		private SecurityContext(ISecurityRuntime runtime)
 		{
 			_data = new ExpandoObject();
-			_isAuthenticated = configurationExpression.IsAuthenticated;
-			_roles = configurationExpression.Roles;
+			_runtime = runtime;
 
-			var modifyer = configurationExpression.Advanced.SecurityContextModifyer;
+			var modifyer = runtime.SecurityContextModifyer;
 			if (modifyer != null) modifyer.Invoke(this);
 		}
 
@@ -29,12 +26,12 @@ namespace FluentSecurity
 
 		public bool CurrentUserIsAuthenticated()
 		{
-			return _isAuthenticated();
+			return _runtime.IsAuthenticated.Invoke();
 		}
 
 		public IEnumerable<object> CurrentUserRoles()
 		{
-			return _roles != null ? _roles() : null;
+			return _runtime.Roles != null ? _runtime.Roles.Invoke() : null;
 		}
 
 		public static ISecurityContext Current
@@ -52,14 +49,13 @@ namespace FluentSecurity
 			var securityConfiguration = configuration as SecurityConfiguration;
 			if (securityConfiguration != null)
 			{
-				var configurationExpression = securityConfiguration.Expression;
-				var externalServiceLocator = configurationExpression.ExternalServiceLocator;
+				var externalServiceLocator = securityConfiguration.Runtime.ExternalServiceLocator;
 				if (externalServiceLocator != null)
 					context = externalServiceLocator.Resolve(typeof(ISecurityContext)) as ISecurityContext;
 
 				if (context == null)
 				{
-					if (CanCreateSecurityContextFromConfigurationExpression(configurationExpression) == false)
+					if (securityConfiguration.Runtime.IsAuthenticated == null)
 						throw new ConfigurationErrorsException(
 							@"
 							The current configuration is invalid! Before using Fluent Security you must do one of the following.
@@ -67,16 +63,11 @@ namespace FluentSecurity
 							2) Register an instance of ISecurityContext in your IoC-container and register your container using ResolveServicesUsing().
 							");
 
-					context = new SecurityContext(configurationExpression);
+					context = new SecurityContext(securityConfiguration.Runtime);
 				}
 			}
 			
 			return context;
-		}
-
-		private static bool CanCreateSecurityContextFromConfigurationExpression(ConfigurationExpression expression)
-		{
-			return expression.IsAuthenticated != null;
 		}
 	}
 }
