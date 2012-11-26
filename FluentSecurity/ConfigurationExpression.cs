@@ -173,7 +173,6 @@ namespace FluentSecurity
 			return Runtime.AddPolicyContainer(new PolicyContainer(controllerName, actionName, PolicyAppender));
 		}
 
-		// TODO: Evaluate the need to move this to RootConfigurationExpression.
 		public void GetAuthenticationStatusFrom(Func<bool> authenticationExpression)
 		{
 			if (authenticationExpression == null)
@@ -182,7 +181,6 @@ namespace FluentSecurity
 			Runtime.IsAuthenticated = authenticationExpression;
 		}
 
-		// TODO: Evaluate the need to move this to RootConfigurationExpression.
 		public void GetRolesFrom(Func<IEnumerable<object>> rolesExpression)
 		{
 			if (rolesExpression == null)
@@ -202,7 +200,6 @@ namespace FluentSecurity
 			PolicyAppender = policyAppender;
 		}
 
-		// TODO: Evaluate the need to move this to RootConfigurationExpression.
 		public void ResolveServicesUsing(Func<Type, IEnumerable<object>> servicesLocator, Func<Type, object> singleServiceLocator = null)
 		{
 			if (servicesLocator == null)
@@ -211,7 +208,6 @@ namespace FluentSecurity
 			ResolveServicesUsing(new ExternalServiceLocator(servicesLocator, singleServiceLocator));
 		}
 
-		// TODO: Evaluate the need to move this to RootConfigurationExpression.
 		public void ResolveServicesUsing(ISecurityServiceLocator securityServiceLocator)
 		{
 			if (securityServiceLocator == null)

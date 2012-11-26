@@ -19,11 +19,17 @@
 - ( **Change** ) Changed policy extensions so that they extend IPolicyContainerConfiguration instead of IPolicyContainer and IConventionPolicyContainer.
 - ( **Change** ) Moved IWhatDoIHaveBuilder and DefaultWhatDoIHaveBuilder to Diagnostics namespace.
 - ( **Change** ) Moved DefaultPolicyAppender to Configuration namespace.
+- ( **Change** ) Moved ITypeScanner interface to Scanning.TypeScanners namespace.
 - ( **New** ) Added support for using AllowAny to add an IgnorePolicy.
 - ( **New** ) Added support for using ActionNameAttribute (thanks to Chandu).
 - ( **New** ) Added support for securing controllers based on inheritance - Base controllers (thanks to Ridermansb).
 - ( **New** ) Added support for securing controllers based on action name and controller type.
 - ( **New** ) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
+
+## Areas/Profiles
+- ( **New** ) Added support for creating profiles to help manage large/area configurations by inheriting from SecurityProfile.
+- ( **New** ) Added support for applying profiles using ApplyProfile\<TSecurityProfile\>.
+- ( **New** ) Added support for scanning for profiles using the Scan method and LookForProfiles.
 
 ## Caching
 - ( **New** ) Added support for changing the default cache lifecycle of policy results using the Advanced.SetDefaultResultsCacheLifecycle option.
