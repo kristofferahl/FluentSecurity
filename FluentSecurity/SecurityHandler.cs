@@ -15,9 +15,9 @@ namespace FluentSecurity
 			if (actionName.IsNullOrEmpty()) throw new ArgumentException("Actionname must not be null or empty", "actionName");
 			if (securityContext == null) throw new ArgumentNullException("securityContext", "Security context must not be null");
 
-			var configuration = ServiceLocator.Current.Resolve<ISecurityConfiguration>();
+			var runtime = securityContext.Runtime;
 			
-			var policyContainer = configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
+			var policyContainer = runtime.PolicyContainers.GetContainerFor(controllerName, actionName);
 			if (policyContainer != null)
 			{
 				var results = policyContainer.EnforcePolicies(securityContext);
@@ -32,7 +32,7 @@ namespace FluentSecurity
 				return null;
 			}
 
-			if (configuration.Runtime.ShouldIgnoreMissingConfiguration)
+			if (runtime.ShouldIgnoreMissingConfiguration)
 				return null;
 
 			throw ExceptionFactory.CreateConfigurationErrorsException("Security has not been configured for controller {0}, action {1}".FormatWith(controllerName, actionName));
