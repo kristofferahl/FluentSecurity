@@ -23,10 +23,16 @@ namespace FluentSecurity.Specification.Helpers
 		{
 			var data = new ExpandoObject();
 			var context = new Mock<ISecurityContext>();
+			context.Setup(x => x.Runtime).Returns(CreateSecurityRuntime());
 			context.Setup(x => x.Data).Returns(data);
 			context.Setup(x => x.CurrentUserIsAuthenticated()).Returns(authenticated);
 			context.Setup(x => x.CurrentUserRoles()).Returns(roles);
 			return context.Object;
+		}
+
+		public static ISecurityRuntime CreateSecurityRuntime()
+		{
+			return new SecurityRuntime();
 		}
 
 		public static PolicyContainer CreateValidPolicyContainer()

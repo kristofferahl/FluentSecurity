@@ -9,13 +9,15 @@ namespace FluentSecurity.Specification.Helpers
 		private readonly bool _isAuthenticated;
 		private readonly IEnumerable<object> _roles;
 
-		public MockSecurityContext(bool isAuthenticated = true, IEnumerable<object> roles = null, RouteValueDictionary routeValues = null)
+		public MockSecurityContext(bool isAuthenticated = true, IEnumerable<object> roles = null, RouteValueDictionary routeValues = null, ISecurityRuntime runtime = null)
 		{
 			_isAuthenticated = isAuthenticated;
 			_roles = roles;
 
 			Data = new ExpandoObject();
 			Data.RouteValues = routeValues;
+
+			Runtime = runtime ?? new SecurityRuntime();
 		}
 
 		public dynamic Data { get; private set; }
@@ -29,5 +31,7 @@ namespace FluentSecurity.Specification.Helpers
 		{
 			return _roles;
 		}
+
+		public ISecurityRuntime Runtime { get; private set; }
 	}
 }

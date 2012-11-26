@@ -34,6 +34,11 @@ namespace FluentSecurity
 			return _runtime.Roles != null ? _runtime.Roles.Invoke() : null;
 		}
 
+		public ISecurityRuntime Runtime
+		{
+			get { return _runtime; }
+		}
+
 		public static ISecurityContext Current
 		{
 			get

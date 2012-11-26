@@ -143,6 +143,8 @@ namespace FluentSecurity.Specification.Policy
 			{
 				return null;
 			}
+
+			public ISecurityRuntime Runtime { get; set; }
 		}
 	}
 }

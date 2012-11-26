@@ -29,5 +29,10 @@ namespace FluentSecurity.Policy.Contexts
 		{
 			return _securityContext.CurrentUserRoles();
 		}
+
+		public ISecurityRuntime Runtime
+		{
+			get { return _securityContext.Runtime; }
+		}
 	}
 }
