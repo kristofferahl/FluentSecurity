@@ -20,6 +20,7 @@
 - ( **Change** ) Moved IWhatDoIHaveBuilder and DefaultWhatDoIHaveBuilder to Diagnostics namespace.
 - ( **Change** ) Moved DefaultPolicyAppender to Configuration namespace.
 - ( **Change** ) Moved ITypeScanner interface to Scanning.TypeScanners namespace.
+- ( **Change** ) Added ISecurityRuntime property to ISecurityContext.
 - ( **New** ) Added support for using AllowAny to add an IgnorePolicy.
 - ( **New** ) Added support for using ActionNameAttribute (thanks to Chandu).
 - ( **New** ) Added support for securing controllers based on inheritance - Base controllers (thanks to Ridermansb).
