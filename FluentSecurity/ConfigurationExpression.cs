@@ -46,7 +46,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes, defaultCacheLevel: By.Controller);
 		}
 
-		public IPolicyContainerConfiguration ForAllControllers()
+		public virtual IPolicyContainerConfiguration ForAllControllers()
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.TheCallingAssembly();
@@ -152,7 +152,7 @@ namespace FluentSecurity
 			if (profile != null) Runtime.ApplyConfiguration(profile);
 		}
 
-		private IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
+		internal IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)
 		{
 			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)
