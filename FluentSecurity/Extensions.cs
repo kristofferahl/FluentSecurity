@@ -50,7 +50,7 @@ namespace FluentSecurity
 		{
 			if (Attribute.IsDefined(actionMethod, ActionNameAttributeType))
 			{
-				var actionNameAttribute = (ActionNameAttribute) Attribute.GetCustomAttribute(actionMethod, typeof (ActionNameAttribute));
+				var actionNameAttribute = (ActionNameAttribute) Attribute.GetCustomAttribute(actionMethod, ActionNameAttributeType);
 				return actionNameAttribute.Name;
 			}
 			return actionMethod.Name;
