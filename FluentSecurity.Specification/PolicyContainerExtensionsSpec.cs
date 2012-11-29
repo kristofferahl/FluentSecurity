@@ -113,7 +113,26 @@ namespace FluentSecurity.Specification
 			policyContainer.RequireRole(UserRole.Writer);
 
 			// Assert
-			var securityPolicy = policyContainer.GetPolicies().Where(x => x.GetType().Equals(typeof(RequireRolePolicy))).Single();
+			var securityPolicy = policyContainer.GetPolicies().Single(x => x.GetType() == typeof(RequireRolePolicy));
+			Assert.That(securityPolicy, Is.Not.Null);
+		}
+	}
+
+	[TestFixture]
+	[Category("PolicyContainerExtensionsSpec")]
+	public class When_adding_a_RequireAnyRolePolicy_to_a_policycontainer
+	{
+		[Test]
+		public void Should_have_a_RequireAnyRolePolicy()
+		{
+			// Arrange
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
+
+			// Act
+			policyContainer.RequireAnyRole(UserRole.Writer);
+
+			// Assert
+			var securityPolicy = policyContainer.GetPolicies().Single(x => x.GetType() == typeof(RequireAnyRolePolicy));
 			Assert.That(securityPolicy, Is.Not.Null);
 		}
 	}
