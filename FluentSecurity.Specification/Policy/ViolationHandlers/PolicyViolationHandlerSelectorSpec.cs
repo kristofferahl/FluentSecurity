@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
@@ -39,7 +40,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 
 			var policy = new IgnorePolicy();
 			var policyResult = PolicyResult.CreateFailureResult(policy, "Access denied");
-			var exception = new PolicyViolationException(policyResult);
+			var exception = TestDataFactory.CreatePolicyViolationException(policyResult);
 			var selector = new PolicyViolationHandlerSelector(conventions);
 
 			// Act
@@ -53,9 +54,8 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 		}
 
 		[Test]
-		public void Should_return_null_when_no_convenion_returns_handler()
+		public void Should_return_null_when_no_convention_returns_handler()
 		{
-			var expectedHandler = new ExceptionPolicyViolationHandler();
 			var convention1 = new MockConvention(null);
 			var convention2 = new MockConvention(null);
 			var conventions = new List<IPolicyViolationHandlerConvention>
@@ -66,7 +66,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 
 			var policy = new IgnorePolicy();
 			var policyResult = PolicyResult.CreateFailureResult(policy, "Access denied");
-			var exception = new PolicyViolationException(policyResult);
+			var exception = TestDataFactory.CreatePolicyViolationException(policyResult);
 			var selector = new PolicyViolationHandlerSelector(conventions);
 
 			// Act

@@ -6,6 +6,7 @@ using System.Web.Routing;
 using FluentSecurity.Configuration;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
+using FluentSecurity.Policy.Results;
 using FluentSecurity.Specification.TestData;
 using Moq;
 
@@ -85,7 +86,12 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static PolicyViolationException CreateExceptionFor(ISecurityPolicy policy)
 		{
-			return new PolicyViolationException(PolicyResult.CreateFailureResult(policy, "Access denied"));
+			return CreatePolicyViolationException(PolicyResult.CreateFailureResult(policy, "Access denied"));
+		}
+
+		public static PolicyViolationException CreatePolicyViolationException(PolicyResult policyResult, ISecurityContext securityContext = null)
+		{
+			return new PolicyViolationException(policyResult, securityContext ?? CreateSecurityContext(false));
 		}
 
 		public static IPolicyAppender CreateFakePolicyAppender()
