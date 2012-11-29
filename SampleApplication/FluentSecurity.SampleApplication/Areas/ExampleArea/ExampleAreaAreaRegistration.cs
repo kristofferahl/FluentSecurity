@@ -14,7 +14,7 @@ namespace FluentSecurity.SampleApplication.Areas.ExampleArea
 			context.MapRoute(
 				"ExampleArea_default",
 				"ExampleArea/{controller}/{action}/{id}",
-				new { action = "Index", id = UrlParameter.Optional }
+				new { area = AreaName, action = "Index", id = UrlParameter.Optional }
 				);
 		}
 	}
