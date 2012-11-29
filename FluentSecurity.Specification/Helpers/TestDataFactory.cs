@@ -84,6 +84,11 @@ namespace FluentSecurity.Specification.Helpers
 			return new DefaultPolicyAppender();
 		}
 
+		public static PolicyResult CreatePolicyResultFailure()
+		{
+			return PolicyResult.CreateFailureResult(new DenyAnonymousAccessPolicy(), "Access denied");
+		}
+
 		public static PolicyViolationException CreateExceptionFor(ISecurityPolicy policy)
 		{
 			return CreatePolicyViolationException(PolicyResult.CreateFailureResult(policy, "Access denied"));
