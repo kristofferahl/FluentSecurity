@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
@@ -13,11 +14,14 @@ namespace FluentSecurity.Configuration
 			if (runtime == null) throw new ArgumentNullException("runtime");
 			_runtime = runtime;
 
-			Conventions(conventions =>
+			if (!_runtime.Conventions.Any())
 			{
-				conventions.Add(new FindByPolicyNameConvention());
-				conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
-			});
+				Conventions(conventions =>
+				{
+					conventions.Add(new FindByPolicyNameConvention());
+					conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
+				});
+			}
 		}
 
 		public void IgnoreMissingConfiguration()

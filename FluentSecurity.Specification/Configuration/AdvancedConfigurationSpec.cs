@@ -31,6 +31,24 @@ namespace FluentSecurity.Specification.Configuration
 
 			// Assert
 			var conventions = securityModel.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
+			Assert.That(conventions.Count(), Is.EqualTo(2));
+			Assert.That(conventions.ElementAtOrDefault(0), Is.TypeOf<FindByPolicyNameConvention>());
+			Assert.That(conventions.ElementAtOrDefault(1), Is.TypeOf<FindDefaultPolicyViolationHandlerByNameConvention>());
+		}
+
+		[Test]
+		public void Should_not_add_duplicate_conventions()
+		{
+			// Arrange
+			var securityModel = new SecurityRuntime();
+			new AdvancedConfiguration(securityModel);
+
+			// Act
+			new AdvancedConfiguration(securityModel);
+
+			// Assert
+			var conventions = securityModel.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
+			Assert.That(conventions.Count(), Is.EqualTo(2));
 			Assert.That(conventions.ElementAtOrDefault(0), Is.TypeOf<FindByPolicyNameConvention>());
 			Assert.That(conventions.ElementAtOrDefault(1), Is.TypeOf<FindDefaultPolicyViolationHandlerByNameConvention>());
 		}
