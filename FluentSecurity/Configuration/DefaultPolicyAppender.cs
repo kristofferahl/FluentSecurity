@@ -17,8 +17,6 @@ namespace FluentSecurity.Configuration
 				policies.Clear();
 			else if (securityPolicyToAdd.IsPolicyOf<DenyAuthenticatedAccessPolicy>())
 				policies.Clear();
-			else if (securityPolicyToAdd.IsPolicyOf<RequireRolePolicy>())
-				policies.Clear();
 			else if (securityPolicyToAdd.IsPolicyOf<RequireAnyRolePolicy>())
 				policies.Clear();
 			else if (securityPolicyToAdd.IsPolicyOf<RequireAllRolesPolicy>())
