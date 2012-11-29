@@ -29,14 +29,14 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		}
 
 		[Test]
-		public void Should_return_DefaultPolicyViolationHandler_for_RequireRolePolicy()
+		public void Should_return_DefaultPolicyViolationHandler_for_RequireAnyRolePolicy()
 		{
 			// Arrange
 			var convention = new FindDefaultPolicyViolationHandlerByNameConvention
 			{
 				PolicyViolationHandlerProvider = () => TestDataFactory.CreatePolicyViolationHandlers()
 			};
-			var exception = TestDataFactory.CreateExceptionFor(new RequireRolePolicy("Role"));
+			var exception = TestDataFactory.CreateExceptionFor(new RequireAnyRolePolicy("Role"));
 
 			// Act
 			var handler = convention.GetHandlerFor(exception);

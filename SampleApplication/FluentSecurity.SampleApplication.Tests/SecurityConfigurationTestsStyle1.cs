@@ -27,11 +27,11 @@ namespace FluentSecurity.SampleApplication.Tests
 
 				expectations.Expect<ExampleController>(x => x.DenyAnonymousAccess()).Has<DenyAnonymousAccessPolicy>();
 				expectations.Expect<ExampleController>(x => x.DenyAuthenticatedAccess()).Has<DenyAuthenticatedAccessPolicy>();
-				expectations.Expect<ExampleController>(x => x.RequireAdministratorRole()).Has<RequireRolePolicy>(p =>
+				expectations.Expect<ExampleController>(x => x.RequireAdministratorRole()).Has<RequireAnyRolePolicy>(p =>
 					p.RolesRequired.Contains(UserRole.Administrator) &&
 					p.RolesRequired.Count() == 1
 					);
-				expectations.Expect<ExampleController>(x => x.RequirePublisherRole()).Has<RequireRolePolicy>(p =>
+				expectations.Expect<ExampleController>(x => x.RequirePublisherRole()).Has<RequireAnyRolePolicy>(p =>
 					p.RolesRequired.Contains(UserRole.Publisher) &&
 					p.RolesRequired.Count() == 1
 					);
@@ -40,13 +40,13 @@ namespace FluentSecurity.SampleApplication.Tests
 				expectations.Expect<AdminController>(x => x.Delete()).Has<DelegatePolicy>(p => p.Name == "LocalOnlyPolicy");
 
 				expectations.Expect<Areas.ExampleArea.Controllers.HomeController>(x => x.Index()).Has<DenyAnonymousAccessPolicy>();
-				expectations.Expect<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).Has(new RequireRolePolicy(UserRole.Administrator));
-				expectations.Expect<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).Has(new RequireRolePolicy(UserRole.Publisher));
+				expectations.Expect<Areas.ExampleArea.Controllers.HomeController>(x => x.AdministratorsOnly()).Has(new RequireAnyRolePolicy(UserRole.Administrator));
+				expectations.Expect<Areas.ExampleArea.Controllers.HomeController>(x => x.PublishersOnly()).Has(new RequireAnyRolePolicy(UserRole.Publisher));
 
 				expectations.Expect<BlogPostController>().Has<DenyAnonymousAccessPolicy>();
 				expectations.Expect<BlogPostController>(x => x.Index()).Has<IgnorePolicy>().DoesNotHave<DenyAnonymousAccessPolicy>();
 				expectations.Expect<BlogPostController>(x => x.Details()).Has<IgnorePolicy>().DoesNotHave<DenyAnonymousAccessPolicy>();
-				expectations.Expect<BlogPostController>(x => x.Delete()).Has(new RequireRolePolicy(UserRole.Administrator)).DoesNotHave<DenyAnonymousAccessPolicy>();
+				expectations.Expect<BlogPostController>(x => x.Delete()).Has(new RequireAnyRolePolicy(UserRole.Administrator)).DoesNotHave<DenyAnonymousAccessPolicy>();
 			});
 
 			// Assert

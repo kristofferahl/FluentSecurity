@@ -5,7 +5,6 @@ using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
-using FluentSecurity.Specification.TestData;
 using FluentSecurity.Specification.TestData.Controllers;
 using Moq;
 using NUnit.Framework;
@@ -97,7 +96,7 @@ namespace FluentSecurity.Specification
 			var policyContainer2 = new Mock<IPolicyContainerConfiguration>();
 			var policyContainer3 = new Mock<IPolicyContainerConfiguration>();
 
-			var policyContainers = new List<IPolicyContainerConfiguration>()
+			var policyContainers = new List<IPolicyContainerConfiguration>
 			{
 				policyContainer1.Object,
 				policyContainer2.Object,
@@ -186,7 +185,7 @@ namespace FluentSecurity.Specification
 			conventionPolicyContainer.Cache<DenyAnonymousAccessPolicy>(expectedLifecycle, expectedLevel);
 
 			// Assert
-			var containers = policyContainers.Cast<PolicyContainer>().ToList();
+			var containers = policyContainers.ToList();
 			Assert.That(containers[0].CacheStrategies.Single().PolicyType, Is.EqualTo(expectedType));
 			Assert.That(containers[0].CacheStrategies.Single().CacheLifecycle, Is.EqualTo(expectedLifecycle));
 			Assert.That(containers[0].CacheStrategies.Single().CacheLevel, Is.EqualTo(expectedLevel));
@@ -215,7 +214,7 @@ namespace FluentSecurity.Specification
 			};
 
 			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
-			conventionPolicyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest);
+			conventionPolicyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest);
 
 			// Act
 			conventionPolicyContainer.ClearCacheStrategies();
@@ -239,11 +238,11 @@ namespace FluentSecurity.Specification
 			};
 
 			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
-			conventionPolicyContainer.Cache<RequireRolePolicy>(Cache.PerHttpRequest);
+			conventionPolicyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest);
 			conventionPolicyContainer.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest);
 
 			// Act
-			conventionPolicyContainer.ClearCacheStrategyFor<RequireRolePolicy>();
+			conventionPolicyContainer.ClearCacheStrategyFor<RequireAnyRolePolicy>();
 
 			// Assert
 			var containers = policyContainers.ToList();

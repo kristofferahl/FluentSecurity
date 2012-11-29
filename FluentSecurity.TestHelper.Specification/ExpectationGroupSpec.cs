@@ -154,8 +154,8 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_1_expecation_when_expecations_have_same_instance_for_HasInstanceExpectation()
 		{
 			// Arrange
-			var expectation1 = new HasInstanceExpectation(new RequireRolePolicy("Editor"));
-			var expectation2 = new HasInstanceExpectation(new RequireRolePolicy("Editor"));
+			var expectation1 = new HasInstanceExpectation(new RequireAnyRolePolicy("Editor"));
+			var expectation2 = new HasInstanceExpectation(new RequireAnyRolePolicy("Editor"));
 
 			// Act
 			_expectationGroup.ApplyExpectation(expectation1);
@@ -169,8 +169,8 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_2_expecation_when_expecations_have_different_instances_for_HasInstanceExpectation()
 		{
 			// Arrange
-			var expectation1 = new HasInstanceExpectation(new RequireRolePolicy("Editor"));
-			var expectation2 = new HasInstanceExpectation(new RequireRolePolicy("Editor", "Writer"));
+			var expectation1 = new HasInstanceExpectation(new RequireAnyRolePolicy("Editor"));
+			var expectation2 = new HasInstanceExpectation(new RequireAnyRolePolicy("Editor", "Writer"));
 
 			// Act
 			_expectationGroup.ApplyExpectation(expectation1);
@@ -184,8 +184,8 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_1_expecation_when_expecations_have_same_instance_for_DoesNotHaveInstanceExpectation()
 		{
 			// Arrange
-			var expectation1 = new DoesNotHaveInstanceExpectation(new RequireRolePolicy("Editor"));
-			var expectation2 = new DoesNotHaveInstanceExpectation(new RequireRolePolicy("Editor"));
+			var expectation1 = new DoesNotHaveInstanceExpectation(new RequireAnyRolePolicy("Editor"));
+			var expectation2 = new DoesNotHaveInstanceExpectation(new RequireAnyRolePolicy("Editor"));
 
 			// Act
 			_expectationGroup.ApplyExpectation(expectation1);
@@ -199,8 +199,8 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_2_expecation_when_expecations_have_different_instances_for_DoesNotHaveInstanceExpectation()
 		{
 			// Arrange
-			var expectation1 = new DoesNotHaveInstanceExpectation(new RequireRolePolicy("Editor"));
-			var expectation2 = new DoesNotHaveInstanceExpectation(new RequireRolePolicy("Editor", "Writer"));
+			var expectation1 = new DoesNotHaveInstanceExpectation(new RequireAnyRolePolicy("Editor"));
+			var expectation2 = new DoesNotHaveInstanceExpectation(new RequireAnyRolePolicy("Editor", "Writer"));
 
 			// Act
 			_expectationGroup.ApplyExpectation(expectation1);
@@ -214,8 +214,8 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_1_expecation_when_expecations_have_same_instance_for_has_and_does_not_have()
 		{
 			// Arrange
-			var expectation1 = new HasInstanceExpectation(new RequireRolePolicy("Editor"));
-			var expectation2 = new DoesNotHaveInstanceExpectation(new RequireRolePolicy("Editor"));
+			var expectation1 = new HasInstanceExpectation(new RequireAnyRolePolicy("Editor"));
+			var expectation2 = new DoesNotHaveInstanceExpectation(new RequireAnyRolePolicy("Editor"));
 
 			// Act
 			_expectationGroup.ApplyExpectation(expectation1);
@@ -229,8 +229,8 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_1_expecation_when_expecations_have_same_instance_for_does_not_have_and_has()
 		{
 			// Arrange
-			var expectation1 = new DoesNotHaveInstanceExpectation(new RequireRolePolicy("Editor"));
-			var expectation2 = new HasInstanceExpectation(new RequireRolePolicy("Editor"));
+			var expectation1 = new DoesNotHaveInstanceExpectation(new RequireAnyRolePolicy("Editor"));
+			var expectation2 = new HasInstanceExpectation(new RequireAnyRolePolicy("Editor"));
 
 			// Act
 			_expectationGroup.ApplyExpectation(expectation1);

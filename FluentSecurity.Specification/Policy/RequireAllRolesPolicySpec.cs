@@ -297,7 +297,7 @@ namespace FluentSecurity.Specification.Policy
 		[Test]
 		public void Should_not_be_the_same_when_types_differ()
 		{
-			var instance1 = new RequireRolePolicy("Editor", "Writer");
+			var instance1 = new RequireAnyRolePolicy("Editor", "Writer");
 			var instance2 = new RequireAllRolesPolicy("Editor", "Writer");
 			Assert.That(instance1.GetHashCode(), Is.Not.EqualTo(instance2.GetHashCode()));
 		}

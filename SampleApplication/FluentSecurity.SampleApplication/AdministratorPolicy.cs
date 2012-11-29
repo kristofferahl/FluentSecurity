@@ -7,7 +7,7 @@ namespace FluentSecurity.SampleApplication
 	{
 		public PolicyResult Enforce(ISecurityContext context)
 		{
-			var innerPolicy = new RequireRolePolicy(UserRole.Administrator);
+			var innerPolicy = new RequireAllRolesPolicy(UserRole.Administrator);
 			var result = innerPolicy.Enforce(context);
 			
 			return result.ViolationOccured ? PolicyResult.CreateFailureResult(this, result.Message) : PolicyResult.CreateSuccessResult(this);

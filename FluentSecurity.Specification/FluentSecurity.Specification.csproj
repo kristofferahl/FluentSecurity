@@ -126,6 +126,7 @@
     <Compile Include="Internals\TypeExtensionsSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="Policy\Contexts\SecurityContextWrapperSpec.cs" />
+    <Compile Include="Policy\RequireAnyRolePolicySpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyInstancePolicyViolationHandlerConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyTypePolicyViolationHandlerConventionSpec.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PolicyTypeToPolicyViolationHandlerInstanceConventionSpec.cs" />

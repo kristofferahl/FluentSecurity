@@ -150,7 +150,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("SecurityHandlerSpec")]
-	public class When_handling_security_for_a_controlleraction_with_RequireRole_Owner
+	public class When_handling_security_for_a_controlleraction_with_RequireAnyRole_Owner
 	{
 		[SetUp]
 		public void SetUp()
@@ -166,7 +166,7 @@ namespace FluentSecurity.Specification
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesIncludingOwner);
-				policy.For<BlogController>(x => x.DeletePost(0)).RequireRole(UserRole.Owner);
+				policy.For<BlogController>(x => x.DeletePost(0)).RequireAnyRole(UserRole.Owner);
 			});
 
 			var securityHandler = new SecurityHandler();
@@ -183,7 +183,7 @@ namespace FluentSecurity.Specification
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
-				policy.For<BlogController>(x => x.DeletePost(0)).RequireRole(UserRole.Owner);
+				policy.For<BlogController>(x => x.DeletePost(0)).RequireAnyRole(UserRole.Owner);
 			});
 
 			var securityHandler = new SecurityHandler();
@@ -192,7 +192,7 @@ namespace FluentSecurity.Specification
 			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", SecurityContext.Current));
 
 			// Assert
-			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireAnyRolePolicy)));
 			Assert.That(exception.Message, Is.StringContaining("Anonymous access denied"));
 		}
 
@@ -204,7 +204,7 @@ namespace FluentSecurity.Specification
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
-				policy.For<BlogController>(x => x.DeletePost(0)).RequireRole(UserRole.Owner);
+				policy.For<BlogController>(x => x.DeletePost(0)).RequireAnyRole(UserRole.Owner);
 			});
 
 			var securityHandler = new SecurityHandler();
@@ -213,7 +213,7 @@ namespace FluentSecurity.Specification
 			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", SecurityContext.Current));
 
 			// Assert
-			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireAnyRolePolicy)));
 			Assert.That(exception.Message, Is.StringContaining("Access requires one of the following roles: Owner."));
 		}
 	}

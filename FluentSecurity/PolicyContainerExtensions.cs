@@ -49,10 +49,17 @@ namespace FluentSecurity
 			return policyContainer;
 		}
 
+		[Obsolete("Use RequireAnyRole instead.")]
 		public static IPolicyContainerConfiguration<RequireRolePolicy> RequireRole(this IPolicyContainerConfiguration policyContainer, params object[] roles)
 		{
 			policyContainer.AddPolicy(new RequireRolePolicy(roles));
 			return new PolicyContainerConfigurationWrapper<RequireRolePolicy>(policyContainer);
+		}
+
+		public static IPolicyContainerConfiguration<RequireAnyRolePolicy> RequireAnyRole(this IPolicyContainerConfiguration policyContainer, params object[] roles)
+		{
+			policyContainer.AddPolicy(new RequireAnyRolePolicy(roles));
+			return new PolicyContainerConfigurationWrapper<RequireAnyRolePolicy>(policyContainer);
 		}
 
 		public static IPolicyContainerConfiguration<RequireAllRolesPolicy> RequireAllRoles(this IPolicyContainerConfiguration policyContainer, params object[] roles)
