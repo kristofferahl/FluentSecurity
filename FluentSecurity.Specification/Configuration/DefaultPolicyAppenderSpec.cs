@@ -197,6 +197,46 @@ namespace FluentSecurity.Specification.Configuration
 
 	[TestFixture]
 	[Category("DefaultPolicyAppenderSpec")]
+	public class When_updating_policies_with_a_RequireAnyRolePolicy : with_DefaultPolicyAppender
+	{
+		private RequireAnyRolePolicy _requireAnyRolePolicy;
+		private DenyAnonymousAccessPolicy _denyAnonymousAccessPolicy;
+
+		protected override void Context()
+		{
+			// Arrange
+			_requireAnyRolePolicy = new RequireAnyRolePolicy("Administrator");
+			_denyAnonymousAccessPolicy = new DenyAnonymousAccessPolicy();
+			Policies = new List<ISecurityPolicy>
+			{
+				_denyAnonymousAccessPolicy
+			};
+		}
+
+		[Test]
+		public void Should_remove_all_existing_policies()
+		{
+			// Act
+			PolicyAppender.UpdatePolicies(_requireAnyRolePolicy, Policies);
+
+			// Assert
+			Assert.That(Policies.Contains(_denyAnonymousAccessPolicy), Is.False);
+			Assert.That(Policies.Count, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Should_add_RequireRolePolicy()
+		{
+			// Act
+			PolicyAppender.UpdatePolicies(_requireAnyRolePolicy, Policies);
+
+			// Assert
+			Assert.That(Policies.Contains(_requireAnyRolePolicy), Is.True);
+		}
+	}
+
+	[TestFixture]
+	[Category("DefaultPolicyAppenderSpec")]
 	public class When_updating_policies_with_a_RequireAllRolesPolicy : with_DefaultPolicyAppender
 	{
 		private RequireAllRolesPolicy _requireAllRolesPolicy;
