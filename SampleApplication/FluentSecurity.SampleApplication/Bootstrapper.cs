@@ -26,8 +26,8 @@ namespace FluentSecurity.SampleApplication
 				configuration.For<ExampleController>(x => x.DenyAnonymousAccess()).DenyAnonymousAccess();
 				configuration.For<ExampleController>(x => x.DenyAuthenticatedAccess()).DenyAuthenticatedAccess();
 
-				configuration.For<ExampleController>(x => x.RequireAdministratorRole()).RequireRole(UserRole.Administrator);
-				configuration.For<ExampleController>(x => x.RequirePublisherRole()).RequireRole(UserRole.Publisher);
+				configuration.For<ExampleController>(x => x.RequireAdministratorRole()).RequireAnyRole(UserRole.Administrator);
+				configuration.For<ExampleController>(x => x.RequirePublisherRole()).RequireAnyRole(UserRole.Publisher);
 
 				configuration.For<AdminController>().AddPolicy(new AdministratorPolicy());
 				configuration.For<AdminController>(x => x.Delete()).DelegatePolicy("LocalOnlyPolicy",

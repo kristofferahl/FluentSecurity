@@ -9,6 +9,8 @@
 - ( **Removed** ) Removed PolicyViolationException\<TSecurityPolicy\> as exceptions should be created based on PolicyResult.
 - ( **Removed** ) Removed PolicyExecutionMode and changed the default policy execution behavior to "stop on first violation".
 - ( **Removed** ) Removed PolicyAppender property from IPolicyContainer interface as it's not really useful to anyone.
+- ( **Change** ) Created RequireAnyRolePolicy and marked RequireRolePolicy as deprecated.
+- ( **Change** ) Created RequireAnyRole extension and marked RequireRole extension as deprecated.
 - ( **Change** ) Moved IgnoreMissingConfiguration option to Advanced property.
 - ( **Change** ) Method HandleSecurityFor on ISecurityHandler now takes an instance of ISecurityContext as the last parameter.
 - ( **Change** ) Moved SecurityContextWrapper to the FluentSecurity.Policy.Contexts namespace.
