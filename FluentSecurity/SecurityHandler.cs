@@ -24,7 +24,7 @@ namespace FluentSecurity
 				if (results.Any(x => x.ViolationOccured))
 				{
 					var result = results.First(x => x.ViolationOccured);
-					var policyViolationException = new PolicyViolationException(result);
+					var policyViolationException = new PolicyViolationException(result, securityContext);
 					var violationHandlerSelector = ServiceLocator.Current.Resolve<IPolicyViolationHandlerSelector>();
 					var matchingHandler = violationHandlerSelector.FindHandlerFor(policyViolationException) ?? new ExceptionPolicyViolationHandler();
 					return matchingHandler.Handle(policyViolationException);

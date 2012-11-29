@@ -25,6 +25,7 @@
 - ( **New** ) Added support for using ActionNameAttribute (thanks to Chandu).
 - ( **New** ) Added support for securing controllers based on inheritance - Base controllers (thanks to Ridermansb).
 - ( **New** ) Added support for securing controllers based on action name and controller type.
+- ( **New** ) Made ISecurityContext available for violation handlers through the SecurityContext property of PolicyViolationException.
 - ( **New** ) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
 
 ## Areas/Profiles
