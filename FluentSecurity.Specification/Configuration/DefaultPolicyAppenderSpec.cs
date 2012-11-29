@@ -225,7 +225,7 @@ namespace FluentSecurity.Specification.Configuration
 		}
 
 		[Test]
-		public void Should_add_RequireRolePolicy()
+		public void Should_add_RequireAnyRolePolicy()
 		{
 			// Act
 			PolicyAppender.UpdatePolicies(_requireAnyRolePolicy, Policies);
@@ -265,7 +265,7 @@ namespace FluentSecurity.Specification.Configuration
 		}
 
 		[Test]
-		public void Should_add_RequireRolePolicy()
+		public void Should_add_RequireAllRolesPolicy()
 		{
 			// Act
 			PolicyAppender.UpdatePolicies(_requireAllRolesPolicy, Policies);

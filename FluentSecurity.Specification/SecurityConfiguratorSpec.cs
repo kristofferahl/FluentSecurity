@@ -124,7 +124,7 @@ namespace FluentSecurity.Specification
 				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
 
 				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
-				configuration.For<BlogController>(x => x.AddPost()).RequireRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
+				configuration.For<BlogController>(x => x.AddPost()).RequireAnyRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
 			_policyContainers = SecurityConfiguration.Current.PolicyContainers;
@@ -153,7 +153,7 @@ namespace FluentSecurity.Specification
 			Assert.That(container.ControllerName, Is.EqualTo(_controllerName));
 			Assert.That(container.ActionName, Is.EqualTo(AddPostActionName));
 			Assert.That(container.GetPolicies().Count(), Is.EqualTo(1));
-			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(RequireRolePolicy)));
+			Assert.That(container.GetPolicies().First().GetType(), Is.EqualTo(typeof(RequireAnyRolePolicy)));
 		}
 	}
 
