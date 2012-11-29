@@ -132,6 +132,7 @@
     <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandler.cs" />
     <Compile Include="Policy\Contexts\SecurityContextWrapper.cs" />
     <Compile Include="Configuration\ProfileImport.cs" />
+    <Compile Include="Policy\ViolationHandlers\HttpUnauthorizedPolicyViolationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\RootConfiguration.cs" />
     <Compile Include="Scanning\AssemblyScanner.cs" />
