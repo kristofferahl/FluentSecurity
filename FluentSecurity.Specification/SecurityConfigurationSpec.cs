@@ -2,7 +2,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using System.Web.Mvc;
+
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
