@@ -20,8 +20,8 @@ namespace FluentSecurity.Policy
 			}
 
 			return PolicyType.HasEmptyConstructor()
-			    ? (ISecurityPolicy)Activator.CreateInstance<TSecurityPolicy>()
-			    : null;
+				? (ISecurityPolicy)Activator.CreateInstance<TSecurityPolicy>()
+				: null;
 		}
 
 		public PolicyResult Enforce(ISecurityContext context)
