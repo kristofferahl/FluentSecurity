@@ -27,4 +27,5 @@ _ReSharper*/
 *.resharper
 [Tt]est[Rr]esult*
 NCover*.lic
-FluentSecurity.*.dotCover
+*.*.dotCover
+*.DotSettings
