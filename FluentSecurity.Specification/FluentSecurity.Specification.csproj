@@ -97,6 +97,7 @@
     <Compile Include="AssemblyScannerBaseSpecification.cs" />
     <Compile Include="ConfigurationExpressionSpec.cs" />
     <Compile Include="Configuration\AdvancedConfigurationSpec.cs" />
+    <Compile Include="Configuration\PolicyContainerConfigurationWrapperSpec.cs" />
     <Compile Include="Configuration\SecurityProfileSpec.cs" />
     <Compile Include="Configuration\ViolationHandlerConfigurationSpec.cs" />
     <Compile Include="Configuration\ViolationConfigurationSpec.cs" />
