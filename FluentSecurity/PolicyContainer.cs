@@ -13,7 +13,6 @@ namespace FluentSecurity
 	{
 		internal IPolicyAppender PolicyAppender;
 		internal readonly List<PolicyResultCacheStrategy> CacheStrategies;
-		internal Func<ISecurityConfiguration> SecurityConfigurationProvider;
 
 		private readonly IList<ISecurityPolicy> _policies;
 
@@ -35,7 +34,6 @@ namespace FluentSecurity
 			
 			PolicyAppender = policyAppender;
 			CacheStrategies = new List<PolicyResultCacheStrategy>();
-			SecurityConfigurationProvider = () => SecurityConfiguration.Current;
 		}
 
 		public string ControllerName { get; private set; }
@@ -46,7 +44,7 @@ namespace FluentSecurity
 			if (_policies.Count.Equals(0))
 				throw ExceptionFactory.CreateConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
-			var defaultResultsCacheLifecycle = SecurityConfigurationProvider.Invoke().Advanced.DefaultResultsCacheLifecycle;
+			var defaultResultsCacheLifecycle = context.Runtime.DefaultResultsCacheLifecycle;
 			var cache = SecurityCache.CacheProvider.Invoke();
 			
 			var results = new List<PolicyResult>();

@@ -14,11 +14,11 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 
 				configuration.For<SampleController>(x => x.Index()).DenyAuthenticatedAccess();
 				configuration.For<SampleController>(x => x.List()).DenyAnonymousAccess();
-				configuration.For<SampleController>(x => x.New()).RequireRole("Editor").AddPolicy(new DenyInternetExplorerPolicy());
+				configuration.For<SampleController>(x => x.New()).RequireAnyRole("Editor").AddPolicy(new DenyInternetExplorerPolicy());
 
 				configuration.For<AdminController>().DenyAnonymousAccess();
 				configuration.For<AdminController>(x => x.Login()).DenyAuthenticatedAccess();
-				configuration.For<AdminController>(x => x.NewUser()).RequireRole(UserRole.UserEditor);
+				configuration.For<AdminController>(x => x.NewUser()).RequireAnyRole(UserRole.UserEditor);
 
 				configuration.For<IgnoreController>().Ignore();
 			});
@@ -46,7 +46,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 
 				configuration.For<SampleController>(x => x.Index());
 				configuration.For<SampleController>(x => x.List());
-				configuration.For<SampleController>(x => x.New()).RequireRole("Writer");
+				configuration.For<SampleController>(x => x.New()).RequireAnyRole("Writer");
 
 				configuration.For<AdminController>();
 				configuration.For<AdminController>(x => x.Login());
@@ -65,7 +65,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			
 			policyExpectations.For<SampleController>(x => x.Index()).Has<DenyAuthenticatedAccessPolicy>();
 			policyExpectations.For<SampleController>(x => x.List()).Has<DenyAnonymousAccessPolicy>();
-			policyExpectations.For<SampleController>(x => x.New()).Has(new RequireRolePolicy("Editor")).DoesNotHave(new RequireRolePolicy("Writer")).Has<DenyInternetExplorerPolicy>();
+			policyExpectations.For<SampleController>(x => x.New()).Has(new RequireAnyRolePolicy("Editor")).DoesNotHave(new RequireAnyRolePolicy("Writer")).Has<DenyInternetExplorerPolicy>();
 
 			policyExpectations.For<AdminController>().Has<DenyAnonymousAccessPolicy>();
 			policyExpectations.For<AdminController>(x => x.Login())
@@ -73,7 +73,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				.Has<DenyAuthenticatedAccessPolicy>();
 			policyExpectations.For<AdminController>(x => x.NewUser())
 				.DoesNotHave<DenyAnonymousAccessPolicy>()
-				.Has<RequireRolePolicy>();
+				.Has<RequireAnyRolePolicy>();
 
 			policyExpectations.For<IgnoreController>().Has<IgnorePolicy>();
 

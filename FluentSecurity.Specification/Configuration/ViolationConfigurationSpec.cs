@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentSecurity.Configuration;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy;
+using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
@@ -27,8 +28,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_throw_when_convention_is_null()
 		{
 			// Arrange
-			var conventions = new Conventions();
-			var configuration = new ViolationConfiguration(conventions);
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration();
 
 			// Act & assert
 			Assert.Throws<ArgumentNullException>(() => configuration.AddConvention(null));
@@ -39,8 +39,8 @@ namespace FluentSecurity.Specification.Configuration
 		{
 			// Arrange
 			var expectedConvention = new MockConvention();
-			var conventions = new Conventions();
-			var configuration = new ViolationConfiguration(conventions);
+			var conventions = new List<IConvention>();
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
 
 			// Act
 			configuration.AddConvention(expectedConvention);
@@ -58,7 +58,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_throw_when_predicate_is_null()
 		{
 			// Arrange
-			var configuration = new ViolationConfiguration(new Conventions());
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration();
 
 			// Act & assert
 			Assert.Throws<ArgumentNullException>(() => configuration.RemoveConventions(null));
@@ -68,8 +68,8 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_remove_conventions_matching_predicate()
 		{
 			// Arrange
-			var conventions = new Conventions { new MockConvention() };
-			var configuration = new ViolationConfiguration(conventions);
+			var conventions = new List<IConvention> { new MockConvention() };
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
 
 			// Act
 			configuration.RemoveConventions(c => c is MockConvention);
@@ -82,8 +82,8 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_remove_conventions_matching_type()
 		{
 			// Arrange
-			var conventions = new Conventions { new MockConvention() };
-			var configuration = new ViolationConfiguration(conventions);
+			var conventions = new List<IConvention> { new MockConvention() };
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
 
 			// Act
 			configuration.RemoveConventions<MockConvention>();
@@ -96,8 +96,8 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_not_remove_conventions_not_matching_predicate()
 		{
 			// Arrange
-			var conventions = new Conventions { new MockConvention() };
-			var configuration = new ViolationConfiguration(conventions);
+			var conventions = new List<IConvention> { new MockConvention() };
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
 
 			// Act
 			configuration.RemoveConventions(c => c is NonMatchingConvention);
@@ -110,8 +110,8 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_not_remove_conventions_not_matching_type()
 		{
 			// Arrange
-			var conventions = new Conventions { new MockConvention() };
-			var configuration = new ViolationConfiguration(conventions);
+			var conventions = new List<IConvention> { new MockConvention() };
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
 
 			// Act
 			configuration.RemoveConventions<NonMatchingConvention>();
@@ -131,8 +131,8 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_not_add_any_convention_and_return_ViolationHandlerConfiguration_of_T()
 		{
 			// Arrange
-			var conventions = new Conventions();
-			var configuration = new ViolationConfiguration(conventions);
+			var conventions = new List<IConvention>();
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
 
 			// Act
 			var result = configuration.Of<IgnorePolicy>();
@@ -147,8 +147,8 @@ namespace FluentSecurity.Specification.Configuration
 		{
 			// Arrange
 			Func<PolicyResult, bool> expectedPredicate = pr => pr.PolicyType == typeof(IgnorePolicy);
-			var conventions = new Conventions();
-			var configuration = new ViolationConfiguration(conventions);
+			var conventions = new List<IConvention>();
+			var configuration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
 
 			// Act
 			var result = configuration.Of(expectedPredicate);

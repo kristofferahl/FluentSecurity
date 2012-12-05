@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity.Scanning
 {
-	internal class AssemblyScanner
+	public class AssemblyScanner
 	{
-		private readonly List<Assembly> _assemblies = new List<Assembly>();
-		private readonly List<ITypeScanner> _scanners = new List<ITypeScanner>();
-		private readonly IList<Func<Type, bool>> _filters = new List<Func<Type, bool>>();
+		public ScannerContext Context { get; private set; }
+
+		public AssemblyScanner()
+		{
+			Context = new ScannerContext();
+		}
 
 		public void Assembly(Assembly assembly)
 		{
-			if (assembly == null) throw new ArgumentNullException("assembly");
-			_assemblies.Add(assembly);
+			Context.AddAssembly(assembly);
 		}
 
 		public void Assemblies(IEnumerable<Assembly> assemblies)
@@ -31,7 +35,7 @@ namespace FluentSecurity.Scanning
 		public void TheCallingAssembly()
 		{
 			var callingAssembly = FindCallingAssembly();
-			if (callingAssembly != null) _assemblies.Add(callingAssembly);
+			if (callingAssembly != null) Assembly(callingAssembly);
 		}
 
 		private static Assembly FindCallingAssembly()
@@ -53,9 +57,44 @@ namespace FluentSecurity.Scanning
 			return callingAssembly;
 		}
 
+		public void AssembliesFromApplicationBaseDirectory()
+		{
+			AssembliesFromApplicationBaseDirectory(a => true);
+		}
+
+		public void AssembliesFromApplicationBaseDirectory(Predicate<Assembly> assemblyFilter)
+		{
+			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			AssembliesFromPath(baseDirectory, assemblyFilter);
+
+			var binDirectory = AppDomain.CurrentDomain.SetupInformation.PrivateBinPath;
+			AssembliesFromPath(binDirectory, assemblyFilter);
+		}
+
+		public void AssembliesFromPath(string path, Predicate<Assembly> assemblyFilter)
+		{
+			if (!Directory.Exists(path)) return;
+
+			var assemblyPaths = Directory.GetFiles(path).Where(file =>
+			{
+				var extension = Path.GetExtension(file);
+				return extension != null && (
+					extension.Equals(".exe", StringComparison.OrdinalIgnoreCase) ||
+					extension.Equals(".dll", StringComparison.OrdinalIgnoreCase)
+					);
+			}).ToList();
+
+			foreach (var assemblyPath in assemblyPaths)
+			{
+				var assembly = System.Reflection.Assembly.LoadFrom(assemblyPath);
+				if (assembly != null && assemblyFilter.Invoke(assembly))
+					Assembly(assembly);
+			}
+		}
+
 		public void With(ITypeScanner typeScanner)
 		{
-			_scanners.Add(typeScanner);
+			Context.AddTypeScanner(typeScanner);
 		}
 
 		public void With<TTypeScanner>() where TTypeScanner : ITypeScanner, new()
@@ -71,14 +110,14 @@ namespace FluentSecurity.Scanning
 				var expectedNamespace = typeof (T).Namespace ?? "";
 				return currentNamespace.StartsWith(expectedNamespace);
 			};
-			_filters.Add(predicate);
+			Context.AddFilter(predicate);
 		}
 
 		public IEnumerable<Type> Scan()
 		{
 			var results = new List<Type>();
-			_scanners.Each(scanner => scanner.Scan(_assemblies).Where(type =>
-				_filters.Any() == false || _filters.Any(filter => filter.Invoke(type))).Each(results.Add)
+			Context.TypeScanners.Each(scanner => scanner.Scan(Context.AssembliesToScan).Where(type =>
+				Context.Filters.Any() == false || Context.Filters.Any(filter => filter.Invoke(type))).Each(results.Add)
 				);
 			return results;
 		}

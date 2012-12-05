@@ -1,29 +1,26 @@
 using System;
 using System.Collections.Generic;
+using FluentSecurity.Configuration;
 using FluentSecurity.Diagnostics;
 
 namespace FluentSecurity
 {
 	public class SecurityConfiguration : ISecurityConfiguration
 	{
-		public SecurityConfiguration(Action<ConfigurationExpression> configurationExpression)
+		public SecurityConfiguration(Action<RootConfiguration> configurationExpression)
 		{
 			if (configurationExpression == null)
 				throw new ArgumentNullException("configurationExpression");
 
-			var expression = new ConfigurationExpression();
-			configurationExpression(expression);
-			Expression = expression;
-
-			Advanced = Expression.Advanced;
-			ExternalServiceLocator = Expression.ExternalServiceLocator;
-			PolicyContainers = Expression.PolicyContainers;
+			var configuration = new RootConfiguration();
+			configurationExpression.Invoke(configuration);
+			
+			Runtime = configuration.Runtime;
+			PolicyContainers = Runtime.PolicyContainers;
 		}
 
-		internal ConfigurationExpression Expression { get; private set; }
-		public IAdvanced Advanced { get; private set; }
+		public ISecurityRuntime Runtime { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get; private set; }
-		public ISecurityServiceLocator ExternalServiceLocator { get; private set; }
 
 		public string WhatDoIHave()
 		{

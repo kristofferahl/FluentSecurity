@@ -9,6 +9,8 @@
 - ( **Removed** ) Removed PolicyViolationException\<TSecurityPolicy\> as exceptions should be created based on PolicyResult.
 - ( **Removed** ) Removed PolicyExecutionMode and changed the default policy execution behavior to "stop on first violation".
 - ( **Removed** ) Removed PolicyAppender property from IPolicyContainer interface as it's not really useful to anyone.
+- ( **Change** ) Created RequireAnyRolePolicy and marked RequireRolePolicy as deprecated.
+- ( **Change** ) Created RequireAnyRole extension and marked RequireRole extension as deprecated.
 - ( **Change** ) Moved IgnoreMissingConfiguration option to Advanced property.
 - ( **Change** ) Method HandleSecurityFor on ISecurityHandler now takes an instance of ISecurityContext as the last parameter.
 - ( **Change** ) Moved SecurityContextWrapper to the FluentSecurity.Policy.Contexts namespace.
@@ -19,11 +21,20 @@
 - ( **Change** ) Changed policy extensions so that they extend IPolicyContainerConfiguration instead of IPolicyContainer and IConventionPolicyContainer.
 - ( **Change** ) Moved IWhatDoIHaveBuilder and DefaultWhatDoIHaveBuilder to Diagnostics namespace.
 - ( **Change** ) Moved DefaultPolicyAppender to Configuration namespace.
+- ( **Change** ) Moved ITypeScanner interface to Scanning.TypeScanners namespace.
+- ( **Change** ) Added ISecurityRuntime property to ISecurityContext.
 - ( **New** ) Added support for using AllowAny to add an IgnorePolicy.
 - ( **New** ) Added support for using ActionNameAttribute (thanks to Chandu).
+- ( **New** ) Added HttpUnauthorizedPolicyViolationHandler for returning standard mvc HttpUnauthorizedResult.
 - ( **New** ) Added support for securing controllers based on inheritance - Base controllers (thanks to Ridermansb).
 - ( **New** ) Added support for securing controllers based on action name and controller type.
+- ( **New** ) Made ISecurityContext available for violation handlers through the SecurityContext property of PolicyViolationException.
 - ( **New** ) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
+
+## Areas/Profiles
+- ( **New** ) Added support for creating profiles to help manage large/area configurations by inheriting from SecurityProfile.
+- ( **New** ) Added support for applying profiles using ApplyProfile\<TSecurityProfile\>.
+- ( **New** ) Added support for scanning for profiles using the Scan method and LookForProfiles.
 
 ## Caching
 - ( **New** ) Added support for changing the default cache lifecycle of policy results using the Advanced.SetDefaultResultsCacheLifecycle option.

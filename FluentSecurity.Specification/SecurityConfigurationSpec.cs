@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
@@ -36,7 +35,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			Assert.That(_securityConfiguration.ExternalServiceLocator, Is.Null);
+			Assert.That(_securityConfiguration.Runtime.ExternalServiceLocator, Is.Null);
 		}
 
 		[Test]
@@ -46,7 +45,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			Assert.That(_securityConfiguration.Advanced, Is.Not.Null);
+			Assert.That(_securityConfiguration.Runtime, Is.Not.Null);
 		}
 	}
 
@@ -77,7 +76,7 @@ namespace FluentSecurity.Specification
 ------------------------------------------------------------------------------------
 
 FluentSecurity.Specification.TestData.BlogController > DeletePost
-	FluentSecurity.Policy.RequireRolePolicy (Owner or Publisher)
+	FluentSecurity.Policy.RequireAnyRolePolicy (Owner or Publisher)
 
 FluentSecurity.Specification.TestData.BlogController > Index
 	FluentSecurity.Policy.DenyAnonymousAccessPolicy
@@ -88,7 +87,7 @@ FluentSecurity.Specification.TestData.BlogController > Index
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.Advanced.IgnoreMissingConfiguration();
-				configuration.For<BlogController>(x => x.DeletePost(0)).DenyAnonymousAccess().RequireRole(UserRole.Owner, UserRole.Publisher);
+				configuration.For<BlogController>(x => x.DeletePost(0)).DenyAnonymousAccess().RequireAnyRole(UserRole.Owner, UserRole.Publisher);
 				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
 

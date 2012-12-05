@@ -6,6 +6,7 @@ using System.Web.Routing;
 using FluentSecurity.Configuration;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
+using FluentSecurity.Policy.Results;
 using FluentSecurity.Specification.TestData;
 using Moq;
 
@@ -23,10 +24,16 @@ namespace FluentSecurity.Specification.Helpers
 		{
 			var data = new ExpandoObject();
 			var context = new Mock<ISecurityContext>();
+			context.Setup(x => x.Runtime).Returns(CreateSecurityRuntime());
 			context.Setup(x => x.Data).Returns(data);
 			context.Setup(x => x.CurrentUserIsAuthenticated()).Returns(authenticated);
 			context.Setup(x => x.CurrentUserRoles()).Returns(roles);
 			return context.Object;
+		}
+
+		public static ISecurityRuntime CreateSecurityRuntime()
+		{
+			return new SecurityRuntime();
 		}
 
 		public static PolicyContainer CreateValidPolicyContainer()
@@ -61,9 +68,15 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static ConfigurationExpression CreateValidConfigurationExpression()
 		{
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(ValidIsAuthenticatedFunction);
 			return configurationExpression;
+		}
+
+		public static ViolationConfiguration CreatedValidViolationConfiguration(List<IConvention> conventions = null)
+		{
+			if (conventions == null) conventions = new List<IConvention>();
+			return new ViolationConfiguration(new ConventionConfiguration(conventions));
 		}
 
 		public static DefaultPolicyAppender CreateValidPolicyAppender()
@@ -71,9 +84,19 @@ namespace FluentSecurity.Specification.Helpers
 			return new DefaultPolicyAppender();
 		}
 
+		public static PolicyResult CreatePolicyResultFailure()
+		{
+			return PolicyResult.CreateFailureResult(new DenyAnonymousAccessPolicy(), "Access denied");
+		}
+
 		public static PolicyViolationException CreateExceptionFor(ISecurityPolicy policy)
 		{
-			return new PolicyViolationException(PolicyResult.CreateFailureResult(policy, "Access denied"));
+			return CreatePolicyViolationException(PolicyResult.CreateFailureResult(policy, "Access denied"));
+		}
+
+		public static PolicyViolationException CreatePolicyViolationException(PolicyResult policyResult, ISecurityContext securityContext = null)
+		{
+			return new PolicyViolationException(policyResult, securityContext ?? CreateSecurityContext(false));
 		}
 
 		public static IPolicyAppender CreateFakePolicyAppender()

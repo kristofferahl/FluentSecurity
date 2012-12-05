@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.Contexts;
 using FluentSecurity.Specification.Helpers;
@@ -76,6 +77,20 @@ namespace FluentSecurity.Specification.Policy
 		{
 			// Arrange
 			SecurityConfigurator.Configure(configuration => {});
+			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithConstructorArguments>();
+
+			// Act
+			var policy = lazySecurityPolicy.Load();
+
+			// Assert
+			Assert.That(policy, Is.Null);
+		}
+
+		[Test]
+		public void Should_return_null_when_no_policy_is_returned_by_service_locator()
+		{
+			// Arrange
+			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(t => Enumerable.Empty<object>()));
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithConstructorArguments>();
 
 			// Act

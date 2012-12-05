@@ -7,5 +7,6 @@ namespace FluentSecurity
 		dynamic Data { get; }
 		bool CurrentUserIsAuthenticated();
 		IEnumerable<object> CurrentUserRoles();
+		ISecurityRuntime Runtime { get; }
 	}
 }

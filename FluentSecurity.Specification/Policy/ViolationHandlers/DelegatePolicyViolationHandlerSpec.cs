@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.Results;
 using FluentSecurity.Policy.ViolationHandlers;
+using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy.ViolationHandlers
@@ -20,7 +21,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 			var failureResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Access denied");
 			var policy = new DelegatePolicy("Test", c => failureResult);
 			var delegatePolicyResult = new DelegatePolicyResult(failureResult, policy.Name, policy.ViolationHandler);
-			var exception = new PolicyViolationException(delegatePolicyResult);
+			var exception = TestDataFactory.CreatePolicyViolationException(delegatePolicyResult);
 			var handler = new DelegatePolicyViolationHandler(violationHandlers);
 
 			// Act & assert
@@ -37,7 +38,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 			var failureResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Access denied");
 			var policy = new DelegatePolicy("Test", c => failureResult, e => expectedResult);
 			var delegatePolicyResult = new DelegatePolicyResult(failureResult, policy.Name, policy.ViolationHandler);
-			var exception = new PolicyViolationException(delegatePolicyResult);
+			var exception = TestDataFactory.CreatePolicyViolationException(delegatePolicyResult);
 			var handler = new DelegatePolicyViolationHandler(violationHandlers);
 
 			// Act
@@ -61,7 +62,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers
 			var failureResult = PolicyResult.CreateFailureResult(new IgnorePolicy(), "Access denied");
 			var policy = new DelegatePolicy("MatchingName", c => failureResult);
 			var delegatePolicyResult = new DelegatePolicyResult(failureResult, policy.Name, policy.ViolationHandler);
-			var exception = new PolicyViolationException(delegatePolicyResult);
+			var exception = TestDataFactory.CreatePolicyViolationException(delegatePolicyResult);
 			var handler = new DelegatePolicyViolationHandler(violationHandlers);
 
 			// Act

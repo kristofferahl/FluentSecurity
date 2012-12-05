@@ -24,7 +24,7 @@ namespace FluentSecurity.Specification
 	{
 		private static ConfigurationExpression Because()
 		{
-			return new ConfigurationExpression();
+			return new RootConfiguration();
 		}
 
 		[Test]
@@ -34,7 +34,7 @@ namespace FluentSecurity.Specification
 			var configurationExpression = Because();
 
 			// Assert
-			var containers = configurationExpression.PolicyContainers.Count();
+			var containers = configurationExpression.Runtime.PolicyContainers.Count();
 			Assert.That(containers, Is.EqualTo(0));
 		}
 
@@ -48,9 +48,7 @@ namespace FluentSecurity.Specification
 			var configurationExpression = Because();
 
 			// Assert
-			var policyAppenderProperty = configurationExpression.GetType().GetProperty("PolicyAppender", BindingFlags.Instance | BindingFlags.NonPublic);
-			var policyAppender = policyAppenderProperty.GetValue(configurationExpression, null);
-			Assert.That(policyAppender, Is.TypeOf(expectedPolicyAppenderType));
+			Assert.That(configurationExpression.PolicyAppender, Is.TypeOf(expectedPolicyAppenderType));
 		}
 
 		[Test]
@@ -77,7 +75,7 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			_configurationExpression = new ConfigurationExpression();
+			_configurationExpression = new RootConfiguration();
 			_configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 		}
 
@@ -93,10 +91,10 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainer = _configurationExpression.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
+			var policyContainer = _configurationExpression.Runtime.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			
 			Assert.That(policyContainer, Is.Not.Null);
-			Assert.That(_configurationExpression.PolicyContainers.Count, Is.EqualTo(1));
+			Assert.That(_configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -106,7 +104,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainer = (PolicyContainer) _configurationExpression.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
+			var policyContainer = (PolicyContainer) _configurationExpression.Runtime.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.TypeOf(typeof(DefaultPolicyAppender)));
 		}
 	}
@@ -119,17 +117,17 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_AliasedController_ActualAction()
 		{
 			// Arrange
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
 			configurationExpression.For<AliasedController>(x => x.ActualAction());
 
 			// Assert
-			var policyContainer = configurationExpression.PolicyContainers.First();
+			var policyContainer = configurationExpression.Runtime.PolicyContainers.First();
 
 			Assert.That(policyContainer.ActionName, Is.EqualTo("AliasedAction"));
-			Assert.That(configurationExpression.PolicyContainers.Count, Is.EqualTo(1));
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(1));
 		}
 
 		private class AliasedController : Controller
@@ -157,7 +155,7 @@ namespace FluentSecurity.Specification
 			configurationExpression.For<BlogController>(x => x.AddPost());
 
 			// Assert
-			var policyContainers = configurationExpression.PolicyContainers;
+			var policyContainers = configurationExpression.Runtime.PolicyContainers.ToList();
 			Assert.That(policyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index"), Is.Not.Null);
 			Assert.That(policyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "AddPost"), Is.Not.Null);
 			Assert.That(policyContainers.Count, Is.EqualTo(2));
@@ -192,7 +190,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var policyContainers = _configurationExpression.PolicyContainers;
+			var policyContainers = _configurationExpression.Runtime.PolicyContainers.ToList();
 			Assert.That(policyContainers.GetContainerFor(expectedControllerName, "Index"), Is.Not.Null);
 			Assert.That(policyContainers.GetContainerFor(expectedControllerName, "ListPosts"), Is.Not.Null);
 			Assert.That(policyContainers.GetContainerFor(expectedControllerName, "AddPost"), Is.Not.Null);
@@ -208,7 +206,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			Assert.That(_configurationExpression.PolicyContainers.Count, Is.EqualTo(6));
+			Assert.That(_configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(6));
 		}
 	}
 
@@ -220,17 +218,17 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_AliasedController_ActualAction()
 		{
 			// Arrange
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
 			configurationExpression.For<AliasedController>();
 
 			// Assert
-			var policyContainer = configurationExpression.PolicyContainers.First();
+			var policyContainer = configurationExpression.Runtime.PolicyContainers.First();
 
 			Assert.That(policyContainer.ActionName, Is.EqualTo("AliasedAction"));
-			Assert.That(configurationExpression.PolicyContainers.Count, Is.EqualTo(1));
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(1));
 		}
 
 		private class AliasedController : Controller
@@ -528,7 +526,7 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_throw_when_action_expresion_is_null()
 		{
-			var expression = new ConfigurationExpression();
+			var expression = new RootConfiguration();
 			Expression<Func<AbstractBaseController, object>> actionExpression = null;
 			Assert.Throws<ArgumentNullException>(() => expression.ForAllControllersInheriting(actionExpression));
 		}
@@ -536,14 +534,14 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_throw_when_assemblies_is_null()
 		{
-			var expression = new ConfigurationExpression();
+			var expression = new RootConfiguration();
 			Assert.Throws<ArgumentNullException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(x => x.InheritedAction(), null));
 		}
 
 		[Test]
 		public void Should_throw_when_assemblies_contains_null()
 		{
-			var expression = new ConfigurationExpression();
+			var expression = new RootConfiguration();
 			Assert.Throws<ArgumentException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(x => x.InheritedAction(), null, null));
 		}
 
@@ -580,9 +578,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			const string index = "Index";
-			var root = NameHelper.Controller<RootController>();
 			var include = NameHelper.Controller<IncludedController>();
-			var exclude = NameHelper.Controller<ExcludedController>();
 
 			// Act
 			Because(configurationExpression =>
@@ -682,6 +678,65 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
+	public class When_scanning_for_profiles
+	{
+		[Test]
+		public void Should_scan_for_profiles_avoiding_infinite_loop()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.Scan(scan =>
+			{
+				scan.AssembliesFromApplicationBaseDirectory(assembly => assembly.Equals(GetType().Assembly));
+				scan.LookForProfiles();
+			});
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.Profiles.Count(), Is.EqualTo(3));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_applying_a_profile
+	{
+		[Test]
+		public void Should_add_profile()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.ApplyProfile<EmptyProfile>();
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.Profiles.Single(), Is.EqualTo(typeof(EmptyProfile)));
+		}
+
+		[Test]
+		public void Should_only_add_unique_profiles()
+		{
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
+
+			// Act
+			configurationExpression.ApplyProfile<EmptyProfile>();
+			configurationExpression.ApplyProfile<EmptyProfile>();
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.Profiles.Single(), Is.EqualTo(typeof(EmptyProfile)));
+		}
+
+		public class EmptyProfile : SecurityProfile
+		{
+			public override void Configure() {}
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
 	public class When_I_pass_null_to_GetAuthenticationStatusFrom
 	{
 		[Test]
@@ -703,7 +758,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ConfigurationErrorsException()
 		{
 			// Arrange
-			var configurationExpression = new ConfigurationExpression();
+			var configurationExpression = new RootConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 			configurationExpression.For<BlogController>(x => x.Index());
 
@@ -773,7 +828,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			configurationExpression.For<BlogController>(x => x.Index());
-			var policyContainer = (PolicyContainer) configurationExpression.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
+			var policyContainer = (PolicyContainer) configurationExpression.Runtime.PolicyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index");
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(expectedPolicyAppender));
 		}
 	}
@@ -787,18 +842,21 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
-			configurationExpression.Advanced.Conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
-			configurationExpression.Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<AnyPolicyViolationHandler>(() => new AnyPolicyViolationHandler()));
-			configurationExpression.Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<AnyPolicyViolationHandler>());
+			configurationExpression.Advanced.Conventions(conventions => 
+			{
+				conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
+				conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<AnyPolicyViolationHandler>(() => new AnyPolicyViolationHandler()));
+				conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<AnyPolicyViolationHandler>());
+			});
 
 			// Act
 			configurationExpression.DefaultPolicyViolationHandlerIs<CustomDefaultPolicyViolationHandler>();
 
 			// Assert
-			var conventions = configurationExpression.Advanced.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
-			Assert.That(conventions.Count(), Is.EqualTo(2));
-			Assert.That(conventions.First(), Is.TypeOf<FindByPolicyNameConvention>());
-			Assert.That(conventions.Last(), Is.TypeOf<DefaultPolicyViolationHandlerIsOfTypeConvention<CustomDefaultPolicyViolationHandler>>());
+			var appliedConventions = configurationExpression.Runtime.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
+			Assert.That(appliedConventions.Count(), Is.EqualTo(2));
+			Assert.That(appliedConventions.First(), Is.TypeOf<FindByPolicyNameConvention>());
+			Assert.That(appliedConventions.Last(), Is.TypeOf<DefaultPolicyViolationHandlerIsOfTypeConvention<CustomDefaultPolicyViolationHandler>>());
 		}
 
 		[Test]
@@ -806,18 +864,21 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
-			configurationExpression.Advanced.Conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
-			configurationExpression.Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<AnyPolicyViolationHandler>(() => new AnyPolicyViolationHandler()));
-			configurationExpression.Advanced.Conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<AnyPolicyViolationHandler>());
+			configurationExpression.Advanced.Conventions(conventions =>
+			{
+				conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
+				conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<AnyPolicyViolationHandler>(() => new AnyPolicyViolationHandler()));
+				conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<AnyPolicyViolationHandler>());
+			});
 
 			// Act
 			configurationExpression.DefaultPolicyViolationHandlerIs(() => new CustomDefaultPolicyViolationHandler());
 
 			// Assert
-			var conventions = configurationExpression.Advanced.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
-			Assert.That(conventions.Count(), Is.EqualTo(2));
-			Assert.That(conventions.First(), Is.TypeOf<FindByPolicyNameConvention>());
-			Assert.That(conventions.Last(), Is.TypeOf<DefaultPolicyViolationHandlerIsInstanceConvention<CustomDefaultPolicyViolationHandler>>());
+			var appliedConventions = configurationExpression.Runtime.Conventions.OfType<IPolicyViolationHandlerConvention>().ToList();
+			Assert.That(appliedConventions.Count(), Is.EqualTo(2));
+			Assert.That(appliedConventions.First(), Is.TypeOf<FindByPolicyNameConvention>());
+			Assert.That(appliedConventions.Last(), Is.TypeOf<DefaultPolicyViolationHandlerIsInstanceConvention<CustomDefaultPolicyViolationHandler>>());
 		}
 
 		public class AnyPolicyViolationHandler : DefaultPolicyViolationHandler {}
@@ -941,9 +1002,7 @@ namespace FluentSecurity.Specification
 	{
 		protected static ISecurityServiceLocator GetExternalServiceLocator(ConfigurationExpression configurationExpression)
 		{
-			var serviceLocatorProperty = configurationExpression.GetType().GetProperty("ExternalServiceLocator", BindingFlags.Instance | BindingFlags.NonPublic);
-			var serviceLocator = serviceLocatorProperty.GetValue(configurationExpression, null);
-			return (ISecurityServiceLocator) serviceLocator;
+			return configurationExpression.Runtime.ExternalServiceLocator;
 		}
 	}
 }
