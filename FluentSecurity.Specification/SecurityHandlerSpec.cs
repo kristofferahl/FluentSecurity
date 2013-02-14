@@ -7,6 +7,7 @@ using FluentSecurity.Diagnostics;
 using FluentSecurity.Diagnostics.Events;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
@@ -107,6 +108,8 @@ namespace FluentSecurity.Specification
 			// Assert
 			Assert.That(result, Is.EqualTo(expectedActionResult));
 			Assert.That(events.Any(e => e.Message == "Handling security for {0} action {1}.".FormatWith(controllerName, actionName)));
+			Assert.That(events.Any(e => e.Message == "Finding policy violation handler using convention {0}.".FormatWith(typeof(FindByPolicyNameConvention))));
+			Assert.That(events.Any(e => e.Message == "Found policy violation handler {0}.".FormatWith(violationHandler.GetType().FullName)));
 			Assert.That(events.Any(e => e.Message == "Handling violation with {0}.".FormatWith(violationHandler.GetType().FullName)));
 			Assert.That(events.Any(e => e.Message == "Done enforcing policies. Violation occured!"));
 		}
