@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using System.Web;
+using FluentSecurity.Diagnostics;
+using FluentSecurity.Diagnostics.Events;
 using FluentSecurity.SampleApplication.Areas.ExampleArea;
 using FluentSecurity.SampleApplication.Controllers;
 using FluentSecurity.SampleApplication.Models;
@@ -7,6 +10,8 @@ namespace FluentSecurity.SampleApplication
 {
 	public static class Bootstrapper
 	{
+		public static List<ISecurityEvent> Events = new List<ISecurityEvent>();
+		
 		public static ISecurityConfiguration SetupFluentSecurity()
 		{
 			SecurityConfigurator.Configure(configuration =>
@@ -43,6 +48,8 @@ namespace FluentSecurity.SampleApplication
 
 				configuration.ApplyProfile<CrudControllerProfile>();
 			});
+			
+			EventListeners.Register(Events.Add);
 			return SecurityConfiguration.Current;
 		}
 	}
