@@ -114,15 +114,41 @@ namespace FluentSecurity.Specification.Diagnostics
 
 			var events = new List<ISecurityEvent>();
 			EventListeners.Register(events.Add);
-			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
-			Publish.ConfigurationEvent(() => expectedMessage, context);
+			Publish.ConfigurationEvent(() => expectedMessage);
 
 			// Assert
 			var @event = events.Single();
-			Assert.That(@event.CorrelationId, Is.EqualTo(context.Id));
+			Assert.That(@event.CorrelationId, Is.EqualTo(SecurityConfigurator.CorrelationId));
 			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
+		}
+
+		[Test]
+		public void Should_produce_configuration_event_with_timer_when_event_listener_is_registered()
+		{
+			// Arrange
+			const int expectedMilliseconds = 9;
+			var expectedResult = new { };
+			const string expectedMessage = "Message";
+
+			var events = new List<ISecurityEvent>();
+			EventListeners.Register(events.Add);
+
+			// Act
+			var result = Publish.ConfigurationEvent(() =>
+			{
+				Thread.Sleep(expectedMilliseconds + 5);
+				return expectedResult;
+			}, r => expectedMessage);
+
+			// Assert
+			Assert.That(result, Is.EqualTo(expectedResult));
+
+			var @event = events.Single();
+			Assert.That(@event.CorrelationId, Is.EqualTo(SecurityConfigurator.CorrelationId));
+			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
+			Assert.That(@event.CompletedInMilliseconds, Is.GreaterThanOrEqualTo(expectedMilliseconds));
 		}
 	}
 }

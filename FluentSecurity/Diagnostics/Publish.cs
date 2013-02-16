@@ -26,9 +26,14 @@ namespace FluentSecurity.Diagnostics
 			return PublishEventWithTiming(action, result => new RuntimePolicyEvent(context.Id, message.Invoke(result)));
 		}
 
-		public static void ConfigurationEvent(Func<string> message, ISecurityContext context)
+		public static void ConfigurationEvent(Func<string> message)
 		{
-			PublishEvent(() => new ConfigurationEvent(context.Id, message.Invoke()));
+			PublishEvent(() => new ConfigurationEvent(SecurityConfigurator.CorrelationId, message.Invoke()));
+		}
+
+		public static TResult ConfigurationEvent<TResult>(Func<TResult> action, Func<TResult, string> message)
+		{
+			return PublishEventWithTiming(action, result => new ConfigurationEvent(SecurityConfigurator.CorrelationId, message.Invoke(result)));
 		}
 
 		private static void PublishEvent<TEvent>(Func<TEvent> eventBuilder) where TEvent : ISecurityEvent
