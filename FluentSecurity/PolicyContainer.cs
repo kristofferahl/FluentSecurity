@@ -94,7 +94,18 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration AddPolicy(ISecurityPolicy securityPolicy)
 		{
+			Publish.ConfigurationEvent(() => "Updating policies for {0} action {1} using {2}.".FormatWith(ControllerName, ActionName, PolicyAppender.GetType().FullName));
+
+			var policiesBeforeUpdate = new ISecurityPolicy[_policies.Count];
+			_policies.CopyTo(policiesBeforeUpdate, 0);
+
 			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
+
+			var policiesRemoved = policiesBeforeUpdate.Except(_policies).ToList();
+			policiesRemoved.Each(p => Publish.ConfigurationEvent(() => "Removed policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
+
+			var policiesAdded = _policies.Except(policiesBeforeUpdate).ToList();
+			policiesAdded.Each(p => Publish.ConfigurationEvent(() => "Added policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
 
 			return this;
 		}
