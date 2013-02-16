@@ -1,4 +1,5 @@
 using System;
+using FluentSecurity.Diagnostics;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
@@ -20,11 +21,17 @@ namespace FluentSecurity
 				throw new ArgumentNullException("configurationExpression");
 
 			Reset();
+
+			Publish.ConfigurationEvent(() => "Configuring FluentSecurity.");
+
 			lock (LockObject)
 			{
-				var configuration = new SecurityConfiguration(configurationExpression);
-				SecurityConfiguration.SetConfiguration(configuration);
-				return SecurityConfiguration.Current;
+				return Publish.ConfigurationEvent(() =>
+				{
+					var configuration = new SecurityConfiguration(configurationExpression);
+					SecurityConfiguration.SetConfiguration(configuration);
+					return SecurityConfiguration.Current;
+				}, config => "Finished configuring FluentSecurity.");
 			}
 		}
 
