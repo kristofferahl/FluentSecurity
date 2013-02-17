@@ -32,7 +32,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			SecurityDoctor.Register(eventListener);
 
 			// Assert
-			Assert.That(SecurityDoctor.Listeners.Single(), Is.EqualTo(eventListener));
+			Assert.That(SecurityDoctor.Listeners.Cast<AnonymousSecurityEventListener>().Single().EventListener, Is.EqualTo(eventListener));
 		}
 
 		[Test]
@@ -49,8 +49,8 @@ namespace FluentSecurity.Specification.Diagnostics
 
 			// Assert
 			Assert.That(SecurityDoctor.Listeners.Count(), Is.EqualTo(2));
-			Assert.That(SecurityDoctor.Listeners.First(), Is.EqualTo(eventListener1));
-			Assert.That(SecurityDoctor.Listeners.Last(), Is.EqualTo(eventListener2));
+			Assert.That(SecurityDoctor.Listeners.Cast<AnonymousSecurityEventListener>().First().EventListener, Is.EqualTo(eventListener1));
+			Assert.That(SecurityDoctor.Listeners.Cast<AnonymousSecurityEventListener>().Last().EventListener, Is.EqualTo(eventListener2));
 		}
 	}
 

@@ -44,7 +44,7 @@ namespace FluentSecurity.Diagnostics
 			var @event = eventBuilder.Invoke();
 			
 			foreach (var listener in listeners)
-				listener.Invoke(@event);
+				listener.Handle(@event);
 		}
 
 		private static TResult PublishEventWithTiming<TEvent, TResult>(Func<TResult> action, Func<TResult, TEvent> eventBuilder) where TEvent : SecurityEvent
@@ -62,7 +62,7 @@ namespace FluentSecurity.Diagnostics
 			@event.CompletedInMilliseconds = stopwatch.ElapsedMilliseconds;
 
 			foreach (var listener in listeners)
-				listener.Invoke(@event);
+				listener.Handle(@event);
 
 			return result;
 		}

@@ -11,11 +11,16 @@ namespace FluentSecurity.Diagnostics
 			Reset();
 		}
 
-		internal static List<Action<ISecurityEvent>> Listeners { get; private set; }
+		internal static IList<ISecurityEventListener> Listeners { get; private set; }
 
 		public static void Register(Action<ISecurityEvent> eventListener)
 		{
-			if (Listeners == null) Listeners = new List<Action<ISecurityEvent>>();
+			Register(new AnonymousSecurityEventListener(eventListener));
+		}
+
+		public static void Register(ISecurityEventListener eventListener)
+		{
+			if (Listeners == null) Listeners = new List<ISecurityEventListener>();
 			Listeners.Add(eventListener);
 		}
 
