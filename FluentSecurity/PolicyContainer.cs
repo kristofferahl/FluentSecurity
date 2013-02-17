@@ -102,10 +102,10 @@ namespace FluentSecurity
 			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
 
 			var policiesRemoved = policiesBeforeUpdate.Except(_policies).ToList();
-			policiesRemoved.Each(p => Publish.ConfigurationEvent(() => "Removed policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
+			policiesRemoved.Each(p => Publish.ConfigurationEvent(() => "- Removed policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
 
 			var policiesAdded = _policies.Except(policiesBeforeUpdate).ToList();
-			policiesAdded.Each(p => Publish.ConfigurationEvent(() => "Added policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
+			policiesAdded.Each(p => Publish.ConfigurationEvent(() => "- Added policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
 
 			return this;
 		}
@@ -117,8 +117,10 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
 		{
+			Publish.ConfigurationEvent(() => "Removing policies from {0} action {1}.".FormatWith(ControllerName, ActionName));
+
 			IEnumerable<ISecurityPolicy> matchingPolicies;
-			
+
 			if (predicate == null)
 				matchingPolicies = _policies.Where(p => p.IsPolicyOf<TSecurityPolicy>()).ToList();
 			else
@@ -130,7 +132,11 @@ namespace FluentSecurity
 			}
 			
 			foreach (var matchingPolicy in matchingPolicies)
+			{
+				var policy = matchingPolicy;
 				_policies.Remove(matchingPolicy);
+				Publish.ConfigurationEvent(() => "- Removed policy {0} [{1}].".FormatWith(policy.GetPolicyType().FullName, policy is ILazySecurityPolicy ? "Lazy" : "Instance"));
+			}
 
 			return this;
 		}
