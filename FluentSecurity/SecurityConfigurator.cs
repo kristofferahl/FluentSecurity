@@ -13,6 +13,7 @@ namespace FluentSecurity
 		static SecurityConfigurator()
 		{
 			CorrelationId = Guid.NewGuid();
+			SecurityDoctor.ScanForEventListeners();
 		}
 
 		public static ISecurityConfiguration Configure(Action<ConfigurationExpression> configurationExpression)
