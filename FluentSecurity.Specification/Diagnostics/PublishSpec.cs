@@ -19,7 +19,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
@@ -40,7 +40,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
@@ -66,7 +66,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
@@ -87,7 +87,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
@@ -113,7 +113,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 
 			// Act
 			Publish.ConfigurationEvent(() => expectedMessage);
@@ -133,7 +133,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 
 			// Act
 			var result = Publish.ConfigurationEvent(() =>

@@ -14,7 +14,7 @@ namespace FluentSecurity.Specification // Do not change the namespace
 		{
 			ServiceLocator.Reset();
 			ExceptionFactory.Reset();
-			EventListeners.Reset();
+			SecurityDoctor.Reset();
 			SecurityCache.ClearCache(Lifecycle.HybridHttpContext);
 			SecurityCache.ClearCache(Lifecycle.HybridHttpSession);
 		}

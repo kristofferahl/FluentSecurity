@@ -85,7 +85,7 @@ namespace FluentSecurity.Specification
 			const string actionName = "Index";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 			var expectedActionResult = new ViewResult { ViewName = "SomeViewName" };
 			var violationHandler = new DenyAnonymousAccessPolicyViolationHandler(expectedActionResult);
 			FakeIoC.GetAllInstancesProvider = () => new List<IPolicyViolationHandler>
@@ -133,7 +133,7 @@ namespace FluentSecurity.Specification
 			const string actionName = "Index";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
@@ -272,7 +272,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var events = new List<ISecurityEvent>();
-			EventListeners.Register(events.Add);
+			SecurityDoctor.Register(events.Add);
 			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);

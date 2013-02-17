@@ -14,7 +14,7 @@ namespace FluentSecurity.SampleApplication
 		
 		public static ISecurityConfiguration SetupFluentSecurity()
 		{
-			EventListeners.Register(Events.Add);
+			SecurityDoctor.Register(Events.Add);
 			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(Helpers.SecurityHelper.UserIsAuthenticated);

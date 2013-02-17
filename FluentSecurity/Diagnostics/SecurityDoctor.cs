@@ -4,9 +4,9 @@ using FluentSecurity.Diagnostics.Events;
 
 namespace FluentSecurity.Diagnostics
 {
-	public static class EventListeners
+	public static class SecurityDoctor
 	{
-		static EventListeners()
+		static SecurityDoctor()
 		{
 			Reset();
 		}
