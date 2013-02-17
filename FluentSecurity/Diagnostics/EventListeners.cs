@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentSecurity.Diagnostics.Events;
 
 namespace FluentSecurity.Diagnostics
@@ -10,16 +11,17 @@ namespace FluentSecurity.Diagnostics
 			Reset();
 		}
 
-		internal static Action<ISecurityEvent> Current;
+		internal static List<Action<ISecurityEvent>> Listeners { get; private set; }
 
 		public static void Register(Action<ISecurityEvent> eventListener)
 		{
-			Current = eventListener;
+			if (Listeners == null) Listeners = new List<Action<ISecurityEvent>>();
+			Listeners.Add(eventListener);
 		}
 
 		public static void Reset()
 		{
-			Current = null;
+			Listeners = null;
 		}
 	}
 }

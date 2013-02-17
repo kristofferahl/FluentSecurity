@@ -19,7 +19,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Current = events.Add;
+			EventListeners.Register(events.Add);
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act
@@ -40,7 +40,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			const string expectedMessage = "Message";
 
 			var events = new List<ISecurityEvent>();
-			EventListeners.Current = events.Add;
+			EventListeners.Register(events.Add);
 			var context = TestDataFactory.CreateSecurityContext(false);
 
 			// Act

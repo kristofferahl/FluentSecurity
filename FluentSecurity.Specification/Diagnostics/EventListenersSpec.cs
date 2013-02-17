@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Diagnostics.Events;
 using NUnit.Framework;
@@ -10,13 +11,13 @@ namespace FluentSecurity.Specification.Diagnostics
 	public class When_EventListeners_is_created
 	{
 		[Test]
-		public void Should_not_have_event_listener_registered()
+		public void Should_not_have_event_listeners_registered()
 		{
-			Assert.That(EventListeners.Current, Is.Null);
+			Assert.That(EventListeners.Listeners, Is.Null);
 		}
 
 		[Test]
-		public void Should_register_runtime_event_listener()
+		public void Should_register_event_listener()
 		{
 			// Arrange
 			Action<ISecurityEvent> eventListener = e  => {};
@@ -25,7 +26,25 @@ namespace FluentSecurity.Specification.Diagnostics
 			EventListeners.Register(eventListener);
 
 			// Assert
-			Assert.That(EventListeners.Current, Is.EqualTo(eventListener));
+			Assert.That(EventListeners.Listeners.Single(), Is.EqualTo(eventListener));
+		}
+
+		[Test]
+		public void Should_register_multiple_event_listener()
+		{
+			// Arrange
+			EventListeners.Reset();
+			Action<ISecurityEvent> eventListener1 = e => {};
+			Action<ISecurityEvent> eventListener2 = e => {};
+
+			// Act
+			EventListeners.Register(eventListener1);
+			EventListeners.Register(eventListener2);
+
+			// Assert
+			Assert.That(EventListeners.Listeners.Count(), Is.EqualTo(2));
+			Assert.That(EventListeners.Listeners.First(), Is.EqualTo(eventListener1));
+			Assert.That(EventListeners.Listeners.Last(), Is.EqualTo(eventListener2));
 		}
 	}
 
@@ -38,12 +57,14 @@ namespace FluentSecurity.Specification.Diagnostics
 		{
 			// Arrange
 			EventListeners.Register(e => {});
+			EventListeners.Register(e => {});
+			EventListeners.Register(e => {});
 
 			// Act
 			EventListeners.Reset();
 
 			// Assert
-			Assert.That(EventListeners.Current, Is.Null);
+			Assert.That(EventListeners.Listeners, Is.Null);
 		}
 	}
 }
