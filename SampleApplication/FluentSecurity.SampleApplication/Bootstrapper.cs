@@ -14,6 +14,7 @@ namespace FluentSecurity.SampleApplication
 		
 		public static ISecurityConfiguration SetupFluentSecurity()
 		{
+			EventListeners.Register(Events.Add);
 			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(Helpers.SecurityHelper.UserIsAuthenticated);
@@ -48,8 +49,6 @@ namespace FluentSecurity.SampleApplication
 
 				configuration.ApplyProfile<CrudControllerProfile>();
 			});
-			
-			EventListeners.Register(Events.Add);
 			return SecurityConfiguration.Current;
 		}
 	}
