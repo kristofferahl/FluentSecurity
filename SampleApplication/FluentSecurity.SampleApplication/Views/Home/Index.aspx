@@ -44,7 +44,7 @@
 		<% foreach (var @event in Bootstrapper.Events) { %>
 			<tr>
 				<td><%= @event.CorrelationId %></td>
-				<td style="word-wrap: break-word"><%= @event.Message.Replace(Environment.NewLine, "<br/>") %></td>
+				<td style="word-wrap: break-word"><%= Html.Encode(@event.Message).Replace(Environment.NewLine, "<br/>") %></td>
 				<td><%= @event.CompletedInMilliseconds != null ? @event.CompletedInMilliseconds + " ms" : "-" %></td>
 			</tr>
 		<% } %>
