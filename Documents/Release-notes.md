@@ -30,6 +30,7 @@
 - ( **New** ) Added support for securing controllers based on action name and controller type.
 - ( **New** ) Made ISecurityContext available for violation handlers through the SecurityContext property of PolicyViolationException.
 - ( **New** ) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
+- ( **New** ) Improved diagnostics using the diagnostics pipeline and Glimpse tab (thanks to nikmd23).
 
 ## Areas/Profiles
 - ( **New** ) Added support for creating profiles to help manage large/area configurations by inheriting from SecurityProfile.
