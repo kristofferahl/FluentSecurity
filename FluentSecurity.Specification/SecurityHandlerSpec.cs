@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Web.Mvc;
+using FluentSecurity.Diagnostics;
+using FluentSecurity.Diagnostics.Events;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
@@ -77,6 +81,11 @@ namespace FluentSecurity.Specification
 		public void Should_resolve_policy_violation_handler_for_exception_from_container()
 		{
 			// Arrange
+			var controllerName = NameHelper.Controller<BlogController>();
+			const string actionName = "Index";
+
+			var events = new List<ISecurityEvent>();
+			SecurityDoctor.Register(events.Add);
 			var expectedActionResult = new ViewResult { ViewName = "SomeViewName" };
 			var violationHandler = new DenyAnonymousAccessPolicyViolationHandler(expectedActionResult);
 			FakeIoC.GetAllInstancesProvider = () => new List<IPolicyViolationHandler>
@@ -94,10 +103,15 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var result = securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", SecurityContext.Current);
+			var result = securityHandler.HandleSecurityFor(controllerName, actionName, SecurityContext.Current);
 
 			// Assert
 			Assert.That(result, Is.EqualTo(expectedActionResult));
+			Assert.That(events.Any(e => e.Message == "Handling security for {0} action {1}.".FormatWith(controllerName, actionName)));
+			Assert.That(events.Any(e => e.Message == "Finding policy violation handler using convention {0}.".FormatWith(typeof(FindByPolicyNameConvention))));
+			Assert.That(events.Any(e => e.Message == "Found policy violation handler {0}.".FormatWith(violationHandler.GetType().FullName)));
+			Assert.That(events.Any(e => e.Message == "Handling violation with {0}.".FormatWith(violationHandler.GetType().FullName)));
+			Assert.That(events.Any(e => e.Message == "Done enforcing policies. Violation occured!"));
 		}
 	}
 
@@ -115,6 +129,11 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_exception_when_the_user_is_authenticated()
 		{
 			// Arrange
+			var controllerName = NameHelper.Controller<BlogController>();
+			const string actionName = "Index";
+
+			var events = new List<ISecurityEvent>();
+			SecurityDoctor.Register(events.Add);
 			SecurityConfigurator.Configure(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
@@ -124,7 +143,9 @@ namespace FluentSecurity.Specification
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", SecurityContext.Current));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(controllerName, actionName, SecurityContext.Current));
+			Assert.That(events.Any(e => e.Message == "Handling security for {0} action {1}.".FormatWith(controllerName, actionName)));
+			Assert.That(events.Any(e => e.Message == "Done enforcing policies. Success!"));
 		}
 
 		[Test]
@@ -250,6 +271,8 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_true()
 		{
 			// Arrange
+			var events = new List<ISecurityEvent>();
+			SecurityDoctor.Register(events.Add);
 			SecurityConfigurator.Configure(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
@@ -261,6 +284,7 @@ namespace FluentSecurity.Specification
 
 			// Act & Assert
 			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action", SecurityContext.Current));
+			Assert.That(events.Any(e => e.Message == "Ignoring missing configuration."));
 		}
 	}
 }

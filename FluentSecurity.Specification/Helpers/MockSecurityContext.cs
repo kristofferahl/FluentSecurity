@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Web.Routing;
@@ -11,6 +12,8 @@ namespace FluentSecurity.Specification.Helpers
 
 		public MockSecurityContext(bool isAuthenticated = true, IEnumerable<object> roles = null, RouteValueDictionary routeValues = null, ISecurityRuntime runtime = null)
 		{
+			Id = Guid.NewGuid();
+			
 			_isAuthenticated = isAuthenticated;
 			_roles = roles;
 
@@ -19,6 +22,8 @@ namespace FluentSecurity.Specification.Helpers
 
 			Runtime = runtime ?? new SecurityRuntime();
 		}
+
+		public Guid Id { get; private set; }
 
 		public dynamic Data { get; private set; }
 

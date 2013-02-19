@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
@@ -134,6 +135,7 @@ namespace FluentSecurity
 
 		public void Scan(Action<ProfileScanner> scan)
 		{
+			Publish.ConfigurationEvent(() => "Scanning for profiles");
 			var profileScanner = new ProfileScanner();
 			scan.Invoke(profileScanner);
 			var profiles = profileScanner.Scan().ToList();
@@ -143,13 +145,18 @@ namespace FluentSecurity
 		public void ApplyProfile<TSecurityProfile>() where TSecurityProfile : SecurityProfile, new()
 		{
 			var profile = new TSecurityProfile();
+			Publish.ConfigurationEvent(() => "Applying profile {0}.".FormatWith(profile.GetType().FullName));
 			Runtime.ApplyConfiguration(profile);
 		}
 
 		private void ApplyProfile(Type profileType)
 		{
 			var profile = Activator.CreateInstance(profileType) as SecurityProfile;
-			if (profile != null) Runtime.ApplyConfiguration(profile);
+			if (profile != null)
+			{
+				Publish.ConfigurationEvent(() => "Applying profile {0}.".FormatWith(profile.GetType().FullName));
+				Runtime.ApplyConfiguration(profile);
+			}
 		}
 
 		internal IPolicyContainerConfiguration CreateConventionPolicyContainerFor(IEnumerable<Type> controllerTypes, Func<ControllerActionInfo, bool> actionFilter = null, By defaultCacheLevel = By.Policy)

@@ -1,4 +1,5 @@
 using System;
+using FluentSecurity.Diagnostics;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
@@ -7,17 +8,31 @@ namespace FluentSecurity
 	{
 		private static readonly object LockObject = new object();
 
+		internal static Guid CorrelationId { get; private set; }
+
+		static SecurityConfigurator()
+		{
+			CorrelationId = Guid.NewGuid();
+			SecurityDoctor.ScanForEventListeners();
+		}
+
 		public static ISecurityConfiguration Configure(Action<ConfigurationExpression> configurationExpression)
 		{
 			if (configurationExpression == null)
 				throw new ArgumentNullException("configurationExpression");
 
 			Reset();
+
+			Publish.ConfigurationEvent(() => "Configuring FluentSecurity.");
+
 			lock (LockObject)
 			{
-				var configuration = new SecurityConfiguration(configurationExpression);
-				SecurityConfiguration.SetConfiguration(configuration);
-				return SecurityConfiguration.Current;
+				return Publish.ConfigurationEvent(() =>
+				{
+					var configuration = new SecurityConfiguration(configurationExpression);
+					SecurityConfiguration.SetConfiguration(configuration);
+					return SecurityConfiguration.Current;
+				}, config => "Finished configuring FluentSecurity.");
 			}
 		}
 
@@ -37,6 +52,7 @@ namespace FluentSecurity
 		{
 			lock (LockObject)
 			{
+				CorrelationId = Guid.NewGuid();
 				ServiceLocator.Reset();
 				SecurityConfiguration.Reset();
 			}
