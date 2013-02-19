@@ -9,6 +9,9 @@ namespace FluentSecurity.Diagnostics
 
 		public AnonymousSecurityEventListener(Action<ISecurityEvent> eventListener)
 		{
+			if (eventListener == null)
+				throw new ArgumentNullException("eventListener");
+
 			EventListener = eventListener;
 		}
 
