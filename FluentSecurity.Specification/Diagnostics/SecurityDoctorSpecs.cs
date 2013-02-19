@@ -2,12 +2,13 @@
 using System.Linq;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Diagnostics.Events;
+using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Diagnostics
 {
 	[TestFixture]
-	[Category("SecurityDoctorSpec")]
+	[Category("SecurityDoctorSpecs")]
 	public class When_SecurityDoctor_is_created
 	{
 		[SetUp]
@@ -55,7 +56,7 @@ namespace FluentSecurity.Specification.Diagnostics
 	}
 
 	[TestFixture]
-	[Category("SecurityDoctorSpec")]
+	[Category("SecurityDoctorSpecs")]
 	public class When_event_listeners_are_registered
 	{
 		[Test]
@@ -71,6 +72,24 @@ namespace FluentSecurity.Specification.Diagnostics
 
 			// Assert
 			Assert.That(SecurityDoctor.Listeners, Is.Null);
+		}
+	}
+
+	[TestFixture]
+	[Category("SecurityDoctorSpecs")]
+	public class When_scanning_for_event_listeners
+	{
+		[Test]
+		public void Should_find_a_single_event_listener()
+		{
+			// Arrange
+			SecurityDoctor.Reset();
+
+			// Act
+			SecurityDoctor.ScanForEventListeners();
+
+			// Assert
+			Assert.That(SecurityDoctor.Listeners.Single(), Is.TypeOf<TestSecurityEventListener>());
 		}
 	}
 }
