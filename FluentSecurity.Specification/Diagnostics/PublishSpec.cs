@@ -125,7 +125,7 @@ namespace FluentSecurity.Specification.Diagnostics
 		}
 
 		[Test]
-		public void Should_produce_configuration_event_with_timer_when_event_listener_is_registered()
+		public void Should_produce_configuration_event_with_timing_when_event_listener_is_registered()
 		{
 			// Arrange
 			const int expectedMilliseconds = 9;
@@ -149,6 +149,29 @@ namespace FluentSecurity.Specification.Diagnostics
 			Assert.That(@event.CorrelationId, Is.EqualTo(SecurityConfigurator.CorrelationId));
 			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
 			Assert.That(@event.CompletedInMilliseconds, Is.GreaterThanOrEqualTo(expectedMilliseconds));
+		}
+
+		[Test]
+		public void Should_return_result_when_no_event_listener_is_registered()
+		{
+			// Arrange
+			SecurityDoctor.Reset();
+			var context = TestDataFactory.CreateSecurityContext(false);
+			
+			var expectedResult1 = new {};
+			var expectedResult2 = new {};
+			var expectedResult3 = new {};
+			
+
+			// Act
+			var result1 = Publish.ConfigurationEvent(() => expectedResult1, r => null);
+			var result2 = Publish.RuntimeEvent(() => expectedResult2, r => null, context);
+			var result3 = Publish.RuntimePolicyEvent(() => expectedResult3, r => null, context);
+
+			// Assert
+			Assert.That(result1, Is.EqualTo(expectedResult1));
+			Assert.That(result2, Is.EqualTo(expectedResult2));
+			Assert.That(result3, Is.EqualTo(expectedResult3));
 		}
 	}
 }
