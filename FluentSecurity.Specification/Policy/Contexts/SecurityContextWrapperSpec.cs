@@ -18,6 +18,7 @@ namespace FluentSecurity.Specification.Policy.Contexts
 			var outerContext = new TestSecurityContext(innerContext);
 
 			// Assert
+			Assert.That(outerContext.Id, Is.EqualTo(innerContext.Id));
 			Assert.That(outerContext.Data, Is.EqualTo(innerContext.Data));
 			Assert.That(outerContext.CurrentUserIsAuthenticated(), Is.EqualTo(innerContext.CurrentUserIsAuthenticated()));
 			Assert.That(outerContext.CurrentUserRoles(), Is.EqualTo(innerContext.CurrentUserRoles()));
