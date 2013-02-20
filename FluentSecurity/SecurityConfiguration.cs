@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using FluentSecurity.Configuration;
 using FluentSecurity.Diagnostics;
-using FluentSecurity.Internals;
 using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
 
@@ -42,35 +41,36 @@ namespace FluentSecurity
 			
 			var controllerTypes = assemblyScanner.Scan();
 			
-			var unconfiguredActions = 
+			var unconfiguredActions = (
 				from c in controllerTypes
 				from a in c.GetActionMethods()
 				let actionName = a.GetActionName()
 				let controllerName = c.GetControllerName()
-				where this.PolicyContainers.GetContainerFor(controllerName, actionName) == null 
-				select new {ControllerName=controllerName, ActionName=actionName};
+				where PolicyContainers.GetContainerFor(controllerName, actionName) == null
+				select new { ControllerName = controllerName, ActionName = actionName }
+				).ToList();
 			
-			if(unconfiguredActions.Any())
+			if (unconfiguredActions.Any())
 			{
 				var errorMessageBuilder = new StringBuilder();
-				unconfiguredActions.Each( a => 
-					errorMessageBuilder
-					.AppendLine("Security has not been configured for controller {0}, action {1}".FormatWith(a.ControllerName, a.ActionName))
+				unconfiguredActions.Each(a =>
+					errorMessageBuilder.AppendLine("- Security has not been configured for {0} action {1}.".FormatWith(a.ControllerName, a.ActionName))
 				);
 				throw new ConfigurationErrorsException(errorMessageBuilder.ToString());
 			}
-			
 		}
 		
 		public void AssertAllActionsAreConfigured()
 		{
 			//As per http://bloggingabout.net/blogs/vagif/archive/2010/07/02/net-4-0-and-notsupportedexception-complaining-about-dynamic-assemblies.aspx
-			var assemblies = 
-				(from Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
+			var assemblies = (
+				from Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
 				where !(assembly is System.Reflection.Emit.AssemblyBuilder) &&
 				assembly.GetType().FullName != "System.Reflection.Emit.InternalAssemblyBuilder" &&
 				!assembly.GlobalAssemblyCache 
-				select assembly).ToArray();
+				select assembly
+				).ToArray();
+			
 			AssertAllActionsAreConfigured(assemblies);
 		}
 

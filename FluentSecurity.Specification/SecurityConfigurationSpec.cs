@@ -1,9 +1,7 @@
 using System;
 using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
@@ -113,7 +111,7 @@ FluentSecurity.Specification.TestData.BlogController > Index
 		public void Should_throw()
 		{
 			// Arrange
-			var setConfigurationMethod = typeof(SecurityConfiguration).GetMethod("SetConfiguration", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+			var setConfigurationMethod = typeof(SecurityConfiguration).GetMethod("SetConfiguration", BindingFlags.Static | BindingFlags.NonPublic);
 			var parameters = new System.Collections.Generic.List<object> { null }.ToArray();
 
 			// Act
@@ -128,38 +126,35 @@ FluentSecurity.Specification.TestData.BlogController > Index
 	[Category("SecurityConfigurationSpec")]
 	public class When_calling_assert_all_actions_on_configuration
 	{
-		
 		[Test]
 		public void Should_throw_exception_when_all_actions_are_not_configured()
 		{
 			//Arrange & Act
-			ISecurityConfiguration _securityConfiguration;
-			_securityConfiguration = new SecurityConfiguration(policy => {});
-				
+			var securityConfiguration = new SecurityConfiguration(policy => {});
+
 			//Assert
-			Assert.Throws<ConfigurationErrorsException>( () => _securityConfiguration.AssertAllActionsAreConfigured());
+			Assert.Throws<ConfigurationErrorsException>(() => securityConfiguration.AssertAllActionsAreConfigured());
 		}
-		
+
 		[Test]
 		public void Should_not_throw_exception_when_all_actions_are_configured()
 		{
 			//Arrange & Act
-			var assemblies = 
-				(from Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
+			var assemblies = (
+				from Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
 				where !(assembly is System.Reflection.Emit.AssemblyBuilder) &&
 				assembly.GetType().FullName != "System.Reflection.Emit.InternalAssemblyBuilder" &&
 				!assembly.GlobalAssemblyCache 
-				select assembly).ToArray();
-			
-			ISecurityConfiguration _securityConfiguration;
-			_securityConfiguration = new SecurityConfiguration(policy => { 
-				policy
-					.ForAllControllersInAssembly(assemblies)
-					.DenyAuthenticatedAccess();
-                               });
+				select assembly
+				).ToArray();
+
+			var securityConfiguration = new SecurityConfiguration(policy => policy
+				.ForAllControllersInAssembly(assemblies)
+				.DenyAuthenticatedAccess()
+				);
 				
 			//Assert
-			Assert.DoesNotThrow( () => _securityConfiguration.AssertAllActionsAreConfigured());
+			Assert.DoesNotThrow(() => securityConfiguration.AssertAllActionsAreConfigured());
 		}
 	}
 	
@@ -167,37 +162,27 @@ FluentSecurity.Specification.TestData.BlogController > Index
 	[Category("SecurityConfigurationSpec")]
 	public class When_calling_assert_all_actions_on_configuration_passing_assemblies_as_argument
 	{
-		
 		[Test]
 		public void Should_throw_exception_when_all_actions_are_not_configured()
 		{
 			//Arrange & Act
-			ISecurityConfiguration _securityConfiguration;
-			_securityConfiguration = new SecurityConfiguration(policy => {});
-				
+			var securityConfiguration = new SecurityConfiguration(policy => {});
+
 			//Assert
-			Assert.Throws<ConfigurationErrorsException>( () => 
-				_securityConfiguration
-				.AssertAllActionsAreConfigured(new [] {this.GetType().Assembly})
-			);
+			Assert.Throws<ConfigurationErrorsException>(() => securityConfiguration.AssertAllActionsAreConfigured(new [] { GetType().Assembly }));
 		}
-		
+
 		[Test]
 		public void Should_not_throw_exception_when_all_actions_are_configured()
 		{
 			//Arrange & Act
-			ISecurityConfiguration _securityConfiguration;
-			_securityConfiguration = new SecurityConfiguration(policy => { 
-				policy
-					.ForAllControllers()
-					.DenyAuthenticatedAccess();
-                               });
-				
+			var securityConfiguration = new SecurityConfiguration(policy => policy
+				.ForAllControllers()
+				.DenyAuthenticatedAccess()
+				);
+
 			//Assert
-			Assert.DoesNotThrow( () => 
-				_securityConfiguration
-				.AssertAllActionsAreConfigured(new [] {this.GetType().Assembly})
-			);
+			Assert.DoesNotThrow(() => securityConfiguration.AssertAllActionsAreConfigured(new [] { GetType().Assembly }));
 		}
 	}
 }
