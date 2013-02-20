@@ -102,6 +102,9 @@
     <Compile Include="Configuration\ViolationHandlerConfigurationSpec.cs" />
     <Compile Include="Configuration\ViolationConfigurationSpec.cs" />
     <Compile Include="ConventionPolicyContainerSpec.cs" />
+    <Compile Include="Diagnostics\AnonymousSecurityEventListenerSpecs.cs" />
+    <Compile Include="Diagnostics\SecurityDoctorSpecs.cs" />
+    <Compile Include="Diagnostics\PublishSpec.cs" />
     <Compile Include="Internals\ExceptionFactorySpec.cs" />
     <Compile Include="Features\PolicyResultsCachingFeature.feature.cs">
       <DependentUpon>PolicyResultsCachingFeature.feature</DependentUpon>
@@ -182,6 +185,7 @@
     <Compile Include="SecurityConfigurationSpec.cs" />
     <Compile Include="TestData\Controllers\BlogController.cs" />
     <Compile Include="TestData\PostForm.cs" />
+    <Compile Include="TestData\TestSecurityEventListener.cs" />
     <Compile Include="TestData\UserRole.cs" />
     <Compile Include="HandleSecurityAttributeSpec.cs" />
     <Compile Include="Helpers\MvcHelpers.cs" />

@@ -6,7 +6,6 @@ using System.Web.Routing;
 using FluentSecurity.Configuration;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
-using FluentSecurity.Policy.Results;
 using FluentSecurity.Specification.TestData;
 using Moq;
 
@@ -22,10 +21,11 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static ISecurityContext CreateSecurityContext(bool authenticated, IEnumerable<object> roles = null)
 		{
-			var data = new ExpandoObject();
+			dynamic data = new ExpandoObject();
+			data.RouteValues = new RouteValueDictionary();
 			var context = new Mock<ISecurityContext>();
 			context.Setup(x => x.Runtime).Returns(CreateSecurityRuntime());
-			context.Setup(x => x.Data).Returns(data);
+			context.Setup(x => x.Data).Returns(data as ExpandoObject);
 			context.Setup(x => x.CurrentUserIsAuthenticated()).Returns(authenticated);
 			context.Setup(x => x.CurrentUserRoles()).Returns(roles);
 			return context.Object;

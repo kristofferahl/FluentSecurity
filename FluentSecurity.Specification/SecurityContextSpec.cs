@@ -40,6 +40,7 @@ namespace FluentSecurity.Specification
 			var context = SecurityContext.Current;
 
 			// Assert
+			Assert.That(context.Id, Is.Not.EqualTo(Guid.Empty));
 			Assert.That(context.Data, Is.TypeOf(typeof(ExpandoObject)));
 			Assert.That(context.CurrentUserIsAuthenticated(), Is.EqualTo(status));
 			Assert.That(context.CurrentUserRoles(), Is.EqualTo(roles));

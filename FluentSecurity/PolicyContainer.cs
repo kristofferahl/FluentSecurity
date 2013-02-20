@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 
@@ -48,23 +49,42 @@ namespace FluentSecurity
 			var cache = SecurityCache.CacheProvider.Invoke();
 			
 			var results = new List<PolicyResult>();
-			foreach (var policy in _policies.Select(NonLazyIfPolicyHasCacheKeyProvider()))
+			foreach (var securityPolicy in _policies.Select(NonLazyIfPolicyHasCacheKeyProvider()))
 			{
+				var policy = securityPolicy;
 				var strategy = GetExecutionCacheStrategyForPolicy(policy, defaultResultsCacheLifecycle);
 				var cacheKey = PolicyResultCacheKeyBuilder.CreateFromStrategy(strategy, policy, context);
 				
-				var result = cache.Get<PolicyResult>(cacheKey, strategy.CacheLifecycle.ToLifecycle());
-				if (result == null)
+				var policyResult = Publish.RuntimePolicyEvent(() =>
 				{
-					result = policy.Enforce(context);
-					cache.Store(result, cacheKey, strategy.CacheLifecycle.ToLifecycle());
-				}
-				results.Add(result);
-				
-				if (result.ViolationOccured) break;
+					var result = cache.Get<PolicyResult>(cacheKey, strategy.CacheLifecycle.ToLifecycle());
+					if (result == null)
+					{
+						result = policy.Enforce(context);
+						cache.Store(result, cacheKey, strategy.CacheLifecycle.ToLifecycle());
+					}
+					else result.Cached = true;
+					return result;
+				}, r => CreateMessageForResult(r, strategy, cacheKey), context);
+
+				results.Add(policyResult);
+
+				if (policyResult.ViolationOccured) break;
 			}
 
 			return results.AsReadOnly();
+		}
+
+		private static string CreateMessageForResult(PolicyResult result, PolicyResultCacheStrategy strategy, string cacheKey)
+		{
+			return "Enforced policy {0} - {1}! \r\n{2}: {3} at {4} with key '{5}'".FormatWith(
+				result.PolicyType.FullName,
+				result.ViolationOccured ? "Violation occured" : "Success",
+				result.Cached ? "Cached. Strategy" : "Strategy",
+				strategy.CacheLifecycle,
+				strategy.CacheLevel,
+				cacheKey
+				);
 		}
 
 		private static Func<ISecurityPolicy, ISecurityPolicy> NonLazyIfPolicyHasCacheKeyProvider()
@@ -74,7 +94,18 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration AddPolicy(ISecurityPolicy securityPolicy)
 		{
+			Publish.ConfigurationEvent(() => "Updating policies for {0} action {1} using {2}.".FormatWith(ControllerName, ActionName, PolicyAppender.GetType().FullName));
+
+			var policiesBeforeUpdate = new ISecurityPolicy[_policies.Count];
+			_policies.CopyTo(policiesBeforeUpdate, 0);
+
 			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
+
+			var policiesRemoved = policiesBeforeUpdate.Except(_policies).ToList();
+			policiesRemoved.Each(p => Publish.ConfigurationEvent(() => "- Removed policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
+
+			var policiesAdded = _policies.Except(policiesBeforeUpdate).ToList();
+			policiesAdded.Each(p => Publish.ConfigurationEvent(() => "- Added policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
 
 			return this;
 		}
@@ -86,8 +117,10 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
 		{
+			Publish.ConfigurationEvent(() => "Removing policies from {0} action {1}.".FormatWith(ControllerName, ActionName));
+
 			IEnumerable<ISecurityPolicy> matchingPolicies;
-			
+
 			if (predicate == null)
 				matchingPolicies = _policies.Where(p => p.IsPolicyOf<TSecurityPolicy>()).ToList();
 			else
@@ -99,7 +132,11 @@ namespace FluentSecurity
 			}
 			
 			foreach (var matchingPolicy in matchingPolicies)
+			{
+				var policy = matchingPolicy;
 				_policies.Remove(matchingPolicy);
+				Publish.ConfigurationEvent(() => "- Removed policy {0} [{1}].".FormatWith(policy.GetPolicyType().FullName, policy is ILazySecurityPolicy ? "Lazy" : "Instance"));
+			}
 
 			return this;
 		}

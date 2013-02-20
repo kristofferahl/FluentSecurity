@@ -30,6 +30,7 @@
 - ( **New** ) Added support for securing controllers based on action name and controller type.
 - ( **New** ) Made ISecurityContext available for violation handlers through the SecurityContext property of PolicyViolationException.
 - ( **New** ) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
+- ( **New** ) Improved diagnostics using the diagnostics pipeline and Glimpse tab (thanks to nikmd23).
 
 ## Areas/Profiles
 - ( **New** ) Added support for creating profiles to help manage large/area configurations by inheriting from SecurityProfile.
@@ -50,6 +51,7 @@
 - ( **New** ) Added support for modifying the ISecurityContext on creation using configuration.Advanced.ModifySecurityContext.
 - ( **New** ) Added support for working with a typed ISecurityContext in policies by inheriting from SecurityPolicyBase\<TSecurityContext\>.
 - ( **New** ) Added a MvcSecurityContext wrapper over ISecurityContext that makes it easier accessing route values in policies.
+- ( **New** ) Extended ISecurityContext with an Id property for diagnostics and debugging purposes.
 
 ## AddPolicy\<T\> and dependency injection for policies
 - ( **New** ) Added support for adding policies using AddPolicy\<T\>.
