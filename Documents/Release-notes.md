@@ -28,6 +28,7 @@
 - ( **New** ) Added HttpUnauthorizedPolicyViolationHandler for returning standard mvc HttpUnauthorizedResult.
 - ( **New** ) Added support for securing controllers based on inheritance - Base controllers (thanks to Ridermansb).
 - ( **New** ) Added support for securing controllers based on action name and controller type.
+- ( **New** ) Added support for asserting all controller action have been configured using AssertAllActionsAreConfigured (thanks to Chandu).
 - ( **New** ) Made ISecurityContext available for violation handlers through the SecurityContext property of PolicyViolationException.
 - ( **New** ) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
 - ( **New** ) Improved diagnostics using the diagnostics pipeline and Glimpse tab (thanks to nikmd23).
