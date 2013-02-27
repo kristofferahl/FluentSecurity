@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using FluentSecurity.TestHelper.Expectations;
 
@@ -8,16 +9,33 @@ namespace FluentSecurity.TestHelper
 {
 	public class ExpectationExpression<TController> : ExpectationExpression
 	{
-		public ExpectationExpression() : this(null) {}
-
-		public ExpectationExpression(Expression<Func<TController, ActionResult>> actionExpression)
+		public ExpectationExpression()
 		{
-			Controller = typeof (TController);
-			
+            Controller = typeof(TController);
+		}
+
+		public ExpectationExpression(Expression<Func<TController, ActionResult>> actionExpression) : this()
+		{
 			if (actionExpression != null)
 				Action = actionExpression.GetActionName();
 		}
 	}
+
+    public class ExpectationExpression<TController, TResult> : ExpectationExpression
+        where TResult : ActionResult
+    {
+        public ExpectationExpression()
+        {
+            Controller = typeof(TController);
+        }
+
+        public ExpectationExpression(Expression<Func<TController, Task<TResult>>> actionExpression)
+            : this()
+        {
+            if (actionExpression != null)
+                Action = actionExpression.GetActionName();
+        }
+    }
 
 	public abstract class ExpectationExpression
 	{

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace FluentSecurity.TestHelper
@@ -50,6 +51,13 @@ namespace FluentSecurity.TestHelper
 			_expectationsExpressions.Add(expression);
 			return expression;
 		}
+
+        public ExpectationExpression<TController, TResult> For<TController, TResult>(Expression<Func<TController, Task<TResult>>> actionExpression) where TResult : ActionResult
+        {
+            var expression = new ExpectationExpression<TController, TResult>(actionExpression);
+            _expectationsExpressions.Add(expression);
+            return expression;
+        }
 
 		public IEnumerable<ExpectationResult> VerifyAll(ISecurityConfiguration configuration)
 		{
