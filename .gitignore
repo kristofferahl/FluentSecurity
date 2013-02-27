@@ -4,7 +4,8 @@
 /Build/CodeCoverage
 /Build/FluentSecurity.TestHelper.nuspec
 /Build/FluentSecurity.nuspec
-
+/Packages/*
+!/Packages/repositories.config
 CommonAssemblyInfo.cs
 
 #OS junk files
