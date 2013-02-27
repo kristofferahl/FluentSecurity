@@ -1,4 +1,5 @@
 #Project files
+/Build/Artifacts
 /Build/Reports
 /Build/Output
 /Build/CodeCoverage
@@ -7,6 +8,7 @@
 /Packages/*
 !/Packages/repositories.config
 CommonAssemblyInfo.cs
+SharedAssemblyInfo.cs
 
 #OS junk files
 [Tt]humbs.db
