@@ -7,7 +7,6 @@
 /Build/FluentSecurity.nuspec
 /Packages/*
 !/Packages/repositories.config
-CommonAssemblyInfo.cs
 SharedAssemblyInfo.cs
 
 #OS junk files
