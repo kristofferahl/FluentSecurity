@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Caching;
@@ -81,7 +82,7 @@ namespace FluentSecurity
 					BindingFlags.Public |
 					BindingFlags.Instance
 				)
-				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
+				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType) || typeof(Task<ActionResult>).IsAssignableFrom(x.ReturnType))
 				.Where(action => actionFilter.Invoke(new ControllerActionInfo(controllerType, action)))
 				.ToList();
 		}

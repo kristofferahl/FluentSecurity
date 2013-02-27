@@ -91,6 +91,7 @@
     <Compile Include="TestData\DenyInternetExplorerPolicy.cs" />
     <Compile Include="TestData\FluentSecurityFactory.cs" />
     <Compile Include="TestData\SampleController.cs" />
+    <Compile Include="TestData\TaskController.cs" />
     <Compile Include="TestData\UserRole.cs" />
   </ItemGroup>
   <ItemGroup>
