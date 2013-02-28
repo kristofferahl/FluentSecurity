@@ -87,6 +87,7 @@
     <Compile Include="Expectations\HasTypeExpectationSpecs.cs" />
     <Compile Include="ExpectationVerifyerSpec.cs" />
     <Compile Include="PolicyExpectationsSpec.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityConfigurationExtensionsSpec.cs" />
     <Compile Include="TestData\AdminController.cs" />
     <Compile Include="TestData\DenyLynxPolicy.cs" />

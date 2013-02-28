@@ -143,7 +143,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescriptionAttribute(""$description"")]
 [assembly: AssemblyCompanyAttribute(""$company"")]
 [assembly: AssemblyProductAttribute(""$product"")]
-[assembly: AssemblyTitleAttribute(""$product"")]
 [assembly: AssemblyCopyrightAttribute(""$copyright"")]
 [assembly: AssemblyVersionAttribute(""$version"")]
 [assembly: AssemblyInformationalVersionAttribute(""$buildLabel"")]

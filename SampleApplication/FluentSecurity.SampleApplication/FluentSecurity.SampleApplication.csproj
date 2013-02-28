@@ -95,6 +95,7 @@
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\HomeView.cs" />
     <Compile Include="Models\UserRole.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteRegistrar.cs" />
     <Compile Include="SessionContext.cs" />
     <Compile Include="Models\User.cs" />
