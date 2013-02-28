@@ -9,9 +9,12 @@ See the Wiki for [documentation of Fluent Security](http://www.fluentsecurity.ne
 ## Source code
 https://github.com/kristofferahl/FluentSecurity
 
-To build and run this project you need to have .NET Framework 4.0 installed and MS Build.
+To build and run this project you need to have .NET Framework 4.0 installed along with Powershell and MSBuild.
 This build is targeted against the ASP.NET MVC 3. To open the solution you need Microsoft Visual Studio 2010.
-Before starting your work you should run 'Click to build.bat' to make sure everything is working as expected on your system. 
+Before starting your work you must run 'build-local.cmd' to generate the SharedAssemblyInfo.cs file and to make sure everything is working as expected on your system.
+
+## Contributing
+http://www.fluentsecurity.net/wiki/Contributing
 
 ## License
 MIT (http://opensource.org/licenses/mit-license.php)
