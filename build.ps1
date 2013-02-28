@@ -114,7 +114,8 @@ task ? -Description "Help" {
 
 taskSetup {
 	$script:buildVersion	= ?: {$buildNumber -ne $null} {"$version.$buildNumber"} {$version}
-	
+
+	# TODO: Make sure buildLabel do not include build number when building from master
 	if ($label -ne $null -and $label -ne '') {
 		# SemVer : 2.0.0-alpha.4+build.3 | 2.0.0-alpha.4
 		# NuGet  : 2.0.0-alpha4-build3 | 2.0.0-alpha4
