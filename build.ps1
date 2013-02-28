@@ -114,7 +114,16 @@ task ? -Description "Help" {
 
 taskSetup {
 	$script:buildVersion	= ?: {$buildNumber -ne $null} {"$version.$buildNumber"} {$version}
-	$script:buildLabel		= ?: {$label -ne $null -and $label -ne ''} {"$buildVersion-$label"} {$buildVersion}
+	
+	if ($label -ne $null -and $label -ne '') {
+		# SemVer : 2.0.0-alpha.4+build.3 | 2.0.0-alpha.4
+		# NuGet  : 2.0.0-alpha4-build3 | 2.0.0-alpha4
+		$script:buildLabel		= ?: {$buildNumber -ne $null} {"$version-$label-build$buildNumber"} {"$version-$label"}
+	} else {
+		# SemVer : 2.0.0+build.3 | 2.0.0
+		# NuGet  : 2.0.0-build3 | 2.0.0
+		$script:buildLabel		= ?: {$buildNumber -ne $null} {"$version-build$buildNumber"} {"$version"}
+	}
 }
 
 #------------------------------------------------------------
