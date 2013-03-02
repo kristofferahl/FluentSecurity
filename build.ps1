@@ -45,7 +45,7 @@ task Release {
 }
 
 task Setup {
-	nuget install ".nuget\packages.config" -outputdirectory "packages"
+	nuget_exe install ".nuget\packages.config" -outputdirectory "packages"
 	generate_assemblyinfo `
 		-file "$sourceDir\SharedAssemblyInfo.cs" `
 		-description "$product ($configuration)" `
@@ -94,8 +94,8 @@ task Pack -depends Test {
 	get-content "$buildDir\NuGet\FluentSecurity.nuspec" | % { $_ -replace "@CURRENT-VERSION@", $buildLabel -replace "@ARTIFACT-PATH@", $fluentDir } | set-content "$buildDir\FluentSecurity.nuspec"
 	get-content "$buildDir\NuGet\FluentSecurity.TestHelper.nuspec" | % { $_ -replace "@CURRENT-VERSION@", $buildLabel -replace "@ARTIFACT-PATH@", $fluentDir } | set-content "$buildDir\FluentSecurity.TestHelper.nuspec"
 	
-	nuget pack "$buildDir\FluentSecurity.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
-	nuget pack "$buildDir\FluentSecurity.TestHelper.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
+	nuget_exe pack "$buildDir\FluentSecurity.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
+	nuget_exe pack "$buildDir\FluentSecurity.TestHelper.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
 	
 	$packMessage
 }

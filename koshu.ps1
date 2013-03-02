@@ -11,13 +11,13 @@ $ErrorActionPreference = 'Stop'
 $nuget = (Get-ChildItem -Path . -Filter NuGet.exe -Recurse | Select-Object -First 1)
 if ($nuget) { $nuget = $nuget.FullName } else { $nuget = "NuGet.exe" }
 try {
-	& $nuget install Koshu -version 0.4.1 -outputdirectory ".\packages"
+	& $nuget install Koshu -version 0.5.0 -outputdirectory ".\packages"
 } catch [System.Management.Automation.CommandNotFoundException] {
 	throw 'Could not find NuGet.exe and it does not seem to be in your path! Aborting build.'
 }
 
 # Initialize koshu
-.\packages\Koshu.0.4.1\tools\init.ps1
+.\packages\Koshu.0.5.0\tools\init.ps1
 
 # Trigger koshu
 Koshu-Build $buildFile $target $parameters
