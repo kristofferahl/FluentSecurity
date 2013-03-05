@@ -14,6 +14,7 @@ properties {
 	$artifactsName	= "$product-$version-$configuration" -replace "\.","_"
 	
 	$buildNumber	= $null
+	$dotCover		= $null
 	
 	$copyright		= 'Copyright (c) 2009-2013, Kristoffer Ahl'
 	
@@ -75,7 +76,8 @@ task Compile -depends Setup, Clean {
 }
 
 task Test -depends Compile {
-	run_tests $outputDir "*.Specification.dll"
+	write-host "Running specs... $dotCover"
+	run_tests $outputDir "*.Specification.dll" $dotCover
 	$testMessage
 }
 
@@ -171,15 +173,79 @@ using System.Runtime.InteropServices;
 	out-file -filePath $file -encoding UTF8 -inputObject $asmInfo
 }
 
-function run_tests($source, $include=@("*.dll")) {
+function run_tests($source, $include=@("*.dll"), $dotCover) {
+	$runner = "$sourceDir\packages\NUnit.Runners.2.6.2\tools\nunit-console-x86.exe"
+	if ($dotCover -eq $null) {
+		$dotCover = "C:\Program Files (x86)\JetBrains\dotCover\v2.2\Bin\dotcover.exe"
+		if (!(test-path $dotCover)) {
+			$dotCover = $null
+		} else {
+			write-host "Using dotCover from $dotCover."
+		}
+	} else {
+		write-host "Using dotCover from TeamCity."
+	}
+	
+	$fullReportsDir = (resolve-path $reportsDir)
+	
 	$testassemblies = get-childitem $source -recurse -include $include 
-	$testassemblies | foreach-object {
+	$testassemblies | % {
 		$assembly = $_
 		$assemblyName = $_.BaseName
-		write-host "Running test in $assembly."
+		$projectName = $assemblyName -replace ".Specification", ""
+		$testReportName = "$projectName-Test-results.xml"
+		$coverageReportName = "$projectName-CodeCoverage-results.dcvr"
+		
+		?: {$dotCover -ne $null} {"Running test in $assembly with code coverage."} {"Running test in $assembly."} | write-host
 		exec {
-			& $sourceDir\packages\NUnit.Runners.2.6.2\tools\nunit-console-x86.exe $assembly /nologo /framework:net-4.5 /xml="$reportsDir\$assemblyName-tests-results.xml"
+			if ($dotCover -ne $null) {
+				& $dotCover cover `
+					/TargetExecutable=$runner `
+					/TargetArguments=$assembly `
+					/TargetWorkingDir="$buildDir\Output" `
+					/Filters="+:$projectName;-:*.Specification;" `
+					/Output="$reportsDir\$coverageReportName"
+			} else {
+				& $runner $assembly /nologo /framework:net-4.5 /xml="$fullReportsDir\$testReportName"
+			}
 		}
+	}
+	
+	if ($dotCover -ne $null) {
+		write-host "Creating code coverage reports"
+		
+		$reports = get-childitem -path $reportsDir -filter "*.dcvr" | % { return $_.FullName }
+		$reportSources = $reports -join ';'
+		
+		exec {
+			& $dotCover merge `
+				/Source="$reportSources" `
+				/Output="$fullReportsDir\CodeCoverage-results.dcvr"
+		}
+		
+		write-host "##teamcity[importData type='dotNetCoverage' tool='dotcover' path='$fullReportsDir\CodeCoverage-results.dcvr']"
+		
+		#$reports | % {
+		#	$xmlReport = $_
+		#	$htmlReport = $_ -replace ".xml", ".html"
+		#	
+		#	exec {
+		#		& $dotCover report `
+		#			/Source=$xmlReport `
+		#			/Output=$htmlReport `
+		#			/ReportType=HTML
+		#	}
+		#}
+		#
+		#$xmlReport = "$fullReportsDir\CodeCoverage-results.dcvr"
+		#$htmlReport = $xmlReport -replace ".dcvr", ".html"
+		#
+		#exec {
+		#	& $dotCover report `
+		#		/Source=$xmlReport `
+		#		/Output=$htmlReport `
+		#		/ReportType=HTML
+		#}
 	}
 }
 
