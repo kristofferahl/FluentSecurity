@@ -214,17 +214,7 @@ function run_tests($source, $include=@("*.dll"), $dotCover) {
 	if ($dotCover -ne $null) {
 		write-host "Creating code coverage reports"
 		
-		$reports = get-childitem -path $reportsDir -filter "*.dcvr" | % { $_.FullName }
-		#$reportSources = $reports -join ';'
-		
-		#exec {
-		#	& $dotCover merge `
-		#		/Source="$reportSources" `
-		#		/Output="$fullReportsDir\CodeCoverage-results.dcvr"
-		#}
-		
-		#write-host "##teamcity[importData type='dotNetCoverage' tool='dotcover' path='$fullReportsDir\CodeCoverage-results.dcvr']"
-		
+		$reports = get-childitem -path $reportsDir -filter "*.dcvr" | % { $_.FullName }		
 		$reports | % {
 			$coverageReport = $_
 			$htmlReport = $_ -replace ".dcvr", ".html"
@@ -238,16 +228,6 @@ function run_tests($source, $include=@("*.dll"), $dotCover) {
 					/ReportType=HTML
 			}
 		}
-		
-		#$xmlReport = "$fullReportsDir\CodeCoverage-results.dcvr"
-		#$htmlReport = $xmlReport -replace ".dcvr", ".html"
-		#
-		#exec {
-		#	& $dotCover report `
-		#		/Source=$xmlReport `
-		#		/Output=$htmlReport `
-		#		/ReportType=HTML
-		#}
 	}
 }
 
