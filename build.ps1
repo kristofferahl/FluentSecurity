@@ -201,7 +201,7 @@ function run_tests($source, $include=@("*.dll"), $dotCover) {
 			if ($dotCover -ne $null) {
 				& $dotCover cover `
 					/TargetExecutable=$runner `
-					/TargetArguments=$assembly `
+					/TargetArguments="$assembly /framework:net-4.5 /xml=$fullReportsDir\$testReportName" `
 					/TargetWorkingDir="$buildDir\Output" `
 					/Filters="+:$projectName;-:*.Specification;" `
 					/Output="$reportsDir\$coverageReportName"
