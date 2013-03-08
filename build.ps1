@@ -14,6 +14,7 @@ properties {
 	$artifactsName	= "$product-$version-$configuration" -replace "\.","_"
 	
 	$buildNumber	= $null
+	$branch			= $null
 	$dotCover		= $null
 	
 	$copyright		= 'Copyright (c) 2009-2013, Kristoffer Ahl'
@@ -26,22 +27,37 @@ properties {
 	$deployMessage	= 'Executed Deploy!'
 }
 
-task default -depends Local
+task default -depends Run
 
-task Local {
-	Write-Host "Running local build" -fore Yellow
+task Run {
+	if ($branch -ne $null) {
+		$branch = $branch -replace "refs/heads/",""
+	} else {
+		try { $branch = (git rev-parse --abbrev-ref HEAD) } catch { $branch = 'unknown' }
+	}
+	
+	$script:buildId			= ([guid]::NewGuid().ToString().Substring(0,5))
+	$script:buildVersion	= ?: {$buildNumber -ne $null} {"$version.$buildNumber"} {"$version"}
+	$script:buildLabel		= ?: {$label -ne $null -and $label -ne ''} {"$version-$label"} {"$version"}
+	
+	if ($branch -ne 'master') {
+		$script:buildLabel	= ?: {$buildNumber -ne $null} {"$buildLabel-build$buildNumber"} {"$buildLabel-buildx$buildId"}
+	}
+	
+	# SemVer : 2.0.0-alpha.4+build.3 | 2.0.0-alpha.4
+	# NuGet  : 2.0.0-alpha4-build3 | 2.0.0-alpha4
+	
+	# SemVer : 2.0.0+build.3 | 2.0.0
+	# NuGet  : 2.0.0-build3 | 2.0.0
+
+	Write-Host "Running build" -fore Yellow
 	Write-Host "Product:        $product" -fore Yellow
 	Write-Host "Version:        $version" -fore Yellow
+	Write-Host "Label:          $label" -fore Yellow
 	Write-Host "Build version:  $buildVersion" -fore Yellow
 	Write-Host "Build label:    $buildLabel" -fore Yellow
-	Invoke-Task Deploy
-}
-task Release {
-	Write-Host "Running release build" -fore Yellow
-	Write-Host "Product:        $product" -fore Yellow
-	Write-Host "Version:        $version" -fore Yellow
-	Write-Host "Build version:  $buildVersion" -fore Yellow
-	Write-Host "Build label:    $buildLabel" -fore Yellow
+	Write-Host "Branch:         $branch" -fore Yellow
+	
 	Invoke-Task Deploy
 }
 
@@ -76,7 +92,6 @@ task Compile -depends Setup, Clean {
 }
 
 task Test -depends Compile {
-	write-host "Running specs... $dotCover"
 	run_tests $outputDir "*.Specification.dll" $dotCover
 	$testMessage
 }
@@ -114,21 +129,6 @@ task Deploy -depends Pack {
 
 task ? -Description "Help" {
 	Write-Documentation
-}
-
-taskSetup {
-	$script:buildVersion	= ?: {$buildNumber -ne $null} {"$version.$buildNumber"} {$version}
-
-	# TODO: Make sure buildLabel do not include build number when building from master
-	if ($label -ne $null -and $label -ne '') {
-		# SemVer : 2.0.0-alpha.4+build.3 | 2.0.0-alpha.4
-		# NuGet  : 2.0.0-alpha4-build3 | 2.0.0-alpha4
-		$script:buildLabel		= ?: {$buildNumber -ne $null} {"$version-$label-build$buildNumber"} {"$version-$label"}
-	} else {
-		# SemVer : 2.0.0+build.3 | 2.0.0
-		# NuGet  : 2.0.0-build3 | 2.0.0
-		$script:buildLabel		= ?: {$buildNumber -ne $null} {"$version-build$buildNumber"} {"$version"}
-	}
 }
 
 #------------------------------------------------------------
