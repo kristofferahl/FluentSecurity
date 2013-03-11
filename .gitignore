@@ -1,11 +1,13 @@
 #Project files
+/Build/Artifacts
 /Build/Reports
 /Build/Output
 /Build/CodeCoverage
 /Build/FluentSecurity.TestHelper.nuspec
 /Build/FluentSecurity.nuspec
-
-CommonAssemblyInfo.cs
+/Packages/*
+!/Packages/repositories.config
+SharedAssemblyInfo.cs
 
 #OS junk files
 [Tt]humbs.db
