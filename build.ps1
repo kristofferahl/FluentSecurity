@@ -17,6 +17,9 @@ properties {
 	$branch			= $null
 	$dotCover		= $null
 	
+	$mygetApiKey = $null
+	$nugetApiKey = $null
+	
 	$copyright		= 'Copyright (c) 2009-2013, Kristoffer Ahl'
 	
 	$setupMessage	= 'Executed Setup!'
@@ -124,6 +127,24 @@ task Deploy -depends Pack {
 	if (test-path $localFeedDir) {
 		copy_files "$artifactsDir\$artifactsName" $localFeedDir "*.nupkg"
 	}
+	
+	if ($branch -eq 'develop' -and $mygetApiKey -ne $null) {
+		$feed = 'http://www.myget.org/F/fluentsecurity/api/v2/package'
+		$apiKey = $mygetApiKey
+	}
+	
+	if ($branch -eq 'master' -and $nugetApiKey -ne $null) {
+		$feed = 'https://nuget.org/api/v2/'
+		$apiKey = $nugetApiKey
+	}
+	
+	if ($feed -ne $null -and $apiKey -ne $null) {
+		get-childitem -path "$artifactsDir\$artifactsName" -filter "*.nupkg" | % {
+			write-host "Pushing nuget package $_ to $feed" -fore cyan
+			nuget_exe push $_.FullName $apiKey -source $feed
+		}
+	}
+	
 	$deployMessage
 }
 
