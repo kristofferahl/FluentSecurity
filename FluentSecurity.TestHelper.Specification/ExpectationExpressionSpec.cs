@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Web.Mvc;
 using FluentSecurity.TestHelper.Expectations;
 using FluentSecurity.TestHelper.Specification.TestData;
 using NUnit.Framework;
@@ -143,12 +142,12 @@ namespace FluentSecurity.TestHelper.Specification
 	[Category("ExpectationExpressionSpec")]
 	public class When_creating_an_expectation_expression_for_TaskController_ActionResult
 	{
-		private ExpectationExpression<TaskController, ActionResult> _expectationExpression;
+		private ExpectationExpression<TaskController> _expectationExpression;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_expectationExpression = new ExpectationExpression<TaskController, ActionResult>(x => x.LongRunningAction());
+			_expectationExpression = new ExpectationExpression<TaskController>(x => x.LongRunningAction());
 			_expectationExpression.Add(new HasTypeExpectation<DenyInternetExplorerPolicy>());
 		}
 
@@ -175,12 +174,12 @@ namespace FluentSecurity.TestHelper.Specification
 	[Category("ExpectationExpressionSpec")]
 	public class When_creating_an_expectation_expression_for_TaskController_JsonResult
 	{
-		private ExpectationExpression<TaskController, JsonResult> _expectationExpression;
+		private ExpectationExpression<TaskController> _expectationExpression;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_expectationExpression = new ExpectationExpression<TaskController, JsonResult>(x => x.LongRunningJsonAction());
+			_expectationExpression = new ExpectationExpression<TaskController>(x => x.LongRunningJsonAction());
 			_expectationExpression.Add(new HasTypeExpectation<DenyInternetExplorerPolicy>());
 		}
 
