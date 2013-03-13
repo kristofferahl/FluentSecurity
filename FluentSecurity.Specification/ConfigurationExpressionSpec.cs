@@ -722,7 +722,7 @@ namespace FluentSecurity.Specification
 				{
 					Assert.That(x.ControllerType, Is.Not.Null);
 					Assert.That(x.ActionName, Is.Not.Empty);
-					Assert.True(typeof(ActionResult).IsAssignableFrom(x.ActionResultType));
+					Assert.True(x.ActionResultType.IsControllerActionReturnType());
 					return false;
 				}));
 

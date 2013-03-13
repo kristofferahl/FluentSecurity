@@ -82,7 +82,7 @@ namespace FluentSecurity
 					BindingFlags.Public |
 					BindingFlags.Instance
 				)
-				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType) || typeof(Task<ActionResult>).IsAssignableFrom(x.ReturnType))
+				.Where(methodInfo => methodInfo.ReturnType.IsControllerActionReturnType())
 				.Where(action => actionFilter.Invoke(new ControllerActionInfo(controllerType, action)))
 				.ToList();
 		}

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace FluentSecurity.Specification.TestData
@@ -9,9 +10,9 @@ namespace FluentSecurity.Specification.TestData
 			return View();
 		}
 
-		public ActionResult ListPosts()
+		public Task<ActionResult> ListPosts()
 		{
-			return View();
+			return Task.Factory.StartNew<ActionResult>(View);
 		}
 
 		public ActionResult AddPost()
@@ -39,9 +40,9 @@ namespace FluentSecurity.Specification.TestData
 			return View();
 		}
 
-		public JsonResult AjaxList()
+		public Task<JsonResult> AjaxList()
 		{
-			return Json(new {});
+			return Task.Factory.StartNew(() => Json(new {}));
 		}
 
 		private void PrivateMethodThatDoesNothing()
