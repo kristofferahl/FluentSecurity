@@ -88,6 +88,16 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
+		/// Returns true if the type matches a controller action return type.
+		/// </summary>
+		/// <param name="returnType"></param>
+		/// <returns></returns>
+		internal static bool IsControllerActionReturnType(this Type returnType)
+		{
+			return typeof (ActionResult).IsAssignableFrom(returnType) || typeof (Task<ActionResult>).IsAssignableFromGenericType(returnType);
+		}
+
+		/// <summary>
 		/// Gets the area name of the route
 		/// </summary>
 		/// <param name="routeData">Route data</param>
