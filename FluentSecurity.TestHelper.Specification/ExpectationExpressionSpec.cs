@@ -137,4 +137,68 @@ namespace FluentSecurity.TestHelper.Specification
 			Assert.That(_expectationExpression.Action, Is.EqualTo("AliasedAction"));
 		}
 	}
+
+	[TestFixture]
+	[Category("ExpectationExpressionSpec")]
+	public class When_creating_an_expectation_expression_for_TaskController_ActionResult
+	{
+		private ExpectationExpression<TaskController> _expectationExpression;
+
+		[SetUp]
+		public void SetUp()
+		{
+			_expectationExpression = new ExpectationExpression<TaskController>(x => x.LongRunningAction());
+			_expectationExpression.Add(new HasTypeExpectation<DenyInternetExplorerPolicy>());
+		}
+
+		[Test]
+		public void Should_have_type_set_to_TypeController()
+		{
+			Assert.That(_expectationExpression.Controller, Is.EqualTo(typeof(TaskController)));
+		}
+
+		[Test]
+		public void Should_have_action_set_to_LongRunningAction()
+		{
+			Assert.That(_expectationExpression.Action, Is.EqualTo("LongRunningAction"));
+		}
+
+		[Test]
+		public void Should_have_1_expectations()
+		{
+			Assert.That(_expectationExpression.Expectations.Count(), Is.EqualTo(1));
+		}
+	}
+
+	[TestFixture]
+	[Category("ExpectationExpressionSpec")]
+	public class When_creating_an_expectation_expression_for_TaskController_JsonResult
+	{
+		private ExpectationExpression<TaskController> _expectationExpression;
+
+		[SetUp]
+		public void SetUp()
+		{
+			_expectationExpression = new ExpectationExpression<TaskController>(x => x.LongRunningJsonAction());
+			_expectationExpression.Add(new HasTypeExpectation<DenyInternetExplorerPolicy>());
+		}
+
+		[Test]
+		public void Should_have_type_set_to_TypeController()
+		{
+			Assert.That(_expectationExpression.Controller, Is.EqualTo(typeof(TaskController)));
+		}
+
+		[Test]
+		public void Should_have_action_set_to_LongRunningAction()
+		{
+			Assert.That(_expectationExpression.Action, Is.EqualTo("LongRunningJsonAction"));
+		}
+
+		[Test]
+		public void Should_have_1_expectations()
+		{
+			Assert.That(_expectationExpression.Expectations.Count(), Is.EqualTo(1));
+		}
+	}
 }

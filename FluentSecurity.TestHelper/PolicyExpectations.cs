@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Web.Mvc;
 
 namespace FluentSecurity.TestHelper
 {
@@ -44,7 +43,7 @@ namespace FluentSecurity.TestHelper
 			return expression;
 		}
 
-		public ExpectationExpression<TController> For<TController>(Expression<Func<TController, ActionResult>> actionExpression)
+		public ExpectationExpression<TController> For<TController>(Expression<Func<TController, object>> actionExpression)
 		{
 			var expression = new ExpectationExpression<TController>(actionExpression);
 			_expectationsExpressions.Add(expression);
