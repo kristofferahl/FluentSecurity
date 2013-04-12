@@ -8,12 +8,12 @@ namespace FluentSecurity.Specification.Helpers
 {
 	public static class MvcHelpers
 	{
-		public static ActionExecutingContext GetFilterContextFor<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
+		public static AuthorizationContext GetAuthorizationContextFor<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
 		{
 			var controllerName = typeof(TController).GetControllerName();
 			var actionName = actionExpression.GetActionName();
 
-			var filterContext = MockRepository.GenerateMock<ActionExecutingContext>();
+			var filterContext = MockRepository.GenerateMock<AuthorizationContext>();
 
 			var controllerDescriptor = MockRepository.GenerateMock<ControllerDescriptor>();
 			controllerDescriptor.Expect(x => x.ControllerName).Return(controllerName).Repeat.Any();
