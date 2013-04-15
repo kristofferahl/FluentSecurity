@@ -43,13 +43,16 @@ namespace FluentSecurity.Specification.Diagnostics
 		public void Should_handle_type_load_exception_and_find_1_event_listener()
 		{
 			// Arrange
+			var log = new List<string>();
+			SecurityDoctor.Register(e => log.Add(e.Message));
 			var throwException = true;
+			const string expectedExceptionMessage = "Could not load type X.";
 			var scanner = new SecurityEventListenerScanner(assembly =>
 			{
 				if (throwException)
 				{
 					throwException = false;
-					throw new TypeLoadException("Could not load type");
+					throw new TypeLoadException(expectedExceptionMessage);
 				}
 				return assembly.GetExportedTypes();
 			});
@@ -64,6 +67,7 @@ namespace FluentSecurity.Specification.Diagnostics
 
 			// Assert
 			Assert.That(types.Count(), Is.EqualTo(1));
+			Assert.That(log.Single(), Is.EqualTo(expectedExceptionMessage));
 		}
 	}
 }

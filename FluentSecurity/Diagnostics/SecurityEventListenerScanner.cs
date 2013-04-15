@@ -25,8 +25,9 @@ namespace FluentSecurity.Diagnostics
 				{
 					return _assemblyTypeProvider.Invoke(a);
 				}
-				catch (TypeLoadException)
+				catch (TypeLoadException exception)
 				{
+					Publish.ConfigurationEvent(() => exception.Message);
 					return new Type[0];
 				}
 			}).Where(TypeIsExternalListener).ToList();
