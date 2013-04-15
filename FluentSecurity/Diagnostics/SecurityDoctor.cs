@@ -16,7 +16,7 @@ namespace FluentSecurity.Diagnostics
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.AssembliesFromApplicationBaseDirectory();
-			assemblyScanner.With<SecurityEventListenerScanner>();
+			assemblyScanner.With(new SecurityEventListenerScanner(IgnoreTypeLoadExceptions));
 			var eventListeners = assemblyScanner.Scan();
 
 			foreach (var eventListenerType in eventListeners)
@@ -26,6 +26,7 @@ namespace FluentSecurity.Diagnostics
 			}
 		}
 
+		public static bool IgnoreTypeLoadExceptions { get; set; }
 		internal static IList<ISecurityEventListener> Listeners { get; private set; }
 
 		public static void Register(Action<ISecurityEvent> eventListener)
@@ -41,6 +42,7 @@ namespace FluentSecurity.Diagnostics
 
 		public static void Reset()
 		{
+			IgnoreTypeLoadExceptions = true;
 			Listeners = null;
 		}
 	}

@@ -9,12 +9,14 @@ namespace FluentSecurity.Diagnostics
 	public class SecurityEventListenerScanner : ITypeScanner
 	{
 		private readonly Func<Assembly, Type[]> _assemblyTypeProvider;
+		private readonly bool _ignoreTypeLoadExceptions;
 
-		public SecurityEventListenerScanner() : this(assembly => assembly.GetExportedTypes()) {}
+		public SecurityEventListenerScanner(bool ignoreTypeLoadExceptions) : this(ignoreTypeLoadExceptions, assembly => assembly.GetExportedTypes()) {}
 
-		public SecurityEventListenerScanner(Func<Assembly, Type[]> assemblyTypeProvider)
+		public SecurityEventListenerScanner(bool ignoreTypeLoadExceptions, Func<Assembly, Type[]> assemblyTypeProvider)
 		{
 			_assemblyTypeProvider = assemblyTypeProvider;
+			_ignoreTypeLoadExceptions = ignoreTypeLoadExceptions;
 		}
 
 		public IEnumerable<Type> Scan(IEnumerable<Assembly> assemblies)
@@ -28,6 +30,10 @@ namespace FluentSecurity.Diagnostics
 				catch (TypeLoadException exception)
 				{
 					Publish.ConfigurationEvent(() => exception.Message);
+
+					if (!_ignoreTypeLoadExceptions)
+						throw;
+
 					return new Type[0];
 				}
 			}).Where(TypeIsExternalListener).ToList();
