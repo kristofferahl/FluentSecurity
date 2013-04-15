@@ -21,22 +21,24 @@ namespace FluentSecurity.Diagnostics
 
 		public IEnumerable<Type> Scan(IEnumerable<Assembly> assemblies)
 		{
-			return assemblies.SelectMany(a =>
+			return assemblies.SelectMany(GetTypesFromAssembly).Where(TypeIsExternalListener).ToList();
+		}
+
+		private IEnumerable<Type> GetTypesFromAssembly(Assembly assembly)
+		{
+			try
 			{
-				try
-				{
-					return _assemblyTypeProvider.Invoke(a);
-				}
-				catch (TypeLoadException exception)
-				{
-					Publish.ConfigurationEvent(() => exception.Message);
+				return _assemblyTypeProvider.Invoke(assembly);
+			}
+			catch (TypeLoadException exception)
+			{
+				Publish.ConfigurationEvent(() => exception.Message);
 
-					if (!_ignoreTypeLoadExceptions)
-						throw;
+				if (!_ignoreTypeLoadExceptions)
+					throw;
 
-					return new Type[0];
-				}
-			}).Where(TypeIsExternalListener).ToList();
+				return new Type[0];
+			}
 		}
 
 		private static bool TypeIsExternalListener(Type type)
