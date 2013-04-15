@@ -132,6 +132,8 @@ namespace FluentSecurity.Specification.Policy
 
 		public abstract class BaseContext : ISecurityContext
 		{
+			public Guid Id { get; set; }
+
 			public dynamic Data { get; set; }
 
 			public bool CurrentUserIsAuthenticated()

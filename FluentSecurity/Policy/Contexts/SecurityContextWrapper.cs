@@ -15,6 +15,11 @@ namespace FluentSecurity.Policy.Contexts
 			_securityContext = securityContext;
 		}
 
+		public Guid Id
+		{
+			get { return _securityContext.Id; }
+		}
+
 		public dynamic Data
 		{
 			get { return _securityContext.Data; }

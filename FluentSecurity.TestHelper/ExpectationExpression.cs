@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Web.Mvc;
 using FluentSecurity.TestHelper.Expectations;
 
 namespace FluentSecurity.TestHelper
 {
 	public class ExpectationExpression<TController> : ExpectationExpression
 	{
-		public ExpectationExpression() : this(null) {}
-
-		public ExpectationExpression(Expression<Func<TController, ActionResult>> actionExpression)
+		public ExpectationExpression()
 		{
-			Controller = typeof (TController);
-			
+			Controller = typeof(TController);
+		}
+
+		public ExpectationExpression(Expression<Func<TController, object>> actionExpression) : this()
+		{
 			if (actionExpression != null)
 				Action = actionExpression.GetActionName();
 		}

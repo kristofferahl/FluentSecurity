@@ -1,4 +1,5 @@
 ﻿<%@ Page MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<HomeView>" %>
+<%@ Import Namespace="FluentSecurity.SampleApplication" %>
 <asp:Content ContentPlaceHolderID="TitleContent" runat="server">Getting started</asp:Content>
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
     <h1>Fluent Security</h1>
@@ -29,4 +30,24 @@
 	
 	<h2>What do I have</h2>
 	<pre><%= Model.WhatDoIHave %></pre>
+	
+	<h2>Here's what is happening behind the scenes</h2>
+	<table style="font-size: .7em; table-layout: fixed;">
+		<thead>
+			<tr>
+				<th style="width: 190px;">Correlation Id</th>
+				<th>Message</th>
+				<th style="width: 80px;">Completed in</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% foreach (var @event in Bootstrapper.Events) { %>
+			<tr>
+				<td><%= @event.CorrelationId %></td>
+				<td style="word-wrap: break-word"><%= Html.Encode(@event.Message).Replace(Environment.NewLine, "<br/>") %></td>
+				<td><%= @event.CompletedInMilliseconds != null ? @event.CompletedInMilliseconds + " ms" : "-" %></td>
+			</tr>
+		<% } %>
+		</tbody>
+	</table>
 </asp:Content>

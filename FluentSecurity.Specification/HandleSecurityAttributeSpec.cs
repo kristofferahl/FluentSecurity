@@ -70,10 +70,10 @@ namespace FluentSecurity.Specification
 			var securityHandler = new Mock<ISecurityHandler>();
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
-			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
+			var filterContext = MvcHelpers.GetAuthorizationContextFor<BlogController>(x => x.Index());
 
 			// Act
-			handleSecurityAttribute.OnActionExecuting(filterContext);
+			handleSecurityAttribute.OnAuthorization(filterContext);
 
 			// Assert
 			Assert.That(filterContext.Result, Is.Null);
@@ -87,10 +87,10 @@ namespace FluentSecurity.Specification
 			var securityHandler = new Mock<ISecurityHandler>();
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
-			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
+			var filterContext = MvcHelpers.GetAuthorizationContextFor<BlogController>(x => x.Index());
 
 			// Act
-			handleSecurityAttribute.OnActionExecuting(filterContext);
+			handleSecurityAttribute.OnAuthorization(filterContext);
 
 			// Assert
 			Assert.That(_securityContext.Data.RouteValues, Is.Not.Null);
@@ -118,10 +118,10 @@ namespace FluentSecurity.Specification
 			securityHandler.Setup(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", It.IsAny<ISecurityContext>())).Returns(expectedResult);
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
-			var filterContext = MvcHelpers.GetFilterContextFor<BlogController>(x => x.Index());
+			var filterContext = MvcHelpers.GetAuthorizationContextFor<BlogController>(x => x.Index());
 
 			// Act
-			handleSecurityAttribute.OnActionExecuting(filterContext);
+			handleSecurityAttribute.OnAuthorization(filterContext);
 
 			// Assert
 			Assert.That(filterContext.Result, Is.EqualTo(expectedResult));

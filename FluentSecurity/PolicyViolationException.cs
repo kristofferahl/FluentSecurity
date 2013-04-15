@@ -4,7 +4,7 @@ namespace FluentSecurity
 {
 	public class PolicyViolationException : Exception
 	{
-		internal PolicyViolationException(PolicyResult policyResult, ISecurityContext securityContext) : base(policyResult.Message)
+		public PolicyViolationException(PolicyResult policyResult, ISecurityContext securityContext) : base(policyResult.Message)
 		{
 			PolicyResult = policyResult;
 			SecurityContext = securityContext;

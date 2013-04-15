@@ -21,7 +21,7 @@ namespace FluentSecurity.Internals
 			return new ConfigurationErrorsException(message + requestDescriptionString);
 		}
 
-		public static string CreateRequestDescriptionString(IRequestDescription requestDescription)
+		internal static string CreateRequestDescriptionString(IRequestDescription requestDescription)
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine();

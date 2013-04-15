@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using FluentSecurity.Configuration;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
@@ -159,6 +160,60 @@ namespace FluentSecurity.Specification
 			Assert.That(policyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "Index"), Is.Not.Null);
 			Assert.That(policyContainers.GetContainerFor(NameHelper.Controller<BlogController>(), "AddPost"), Is.Not.Null);
 			Assert.That(policyContainers.Count, Is.EqualTo(2));
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_policycontainter_for_async_actions
+	{
+		[Test]
+		public void Should_have_policycontainer_for_TaskController_LongRunningAction()
+		{
+			// Arrange
+			var configurationExpression = new RootConfiguration();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<TaskController>(x => x.LongRunningAction());
+
+			// Assert
+			var policyContainer = configurationExpression.Runtime.PolicyContainers.First();
+
+			Assert.That(policyContainer.ControllerName, Is.EqualTo(NameHelper.Controller<TaskController>()));
+			Assert.That(policyContainer.ActionName, Is.EqualTo("LongRunningAction"));
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Should_have_policycontainer_for_TaskController_LongRunningJsonAction()
+		{
+			// Arrange
+			var configurationExpression = new RootConfiguration();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<TaskController>(x => x.LongRunningJsonAction());
+
+			// Assert
+			var policyContainer = configurationExpression.Runtime.PolicyContainers.First();
+
+			Assert.That(policyContainer.ControllerName, Is.EqualTo(NameHelper.Controller<TaskController>()));
+			Assert.That(policyContainer.ActionName, Is.EqualTo("LongRunningJsonAction"));
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(1));
+		}
+
+		private class TaskController : AsyncController
+		{
+			public Task<ActionResult> LongRunningAction()
+			{
+				return null;
+			}
+
+			public Task<JsonResult> LongRunningJsonAction()
+			{
+				return null;
+			}
 		}
 	}
 
@@ -667,7 +722,7 @@ namespace FluentSecurity.Specification
 				{
 					Assert.That(x.ControllerType, Is.Not.Null);
 					Assert.That(x.ActionName, Is.Not.Empty);
-					Assert.True(typeof(ActionResult).IsAssignableFrom(x.ActionResultType));
+					Assert.True(x.ActionResultType.IsControllerActionReturnType());
 					return false;
 				}));
 

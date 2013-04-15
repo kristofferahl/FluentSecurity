@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Dynamic;
 using FluentSecurity.ServiceLocation;
@@ -7,36 +8,28 @@ namespace FluentSecurity
 {
 	public class SecurityContext : ISecurityContext
 	{
-		private readonly ExpandoObject _data;
-		private readonly ISecurityRuntime _runtime;
-
 		private SecurityContext(ISecurityRuntime runtime)
 		{
-			_data = new ExpandoObject();
-			_runtime = runtime;
+			Id = Guid.NewGuid();
+			Data = new ExpandoObject();
+			Runtime = runtime;
 
 			var modifyer = runtime.SecurityContextModifyer;
 			if (modifyer != null) modifyer.Invoke(this);
 		}
 
-		public dynamic Data
-		{
-			get { return _data; }
-		}
+		public Guid Id { get; private set; }
+		public dynamic Data { get; private set; }
+		public ISecurityRuntime Runtime { get; private set; }
 
 		public bool CurrentUserIsAuthenticated()
 		{
-			return _runtime.IsAuthenticated.Invoke();
+			return Runtime.IsAuthenticated.Invoke();
 		}
 
 		public IEnumerable<object> CurrentUserRoles()
 		{
-			return _runtime.Roles != null ? _runtime.Roles.Invoke() : null;
-		}
-
-		public ISecurityRuntime Runtime
-		{
-			get { return _runtime; }
+			return Runtime.Roles != null ? Runtime.Roles.Invoke() : null;
 		}
 
 		public static ISecurityContext Current
@@ -71,7 +64,7 @@ namespace FluentSecurity
 					context = new SecurityContext(securityConfiguration.Runtime);
 				}
 			}
-			
+
 			return context;
 		}
 	}

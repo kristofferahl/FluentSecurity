@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Policy;
@@ -257,4 +258,142 @@ namespace FluentSecurity.Specification
 			Assert.That(policy.GetPolicyType(), Is.EqualTo(typeof(IgnorePolicy)));
 		}
 	}
+
+	[TestFixture]
+	[Category("ExtensionsSpecs")]
+	public class When_checking_if_a_type_is_a_controller_action_return_type
+	{
+		[Test]
+		public void Should_be_true_for_ActionResult()
+		{
+			Assert.That(typeof(ActionResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_ContentResult()
+		{
+			Assert.That(typeof(ContentResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_EmptyResult()
+		{
+			Assert.That(typeof(EmptyResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_FileResult()
+		{
+			Assert.That(typeof(FileResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_HttpStatusCodeResult()
+		{
+			Assert.That(typeof(HttpStatusCodeResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_JavaScriptResult()
+		{
+			Assert.That(typeof(JavaScriptResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_JsonResult()
+		{
+			Assert.That(typeof(JsonResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_PartialViewResult()
+		{
+			Assert.That(typeof(PartialViewResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_RedirectResult()
+		{
+			Assert.That(typeof(RedirectResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_RedirectToRouteResult()
+		{
+			Assert.That(typeof(RedirectToRouteResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_ViewResult()
+		{
+			Assert.That(typeof(ViewResult).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_ActionResult()
+		{
+			Assert.That(typeof(Task<ActionResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_ContentResult()
+		{
+			Assert.That(typeof(Task<ContentResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_EmptyResult()
+		{
+			Assert.That(typeof(Task<EmptyResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_FileResult()
+		{
+			Assert.That(typeof(Task<FileResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_HttpStatusCodeResult()
+		{
+			Assert.That(typeof(Task<HttpStatusCodeResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_JavaScriptResult()
+		{
+			Assert.That(typeof(Task<JavaScriptResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_JsonResult()
+		{
+			Assert.That(typeof(Task<JsonResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_PartialViewResult()
+		{
+			Assert.That(typeof(Task<PartialViewResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_RedirectResult()
+		{
+			Assert.That(typeof(Task<RedirectResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_RedirectToRouteResult()
+		{
+			Assert.That(typeof(Task<RedirectToRouteResult>).IsControllerActionReturnType(), Is.True);
+		}
+
+		[Test]
+		public void Should_be_true_for_Task_of_ViewResult()
+		{
+			Assert.That(typeof(Task<ViewResult>).IsControllerActionReturnType(), Is.True);
+		}
+	}
+
 }

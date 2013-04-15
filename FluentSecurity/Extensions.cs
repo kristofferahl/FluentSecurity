@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Caching;
@@ -81,9 +82,19 @@ namespace FluentSecurity
 					BindingFlags.Public |
 					BindingFlags.Instance
 				)
-				.Where(x => typeof(ActionResult).IsAssignableFrom(x.ReturnType))
+				.Where(methodInfo => methodInfo.ReturnType.IsControllerActionReturnType())
 				.Where(action => actionFilter.Invoke(new ControllerActionInfo(controllerType, action)))
 				.ToList();
+		}
+
+		/// <summary>
+		/// Returns true if the type matches a controller action return type.
+		/// </summary>
+		/// <param name="returnType"></param>
+		/// <returns></returns>
+		internal static bool IsControllerActionReturnType(this Type returnType)
+		{
+			return typeof (ActionResult).IsAssignableFrom(returnType) || typeof (Task<ActionResult>).IsAssignableFromGenericType(returnType);
 		}
 
 		/// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Web.Mvc;
 
 namespace FluentSecurity.TestHelper
 {
@@ -13,18 +12,18 @@ namespace FluentSecurity.TestHelper
 
 		internal PolicyExpectations Expectations { get; private set; }
 
-		public ExpectationExpression Expect<TController>(Expression<Func<TController, ActionResult>> actionExpression) where TController : IController
+		public ExpectationExpression Expect<TController>(Expression<Func<TController, object>> actionExpression)
 		{
 			return Expectations.For(actionExpression);
 		}
 
-		public ExpectationExpression Expect<TController>() where TController : IController
+		public ExpectationExpression Expect<TController>()
 		{
 			return Expectations.For<TController>();
 		}
 	}
 
-	public class PolicyExpectationsExpression<TController> where TController : IController
+	public class PolicyExpectationsExpression<TController>
 	{
 		public PolicyExpectationsExpression()
 		{
@@ -33,7 +32,7 @@ namespace FluentSecurity.TestHelper
 
 		internal PolicyExpectations Expectations { get; private set; }
 
-		public ExpectationExpression Expect(Expression<Func<TController, ActionResult>> actionExpression)
+		public ExpectationExpression Expect(Expression<Func<TController, object>> actionExpression)
 		{
 			return Expectations.For(actionExpression);
 		}
