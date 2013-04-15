@@ -8,9 +8,28 @@ namespace FluentSecurity.Diagnostics
 {
 	public class SecurityEventListenerScanner : ITypeScanner
 	{
+		private readonly Func<Assembly, Type[]> _assemblyTypeProvider;
+
+		public SecurityEventListenerScanner() : this(assembly => assembly.GetExportedTypes()) {}
+
+		public SecurityEventListenerScanner(Func<Assembly, Type[]> assemblyTypeProvider)
+		{
+			_assemblyTypeProvider = assemblyTypeProvider;
+		}
+
 		public IEnumerable<Type> Scan(IEnumerable<Assembly> assemblies)
 		{
-			return assemblies.SelectMany(a => a.GetExportedTypes()).Where(TypeIsExternalListener).ToList();
+			return assemblies.SelectMany(a =>
+			{
+				try
+				{
+					return _assemblyTypeProvider.Invoke(a);
+				}
+				catch (TypeLoadException)
+				{
+					return new Type[0];
+				}
+			}).Where(TypeIsExternalListener).ToList();
 		}
 
 		private static bool TypeIsExternalListener(Type type)
