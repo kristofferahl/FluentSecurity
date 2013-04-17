@@ -1,7 +1,7 @@
 properties {
 	$product		= 'FluentSecurity'
 	$version		= '2.0.0'
-	$label			= 'beta1'
+	$label			= 'beta2'
 	$configuration	= 'release'
 	$useVerbose		= $false
 
@@ -135,14 +135,14 @@ task Deploy -depends Pack {
 	}
 	
 	if ($branch -eq 'master' -and $nugetApiKey -ne $null) {
-		$feed = 'https://nuget.org/api/v2/'
+		$feed = 'https://nuget.org/'
 		$apiKey = $nugetApiKey
 	}
 	
 	if ($feed -ne $null -and $apiKey -ne $null) {
 		get-childitem -path "$artifactsDir\$artifactsName" -filter "*.nupkg" | % {
 			write-host "Pushing nuget package $_ to $feed" -fore cyan
-			nuget_exe push $_.FullName $apiKey -source $feed
+			nuget_exe push $_.FullName -apikey $apiKey -source $feed
 		}
 	}
 	
