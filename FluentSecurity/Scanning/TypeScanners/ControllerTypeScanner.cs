@@ -26,8 +26,8 @@ namespace FluentSecurity.Scanning.TypeScanners
 			foreach (var assembly in assemblies)
 			{
 				var controllerTypes = ControllerType.IsGenericType
-					? assembly.GetExportedTypes().Where(type => ControllerType.IsAssignableFromGenericType(type)).ToList()
-					: assembly.GetExportedTypes().Where(type => ControllerType.IsAssignableFrom(type)).ToList();
+					? assembly.GetLoadableExportedTypes().Where(type => ControllerType.IsAssignableFromGenericType(type)).ToList()
+					: assembly.GetLoadableExportedTypes().Where(type => ControllerType.IsAssignableFrom(type)).ToList();
 
 				var filteredControllerTypes = controllerTypes.Where(type => !type.IsAbstract);
 				results.AddRange(filteredControllerTypes);

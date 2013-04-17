@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentSecurity.Configuration;
+using FluentSecurity.Internals;
 
 namespace FluentSecurity.Scanning.TypeScanners
 {
@@ -15,8 +16,7 @@ namespace FluentSecurity.Scanning.TypeScanners
 			var results = new List<Type>();
 			foreach (var assembly in assemblies)
 			{
-				
-				var profileTypes = assembly.GetExportedTypes()
+				var profileTypes = assembly.GetLoadableExportedTypes()
 					.Where(type => ProfileType.IsAssignableFrom(type) && type != ProfileType)
 					.ToList();
 

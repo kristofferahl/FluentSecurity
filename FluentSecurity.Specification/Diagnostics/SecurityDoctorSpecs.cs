@@ -24,12 +24,6 @@ namespace FluentSecurity.Specification.Diagnostics
 		}
 
 		[Test]
-		public void Should_ignore_TypeLoadExceptions()
-		{
-			Assert.That(SecurityDoctor.IgnoreTypeLoadExceptions, Is.True);
-		}
-
-		[Test]
 		public void Should_register_event_listener()
 		{
 			// Arrange
