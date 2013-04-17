@@ -106,6 +106,7 @@
     <Compile Include="Diagnostics\SecurityDoctorSpecs.cs" />
     <Compile Include="Diagnostics\PublishSpec.cs" />
     <Compile Include="Diagnostics\SecurityEventListenerScannerSpec.cs" />
+    <Compile Include="Internals\AssemblyExtensionsSpec.cs" />
     <Compile Include="Internals\ExceptionFactorySpec.cs" />
     <Compile Include="Features\PolicyResultsCachingFeature.feature.cs">
       <DependentUpon>PolicyResultsCachingFeature.feature</DependentUpon>
