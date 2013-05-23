@@ -143,6 +143,109 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_policycontainter_for_void_action
+	{
+		[Test]
+		public void Should_have_policycontainer_for_controller_with_void_action()
+		{
+			// Arrange
+			var configurationExpression = new RootConfiguration();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<ParentVoidActionController>(x => x.VoidAction());
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Should_have_policycontainer_for_void_action_from_parent_controller()
+		{
+			// Arrange
+			var configurationExpression = new RootConfiguration();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<ChildVoidActionController>(x => x.VoidAction());
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(1));
+		}
+
+		private class ParentVoidActionController : Controller
+		{
+			public void VoidAction()
+			{
+				
+			}
+		}
+
+		private class ChildVoidActionController:ParentVoidActionController
+		{
+			
+		}
+	}
+
+	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_policycontainter_using_ByController_convention
+	{
+		[Test]
+		public void Should_have_policycontainer_for_all_actions_including_void_actions()
+		{
+			// Arrange
+			var configurationExpression = new RootConfiguration();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<ParentVoidActionController>();
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(2));
+		}
+
+		public void Should_have_policycontainer_for_all_actions_including_inherited_void_actions()
+		{
+			// Arrange
+			var configurationExpression = new RootConfiguration();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<ChildVoidActionController>();
+
+			// Assert
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(2));
+		}
+
+		private class ParentVoidActionController : Controller
+		{
+			public void VoidAction()
+			{
+
+			}
+
+			public ActionResult DummyAction()
+			{
+				return new EmptyResult();
+			}
+		}
+
+		private class ChildVoidActionController : ParentVoidActionController
+		{
+			public void VoidAction()
+			{
+
+			}
+
+			public ActionResult DummyAction()
+			{
+				return new EmptyResult();
+			}
+		}
+	}
+
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
 	public class When_adding_a_policycontainter_for_Blog_Index_and_AddPost
 	{
 		[Test]
