@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Web.Mvc;
 using FluentSecurity.TestHelper.Expectations;
 using FluentSecurity.TestHelper.Specification.TestData;
 using NUnit.Framework;
@@ -184,7 +185,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_type_set_to_TypeController()
+		public void Should_have_type_set_to_TaskController()
 		{
 			Assert.That(_expectationExpression.Controller, Is.EqualTo(typeof(TaskController)));
 		}
@@ -193,6 +194,38 @@ namespace FluentSecurity.TestHelper.Specification
 		public void Should_have_action_set_to_LongRunningAction()
 		{
 			Assert.That(_expectationExpression.Action, Is.EqualTo("LongRunningJsonAction"));
+		}
+
+		[Test]
+		public void Should_have_1_expectations()
+		{
+			Assert.That(_expectationExpression.Expectations.Count(), Is.EqualTo(1));
+		}
+	}
+
+	[TestFixture]
+	[Category("ExpectationExpressionSpec")]
+	public class When_creating_an_expectation_expression_for_SampleController_VoidAction
+	{
+		private ExpectationExpression<SampleController> _expectationExpression;
+
+		[SetUp]
+		public void SetUp()
+		{
+			_expectationExpression = new ExpectationExpression<SampleController>(x => x.VoidAction());
+			_expectationExpression.Add(new HasTypeExpectation<DenyInternetExplorerPolicy>());
+		}
+
+		[Test]
+		public void Should_have_type_set_to_SampleController()
+		{
+			Assert.That(_expectationExpression.Controller, Is.EqualTo(typeof(SampleController)));
+		}
+
+		[Test]
+		public void Should_have_action_set_to_VoidAction()
+		{
+			Assert.That(_expectationExpression.Action, Is.EqualTo("VoidAction"));
 		}
 
 		[Test]

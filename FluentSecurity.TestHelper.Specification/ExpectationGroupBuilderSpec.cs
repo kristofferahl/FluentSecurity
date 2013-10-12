@@ -110,7 +110,7 @@ namespace FluentSecurity.TestHelper.Specification
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);
 
 			// Assert
-			Assert.That(expectationGroups.Count(), Is.EqualTo(9));
+			Assert.That(expectationGroups.Count(), Is.EqualTo(10));
 		}
 	}
 }

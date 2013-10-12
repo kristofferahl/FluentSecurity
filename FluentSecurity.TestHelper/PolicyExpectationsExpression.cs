@@ -17,6 +17,11 @@ namespace FluentSecurity.TestHelper
 			return Expectations.For(actionExpression);
 		}
 
+		public ExpectationExpression Expect<TController>(Expression<Action<TController>> actionExpression)
+		{
+			return Expectations.For(actionExpression);
+		}
+
 		public ExpectationExpression Expect<TController>()
 		{
 			return Expectations.For<TController>();
