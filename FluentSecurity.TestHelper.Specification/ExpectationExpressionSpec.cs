@@ -184,7 +184,7 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_type_set_to_TypeController()
+		public void Should_have_type_set_to_TaskController()
 		{
 			Assert.That(_expectationExpression.Controller, Is.EqualTo(typeof(TaskController)));
 		}
