@@ -89,16 +89,17 @@ namespace FluentSecurity
 
 		internal static bool IsValidActionMethod(this MethodInfo methodInfo)
 		{
-			return methodInfo.ReturnType.IsControllerActionReturnType() &&
-			       !methodInfo.IsSpecialName && !methodInfo.IsDeclaredBy<Controller>();
+			return
+				methodInfo.ReturnType.IsControllerActionReturnType() &&
+				!methodInfo.IsSpecialName &&
+				!methodInfo.IsDeclaredBy<Controller>();
 		}
 
 		/// <summary>
 		/// Returns true if the passed method is declared by the type T.
 		/// </summary>
 		/// <param name="methodInfo"></param>
-		/// <returns></returns>
-		//(Chandu) The method below is to simulate the way System.Web.Mvc.ActionMethodSelector.IsValidActionMethod identifies methods of a controller as valid actions
+		/// <returns>A boolean</returns>
 		internal static bool IsDeclaredBy<T>(this MethodInfo methodInfo)
 		{
 			var passedType = typeof (T);
@@ -110,7 +111,7 @@ namespace FluentSecurity
 		/// Returns true if the type matches a controller action return type.
 		/// </summary>
 		/// <param name="returnType"></param>
-		/// <returns></returns>
+		/// <returns>A boolean</returns>
 		internal static bool IsControllerActionReturnType(this Type returnType)
 		{
 			return 
@@ -118,7 +119,7 @@ namespace FluentSecurity
 					typeof (ActionResult).IsAssignableFrom(returnType) || 
 					typeof (Task<ActionResult>).IsAssignableFromGenericType(returnType) ||
 					typeof(void).IsAssignableFrom(returnType)
-					);
+				);
 		}
 
 		/// <summary>
