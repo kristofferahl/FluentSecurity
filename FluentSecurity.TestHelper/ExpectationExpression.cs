@@ -17,6 +17,12 @@ namespace FluentSecurity.TestHelper
 			if (actionExpression != null)
 				Action = actionExpression.GetActionName();
 		}
+
+		public ExpectationExpression(Expression<Action<TController>> actionExpression) : this()
+		{
+			if (actionExpression != null)
+				Action = actionExpression.GetActionName();
+		}
 	}
 
 	public abstract class ExpectationExpression

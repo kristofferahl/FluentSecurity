@@ -53,6 +53,7 @@ namespace FluentSecurity.TestHelper.Specification
 					.DoesNotHave<DenyAnonymousAccessPolicy>()
 					.DoesNotHave<RequireAnyRolePolicy>(p => p.RolesRequired.Contains(UserRole.UserViewer))
 					.Has<RequireAnyRolePolicy>(p => p.RolesRequired.Contains(UserRole.UserEditor));
+				expectations.Expect<SampleController>(x => x.VoidAction()).Has<DenyAnonymousAccessPolicy>();
 			});
 
 			Assert.That(results.All(x => x.ExpectationsMet), results.ErrorMessages());
@@ -76,6 +77,30 @@ namespace FluentSecurity.TestHelper.Specification
 			SecurityConfigurator.Configure(configuration => configuration.For<SampleController>().DenyAnonymousAccess());
 			var policyExpectations = new PolicyExpectations();
 			
+			policyExpectations.For<SampleController>().Has<DenyAnonymousAccessPolicy>();
+			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+
+			Assert.That(results.Valid(), results.ErrorMessages());
+		}
+
+		[Test]
+		public void Should_verify_expectations_for_void_action()
+		{
+			SecurityConfigurator.Configure(configuration => configuration.For<SampleController>(a => a.VoidAction()).DenyAnonymousAccess());
+			var policyExpectations = new PolicyExpectations();
+
+			policyExpectations.For<SampleController>(a => a.VoidAction()).Has<DenyAnonymousAccessPolicy>();
+			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+
+			Assert.That(results.Valid(), results.ErrorMessages());
+		}
+
+		[Test]
+		public void Should_verify_expectations_for_void_action_using_convention_expectations()
+		{
+			SecurityConfigurator.Configure(configuration => configuration.For<SampleController>().DenyAnonymousAccess());
+			var policyExpectations = new PolicyExpectations();
+
 			policyExpectations.For<SampleController>().Has<DenyAnonymousAccessPolicy>();
 			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
 

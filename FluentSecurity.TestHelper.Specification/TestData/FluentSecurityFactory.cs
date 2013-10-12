@@ -15,6 +15,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 				configuration.For<SampleController>(x => x.Index()).DenyAuthenticatedAccess();
 				configuration.For<SampleController>(x => x.List()).DenyAnonymousAccess();
 				configuration.For<SampleController>(x => x.New()).RequireAnyRole("Editor").AddPolicy(new DenyInternetExplorerPolicy());
+				configuration.For<SampleController>(x => x.VoidAction()).DenyAnonymousAccess();
 
 				configuration.For<AdminController>().DenyAnonymousAccess();
 				configuration.For<AdminController>(x => x.Login()).DenyAuthenticatedAccess();
