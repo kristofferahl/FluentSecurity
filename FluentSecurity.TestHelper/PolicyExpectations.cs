@@ -50,6 +50,13 @@ namespace FluentSecurity.TestHelper
 			return expression;
 		}
 
+		public ExpectationExpression<TController> For<TController>(Expression<Action<TController>> actionExpression)
+		{
+			var expression = new ExpectationExpression<TController>(actionExpression);
+			_expectationsExpressions.Add(expression);
+			return expression;
+		}
+
 		public IEnumerable<ExpectationResult> VerifyAll(ISecurityConfiguration configuration)
 		{
 			if (configuration == null) throw new ArgumentNullException("configuration");

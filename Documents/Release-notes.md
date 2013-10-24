@@ -29,6 +29,7 @@
 - ( **New** ) Added support for using ActionNameAttribute (thanks to Chandu).
 - ( **New** ) Added HttpUnauthorizedPolicyViolationHandler for returning standard mvc HttpUnauthorizedResult.
 - ( **New** ) Added support for async controllers (thanks to jansaris).
+- ( **New** ) Added support for void actions (thanks to Chandu).
 - ( **New** ) Added support for securing controllers based on inheritance - Base controllers (thanks to Ridermansb).
 - ( **New** ) Added support for securing controllers based on action name and controller type.
 - ( **New** ) Added support for asserting all controller action have been configured using AssertAllActionsAreConfigured (thanks to Chandu).

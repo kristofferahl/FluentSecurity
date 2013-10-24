@@ -80,21 +80,46 @@ namespace FluentSecurity
 			return controllerType
 				.GetMethods(
 					BindingFlags.Public |
-					BindingFlags.Instance
+					BindingFlags.Instance 
 				)
-				.Where(methodInfo => methodInfo.ReturnType.IsControllerActionReturnType())
+				.Where(IsValidActionMethod)
 				.Where(action => actionFilter.Invoke(new ControllerActionInfo(controllerType, action)))
 				.ToList();
+		}
+
+		internal static bool IsValidActionMethod(this MethodInfo methodInfo)
+		{
+			return
+				methodInfo.ReturnType.IsControllerActionReturnType() &&
+				!methodInfo.IsSpecialName &&
+				!methodInfo.IsDeclaredBy<Controller>();
+		}
+
+		/// <summary>
+		/// Returns true if the passed method is declared by the type T.
+		/// </summary>
+		/// <param name="methodInfo"></param>
+		/// <returns>A boolean</returns>
+		internal static bool IsDeclaredBy<T>(this MethodInfo methodInfo)
+		{
+			var passedType = typeof (T);
+			var declaringType = methodInfo.GetBaseDefinition().DeclaringType;
+			return declaringType != null && declaringType.IsAssignableFrom(passedType);
 		}
 
 		/// <summary>
 		/// Returns true if the type matches a controller action return type.
 		/// </summary>
 		/// <param name="returnType"></param>
-		/// <returns></returns>
+		/// <returns>A boolean</returns>
 		internal static bool IsControllerActionReturnType(this Type returnType)
 		{
-			return typeof (ActionResult).IsAssignableFrom(returnType) || typeof (Task<ActionResult>).IsAssignableFromGenericType(returnType);
+			return 
+				(
+					typeof (ActionResult).IsAssignableFrom(returnType) || 
+					typeof (Task<ActionResult>).IsAssignableFromGenericType(returnType) ||
+					typeof(void).IsAssignableFrom(returnType)
+				);
 		}
 
 		/// <summary>

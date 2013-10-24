@@ -39,6 +39,14 @@ namespace FluentSecurity
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
 
+		public IPolicyContainerConfiguration For<TController>(Expression<Action<TController>> actionExpression) where TController : Controller
+		{
+			var controllerName = typeof(TController).GetControllerName();
+			var actionName = actionExpression.GetActionName();
+
+			return AddPolicyContainerFor(controllerName, actionName);
+		}
+
 		public IPolicyContainerConfiguration For<TController>() where TController : Controller
 		{
 			var controllerType = typeof(TController);

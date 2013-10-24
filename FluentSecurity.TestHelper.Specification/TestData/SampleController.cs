@@ -29,5 +29,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 		{
 			return null;
 		}
+
+		public void VoidAction() { }
 	}
 }

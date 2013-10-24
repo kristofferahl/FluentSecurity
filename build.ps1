@@ -1,7 +1,7 @@
 properties {
 	$product		= 'FluentSecurity'
 	$version		= '2.0.0'
-	$label			= 'beta2'
+	$label			= ''
 	$configuration	= 'release'
 	$useVerbose		= $false
 
@@ -130,7 +130,7 @@ task Deploy -depends Pack {
 	
 	$isNightlyBuild = (((get-date) -gt "02:55") -and ((get-date) -lt "03:55"))
 	if ($branch -eq 'develop' -and $mygetApiKey -ne $null -and $isNightlyBuild) {
-		$feed = 'http://www.myget.org/F/fluentsecurity/api/v2/package'
+		$feed = 'https://www.myget.org/F/fluentsecurity/api/v2/package'
 		$apiKey = $mygetApiKey
 	}
 	
