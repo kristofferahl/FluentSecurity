@@ -85,6 +85,18 @@ namespace FluentSecurity.Scanning
 			}
 		}
 
+		public void IncludeAssembly(Func<string, bool> filePredicate)
+		{
+			Func<string, bool> predicate = filePredicate.Invoke;
+			Context.AddMatchOneFileFilter(predicate);
+		}
+
+		public void ExcludeAssembly(Func<string, bool> filePredicate)
+		{
+			Func<string, bool> predicate = file => !filePredicate.Invoke(file);
+			Context.AddMatchAllFileFilter(predicate);
+		}
+
 		public void With(ITypeScanner typeScanner)
 		{
 			Context.AddTypeScanner(typeScanner);

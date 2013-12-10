@@ -59,5 +59,56 @@ namespace FluentSecurity.Specification.Scanning
 			// Assert
 			Assert.That(scanner.Context.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
 		}
+
+		[Test]
+		public void Should_scan_assemblies_from_application_base_directory_exluding_assemblies_matching_predicate()
+		{
+			// Arrange
+			var scanner = new AssemblyScanner();
+			const int expectedAssembliesCount = 2;
+
+			// Act
+			scanner.ExcludeAssembly(assembly => Path.GetFileNameWithoutExtension(assembly).Equals("FluentSecurity.TestHelper"));
+			scanner.AssembliesFromApplicationBaseDirectory(assembly => assembly.FullName.StartsWith("FluentSecurity."));
+
+			// Assert
+			Assert.That(scanner.Context.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
+			Assert.That(scanner.Context.AssembliesToScan.First().GetName().Name, Is.EqualTo("FluentSecurity.Specification"));
+			Assert.That(scanner.Context.AssembliesToScan.Last().GetName().Name, Is.EqualTo("FluentSecurity.TestHelper.Specification"));
+		}
+
+		[Test]
+		public void Should_scan_assemblies_from_application_base_directory_including_assemblies_matching_predicate()
+		{
+			// Arrange
+			var scanner = new AssemblyScanner();
+			const int expectedAssembliesCount = 2;
+
+			// Act
+			scanner.IncludeAssembly(assembly => Path.GetFileNameWithoutExtension(assembly).StartsWith("FluentSecurity.TestHelper"));
+			scanner.AssembliesFromApplicationBaseDirectory();
+
+			// Assert
+			Assert.That(scanner.Context.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
+			Assert.That(scanner.Context.AssembliesToScan.First().GetName().Name, Is.EqualTo("FluentSecurity.TestHelper"));
+			Assert.That(scanner.Context.AssembliesToScan.Last().GetName().Name, Is.EqualTo("FluentSecurity.TestHelper.Specification"));
+		}
+
+		[Test]
+		public void Should_scan_assemblies_from_application_base_directory_for_assemblies_matching_include_and_exclude_predicates()
+		{
+			// Arrange
+			var scanner = new AssemblyScanner();
+			const int expectedAssembliesCount = 1;
+
+			// Act
+			scanner.IncludeAssembly(assembly => Path.GetFileNameWithoutExtension(assembly).StartsWith("FluentSecurity."));
+			scanner.ExcludeAssembly(assembly => Path.GetFileNameWithoutExtension(assembly).EndsWith(".Specification"));
+			scanner.AssembliesFromApplicationBaseDirectory();
+
+			// Assert
+			Assert.That(scanner.Context.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
+			Assert.That(scanner.Context.AssembliesToScan.Single().GetName().Name, Is.EqualTo("FluentSecurity.TestHelper"));
+		}
 	}
 }
