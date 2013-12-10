@@ -5,43 +5,72 @@ using FluentSecurity.Scanning;
 
 namespace FluentSecurity.Diagnostics
 {
-	public static class SecurityDoctor
+	public class SecurityDoctor
 	{
+		public static SecurityDoctor Current { get; private set; }
+
 		static SecurityDoctor()
 		{
 			Reset();
 		}
 
-		public static void ScanForEventListeners()
+		public static void Register(Action<ISecurityEvent> eventListener)
+		{
+			Current.RegisterListener(eventListener);
+		}
+
+		public static void Register(ISecurityEventListener eventListener)
+		{
+			Current.RegisterListener(eventListener);
+		}
+
+		public static void Reset()
+		{
+			Current = new SecurityDoctor();
+		}
+
+		public bool ScannedForEventListeners { get; private set; }
+		public bool ScanForEventListenersOnConfigure { get; set; }
+		public Action<AssemblyScanner> EventListenerScannerSetup { get; set; }
+		internal IList<ISecurityEventListener> Listeners { get; private set; }
+
+		public SecurityDoctor()
+		{
+			Listeners = null;
+			ScanForEventListenersOnConfigure = true;
+			ScannedForEventListeners = false;
+		}
+
+		public void ScanForEventListeners()
 		{
 			var assemblyScanner = new AssemblyScanner();
-			assemblyScanner.AssembliesFromApplicationBaseDirectory();
+			
+			if (EventListenerScannerSetup == null)
+				assemblyScanner.AssembliesFromApplicationBaseDirectory();
+			else
+				EventListenerScannerSetup.Invoke(assemblyScanner);
+			
 			assemblyScanner.With<SecurityEventListenerScanner>();
 			var eventListeners = assemblyScanner.Scan();
 
 			foreach (var eventListenerType in eventListeners)
 			{
 				var eventListener = (ISecurityEventListener) Activator.CreateInstance(eventListenerType);
-				Register(eventListener);
+				RegisterListener(eventListener);
 			}
+
+			ScannedForEventListeners = true;
 		}
 
-		internal static IList<ISecurityEventListener> Listeners { get; private set; }
-
-		public static void Register(Action<ISecurityEvent> eventListener)
+		public void RegisterListener(Action<ISecurityEvent> eventListener)
 		{
-			Register(new AnonymousSecurityEventListener(eventListener));
+			RegisterListener(new AnonymousSecurityEventListener(eventListener));
 		}
 
-		public static void Register(ISecurityEventListener eventListener)
+		public void RegisterListener(ISecurityEventListener eventListener)
 		{
 			if (Listeners == null) Listeners = new List<ISecurityEventListener>();
 			Listeners.Add(eventListener);
-		}
-
-		public static void Reset()
-		{
-			Listeners = null;
 		}
 	}
 }
