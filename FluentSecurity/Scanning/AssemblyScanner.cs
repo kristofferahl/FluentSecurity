@@ -106,6 +106,17 @@ namespace FluentSecurity.Scanning
 			Context.AddMatchOneTypeFilter(predicate);
 		}
 
+		public void ExcludeNamespaceContainingType<T>()
+		{
+			Func<Type, bool> predicate = type =>
+			{
+				var currentNamespace = type.Namespace ?? "";
+				var expectedNamespace = typeof(T).Namespace ?? "";
+				return !currentNamespace.StartsWith(expectedNamespace);
+			};
+			Context.AddMatchAllTypeFilter(predicate);
+		}
+
 		public IEnumerable<Type> Scan()
 		{
 			var results = new List<Type>();
