@@ -75,14 +75,7 @@ namespace FluentSecurity.Scanning
 		{
 			if (!Directory.Exists(path)) return;
 
-			var assemblyPaths = Directory.GetFiles(path).Where(file =>
-			{
-				var extension = Path.GetExtension(file);
-				return extension != null && (
-					extension.Equals(".exe", StringComparison.OrdinalIgnoreCase) ||
-					extension.Equals(".dll", StringComparison.OrdinalIgnoreCase)
-					);
-			}).ToList();
+			var assemblyPaths = Directory.GetFiles(path).Where(Context.FiltersMatchFile).ToList();
 
 			foreach (var assemblyPath in assemblyPaths)
 			{
@@ -110,14 +103,16 @@ namespace FluentSecurity.Scanning
 				var expectedNamespace = typeof (T).Namespace ?? "";
 				return currentNamespace.StartsWith(expectedNamespace);
 			};
-			Context.AddFilter(predicate);
+			Context.AddMatchOneTypeFilter(predicate);
 		}
 
 		public IEnumerable<Type> Scan()
 		{
 			var results = new List<Type>();
-			Context.TypeScanners.Each(scanner => scanner.Scan(Context.AssembliesToScan).Where(type =>
-				Context.Filters.Any() == false || Context.Filters.Any(filter => filter.Invoke(type))).Each(results.Add)
+			Context.TypeScanners.Each(scanner => scanner
+				.Scan(Context.AssembliesToScan)
+				.Where(Context.FiltersMatchType)
+				.Each(results.Add)
 				);
 			return results;
 		}

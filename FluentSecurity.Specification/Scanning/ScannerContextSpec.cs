@@ -37,7 +37,10 @@ namespace FluentSecurity.Specification.Scanning
 			var context = new ScannerContext();
 
 			// Assert
-			Assert.That(context.Filters.Count(), Is.EqualTo(0));
+			Assert.That(context.MatchOneTypeFilters.Count(), Is.EqualTo(0));
+			Assert.That(context.MatchAllTypeFilters.Count(), Is.EqualTo(0));
+			Assert.That(context.MatchOneFileFilters.Count(), Is.EqualTo(0));
+			Assert.That(context.MatchAllFileFilters.Count(), Is.EqualTo(0));
 		}
 	}
 
@@ -103,7 +106,7 @@ namespace FluentSecurity.Specification.Scanning
 
 	[TestFixture]
 	[Category("ScannerContextSpec")]
-	public class When_adding_filters_to_scanner_context
+	public class When_adding_typefilters_to_scanner_context
 	{
 		[Test]
 		public void Should_throw_when_null()
@@ -112,21 +115,84 @@ namespace FluentSecurity.Specification.Scanning
 			var context = new ScannerContext();
 
 			// Act & Assert
-			Assert.Throws<ArgumentNullException>(() => context.AddFilter(null));
+			Assert.Throws<ArgumentNullException>(() => context.AddMatchOneTypeFilter(null));
+			Assert.Throws<ArgumentNullException>(() => context.AddMatchAllTypeFilter(null));
 		}
 
 		[Test]
-		public void Should_add_filter()
+		public void Should_add_match_one_filter()
 		{
 			// Arrange
 			var context = new ScannerContext();
 			Func<Type, bool> filter = t => true;
 
 			// Act
-			context.AddFilter(filter);
+			context.AddMatchOneTypeFilter(filter);
 
 			// Assert
-			Assert.That(context.Filters.Single(), Is.EqualTo(filter));
+			Assert.That(context.MatchOneTypeFilters.Single(), Is.EqualTo(filter));
+			Assert.That(context.MatchAllTypeFilters.Any(), Is.False);
+		}
+
+		[Test]
+		public void Should_add_match_all_filter()
+		{
+			// Arrange
+			var context = new ScannerContext();
+			Func<Type, bool> filter = t => true;
+
+			// Act
+			context.AddMatchAllTypeFilter(filter);
+
+			// Assert
+			Assert.That(context.MatchAllTypeFilters.Single(), Is.EqualTo(filter));
+			Assert.That(context.MatchOneTypeFilters.Any(), Is.False);
+		}
+	}
+
+	[TestFixture]
+	[Category("ScannerContextSpec")]
+	public class When_adding_filefilters_to_scanner_context
+	{
+		[Test]
+		public void Should_throw_when_null()
+		{
+			// Arrange
+			var context = new ScannerContext();
+
+			// Act & Assert
+			Assert.Throws<ArgumentNullException>(() => context.AddMatchOneFileFilter(null));
+			Assert.Throws<ArgumentNullException>(() => context.AddMatchAllFileFilter(null));
+		}
+
+		[Test]
+		public void Should_add_match_one_filter()
+		{
+			// Arrange
+			var context = new ScannerContext();
+			Func<string, bool> filter = t => true;
+
+			// Act
+			context.AddMatchOneFileFilter(filter);
+
+			// Assert
+			Assert.That(context.MatchOneFileFilters.Single(), Is.EqualTo(filter));
+			Assert.That(context.MatchAllFileFilters.Any(), Is.False);
+		}
+
+		[Test]
+		public void Should_add_match_all_filter()
+		{
+			// Arrange
+			var context = new ScannerContext();
+			Func<string, bool> filter = t => true;
+
+			// Act
+			context.AddMatchAllFileFilter(filter);
+
+			// Assert
+			Assert.That(context.MatchAllFileFilters.Single(), Is.EqualTo(filter));
+			Assert.That(context.MatchOneFileFilters.Any(), Is.False);
 		}
 	}
 }
