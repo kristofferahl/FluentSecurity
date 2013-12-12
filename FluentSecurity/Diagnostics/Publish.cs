@@ -38,7 +38,7 @@ namespace FluentSecurity.Diagnostics
 
 		private static void PublishEvent<TEvent>(Func<TEvent> eventBuilder) where TEvent : ISecurityEvent
 		{
-			var listeners = SecurityDoctor.Listeners;
+			var listeners = SecurityDoctor.Current.Listeners;
 			if (listeners == null) return;
 			
 			var @event = eventBuilder.Invoke();
@@ -49,7 +49,7 @@ namespace FluentSecurity.Diagnostics
 
 		private static TResult PublishEventWithTiming<TEvent, TResult>(Func<TResult> action, Func<TResult, TEvent> eventBuilder) where TEvent : SecurityEvent
 		{
-			var listeners = SecurityDoctor.Listeners;
+			var listeners = SecurityDoctor.Current.Listeners;
 			if (listeners == null) return action.Invoke();
 
 			var stopwatch = new Stopwatch();

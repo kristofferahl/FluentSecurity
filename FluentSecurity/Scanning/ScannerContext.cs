@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using FluentSecurity.Scanning.TypeScanners;
 
@@ -9,7 +11,11 @@ namespace FluentSecurity.Scanning
 	{
 		private readonly List<Assembly> _assemblies = new List<Assembly>();
 		private readonly List<ITypeScanner> _typeScanners = new List<ITypeScanner>();
-		private readonly IList<Func<Type, bool>> _filters = new List<Func<Type, bool>>();
+
+		private readonly IList<Func<Type, bool>> _matchOneTypeFilters = new List<Func<Type, bool>>();
+		private readonly IList<Func<Type, bool>> _matchAllTypeFilters = new List<Func<Type, bool>>();
+		private readonly IList<Func<string, bool>> _matchOneFileFilters = new List<Func<string, bool>>();
+		private readonly IList<Func<string, bool>> _matchAllFileFilters = new List<Func<string, bool>>();
 
 		public IEnumerable<Assembly> AssembliesToScan
 		{
@@ -21,9 +27,24 @@ namespace FluentSecurity.Scanning
 			get { return _typeScanners; }
 		}
 
-		public IEnumerable<Func<Type, bool>> Filters
+		public IEnumerable<Func<Type, bool>> MatchOneTypeFilters
 		{
-			get { return _filters; }
+			get { return _matchOneTypeFilters; }
+		}
+
+		public IEnumerable<Func<Type, bool>> MatchAllTypeFilters
+		{
+			get { return _matchAllTypeFilters; }
+		}
+
+		public IEnumerable<Func<string, bool>> MatchOneFileFilters
+		{
+			get { return _matchOneFileFilters; }
+		}
+
+		public IEnumerable<Func<string, bool>> MatchAllFileFilters
+		{
+			get { return _matchAllFileFilters; }
 		}
 
 		internal void AddAssembly(Assembly assembly)
@@ -40,10 +61,51 @@ namespace FluentSecurity.Scanning
 				_typeScanners.Add(typeScanner);
 		}
 
-		internal void AddFilter(Func<Type, bool> filter)
+		internal void AddMatchOneTypeFilter(Func<Type, bool> filter)
 		{
 			if (filter == null) throw new ArgumentNullException("filter");
-			_filters.Add(filter);
+			 _matchOneTypeFilters.Add(filter);
+		}
+
+		internal void AddMatchAllTypeFilter(Func<Type, bool> filter)
+		{
+			if (filter == null) throw new ArgumentNullException("filter");
+			_matchAllTypeFilters.Add(filter);
+		}
+
+		internal void AddMatchOneFileFilter(Func<string, bool> filter)
+		{
+			if (filter == null) throw new ArgumentNullException("filter");
+			_matchOneFileFilters.Add(filter);
+		}
+
+		internal void AddMatchAllFileFilter(Func<string, bool> filter)
+		{
+			if (filter == null) throw new ArgumentNullException("filter");
+			_matchAllFileFilters.Add(filter);
+		}
+
+		internal bool FiltersMatchFile(string file)
+		{
+			var extension = Path.GetExtension(file);
+			var isValidExtension = extension != null &&
+				(
+					extension.Equals(".exe", StringComparison.OrdinalIgnoreCase) ||
+					extension.Equals(".dll", StringComparison.OrdinalIgnoreCase)
+				);
+
+			if (!isValidExtension) return false;
+
+			var emptyOrMathesOne = (!MatchOneFileFilters.Any() || MatchOneFileFilters.Any(filter => filter.Invoke(file)));
+			var emptyOrMatchesAll = (!MatchAllFileFilters.Any() || MatchAllFileFilters.All(filter => filter.Invoke(file)));
+			return emptyOrMathesOne && emptyOrMatchesAll;
+		}
+
+		internal bool FiltersMatchType(Type type)
+		{
+			var emptyOrMatchesOne = (!MatchOneTypeFilters.Any() || MatchOneTypeFilters.Any(filter => filter.Invoke(type)));
+			var emptyOrMatchesAll = (!MatchAllTypeFilters.Any() || MatchAllTypeFilters.All(filter => filter.Invoke(type)));
+			return emptyOrMatchesOne && emptyOrMatchesAll;
 		}
 	}
 }
