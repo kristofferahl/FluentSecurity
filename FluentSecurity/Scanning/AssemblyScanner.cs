@@ -75,14 +75,7 @@ namespace FluentSecurity.Scanning
 		{
 			if (!Directory.Exists(path)) return;
 
-			var assemblyPaths = Directory.GetFiles(path).Where(file =>
-			{
-				var extension = Path.GetExtension(file);
-				return extension != null && (
-					extension.Equals(".exe", StringComparison.OrdinalIgnoreCase) ||
-					extension.Equals(".dll", StringComparison.OrdinalIgnoreCase)
-					);
-			}).ToList();
+			var assemblyPaths = Directory.GetFiles(path).Where(Context.FiltersMatchFile).ToList();
 
 			foreach (var assemblyPath in assemblyPaths)
 			{
@@ -90,6 +83,18 @@ namespace FluentSecurity.Scanning
 				if (assembly != null && assemblyFilter.Invoke(assembly))
 					Assembly(assembly);
 			}
+		}
+
+		public void IncludeAssembly(Func<string, bool> filePredicate)
+		{
+			Func<string, bool> predicate = filePredicate.Invoke;
+			Context.AddMatchOneFileFilter(predicate);
+		}
+
+		public void ExcludeAssembly(Func<string, bool> filePredicate)
+		{
+			Func<string, bool> predicate = file => !filePredicate.Invoke(file);
+			Context.AddMatchAllFileFilter(predicate);
 		}
 
 		public void With(ITypeScanner typeScanner)
@@ -110,14 +115,27 @@ namespace FluentSecurity.Scanning
 				var expectedNamespace = typeof (T).Namespace ?? "";
 				return currentNamespace.StartsWith(expectedNamespace);
 			};
-			Context.AddFilter(predicate);
+			Context.AddMatchOneTypeFilter(predicate);
+		}
+
+		public void ExcludeNamespaceContainingType<T>()
+		{
+			Func<Type, bool> predicate = type =>
+			{
+				var currentNamespace = type.Namespace ?? "";
+				var expectedNamespace = typeof(T).Namespace ?? "";
+				return !currentNamespace.StartsWith(expectedNamespace);
+			};
+			Context.AddMatchAllTypeFilter(predicate);
 		}
 
 		public IEnumerable<Type> Scan()
 		{
 			var results = new List<Type>();
-			Context.TypeScanners.Each(scanner => scanner.Scan(Context.AssembliesToScan).Where(type =>
-				Context.Filters.Any() == false || Context.Filters.Any(filter => filter.Invoke(type))).Each(results.Add)
+			Context.TypeScanners.Each(scanner => scanner
+				.Scan(Context.AssembliesToScan)
+				.Where(Context.FiltersMatchType)
+				.Each(results.Add)
 				);
 			return results;
 		}

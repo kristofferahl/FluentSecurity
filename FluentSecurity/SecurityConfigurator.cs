@@ -13,7 +13,6 @@ namespace FluentSecurity
 		static SecurityConfigurator()
 		{
 			CorrelationId = Guid.NewGuid();
-			SecurityDoctor.ScanForEventListeners();
 		}
 
 		public static ISecurityConfiguration Configure(Action<ConfigurationExpression> configurationExpression)
@@ -22,6 +21,9 @@ namespace FluentSecurity
 				throw new ArgumentNullException("configurationExpression");
 
 			Reset();
+
+			if (SecurityDoctor.Current.ScanForEventListenersOnConfigure)
+				SecurityDoctor.Current.ScanForEventListeners();
 
 			Publish.ConfigurationEvent(() => "Configuring FluentSecurity.");
 

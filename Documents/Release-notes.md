@@ -1,6 +1,14 @@
-# Future release notes for FluentSecurity 2.0
+# Release notes
 
-**NOTE: These changes/features will not be available until version 2.0 is released.**
+## FluentSecurity 2.1.0
+
+- ( **Fixed** ) Fixed issue with assemlbyscanning in SecurityDoctor.
+- ( **New** ) Added option for disabling scanning for ISecurityEventListener's during configuration.
+- ( **New** ) Added configuration option for configuring the assembly scanner used when scanning for ISecurityEventListener's.
+- ( **New** ) Added support for IncludeAssembly and ExcludeAssembly with file predicates when using the AssemblyScanner.
+- ( **New** ) Added support for ExcludeNamespaceContainingType\<T\> when using the AssemblyScanner.
+
+## FluentSecurity 2.0.0
 
 - ( **Fixed** ) Fixed issue with invariant culture (thanks to tsvayer).
 - ( **Fixed** ) Fixed issue with RequireRolePolicy and RequireAllRolesPolicy resolving roles 3 times/execution.
@@ -37,12 +45,12 @@
 - ( **New** ) Exposed conventions through Conventions property on IAdvancedConfiguration and AdvancedConfiguration.
 - ( **New** ) Improved diagnostics using the diagnostics pipeline and Glimpse tab (thanks to nikmd23).
 
-## Areas/Profiles
+### Areas/Profiles
 - ( **New** ) Added support for creating profiles to help manage large/area configurations by inheriting from SecurityProfile.
 - ( **New** ) Added support for applying profiles using ApplyProfile\<TSecurityProfile\>.
 - ( **New** ) Added support for scanning for profiles using the Scan method and LookForProfiles.
 
-## Caching
+### Caching
 - ( **New** ) Added support for changing the default cache lifecycle of policy results using the Advanced.SetDefaultResultsCacheLifecycle option.
 - ( **New** ) Added support for providing custom cache keys for policies using the ICacheKeyProvider interface.
 - ( **New** ) Added support for specifying a cache lifecycle using Cache\<TSecurityPolicy\>. Supported lifecycles are DoNotCache, PerHttpRequest, PerHttpSession.
@@ -50,7 +58,7 @@
 - ( **New** ) Added support for clearing cache strategies using ClearCacheStrategies and ClearStrategyFor\<TSecurityPolicy\>.
 - ( **New** ) Added support for specifying cache lifecycle and strategy using method chaining after AddPolicy\<TSecurityPolicy\>.
 
-## ISecurityContext
+### ISecurityContext
 - ( **New** ) Extended ISecurityContext with a Data property (dynamic) for adding and reading custom context data at runtime.
 - ( **New** ) A RouteValueDictionary is by default added to ISecurityContext.Data.RouteValues when using the HandleSecurityAttribute.
 - ( **New** ) Added support for modifying the ISecurityContext on creation using configuration.Advanced.ModifySecurityContext.
@@ -58,14 +66,14 @@
 - ( **New** ) Added a MvcSecurityContext wrapper over ISecurityContext that makes it easier accessing route values in policies.
 - ( **New** ) Extended ISecurityContext with an Id property for diagnostics and debugging purposes.
 
-## AddPolicy\<T\> and dependency injection for policies
+### AddPolicy\<T\> and dependency injection for policies
 - ( **New** ) Added support for adding policies using AddPolicy\<T\>.
 - ( **New** ) Added support for resolving policies from an IoC-container.
 - ( **New** ) Added extension for getting the actual type of a policy (ISecurityPolicy.GetPolicyType).
 - ( **New** ) Added support for verifying existence of policies added using AddPolicy\<T\> (*TestHelper*).
 - ( **New** ) Added support for caching of policies added using AddPolicy\<T\>.
 
-## Policy violation handlers
+### Policy violation handlers
 - ( **Change** ) Extracted existing conventions from PolicyViolationHandlerSelector to FindByPolicyNameConvention and FindDefaultPolicyViolationHandlerByNameConvention (IPolicyViolationHandlerConvention).
 - ( **New** ) Added support for setting a default policy violation handler (DefaultPolicyViolationHandlerIsInstanceConvention, DefaultPolicyViolationHandlerIsOfTypeConvention).
 - ( **New** ) Added support for specifying how violations are handled using configuration.Advanced.Violations(violations => {}).

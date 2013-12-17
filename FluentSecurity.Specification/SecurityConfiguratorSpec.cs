@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
@@ -178,6 +179,39 @@ namespace FluentSecurity.Specification
 			Assert.That(SecurityConfiguration.Current.PolicyContainers.Count(), Is.EqualTo(1));
 			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ControllerName, Is.EqualTo(NameHelper.Controller<BlogController>()));
 			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
+		}
+	}
+
+	[TestFixture]
+	[Category("SecurityConfiguratorSpec")]
+	public class When_setting_eventlistener_scan_property
+	{
+		[Test]
+		public void Should_scan_for_eventlistners()
+		{
+			// Arrange
+			SecurityDoctor.Reset();
+			SecurityDoctor.Current.ScanForEventListenersOnConfigure = true;
+
+			// Act
+			SecurityConfigurator.Configure(configuration => {});
+
+			// Assert
+			Assert.That(SecurityDoctor.Current.ScannedForEventListeners, Is.True);
+		}
+
+		[Test]
+		public void Should_not_scan_for_eventlistners()
+		{
+			// Arrange
+			SecurityDoctor.Reset();
+			SecurityDoctor.Current.ScanForEventListenersOnConfigure = false;
+
+			// Act
+			SecurityConfigurator.Configure(configuration => {});
+
+			// Assert
+			Assert.That(SecurityDoctor.Current.ScannedForEventListeners, Is.False);
 		}
 	}
 }
