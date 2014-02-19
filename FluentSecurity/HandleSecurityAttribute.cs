@@ -5,7 +5,7 @@ using FluentSecurity.ServiceLocation;
 namespace FluentSecurity
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-	public class HandleSecurityAttribute : Attribute, IAuthorizationFilter
+	public class HandleSecurityAttribute : AuthorizeAttribute, IAuthorizationFilter
 	{
 		internal ISecurityHandler Handler { get; private set; }
 
@@ -16,7 +16,7 @@ namespace FluentSecurity
 			Handler = securityHandler;
 		}
 
-		public void OnAuthorization(AuthorizationContext filterContext)
+		public override void OnAuthorization(AuthorizationContext filterContext)
 		{
 			var actionName = filterContext.ActionDescriptor.ActionName;
 			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName;
