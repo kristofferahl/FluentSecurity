@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Web.Mvc;
 using FluentSecurity.ServiceLocation;
 
@@ -27,5 +28,20 @@ namespace FluentSecurity
 			var overrideResult = Handler.HandleSecurityFor(controllerName, actionName, securityContext);
 			if (overrideResult != null) filterContext.Result = overrideResult;
 		}
+
+		[Obsolete("Not applicable in this class.")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		new public string Roles { get; set; }
+
+		[Obsolete("Not applicable in this class.")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		new public string Users { get; set; }
+
+		[Obsolete("Not applicable in this class.")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		new public int Order { get; set; }
 	}
 }
