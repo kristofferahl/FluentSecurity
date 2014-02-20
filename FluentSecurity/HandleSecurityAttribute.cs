@@ -1,11 +1,12 @@
 using System;
+using System.ComponentModel;
 using System.Web.Mvc;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-	public class HandleSecurityAttribute : Attribute, IAuthorizationFilter
+	public class HandleSecurityAttribute : AuthorizeAttribute, IAuthorizationFilter
 	{
 		internal ISecurityHandler Handler { get; private set; }
 
@@ -16,7 +17,7 @@ namespace FluentSecurity
 			Handler = securityHandler;
 		}
 
-		public void OnAuthorization(AuthorizationContext filterContext)
+		public override void OnAuthorization(AuthorizationContext filterContext)
 		{
 			var actionName = filterContext.ActionDescriptor.ActionName;
 			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName;
@@ -27,5 +28,20 @@ namespace FluentSecurity
 			var overrideResult = Handler.HandleSecurityFor(controllerName, actionName, securityContext);
 			if (overrideResult != null) filterContext.Result = overrideResult;
 		}
+
+		[Obsolete("Not applicable in this class.")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		new public string Roles { get; set; }
+
+		[Obsolete("Not applicable in this class.")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		new public string Users { get; set; }
+
+		[Obsolete("Not applicable in this class.")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+		new public int Order { get; set; }
 	}
 }
