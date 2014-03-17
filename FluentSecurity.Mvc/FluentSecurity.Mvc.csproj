@@ -97,7 +97,6 @@
     <Compile Include="Internals\HttpContextRequestDescription.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
-    <Compile Include="Internals\TypeExtensions.cs" />
     <Compile Include="ISecurityRuntime.cs" />
     <Compile Include="Policy\ILazySecurityPolicy.cs" />
     <Compile Include="Internals\IRequestDescription.cs" />

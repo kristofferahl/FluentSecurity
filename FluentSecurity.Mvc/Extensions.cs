@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FluentSecurity.Caching;
+using FluentSecurity.Core.Internals;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 

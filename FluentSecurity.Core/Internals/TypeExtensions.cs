@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Linq;
 
-namespace FluentSecurity.Internals
+namespace FluentSecurity.Core.Internals
 {
 	public static class TypeExtensions
 	{
-		internal static bool HasEmptyConstructor(this Type type)
+		public static bool HasEmptyConstructor(this Type type)
 		{
 			var constructors = type.GetConstructors();
 			var hasEmptyConstructor = constructors.Any(x => !x.GetParameters().Any());
 			return hasEmptyConstructor;
 		}
 
-		internal static bool IsMatchForGenericType(this object obj, Type genericType)
+		public static bool IsMatchForGenericType(this object obj, Type genericType)
 		{
 			if (!genericType.IsGenericType) throw new ArgumentException("The specified type is not a generic type", "genericType");
 			if (obj == null) return false;
@@ -20,7 +20,7 @@ namespace FluentSecurity.Internals
 			return type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
 		}
 
-		internal static bool IsAssignableFromGenericType(this Type firstType, Type secondType)
+		public static bool IsAssignableFromGenericType(this Type firstType, Type secondType)
 		{
 			if (!firstType.IsGenericType)
 				return false;

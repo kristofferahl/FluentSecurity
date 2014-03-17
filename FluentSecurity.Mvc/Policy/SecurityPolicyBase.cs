@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentSecurity.Internals;
+using FluentSecurity.Core.Internals;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.Policy

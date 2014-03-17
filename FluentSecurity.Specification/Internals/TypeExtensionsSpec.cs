@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using FluentSecurity.Core.Internals;
 using NUnit.Framework;
-using FluentSecurity.Internals;
 
 namespace FluentSecurity.Specification.Internals
 {
