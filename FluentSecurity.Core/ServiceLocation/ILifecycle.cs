@@ -1,6 +1,6 @@
 namespace FluentSecurity.ServiceLocation.LifeCycles
 {
-	internal interface ILifecycle
+	public interface ILifecycle
 	{
 		IObjectCache FindCache();
 	}

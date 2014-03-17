@@ -39,11 +39,33 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\ICacheKeyProvider.cs" />
+    <Compile Include="Caching\ISecurityCache.cs" />
+    <Compile Include="Diagnostics\Events\ISecurityEvent.cs" />
+    <Compile Include="Diagnostics\ISecurityEventListener.cs" />
+    <Compile Include="Diagnostics\IWhatDoIHaveBuilder.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Internals\AssemblyExtensions.cs" />
     <Compile Include="Internals\TypeExtensions.cs" />
+    <Compile Include="IPolicyAppender.cs" />
+    <Compile Include="IPolicyContainer.cs" />
+    <Compile Include="ISecurityConfiguration.cs" />
+    <Compile Include="ISecurityContext.cs" />
+    <Compile Include="ISecurityRuntime.cs" />
+    <Compile Include="ISecurityServiceLocator.cs" />
+    <Compile Include="PolicyResult.cs" />
+    <Compile Include="Policy\ILazySecurityPolicy.cs" />
+    <Compile Include="Policy\ISecurityPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scanning\ITypeScanner.cs" />
+    <Compile Include="ServiceLocation\IContainer.cs" />
+    <Compile Include="ServiceLocation\IContainerSource.cs" />
+    <Compile Include="ServiceLocation\ILifecycle.cs" />
+    <Compile Include="ServiceLocation\IObjectCache.cs" />
+    <Compile Include="ServiceLocation\LifeCycle.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

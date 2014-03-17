@@ -17,7 +17,7 @@ namespace FluentSecurity
 		protected PolicyResult(string message, bool violationOccured, ISecurityPolicy policy) 
 			: this(message, violationOccured, policy.GetType()) {}
 
-		public bool Cached { get; internal set; }
+		public bool Cached { get; set; } // TODO: Ensure this can't be set outside of PolicyContainer
 		public bool ViolationOccured { get; private set; }
 		public string Message { get; private set; }
 		public Type PolicyType { get; private set; }

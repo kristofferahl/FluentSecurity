@@ -10,7 +10,7 @@ namespace FluentSecurity.ServiceLocation
 		HybridHttpSession
 	}
 
-	internal static class Lifecycle<TLifecycle> where TLifecycle : ILifecycle, new()
+	public static class Lifecycle<TLifecycle> where TLifecycle : ILifecycle, new()
 	{
 		static Lifecycle()
 		{
