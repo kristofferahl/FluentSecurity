@@ -2,7 +2,7 @@
 
 namespace FluentSecurity.Caching
 {
-	internal static class PolicyResultCacheExtensions
+	public static class PolicyResultCacheExtensions
 	{
 		public static Lifecycle ToLifecycle(this Cache cache)
 		{

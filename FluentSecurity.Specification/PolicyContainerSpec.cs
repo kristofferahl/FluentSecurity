@@ -813,7 +813,7 @@ namespace FluentSecurity.Specification
 			var results1 = policyContainer.EnforcePolicies(context);
 			var results2 = policyContainer.EnforcePolicies(context);
 
-			SecurityCache.ClearCache(Lifecycle.HybridHttpContext);;
+			new SecurityCache(new MvcLifecycleResolver()).Clear(Lifecycle.HybridHttpContext);;
 
 			var results3 = policyContainer.EnforcePolicies(context);
 			var results4 = policyContainer.EnforcePolicies(context);
@@ -844,7 +844,7 @@ namespace FluentSecurity.Specification
 			var results1 = policyContainer.EnforcePolicies(context);
 			var results2 = policyContainer.EnforcePolicies(context);
 
-			SecurityCache.ClearCache(Lifecycle.HybridHttpSession); ;
+			new SecurityCache(new MvcLifecycleResolver()).Clear(Lifecycle.HybridHttpSession); ;
 
 			var results3 = policyContainer.EnforcePolicies(context);
 			var results4 = policyContainer.EnforcePolicies(context);
@@ -1234,7 +1234,7 @@ namespace FluentSecurity.Specification
 			var results1 = policyContainer.EnforcePolicies(context);
 			var results2 = policyContainer.EnforcePolicies(context);
 
-			SecurityCache.ClearCache(Lifecycle.HybridHttpContext); ;
+			new SecurityCache(new MvcLifecycleResolver()).Clear(Lifecycle.HybridHttpContext);
 
 			var results3 = policyContainer.EnforcePolicies(context);
 			var results4 = policyContainer.EnforcePolicies(context);

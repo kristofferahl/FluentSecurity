@@ -68,11 +68,6 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Caching\By.cs" />
-    <Compile Include="Caching\PolicyResultCacheStrategy.cs" />
-    <Compile Include="Caching\PolicyResultCacheKeyBuilder.cs" />
-    <Compile Include="Caching\PolicyResultCacheExtensions.cs" />
-    <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
     <Compile Include="Configuration\SecurityProfile.cs" />
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />

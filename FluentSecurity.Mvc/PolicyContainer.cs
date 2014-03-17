@@ -8,6 +8,7 @@ using FluentSecurity.Configuration;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
@@ -47,7 +48,7 @@ namespace FluentSecurity
 				throw new ConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
 			var defaultResultsCacheLifecycle = context.Runtime.DefaultResultsCacheLifecycle;
-			var cache = SecurityCache.CacheProvider.Invoke();
+			var cache = new SecurityCache(new MvcLifecycleResolver());
 			
 			var results = new List<PolicyResult>();
 			foreach (var securityPolicy in _policies.Select(NonLazyIfPolicyHasCacheKeyProvider()))
