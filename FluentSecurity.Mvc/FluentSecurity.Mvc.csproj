@@ -77,11 +77,11 @@
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
     <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="PolicyContainer.cs" />
-    <Compile Include="Policy\Contexts\MvcSecurityContext.cs" />
+    <Compile Include="Policy\MvcSecurityContext.cs" />
     <Compile Include="Policy\LazySecurityPolicy.cs" />
-    <Compile Include="Policy\DelegatePolicy.cs" />
-    <Compile Include="Policy\Contexts\DelegateSecurityContext.cs" />
-    <Compile Include="Policy\Results\DelegatePolicyResult.cs" />
+    <Compile Include="Policy\Delegate\DelegatePolicy.cs" />
+    <Compile Include="Policy\Delegate\DelegateSecurityContext.cs" />
+    <Compile Include="Policy\Delegate\DelegatePolicyResult.cs" />
     <Compile Include="Policy\SecurityPolicyBase.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConvention.cs">
       <SubType>Code</SubType>
@@ -114,7 +114,7 @@
     </Compile>
     <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerInstanceConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerTypeConvention.cs" />
-    <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandler.cs" />
+    <Compile Include="Policy\Delegate\DelegatePolicyViolationHandler.cs" />
     <Compile Include="Configuration\ProfileImport.cs" />
     <Compile Include="Policy\ViolationHandlers\HttpUnauthorizedPolicyViolationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
