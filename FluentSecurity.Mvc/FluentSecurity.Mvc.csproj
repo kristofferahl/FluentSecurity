@@ -69,6 +69,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
+    <Compile Include="Configuration\MvcConfiguration.cs" />
     <Compile Include="Configuration\SecurityProfile.cs" />
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
@@ -117,7 +118,6 @@
     <Compile Include="Configuration\ProfileImport.cs" />
     <Compile Include="Policy\ViolationHandlers\HttpUnauthorizedPolicyViolationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Configuration\RootConfiguration.cs" />
     <Compile Include="ConfigurationExpression.cs" />
     <Compile Include="Scanning\AssemblyScanner.cs" />
     <Compile Include="Scanning\TypeScanners\ControllerTypeScanner.cs" />
@@ -125,14 +125,13 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Scanning\ProfileScanner.cs" />
     <Compile Include="Scanning\TypeScanners\ProfileTypeScanner.cs" />
+    <Compile Include="SecurityConfigurationExtensions.cs" />
     <Compile Include="SecurityRuntime.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
-    <Compile Include="SecurityConfiguration.cs" />
     <Compile Include="Configuration\DefaultPolicyAppender.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />
-    <Compile Include="SecurityConfigurator.cs" />
     <Compile Include="SecurityContext.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using FluentSecurity.Configuration;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
@@ -30,7 +31,7 @@ namespace FluentSecurity.Specification
 			const bool status = true;
 			var roles = new object[3];
 			
-			SecurityConfigurator.Configure(c =>
+			SecurityConfigurator.Configure<MvcConfiguration>(c =>
 			{
 				c.GetAuthenticationStatusFrom(() => status);
 				c.GetRolesFrom(() => roles);
@@ -60,7 +61,7 @@ namespace FluentSecurity.Specification
 			    iocContext
 			};
 
-			SecurityConfigurator.Configure(c =>
+			SecurityConfigurator.Configure<MvcConfiguration>(c =>
 			{
 				c.ResolveServicesUsing(FakeIoC.GetAllInstances);
 			});

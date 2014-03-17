@@ -589,7 +589,7 @@ namespace FluentSecurity.Specification
 				callsToContainer++;
 				return new List<object> { policy };
 			};
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
@@ -618,7 +618,7 @@ namespace FluentSecurity.Specification
 				callsToContainer++;
 				return new List<object> { policy };
 			};
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
@@ -648,7 +648,7 @@ namespace FluentSecurity.Specification
 				callsToContainer++;
 				return new List<object> { policy };
 			};
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
@@ -678,7 +678,7 @@ namespace FluentSecurity.Specification
 				callsToContainer++;
 				return new List<object> { policy };
 			};
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
@@ -709,7 +709,7 @@ namespace FluentSecurity.Specification
 				callsToContainer++;
 				return new List<object> { policy };
 			};
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);

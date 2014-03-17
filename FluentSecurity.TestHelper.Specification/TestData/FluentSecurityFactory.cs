@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity.TestHelper.Specification.TestData
@@ -7,7 +8,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 	{
 		public static ISecurityConfiguration CreateSecurityConfiguration()
 		{
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
 				configuration.Advanced.IgnoreMissingConfiguration();
@@ -29,7 +30,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 
 		public static ISecurityConfiguration CreateEmptySecurityConfiguration()
 		{
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
 				configuration.Advanced.IgnoreMissingConfiguration();
@@ -40,7 +41,7 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 
 		public static ISecurityConfiguration CreateSecurityConfigurationWithTwoExpectations()
 		{
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => false);
 				configuration.Advanced.IgnoreMissingConfiguration();

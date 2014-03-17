@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Configuration;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy;
 using FluentSecurity.Specification.Helpers;
@@ -22,7 +23,7 @@ namespace FluentSecurity.Specification
 			var configuration = MockRepository.GenerateMock<ISecurityConfiguration>();
 
 			// Act
-			SecurityConfigurator.SetConfiguration(configuration);
+			SecurityConfigurator.SetConfiguration<MvcConfiguration>(configuration);
 
 			// Assert
 			Assert.That(SecurityConfiguration.Current, Is.EqualTo(configuration));
@@ -36,7 +37,7 @@ namespace FluentSecurity.Specification
 			const ISecurityConfiguration nullConfiguration = null;
 
 			// Act & Assert
-			Assert.Throws<ArgumentNullException>(() => SecurityConfigurator.SetConfiguration(nullConfiguration));
+			Assert.Throws<ArgumentNullException>(() => SecurityConfigurator.SetConfiguration<MvcConfiguration>(nullConfiguration));
 		}
 	}
 
@@ -49,7 +50,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var configuration = MockRepository.GenerateMock<ISecurityConfiguration>();
-			SecurityConfigurator.SetConfiguration(configuration);
+			SecurityConfigurator.SetConfiguration<MvcConfiguration>(configuration);
 
 			// Act
 			SecurityConfigurator.Reset();
@@ -80,7 +81,7 @@ namespace FluentSecurity.Specification
 		public void Should_return_current_configuration()
 		{
 			// Act
-			var configuration = SecurityConfigurator.Configure(_configurationExpression);
+			var configuration = SecurityConfigurator.Configure<MvcConfiguration>(_configurationExpression);
 
 			// Assert
 			Assert.That(configuration, Is.Not.Null);
@@ -99,7 +100,7 @@ namespace FluentSecurity.Specification
 			Action<ConfigurationExpression> configurationExpression = null;
 
 			// Act & assert
-			Assert.Throws<ArgumentNullException>(() => SecurityConfigurator.Configure(configurationExpression));
+			Assert.Throws<ArgumentNullException>(() => SecurityConfigurator.Configure<MvcConfiguration>(configurationExpression));
 		}
 	}
 
@@ -119,7 +120,7 @@ namespace FluentSecurity.Specification
 			SecurityConfigurator.Reset();
 
 			// Act
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
@@ -168,7 +169,7 @@ namespace FluentSecurity.Specification
 			SecurityConfigurator.Reset();
 
 			// Act
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
@@ -194,7 +195,7 @@ namespace FluentSecurity.Specification
 			SecurityDoctor.Current.ScanForEventListenersOnConfigure = true;
 
 			// Act
-			SecurityConfigurator.Configure(configuration => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
 
 			// Assert
 			Assert.That(SecurityDoctor.Current.ScannedForEventListeners, Is.True);
@@ -208,7 +209,7 @@ namespace FluentSecurity.Specification
 			SecurityDoctor.Current.ScanForEventListenersOnConfigure = false;
 
 			// Act
-			SecurityConfigurator.Configure(configuration => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
 
 			// Assert
 			Assert.That(SecurityDoctor.Current.ScannedForEventListeners, Is.False);

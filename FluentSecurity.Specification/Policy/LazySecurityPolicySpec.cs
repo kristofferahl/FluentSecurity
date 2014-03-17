@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.Contexts;
 using FluentSecurity.Specification.Helpers;
@@ -28,7 +29,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_handle_loading_policy_with_empty_constructor()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(configuration => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithEmptyConstructor>();
 
 			// Act
@@ -42,7 +43,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_handle_loading_policy_with_empty_constructor_based_on_SecurityPolicyBase()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(configuraiton => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuraiton => {});
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithBaseClass>();
 
 			// Act
@@ -58,7 +59,7 @@ namespace FluentSecurity.Specification.Policy
 			// Arrange
 			var expectedPolicy = new PolicyWithConstructorArguments("arg1", "arg2", "arg3");
 			FakeIoC.GetAllInstancesProvider = () => new List<object> { expectedPolicy };
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => true);
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
@@ -76,7 +77,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_return_null_when_loading_policy_with_constructor_arguments()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(configuration => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithConstructorArguments>();
 
 			// Act
@@ -90,7 +91,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_return_null_when_no_policy_is_returned_by_service_locator()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(t => Enumerable.Empty<object>()));
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(t => Enumerable.Empty<object>()));
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithConstructorArguments>();
 
 			// Act
@@ -108,7 +109,7 @@ namespace FluentSecurity.Specification.Policy
 		[SetUp]
 		public void SetUp()
 		{
-			SecurityConfigurator.Configure(configuration => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
 		}
 
 		[Test]
@@ -142,7 +143,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_load_and_enforce_policy_with_success_result()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(configuraiton => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuraiton => {});
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithBaseClass>();
 			var context = new MockSecurityContext(isAuthenticated: true);
 

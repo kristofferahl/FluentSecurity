@@ -25,7 +25,7 @@ namespace FluentSecurity.Specification
 	{
 		private static ConfigurationExpression Because()
 		{
-			return new RootConfiguration();
+			return new MvcConfiguration();
 		}
 
 		[Test]
@@ -76,7 +76,7 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			_configurationExpression = new RootConfiguration();
+			_configurationExpression = new MvcConfiguration();
 			_configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 		}
 
@@ -118,7 +118,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_AliasedController_ActualAction()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -149,7 +149,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_controller_with_void_action()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -163,7 +163,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_void_action_from_parent_controller()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -194,7 +194,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_all_actions_including_void_actions()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -207,7 +207,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_all_actions_including_inherited_void_actions()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -274,7 +274,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_TaskController_LongRunningAction()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -292,7 +292,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_TaskController_LongRunningJsonAction()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -406,7 +406,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_policycontainer_for_AliasedController_ActualAction()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 
 			// Act
@@ -714,7 +714,7 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_throw_when_action_expresion_is_null()
 		{
-			var expression = new RootConfiguration();
+			var expression = new MvcConfiguration();
 			Expression<Func<AbstractBaseController, object>> actionExpression = null;
 			Assert.Throws<ArgumentNullException>(() => expression.ForAllControllersInheriting(actionExpression));
 		}
@@ -722,14 +722,14 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_throw_when_assemblies_is_null()
 		{
-			var expression = new RootConfiguration();
+			var expression = new MvcConfiguration();
 			Assert.Throws<ArgumentNullException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(x => x.InheritedAction(), null));
 		}
 
 		[Test]
 		public void Should_throw_when_assemblies_contains_null()
 		{
-			var expression = new RootConfiguration();
+			var expression = new MvcConfiguration();
 			Assert.Throws<ArgumentException>(() => expression.ForAllControllersInheriting<AbstractBaseController>(x => x.InheritedAction(), null, null));
 		}
 
@@ -946,7 +946,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ConfigurationErrorsException()
 		{
 			// Arrange
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 			configurationExpression.For<BlogController>(x => x.Index());
 

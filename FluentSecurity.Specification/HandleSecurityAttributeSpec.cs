@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
+using FluentSecurity.Configuration;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using Moq;
@@ -14,7 +15,7 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_have_SecurityHandler_set()
 		{
-			SecurityConfigurator.Configure(config => config.GetAuthenticationStatusFrom(() => true));
+			SecurityConfigurator.Configure<MvcConfiguration>(config => config.GetAuthenticationStatusFrom(() => true));
 
 			// Act
 			var attribute = new HandleSecurityAttribute();
@@ -56,7 +57,7 @@ namespace FluentSecurity.Specification
 			{
 				_securityContext
 			};
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
@@ -106,7 +107,7 @@ namespace FluentSecurity.Specification
 		public void Should_set_the_result_of_the_filtercontext()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(policy =>
+			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();

@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.TestHelper.Expectations;
 using FluentSecurity.TestHelper.Specification.TestData;
@@ -79,7 +80,7 @@ namespace FluentSecurity.TestHelper.Specification.Expectations
 		[SetUp]
 		public void SetUp()
 		{
-			SecurityConfigurator.Configure(configuration => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
 		}
 
 		[Test]

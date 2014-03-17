@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using FluentSecurity.Configuration;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
@@ -12,11 +13,11 @@ namespace FluentSecurity.Specification
 	[Category("SecurityConfigurationSpec")]
 	public class When_creating_a_new_SecurityConfiguration
 	{
-		private static SecurityConfiguration _securityConfiguration;
+		private static ISecurityConfiguration _securityConfiguration;
 
 		private static void Because()
 		{
-			_securityConfiguration = new SecurityConfiguration(policy => { });
+			_securityConfiguration = new SecurityConfiguration<MvcConfiguration>(policy => { });
 		}
 
 		[Test]
@@ -59,7 +60,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw()
 		{
 			// Act & assert
-			var exception = Assert.Throws<ArgumentNullException>(() => new SecurityConfiguration(null));
+			var exception = Assert.Throws<ArgumentNullException>(() => new SecurityConfiguration<MvcConfiguration>(null));
 
 			// Assert
 			Assert.That(exception.ParamName, Is.EqualTo("configurationExpression"));
@@ -85,7 +86,7 @@ FluentSecurity.Specification.TestData.BlogController > Index
 
 ------------------------------------------------------------------------------------";
 
-			var securityConfiguration = new SecurityConfiguration(configuration =>
+			var securityConfiguration = new SecurityConfiguration<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				configuration.Advanced.IgnoreMissingConfiguration();
@@ -93,7 +94,7 @@ FluentSecurity.Specification.TestData.BlogController > Index
 				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
 
-			SecurityConfigurator.SetConfiguration(securityConfiguration);
+			SecurityConfigurator.SetConfiguration<MvcConfiguration>(securityConfiguration);
 
 			// Act
 			var whatIHave = securityConfiguration.WhatDoIHave();
@@ -130,7 +131,7 @@ FluentSecurity.Specification.TestData.BlogController > Index
 		public void Should_throw_exception_when_all_actions_are_not_configured()
 		{
 			//Arrange & Act
-			var securityConfiguration = new SecurityConfiguration(policy => {});
+			var securityConfiguration = new SecurityConfiguration<MvcConfiguration>(policy => {});
 
 			//Assert
 			Assert.Throws<ConfigurationErrorsException>(() => securityConfiguration.AssertAllActionsAreConfigured());
@@ -148,7 +149,7 @@ FluentSecurity.Specification.TestData.BlogController > Index
 				select assembly
 				).ToArray();
 
-			var securityConfiguration = new SecurityConfiguration(policy => policy
+			var securityConfiguration = new SecurityConfiguration<MvcConfiguration>(policy => policy
 				.ForAllControllersInAssembly(assemblies)
 				.DenyAuthenticatedAccess()
 				);
@@ -166,7 +167,7 @@ FluentSecurity.Specification.TestData.BlogController > Index
 		public void Should_throw_exception_when_all_actions_are_not_configured()
 		{
 			//Arrange & Act
-			var securityConfiguration = new SecurityConfiguration(policy => {});
+			var securityConfiguration = new SecurityConfiguration<MvcConfiguration>(policy => { });
 
 			//Assert
 			Assert.Throws<ConfigurationErrorsException>(() => securityConfiguration.AssertAllActionsAreConfigured(new [] { GetType().Assembly }));
@@ -176,7 +177,7 @@ FluentSecurity.Specification.TestData.BlogController > Index
 		public void Should_not_throw_exception_when_all_actions_are_configured()
 		{
 			//Arrange & Act
-			var securityConfiguration = new SecurityConfiguration(policy => policy
+			var securityConfiguration = new SecurityConfiguration<MvcConfiguration>(policy => policy
 				.ForAllControllers()
 				.DenyAuthenticatedAccess()
 				);

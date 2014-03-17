@@ -28,12 +28,12 @@ namespace FluentSecurity.Diagnostics
 
 		public static void ConfigurationEvent(Func<string> message)
 		{
-			PublishEvent(() => new ConfigurationEvent(CoreConfigurator.CorrelationId, message.Invoke()));
+			PublishEvent(() => new ConfigurationEvent(SecurityConfigurator.CorrelationId, message.Invoke()));
 		}
 
 		public static TResult ConfigurationEvent<TResult>(Func<TResult> action, Func<TResult, string> message)
 		{
-			return PublishEventWithTiming(action, result => new ConfigurationEvent(CoreConfigurator.CorrelationId, message.Invoke(result)));
+			return PublishEventWithTiming(action, result => new ConfigurationEvent(SecurityConfigurator.CorrelationId, message.Invoke(result)));
 		}
 
 		private static void PublishEvent<TEvent>(Func<TEvent> eventBuilder) where TEvent : ISecurityEvent

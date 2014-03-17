@@ -52,23 +52,23 @@ namespace FluentSecurity.Specification.Helpers
 				CreateValidPolicyAppender());
 		}
 
-		public static SecurityConfiguration CreateValidSecurityConfiguration()
+		public static SecurityConfiguration<MvcConfiguration> CreateValidSecurityConfiguration()
 		{
 			return CreateValidSecurityConfiguration(expression => {});
 		}
 
-		public static SecurityConfiguration CreateValidSecurityConfiguration(Action<ConfigurationExpression> modifyer)
+		public static SecurityConfiguration<MvcConfiguration> CreateValidSecurityConfiguration(Action<ConfigurationExpression> modifyer)
 		{
 			Action<ConfigurationExpression> configurationExpression = configuration =>
 			{
 				if (modifyer != null) modifyer.Invoke(configuration);
 			};
-			return new SecurityConfiguration(configurationExpression);
+			return new SecurityConfiguration<MvcConfiguration>(configurationExpression);
 		}
 
 		public static ConfigurationExpression CreateValidConfigurationExpression()
 		{
-			var configurationExpression = new RootConfiguration();
+			var configurationExpression = new MvcConfiguration();
 			configurationExpression.GetAuthenticationStatusFrom(ValidIsAuthenticatedFunction);
 			return configurationExpression;
 		}

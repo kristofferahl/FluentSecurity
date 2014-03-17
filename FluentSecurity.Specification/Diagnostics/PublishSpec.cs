@@ -120,7 +120,7 @@ namespace FluentSecurity.Specification.Diagnostics
 
 			// Assert
 			var @event = events.Single();
-			Assert.That(@event.CorrelationId, Is.EqualTo(CoreConfigurator.CorrelationId));
+			Assert.That(@event.CorrelationId, Is.EqualTo(SecurityConfigurator.CorrelationId));
 			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
 		}
 
@@ -146,7 +146,7 @@ namespace FluentSecurity.Specification.Diagnostics
 			Assert.That(result, Is.EqualTo(expectedResult));
 
 			var @event = events.Single();
-			Assert.That(@event.CorrelationId, Is.EqualTo(CoreConfigurator.CorrelationId));
+			Assert.That(@event.CorrelationId, Is.EqualTo(SecurityConfigurator.CorrelationId));
 			Assert.That(@event.Message, Is.EqualTo(expectedMessage));
 			Assert.That(@event.CompletedInMilliseconds, Is.GreaterThanOrEqualTo(expectedMilliseconds));
 		}

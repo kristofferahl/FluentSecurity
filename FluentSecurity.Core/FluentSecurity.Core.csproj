@@ -60,6 +60,7 @@
     <Compile Include="Diagnostics\SecurityDoctor.cs" />
     <Compile Include="Diagnostics\SecurityEventListenerScanner.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="IFluentConfiguration.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Internals\AssemblyExtensions.cs" />
     <Compile Include="Internals\TypeExtensions.cs" />
@@ -88,7 +89,8 @@
     <Compile Include="Scanning\CoreAssemblyScanner.cs" />
     <Compile Include="Scanning\ITypeScanner.cs" />
     <Compile Include="Scanning\ScannerContext.cs" />
-    <Compile Include="CoreConfigurator.cs" />
+    <Compile Include="SecurityConfigurator.cs" />
+    <Compile Include="SecurityConfiguration.cs" />
     <Compile Include="ServiceLocation\Container.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />

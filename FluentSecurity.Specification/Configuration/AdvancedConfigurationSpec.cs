@@ -200,7 +200,7 @@ namespace FluentSecurity.Specification.Configuration
 			};
 
 			// Act
-			SecurityConfigurator.Configure(configuration =>
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(() => true);
 				configuration.Advanced.ModifySecurityContext(_expectedModifyer);
@@ -216,7 +216,7 @@ namespace FluentSecurity.Specification.Configuration
 		[Test]
 		public void Should_not_throw_when_setting_the_modifyer_to_null()
 		{
-			Assert.DoesNotThrow(() => SecurityConfigurator.Configure(configuration => configuration.Advanced.ModifySecurityContext(null)));
+			Assert.DoesNotThrow(() => SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.Advanced.ModifySecurityContext(null)));
 		}
 
 		[Test]

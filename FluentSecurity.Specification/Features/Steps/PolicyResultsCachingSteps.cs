@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FluentSecurity.Caching;
+using FluentSecurity.Configuration;
 using FluentSecurity.Specification.Features.Helpers;
 using FluentSecurity.Specification.TestData;
 using NUnit.Framework;
@@ -125,7 +126,7 @@ namespace FluentSecurity.Specification.Features.Steps
 				foreach (var given in ScenarioContext.Current.Givens<ConfigurationExpression>())
 					given.Invoke(e);
 			};
-			SecurityConfigurator.Configure(expression);
+			SecurityConfigurator.Configure<MvcConfiguration>(expression);
 		}
 
 		private Type GetPolicyType(PolicyType policy)

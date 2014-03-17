@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Specification.Helpers;
@@ -17,7 +18,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			// Arrange
 			var expectedHandler = new Handler1();
 			FakeIoC.GetAllInstancesProvider = () => new List<object> { expectedHandler };
-			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
 			var convention = new DefaultPolicyViolationHandlerIsOfTypeConvention<Handler1>();
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 

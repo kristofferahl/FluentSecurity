@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Routing;
+using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.Contexts;
 using FluentSecurity.Specification.Helpers;
@@ -18,7 +19,7 @@ namespace FluentSecurity.Specification.Policy
 		{
 			// Arrange
 			FakeIoC.GetAllInstancesProvider = () => new List<ISecurityContext>();
-			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
 			var policy = new Policy<ContextWithEmptyConstructor>();
 			var context = new MockSecurityContext();
 
@@ -34,7 +35,7 @@ namespace FluentSecurity.Specification.Policy
 		{
 			// Arrange
 			FakeIoC.GetAllInstancesProvider = () => new List<ISecurityContext>();
-			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
 			var policy = new Policy<ContextWithContextConstructor>();
 			var context = new MockSecurityContext();
 
@@ -53,7 +54,7 @@ namespace FluentSecurity.Specification.Policy
 			{
 				new ContextFromContainer()
 			};
-			SecurityConfigurator.Configure(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
 
 			var policy = new Policy<ContextFromContainer>();
 			var context = new MockSecurityContext();
@@ -69,7 +70,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_create_MvcSecurityContext_with_security_context_as_the_only_constructor_argument()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(configuration => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
 
 			var policy = new Policy<MvcSecurityContext>();
 			var expectedRouteValues = new RouteValueDictionary();
@@ -87,7 +88,7 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_throw_when_context_can_not_be_created_or_resolved()
 		{
 			// Arrange
-			SecurityConfigurator.Configure(configuration => {});
+			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
 
 			var policy = new Policy<ContextWithConstructorArgs>();
 			var context = new MockSecurityContext();
