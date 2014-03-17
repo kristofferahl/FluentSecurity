@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
@@ -7,40 +8,27 @@ namespace FluentSecurity
 {
 	public static class SecurityConfiguration
 	{
-		private static readonly object LockObject = new object();
-		private static volatile ISecurityConfiguration _configuration;
+		private static ConcurrentDictionary<string, ISecurityConfiguration> Configurations = new ConcurrentDictionary<string, ISecurityConfiguration>();
 
-		public static ISecurityConfiguration Current
+		public static ISecurityConfiguration Get<TConfiguration>() where TConfiguration : IFluentConfiguration
 		{
-			get
-			{
-				EnsureConfigured();
-				return _configuration;
-			}
+			var key = typeof(TConfiguration).FullName;
+			if (!Configurations.ContainsKey(key)) throw new InvalidOperationException("Security has not been configured!");
+			return Configurations[key];
 		}
 
-		internal static void SetConfiguration(ISecurityConfiguration configuration)
+		internal static void SetConfiguration<TConfiguration>(ISecurityConfiguration configuration) where TConfiguration : IFluentConfiguration
 		{
 			if (configuration == null)
 				throw new ArgumentNullException("configuration");
 
-			lock (LockObject)
-			{
-				_configuration = configuration;
-			}
+			var key = typeof(TConfiguration).FullName;
+			Configurations[key] = configuration;
 		}
 
 		internal static void Reset()
 		{
-			lock (LockObject)
-			{
-				_configuration = null;
-			}
-		}
-
-		private static void EnsureConfigured()
-		{
-			if (_configuration == null) throw new InvalidOperationException("Security has not been configured!");
+			Configurations.Clear();
 		}
 	}
 

@@ -210,7 +210,7 @@ namespace FluentSecurity.Specification.Configuration
 		[Test]
 		public void Should_set_the_modifyer()
 		{
-			Assert.That(SecurityConfiguration.Current.Runtime.SecurityContextModifyer, Is.EqualTo(_expectedModifyer));
+			Assert.That(SecurityConfiguration.Get<MvcConfiguration>().Runtime.SecurityContextModifyer, Is.EqualTo(_expectedModifyer));
 		}
 
 		[Test]

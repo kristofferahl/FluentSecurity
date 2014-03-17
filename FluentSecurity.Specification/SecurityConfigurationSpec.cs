@@ -111,15 +111,11 @@ FluentSecurity.Specification.TestData.BlogController > Index
 		[Test]
 		public void Should_throw()
 		{
-			// Arrange
-			var setConfigurationMethod = typeof(SecurityConfiguration).GetMethod("SetConfiguration", BindingFlags.Static | BindingFlags.NonPublic);
-			var parameters = new System.Collections.Generic.List<object> { null }.ToArray();
-
 			// Act
-			var exception = Assert.Catch(() => setConfigurationMethod.Invoke(null, parameters));
+			var exception = Assert.Catch(() => SecurityConfiguration.SetConfiguration<MvcConfiguration>(null));
 
 			// Assert
-			Assert.That(exception.InnerException, Is.TypeOf(typeof(ArgumentNullException)));
+			Assert.That(exception, Is.TypeOf(typeof(ArgumentNullException)));
 		}
 	}
 	

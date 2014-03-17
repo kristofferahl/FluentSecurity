@@ -624,7 +624,7 @@ namespace FluentSecurity.Specification
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
 				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
 			});
-			var context = new MockSecurityContext(runtime: SecurityConfiguration.Current.Runtime);
+			var context = new MockSecurityContext(runtime: SecurityConfiguration.Get<MvcConfiguration>().Runtime);
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.AddPolicy<LazyLoadedPolicy>();
 
@@ -684,7 +684,7 @@ namespace FluentSecurity.Specification
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
 				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
 			});
-			var context = new MockSecurityContext(runtime: SecurityConfiguration.Current.Runtime);
+			var context = new MockSecurityContext(runtime: SecurityConfiguration.Get<MvcConfiguration>().Runtime);
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.AddPolicy<LazyLoadedPolicyWithCacheKey>();
 
@@ -715,7 +715,7 @@ namespace FluentSecurity.Specification
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
 				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
 			});
-			var context = new MockSecurityContext(runtime: SecurityConfiguration.Current.Runtime);
+			var context = new MockSecurityContext(runtime: SecurityConfiguration.Get<MvcConfiguration>().Runtime);
 			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
 			policyContainer.AddPolicy<LazyLoadedPolicyWithCacheKey>();
 

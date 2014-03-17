@@ -67,7 +67,7 @@ namespace FluentSecurity.TestHelper.Specification
 			var policyExpectations = new PolicyExpectations();
 			
 			policyExpectations.For<SampleController>(a => a.ActualAction()).Has<DenyAnonymousAccessPolicy>();
-			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+			var results = policyExpectations.VerifyAll(SecurityConfiguration.Get<MvcConfiguration>());
 			
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}
@@ -79,7 +79,7 @@ namespace FluentSecurity.TestHelper.Specification
 			var policyExpectations = new PolicyExpectations();
 			
 			policyExpectations.For<SampleController>().Has<DenyAnonymousAccessPolicy>();
-			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+			var results = policyExpectations.VerifyAll(SecurityConfiguration.Get<MvcConfiguration>());
 
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}
@@ -91,7 +91,7 @@ namespace FluentSecurity.TestHelper.Specification
 			var policyExpectations = new PolicyExpectations();
 
 			policyExpectations.For<SampleController>(a => a.VoidAction()).Has<DenyAnonymousAccessPolicy>();
-			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+			var results = policyExpectations.VerifyAll(SecurityConfiguration.Get<MvcConfiguration>());
 
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}
@@ -103,7 +103,7 @@ namespace FluentSecurity.TestHelper.Specification
 			var policyExpectations = new PolicyExpectations();
 
 			policyExpectations.For<SampleController>().Has<DenyAnonymousAccessPolicy>();
-			var results = policyExpectations.VerifyAll(SecurityConfiguration.Current);
+			var results = policyExpectations.VerifyAll(SecurityConfiguration.Get<MvcConfiguration>());
 
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.ServiceLocation;
@@ -10,7 +9,6 @@ namespace FluentSecurity
 	{
 		private static readonly object LockObject = new object();
 
-		internal static ConcurrentDictionary<string, ISecurityConfiguration> Configurations = new ConcurrentDictionary<string, ISecurityConfiguration>();
 		public static Guid CorrelationId { get; private set; }
 
 		static SecurityConfigurator()
@@ -47,18 +45,8 @@ namespace FluentSecurity
 				throw new ArgumentNullException("configuration");
 
 			Reset();
-			lock (LockObject)
-			{
-				var key = typeof(TConfiguration).FullName;
-				Configurations[key] = configuration;
-				SecurityConfiguration.SetConfiguration(configuration);
-			}
-		}
 
-		public static ISecurityConfiguration Get<TConfiguration>()
-		{
-			var key = typeof (TConfiguration).FullName;
-			return Configurations[key];
+			SecurityConfiguration.SetConfiguration<TConfiguration>(configuration);
 		}
 
 		public static void Reset()
@@ -68,7 +56,6 @@ namespace FluentSecurity
 				ServiceLocator.Reset();
 				SecurityConfiguration.Reset();
 				CorrelationId = Guid.NewGuid();
-				Configurations.Clear();
 			}
 		}
 	}

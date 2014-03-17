@@ -45,7 +45,7 @@ namespace FluentSecurity.Specification
 			Assert.That(context.Data, Is.TypeOf(typeof(ExpandoObject)));
 			Assert.That(context.CurrentUserIsAuthenticated(), Is.EqualTo(status));
 			Assert.That(context.CurrentUserRoles(), Is.EqualTo(roles));
-			Assert.That(context.Runtime, Is.EqualTo(SecurityConfiguration.Current.Runtime));
+			Assert.That(context.Runtime, Is.EqualTo(SecurityConfiguration.Get<MvcConfiguration>().Runtime));
 		}
 
 		[Test]

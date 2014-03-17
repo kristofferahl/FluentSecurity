@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentSecurity.Configuration;
 using FluentSecurity.Core.Internals;
 
 namespace FluentSecurity.Policy
@@ -12,7 +13,7 @@ namespace FluentSecurity.Policy
 
 		public ISecurityPolicy Load()
 		{
-			var externalServiceLocator = SecurityConfiguration.Current.Runtime.ExternalServiceLocator;
+			var externalServiceLocator = SecurityConfiguration.Get<MvcConfiguration>().Runtime.ExternalServiceLocator;
 			if (externalServiceLocator != null)
 			{
 				var securityPolicy = externalServiceLocator.Resolve(PolicyType) as ISecurityPolicy;

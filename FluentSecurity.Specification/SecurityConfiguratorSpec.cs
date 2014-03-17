@@ -26,7 +26,7 @@ namespace FluentSecurity.Specification
 			SecurityConfigurator.SetConfiguration<MvcConfiguration>(configuration);
 
 			// Assert
-			Assert.That(SecurityConfiguration.Current, Is.EqualTo(configuration));
+			Assert.That(SecurityConfiguration.Get<MvcConfiguration>(), Is.EqualTo(configuration));
 		}
 
 		[Test]
@@ -57,7 +57,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			var exception = Assert.Throws<InvalidOperationException>(() => {
-				var x = SecurityConfiguration.Current;
+				var x = SecurityConfiguration.Get<MvcConfiguration>();
 			});
 			Assert.That(exception.Message, Is.EqualTo("Security has not been configured!"));
 		}
@@ -85,7 +85,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(configuration, Is.Not.Null);
-			Assert.That(configuration, Is.EqualTo(SecurityConfiguration.Current));
+			Assert.That(configuration, Is.EqualTo(SecurityConfiguration.Get<MvcConfiguration>()));
 		}
 	}
 
@@ -129,7 +129,7 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.AddPost()).RequireAnyRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
-			_policyContainers = SecurityConfiguration.Current.PolicyContainers;
+			_policyContainers = SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers;
 		}
 
 		[Test]
@@ -177,9 +177,9 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.Index());
 			});
 
-			Assert.That(SecurityConfiguration.Current.PolicyContainers.Count(), Is.EqualTo(1));
-			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ControllerName, Is.EqualTo(NameHelper.Controller<BlogController>()));
-			Assert.That(SecurityConfiguration.Current.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
+			Assert.That(SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers.First().ControllerName, Is.EqualTo(NameHelper.Controller<BlogController>()));
+			Assert.That(SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers.First().ActionName, Is.EqualTo("Index"));
 		}
 	}
 
