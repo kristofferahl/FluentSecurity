@@ -106,7 +106,8 @@ task Pack -depends Test {
 	
 	create_directory $fluentDir
 	
-	copy-item "$outputDir\FluentSecurity.dll" $fluentDir
+	copy-item "$outputDir\FluentSecurity.Core.dll" $fluentDir
+	copy-item "$outputDir\FluentSecurity.Mvc.dll" $fluentDir
 	copy-item "$outputDir\FluentSecurity.TestHelper.dll" $fluentDir
 	copy-item "$rootDir\License.txt" $fluentDir
 	copy-item "$rootDir\Readme.md" $fluentDir

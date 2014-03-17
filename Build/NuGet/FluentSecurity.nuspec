@@ -13,7 +13,8 @@
 		<tags>asp.net mvc .net40 security</tags>
 	</metadata>
 	<files>
-		<file src="@ARTIFACT-PATH@\FluentSecurity.dll" target="lib\net40" />
+		<file src="@ARTIFACT-PATH@\FluentSecurity.Core.dll" target="lib\net40" />
+		<file src="@ARTIFACT-PATH@\FluentSecurity.Mvc.dll" target="lib\net40" />
 		<file src="@ARTIFACT-PATH@\**\*.txt" />
 		<file src="@ARTIFACT-PATH@\**\*.md" />
 	</files>
