@@ -1,9 +1,6 @@
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace FluentSecurity
 {
-	public interface IPolicyViolationHandler
-	{
-		ActionResult Handle(PolicyViolationException exception);
-	}
+	public interface IPolicyViolationHandler : ISecurityPolicyViolationHandler<ActionResult> {}
 }

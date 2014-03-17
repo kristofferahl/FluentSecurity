@@ -65,6 +65,7 @@
     <Compile Include="Internals\TypeExtensions.cs" />
     <Compile Include="IPolicyAppender.cs" />
     <Compile Include="IPolicyContainer.cs" />
+    <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityConfiguration.cs" />
     <Compile Include="ISecurityContext.cs" />
     <Compile Include="ISecurityRuntime.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
     <Compile Include="Policy\IgnorePolicy.cs" />
     <Compile Include="Policy\ILazySecurityPolicy.cs" />
+    <Compile Include="Policy\ISecurityPolicyViolationHandler.cs" />
     <Compile Include="Policy\ISecurityPolicy.cs" />
     <Compile Include="Policy\RequireAllRolesPolicy.cs" />
     <Compile Include="Policy\RequireAnyRolePolicy.cs" />

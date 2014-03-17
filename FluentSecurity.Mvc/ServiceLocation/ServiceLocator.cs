@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
@@ -23,7 +24,7 @@ namespace FluentSecurity.ServiceLocation
 
 			container.Register<IPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), Lifecycle.Singleton);
 
-			container.Register<IPolicyViolationHandlerSelector>(ctx => new PolicyViolationHandlerSelector(
+			container.Register<IPolicyViolationHandlerSelector<ActionResult>>(ctx => new PolicyViolationHandlerSelector(
 				ctx.Resolve<ISecurityConfiguration>().Runtime.Conventions.OfType<IPolicyViolationHandlerConvention>()
 				));
 

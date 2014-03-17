@@ -127,7 +127,6 @@
     <Compile Include="Scanning\ProfileScanner.cs" />
     <Compile Include="Scanning\TypeScanners\ProfileTypeScanner.cs" />
     <Compile Include="SecurityRuntime.cs" />
-    <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />

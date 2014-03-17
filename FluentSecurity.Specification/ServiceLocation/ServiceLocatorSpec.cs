@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Web.Mvc;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.ServiceLocation;
@@ -60,7 +61,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_have_single_transient_instance_of_IPolicyViolationHandlerSelector()
 		{
 			// Assert
-			VerifyHasOneTransientOf<IPolicyViolationHandlerSelector, PolicyViolationHandlerSelector>();
+			VerifyHasOneTransientOf<IPolicyViolationHandlerSelector<ActionResult>, PolicyViolationHandlerSelector>();
 		}
 
 		[Test]

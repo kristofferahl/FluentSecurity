@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Policy.ViolationHandlers
 {
-	public class PolicyViolationHandlerSelector : IPolicyViolationHandlerSelector
+	public class PolicyViolationHandlerSelector : IPolicyViolationHandlerSelector<ActionResult>
 	{
 		private readonly IEnumerable<IPolicyViolationHandlerConvention> _conventions;
 
@@ -15,7 +16,7 @@ namespace FluentSecurity.Policy.ViolationHandlers
 			_conventions = conventions;
 		}
 
-		public IPolicyViolationHandler FindHandlerFor(PolicyViolationException exception)
+		public ISecurityPolicyViolationHandler<ActionResult> FindHandlerFor(PolicyViolationException exception)
 		{
 			IPolicyViolationHandler matchingHandler = null;
 			foreach (var violationHandlerConvention in _conventions)
