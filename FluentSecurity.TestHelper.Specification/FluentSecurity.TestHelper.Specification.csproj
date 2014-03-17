@@ -99,6 +99,10 @@
     <Compile Include="TestData\UserRole.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FluentSecurity.Core\FluentSecurity.Core.csproj">
+      <Project>{615a6913-2870-463a-9ec9-316e3b12bcd7}</Project>
+      <Name>FluentSecurity.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FluentSecurity.Mvc\FluentSecurity.Mvc.csproj">
       <Project>{673f02ac-eeaf-4d65-9b0b-15d534ad7e82}</Project>
       <Name>FluentSecurity.Mvc</Name>
