@@ -39,6 +39,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="IConvention.cs" />
     <Compile Include="Internals\AssemblyExtensions.cs" />
     <Compile Include="Internals\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,4 @@
-namespace FluentSecurity
+namespace FluentSecurity.Core
 {
 	public interface IConvention {}
 }

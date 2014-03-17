@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentSecurity.Core;
 
 namespace FluentSecurity.Configuration
 {
