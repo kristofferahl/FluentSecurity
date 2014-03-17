@@ -156,7 +156,6 @@
     <Compile Include="SecurityContext.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />
-    <Compile Include="Diagnostics\DefaultWhatDoIHaveBuilder.cs" />
     <Compile Include="ServiceLocation\Container.cs" />
     <Compile Include="Policy\ViolationHandlers\ExceptionPolicyViolationHandler.cs" />
     <Compile Include="ServiceLocation\LifecycleExtensions.cs" />

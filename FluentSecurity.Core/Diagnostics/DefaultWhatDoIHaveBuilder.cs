@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text;
 
@@ -19,7 +20,7 @@ namespace FluentSecurity.Diagnostics
 					"{0} > {1}{2}",
 					policyContainer.ControllerName,
 					policyContainer.ActionName,
-					policyContainer.GetPolicies().ToText()
+					String.Join("", policyContainer.GetPolicies().Select(policy => String.Format("\r\n\t{0}", policy)))
 					);
 				builder.AppendLine().AppendLine();
 			}
