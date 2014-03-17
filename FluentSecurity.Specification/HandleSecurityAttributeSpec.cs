@@ -33,7 +33,7 @@ namespace FluentSecurity.Specification
 		public void Should_have_SecurityHandler_set()
 		{
 			// Arrange
-			var securityHandler = new Mock<ISecurityHandler>();
+			var securityHandler = new Mock<ISecurityHandler<ActionResult>>();
 
 			// Act
 			var attribute = new HandleSecurityAttribute(securityHandler.Object);
@@ -68,7 +68,7 @@ namespace FluentSecurity.Specification
 		public void Should_call_HandleSecurityFor_with_the_controllername_Blog_and_actionname_Index_passing_the_current_security_context()
 		{
 			// Arrange
-			var securityHandler = new Mock<ISecurityHandler>();
+			var securityHandler = new Mock<ISecurityHandler<ActionResult>>();
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
 			var filterContext = MvcHelpers.GetAuthorizationContextFor<BlogController>(x => x.Index());
@@ -85,7 +85,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_route_values_to_current_security_context()
 		{
 			// Arrange
-			var securityHandler = new Mock<ISecurityHandler>();
+			var securityHandler = new Mock<ISecurityHandler<ActionResult>>();
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
 			var filterContext = MvcHelpers.GetAuthorizationContextFor<BlogController>(x => x.Index());
@@ -115,7 +115,7 @@ namespace FluentSecurity.Specification
 
 			var expectedResult = new ViewResult { ViewName = "SomeViewName" };
 
-			var securityHandler = new Mock<ISecurityHandler>();
+			var securityHandler = new Mock<ISecurityHandler<ActionResult>>();
 			securityHandler.Setup(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", It.IsAny<ISecurityContext>())).Returns(expectedResult);
 
 			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);

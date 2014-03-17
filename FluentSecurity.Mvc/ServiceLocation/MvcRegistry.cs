@@ -13,7 +13,7 @@ namespace FluentSecurity.ServiceLocation
 			IContainer container = new Container(new MvcLifecycleResolver());
 
 			container.Register<ISecurityConfiguration>(ctx => SecurityConfiguration.Current);
-			container.Register<ISecurityHandler>(ctx => new SecurityHandler(), Lifecycle.Singleton);
+			container.Register<ISecurityHandler<ActionResult>>(ctx => new SecurityHandler(), Lifecycle.Singleton);
 
 			container.Register<ISecurityContext>(ctx => SecurityContext.CreateFrom(ctx.Resolve<ISecurityConfiguration>()));
 

@@ -41,7 +41,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_have_single_singleton_instance_of_ISecurityHandler()
 		{
 			// Assert
-			VerifyHasOneSingletonOf<ISecurityHandler, SecurityHandler>();
+			VerifyHasOneSingletonOf<ISecurityHandler<ActionResult>, SecurityHandler>();
 		}
 
 		[Test]

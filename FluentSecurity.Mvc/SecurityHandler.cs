@@ -3,13 +3,12 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using FluentSecurity.Diagnostics;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
-	public class SecurityHandler : ISecurityHandler
+	public class SecurityHandler : ISecurityHandler<ActionResult>
 	{
 		public ActionResult HandleSecurityFor(string controllerName, string actionName, ISecurityContext securityContext)
 		{

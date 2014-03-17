@@ -69,6 +69,7 @@
     <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityConfiguration.cs" />
     <Compile Include="ISecurityContext.cs" />
+    <Compile Include="ISecurityHandler.cs" />
     <Compile Include="ISecurityRuntime.cs" />
     <Compile Include="ISecurityServiceLocator.cs" />
     <Compile Include="PolicyResult.cs" />

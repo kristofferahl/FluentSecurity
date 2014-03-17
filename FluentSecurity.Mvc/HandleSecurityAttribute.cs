@@ -7,11 +7,11 @@ namespace FluentSecurity
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 	public class HandleSecurityAttribute : Attribute, IAuthorizationFilter
 	{
-		internal ISecurityHandler Handler { get; private set; }
+		internal ISecurityHandler<ActionResult> Handler { get; private set; }
 
-		public HandleSecurityAttribute() : this(ServiceLocator.Current.Resolve<ISecurityHandler>()) {}
+		public HandleSecurityAttribute() : this(ServiceLocator.Current.Resolve<ISecurityHandler<ActionResult>>()) { }
 
-		public HandleSecurityAttribute(ISecurityHandler securityHandler)
+		public HandleSecurityAttribute(ISecurityHandler<ActionResult> securityHandler)
 		{
 			Handler = securityHandler;
 		}
