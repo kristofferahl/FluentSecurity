@@ -70,6 +70,7 @@
     <Compile Include="ISecurityRuntime.cs" />
     <Compile Include="ISecurityServiceLocator.cs" />
     <Compile Include="PolicyResult.cs" />
+    <Compile Include="PolicyViolationException.cs" />
     <Compile Include="Policy\DenyAnonymousAccessPolicy.cs" />
     <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
     <Compile Include="Policy\IgnorePolicy.cs" />

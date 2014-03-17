@@ -130,7 +130,6 @@
     <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
-    <Compile Include="PolicyViolationException.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
     <Compile Include="SecurityConfiguration.cs" />
     <Compile Include="Configuration\DefaultPolicyAppender.cs" />
