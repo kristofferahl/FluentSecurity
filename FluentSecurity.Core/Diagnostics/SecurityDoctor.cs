@@ -31,8 +31,8 @@ namespace FluentSecurity.Diagnostics
 
 		public bool ScannedForEventListeners { get; private set; }
 		public bool ScanForEventListenersOnConfigure { get; set; }
-		public Action<AssemblyScanner> EventListenerScannerSetup { get; set; }
-		internal IList<ISecurityEventListener> Listeners { get; private set; }
+		public Action<AssemblyScannerBase> EventListenerScannerSetup { get; set; }
+		public IList<ISecurityEventListener> Listeners { get; private set; }
 
 		public SecurityDoctor()
 		{
@@ -43,7 +43,7 @@ namespace FluentSecurity.Diagnostics
 
 		public void ScanForEventListeners()
 		{
-			var assemblyScanner = new AssemblyScanner();
+			var assemblyScanner = new CoreAssemblyScanner();
 			
 			if (EventListenerScannerSetup == null)
 				assemblyScanner.AssembliesFromApplicationBaseDirectory();

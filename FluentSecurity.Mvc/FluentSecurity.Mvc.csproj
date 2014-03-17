@@ -74,13 +74,10 @@
     <Compile Include="Caching\PolicyResultCacheExtensions.cs" />
     <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
-    <Compile Include="Diagnostics\Publish.cs" />
-    <Compile Include="Diagnostics\SecurityDoctor.cs" />
     <Compile Include="Configuration\SecurityProfile.cs" />
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
     <Compile Include="Configuration\ViolationConfiguration.cs" />
-    <Compile Include="Diagnostics\SecurityEventListenerScanner.cs" />
     <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="Configuration\ConventionConfiguration.cs" />
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />

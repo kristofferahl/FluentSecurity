@@ -51,6 +51,9 @@
     <Compile Include="Diagnostics\Events\SecurityEvent.cs" />
     <Compile Include="Diagnostics\ISecurityEventListener.cs" />
     <Compile Include="Diagnostics\IWhatDoIHaveBuilder.cs" />
+    <Compile Include="Diagnostics\Publish.cs" />
+    <Compile Include="Diagnostics\SecurityDoctor.cs" />
+    <Compile Include="Diagnostics\SecurityEventListenerScanner.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Internals\AssemblyExtensions.cs" />
     <Compile Include="Internals\TypeExtensions.cs" />
@@ -65,8 +68,10 @@
     <Compile Include="Policy\ISecurityPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\AssemblyScannerBase.cs" />
+    <Compile Include="Scanning\CoreAssemblyScanner.cs" />
     <Compile Include="Scanning\ITypeScanner.cs" />
     <Compile Include="Scanning\ScannerContext.cs" />
+    <Compile Include="CoreConfigurator.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />
     <Compile Include="ServiceLocation\IContainerSource.cs" />
     <Compile Include="ServiceLocation\ILifecycle.cs" />

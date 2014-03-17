@@ -8,13 +8,6 @@ namespace FluentSecurity
 	{
 		private static readonly object LockObject = new object();
 
-		internal static Guid CorrelationId { get; private set; }
-
-		static SecurityConfigurator()
-		{
-			CorrelationId = Guid.NewGuid();
-		}
-
 		public static ISecurityConfiguration Configure(Action<ConfigurationExpression> configurationExpression)
 		{
 			if (configurationExpression == null)
@@ -54,7 +47,7 @@ namespace FluentSecurity
 		{
 			lock (LockObject)
 			{
-				CorrelationId = Guid.NewGuid();
+				CoreConfigurator.Reset();
 				ServiceLocator.Reset();
 				SecurityConfiguration.Reset();
 			}
