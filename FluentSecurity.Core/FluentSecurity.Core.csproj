@@ -82,6 +82,7 @@
     <Compile Include="Policy\RequireAnyRolePolicy.cs" />
     <Compile Include="Policy\RequireRolePolicy.cs" />
     <Compile Include="Policy\SecurityContextWrapper.cs" />
+    <Compile Include="Policy\SecurityPolicyBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\AssemblyScannerBase.cs" />
     <Compile Include="Scanning\CoreAssemblyScanner.cs" />

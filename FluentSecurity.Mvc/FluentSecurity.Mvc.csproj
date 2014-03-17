@@ -82,7 +82,6 @@
     <Compile Include="Policy\Delegate\DelegatePolicy.cs" />
     <Compile Include="Policy\Delegate\DelegateSecurityContext.cs" />
     <Compile Include="Policy\Delegate\DelegatePolicyResult.cs" />
-    <Compile Include="Policy\SecurityPolicyBase.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConvention.cs">
       <SubType>Code</SubType>
     </Compile>
