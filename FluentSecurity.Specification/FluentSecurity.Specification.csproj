@@ -122,7 +122,6 @@
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Helpers\ResetFixture.cs" />
     <Compile Include="Helpers\TestingExtensions.cs" />
-    <Compile Include="Internals\HttpContextRequestDescriptionSpec.cs" />
     <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="Caching\PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="Internals\TypeExtensionsSpec.cs" />

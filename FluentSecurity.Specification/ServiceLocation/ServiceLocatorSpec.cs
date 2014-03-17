@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using FluentSecurity.Diagnostics;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
@@ -27,12 +26,6 @@ namespace FluentSecurity.Specification.ServiceLocation
 
 			// Act
 			_serviceLocator = new ServiceLocator();
-		}
-
-		[TearDown]
-		public void TearDown()
-		{
-			HttpContextRequestDescription.HttpContextProvider = HttpContextRequestDescription.DefaultHttpContextProvider;
 		}
 
 		[Test]
@@ -75,16 +68,6 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Assert
 			VerifyHasOneSingletonOf<IWhatDoIHaveBuilder, DefaultWhatDoIHaveBuilder>();
-		}
-
-		[Test]
-		public void Should_have_single_transient_instance_of_IRequestDescription()
-		{
-			// Arrange
-			HttpContextRequestDescription.HttpContextProvider = () => MvcMockHelpers.FakeHttpContext();
-
-			// Assert
-			VerifyHasOneTransientOf<IRequestDescription, HttpContextRequestDescription>();
 		}
 
 		private void VerifyHasOneSingletonOf<TInterface, TDefaultInstance>()

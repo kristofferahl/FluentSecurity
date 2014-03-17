@@ -119,15 +119,6 @@ namespace FluentSecurity.Specification.Helpers
 			return violationHandlers;
 		}
 
-		public static IRequestDescription CreateRequestDescription(string areaName = "Area")
-		{
-			var mock = new Mock<IRequestDescription>();
-			mock.Setup(x => x.AreaName).Returns(areaName);
-			mock.Setup(x => x.ControllerName).Returns("Controller");
-			mock.Setup(x => x.ActionName).Returns("Action");
-			return mock.Object;
-		}
-
 		public static Route CreateRoute(string areaName, string controllerName, string actionName)
 		{
 			var routeValueDictionary = new RouteValueDictionary

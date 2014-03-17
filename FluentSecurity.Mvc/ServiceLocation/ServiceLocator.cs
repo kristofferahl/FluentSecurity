@@ -30,8 +30,6 @@ namespace FluentSecurity.ServiceLocation
 
 			container.Register<IWhatDoIHaveBuilder>(ctx => new DefaultWhatDoIHaveBuilder(), Lifecycle.Singleton);
 
-			container.Register<IRequestDescription>(ctx => new HttpContextRequestDescription());
-
 			container.SetPrimarySource(ctx => ctx.Resolve<ISecurityConfiguration>().Runtime.ExternalServiceLocator);
 
 			Container = container;
