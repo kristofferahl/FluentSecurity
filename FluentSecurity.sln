@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0B7B89
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.Mvc", "FluentSecurity.Mvc\FluentSecurity.Mvc.csproj", "{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSecurity.Core", "FluentSecurity.Core\FluentSecurity.Core.csproj", "{615A6913-2870-463A-9EC9-316E3B12BCD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{615A6913-2870-463A-9EC9-316E3B12BCD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615A6913-2870-463A-9EC9-316E3B12BCD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615A6913-2870-463A-9EC9-316E3B12BCD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615A6913-2870-463A-9EC9-316E3B12BCD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -222,7 +222,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FluentSecurity.Core\FluentSecurity.Core.csproj">
+      <Project>{615a6913-2870-463a-9ec9-316e3b12bcd7}</Project>
+      <Name>FluentSecurity.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
