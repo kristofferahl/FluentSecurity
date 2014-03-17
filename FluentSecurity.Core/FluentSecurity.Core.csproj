@@ -64,7 +64,9 @@
     <Compile Include="Policy\ILazySecurityPolicy.cs" />
     <Compile Include="Policy\ISecurityPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scanning\AssemblyScannerBase.cs" />
     <Compile Include="Scanning\ITypeScanner.cs" />
+    <Compile Include="Scanning\ScannerContext.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />
     <Compile Include="ServiceLocation\IContainerSource.cs" />
     <Compile Include="ServiceLocation\ILifecycle.cs" />
