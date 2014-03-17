@@ -78,9 +78,9 @@
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
     <Compile Include="Configuration\ViolationConfiguration.cs" />
-    <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="Configuration\ConventionConfiguration.cs" />
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
+    <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContext.cs" />
     <Compile Include="Policy\LazySecurityPolicy.cs" />
@@ -135,7 +135,6 @@
     <Compile Include="Scanning\ProfileScanner.cs" />
     <Compile Include="Scanning\TypeScanners\ProfileTypeScanner.cs" />
     <Compile Include="SecurityRuntime.cs" />
-    <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="IPolicyViolationHandlerSelector.cs" />
     <Compile Include="ISecurityHandler.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
@@ -152,21 +151,14 @@
     <Compile Include="SecurityContext.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />
-    <Compile Include="ServiceLocation\Container.cs" />
     <Compile Include="Policy\ViolationHandlers\ExceptionPolicyViolationHandler.cs" />
     <Compile Include="ServiceLocation\LifecycleExtensions.cs" />
     <Compile Include="ServiceLocation\Lifecycles\HttpContextLifecycle.cs" />
     <Compile Include="ServiceLocation\Lifecycles\HttpSessionLifecycle.cs" />
     <Compile Include="ServiceLocation\Lifecycles\HybridHttpContextLifecycle.cs" />
     <Compile Include="ServiceLocation\Lifecycles\HybridHttpSessionLifecycle.cs" />
-    <Compile Include="ServiceLocation\Lifecycles\NullObjectCache.cs" />
-    <Compile Include="ServiceLocation\Lifecycles\ObjectCache.cs" />
-    <Compile Include="ServiceLocation\Lifecycles\ThreadLocalStorageLifecycle.cs" />
-    <Compile Include="ServiceLocation\RegisteredObject.cs" />
+    <Compile Include="ServiceLocation\MvcLifecycleResolver.cs" />
     <Compile Include="ServiceLocation\ServiceLocator.cs" />
-    <Compile Include="ServiceLocation\Lifecycles\SingletonLifecycle.cs" />
-    <Compile Include="ServiceLocation\Lifecycles\TransientLifecycle.cs" />
-    <Compile Include="ServiceLocation\TypeNotRegisteredException.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

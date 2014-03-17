@@ -8,8 +8,14 @@ namespace FluentSecurity.ServiceLocation
 	// http://timross.wordpress.com/2010/01/21/creating-a-simple-ioc-container/
 	public class Container : IContainer
 	{
+		private readonly ILifecycleResolver _lifecycleResolver;
 		private IContainerSource _primarySource;
 		private readonly IList<RegisteredObject> _registeredObjects = new List<RegisteredObject>();
+
+		public Container(ILifecycleResolver lifecycleResolver)
+		{
+			_lifecycleResolver = lifecycleResolver;
+		}
 
 		public void Register<TTypeToResolve>(Func<IContainer, object> instanceExpression, Lifecycle lifecycle)
 		{
@@ -78,7 +84,7 @@ namespace FluentSecurity.ServiceLocation
 
 		private object GetInstance(RegisteredObject registeredObject)
 		{
-			var lifecycleCache = registeredObject.Lifecycle.Get().FindCache();
+			var lifecycleCache = _lifecycleResolver.Resolve(registeredObject.Lifecycle).FindCache();
 			var instance = lifecycleCache.Get(registeredObject.InstanceKey);
 			
 			if (instance == null)

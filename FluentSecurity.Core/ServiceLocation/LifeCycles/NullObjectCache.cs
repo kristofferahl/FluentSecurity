@@ -1,6 +1,6 @@
 namespace FluentSecurity.ServiceLocation.LifeCycles
 {
-	internal class NullObjectCache : IObjectCache
+	public class NullObjectCache : IObjectCache
 	{
 		public object Get(object key)
 		{

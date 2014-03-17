@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentSecurity.Diagnostics;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
@@ -15,7 +14,7 @@ namespace FluentSecurity.ServiceLocation
 
 		public ServiceLocator()
 		{
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 			
 			container.Register<ISecurityConfiguration>(ctx => SecurityConfiguration.Current);
 			container.Register<ISecurityHandler>(ctx => new SecurityHandler(), Lifecycle.Singleton);

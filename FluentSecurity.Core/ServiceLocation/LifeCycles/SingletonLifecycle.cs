@@ -1,6 +1,6 @@
 namespace FluentSecurity.ServiceLocation.LifeCycles
 {
-	internal class SingletonLifecycle : ILifecycle
+	public class SingletonLifecycle : ILifecycle
 	{
 		private readonly IObjectCache _cache = new ObjectCache();
 

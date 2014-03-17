@@ -2,7 +2,7 @@ using System;
 
 namespace FluentSecurity.ServiceLocation.LifeCycles
 {
-	internal class ThreadLocalStorageLifecycle : ILifecycle
+	public class ThreadLocalStorageLifecycle : ILifecycle
 	{
 		[ThreadStatic]
 		private static ObjectCache _cache;

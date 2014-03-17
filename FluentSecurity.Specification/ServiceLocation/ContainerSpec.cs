@@ -14,7 +14,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_resolve_transient_object()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 			container.Register<ITypeToResolve>(ctx => new ConcreteType());
 
 			// Act
@@ -31,7 +31,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_resolve_singleton_object()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 			container.Register<ITypeToResolve>(ctx => new ConcreteType(), Lifecycle.Singleton);
 
 			// Act
@@ -46,7 +46,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_resolve_transient_object_with_context()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 			container.Register<ITypeToResolve>(ctx => new ConcreteType());
 			container.Register<ITypeToResolveWithConstructorParams>(ctx => new ConcreteTypeWithConstructorParams(ctx.Resolve<ITypeToResolve>()));
 
@@ -67,7 +67,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_resolve_singleton_object_with_context()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 			container.Register<ITypeToResolve>(ctx => new ConcreteType());
 			container.Register<ITypeToResolveWithConstructorParams>(ctx => new ConcreteTypeWithConstructorParams(ctx.Resolve<ITypeToResolve>()), Lifecycle.Singleton);
 
@@ -84,7 +84,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_resolve_singleton_and_transient_object()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 			container.Register<ITypeToResolve>(ctx => new ConcreteType(), Lifecycle.Singleton);
 			container.Register<ITypeToResolveWithConstructorParams>(ctx => new ConcreteTypeWithConstructorParams(ctx.Resolve<ITypeToResolve>()));
 
@@ -101,7 +101,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_resolve_all_instances()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 
 			// Act & assert
 			var instancesBefore = container.ResolveAll<ITypeToResolve>();
@@ -119,7 +119,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_resolve_the_first_registered_instance_as_the_default_instance()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 
 			// Act & assert
 			container.Register<ITypeToResolve>(ctx => new ConcreteType3());
@@ -134,7 +134,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_throw_when_resolving_type_that_is_not_registered()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 
 			// Act & assert
 			Assert.Throws<TypeNotRegisteredException>(() => container.Resolve(typeof (ConcreteType)));
@@ -144,7 +144,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_return_empty_list_when_resolving_type_that_is_not_registered()
 		{
 			// Arrange
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 
 			// Act
 			var instances = container.ResolveAll(typeof(ConcreteType));
@@ -159,7 +159,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Arrange
 			var expectedInstance = new ConcreteType();
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 			container.SetPrimarySource(ctx => new FakeContainerSource(expectedInstance));
 
 			// Act
@@ -174,7 +174,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Arrange
 			var expectedInstances = new List<object> { new ConcreteType3(), new ConcreteType3() };
-			IContainer container = new Container();
+			IContainer container = new Container(new MvcLifecycleResolver());
 			container.SetPrimarySource(ctx => new FakeContainerSource(expectedInstances));
 
 			// Act

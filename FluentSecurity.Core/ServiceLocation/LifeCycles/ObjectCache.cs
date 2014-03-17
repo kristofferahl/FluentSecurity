@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 
 namespace FluentSecurity.ServiceLocation.LifeCycles
 {
 	[Serializable]
-	internal class ObjectCache : IObjectCache
+	public class ObjectCache : IObjectCache
 	{
 		private readonly ConcurrentDictionary<object, object> _objects = new ConcurrentDictionary<object, object>();
 
@@ -34,7 +35,7 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 
 		public void Clear()
 		{
-			_objects.Each(@object => TryDispose(@object.Value));
+			_objects.Values.ToList().ForEach(TryDispose);
 			_objects.Clear();
 		}
 

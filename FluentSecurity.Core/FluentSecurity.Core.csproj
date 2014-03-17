@@ -72,11 +72,21 @@
     <Compile Include="Scanning\ITypeScanner.cs" />
     <Compile Include="Scanning\ScannerContext.cs" />
     <Compile Include="CoreConfigurator.cs" />
+    <Compile Include="ServiceLocation\Container.cs" />
+    <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />
     <Compile Include="ServiceLocation\IContainerSource.cs" />
     <Compile Include="ServiceLocation\ILifecycle.cs" />
+    <Compile Include="ServiceLocation\ILifecycleResolver.cs" />
     <Compile Include="ServiceLocation\IObjectCache.cs" />
     <Compile Include="ServiceLocation\LifeCycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\NullObjectCache.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\ObjectCache.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\SingletonLifecycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycle.cs" />
+    <Compile Include="ServiceLocation\LifeCycles\TransientLifecycle.cs" />
+    <Compile Include="ServiceLocation\RegisteredObject.cs" />
+    <Compile Include="ServiceLocation\TypeNotRegisteredException.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
