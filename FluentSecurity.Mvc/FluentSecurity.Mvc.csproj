@@ -144,7 +144,7 @@
     <Compile Include="ServiceLocation\Lifecycles\HybridHttpContextLifecycle.cs" />
     <Compile Include="ServiceLocation\Lifecycles\HybridHttpSessionLifecycle.cs" />
     <Compile Include="ServiceLocation\MvcLifecycleResolver.cs" />
-    <Compile Include="ServiceLocation\ServiceLocator.cs" />
+    <Compile Include="ServiceLocation\MvcRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

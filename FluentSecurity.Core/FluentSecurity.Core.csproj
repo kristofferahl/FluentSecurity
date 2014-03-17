@@ -95,6 +95,7 @@
     <Compile Include="ServiceLocation\ILifecycle.cs" />
     <Compile Include="ServiceLocation\ILifecycleResolver.cs" />
     <Compile Include="ServiceLocation\IObjectCache.cs" />
+    <Compile Include="ServiceLocation\IRegistry.cs" />
     <Compile Include="ServiceLocation\LifeCycle.cs" />
     <Compile Include="ServiceLocation\LifeCycles\NullObjectCache.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ObjectCache.cs" />
@@ -102,6 +103,8 @@
     <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycle.cs" />
     <Compile Include="ServiceLocation\LifeCycles\TransientLifecycle.cs" />
     <Compile Include="ServiceLocation\RegisteredObject.cs" />
+    <Compile Include="ServiceLocation\RegistryTypeScanner.cs" />
+    <Compile Include="ServiceLocation\ServiceLocator.cs" />
     <Compile Include="ServiceLocation\TypeNotRegisteredException.cs" />
   </ItemGroup>
   <ItemGroup />
