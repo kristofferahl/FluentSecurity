@@ -1,16 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6FF8683A-AB7C-421A-9E34-A51EC7F966BF}</ProjectGuid>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentSecurity.Mvc</RootNamespace>
-    <AssemblyName>FluentSecurity.Mvc</AssemblyName>
+    <RootNamespace>FluentSecurity</RootNamespace>
+    <AssemblyName>FluentSecurity</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,26 +51,178 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\AspNetMvc\System.Web.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Caching\By.cs" />
+    <Compile Include="Caching\PolicyResultCacheStrategy.cs" />
+    <Compile Include="Caching\ICacheKeyProvider.cs" />
+    <Compile Include="Caching\PolicyResultCacheKeyBuilder.cs" />
+    <Compile Include="Caching\ISecurityCache.cs" />
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\PolicyResultCacheExtensions.cs" />
+    <Compile Include="Caching\SecurityCache.cs" />
+    <Compile Include="Configuration\AdvancedConfiguration.cs" />
+    <Compile Include="Diagnostics\AnonymousSecurityEventListener.cs" />
+    <Compile Include="Diagnostics\Events\ISecurityEvent.cs" />
+    <Compile Include="Diagnostics\Events\SecurityEvent.cs" />
+    <Compile Include="Diagnostics\ISecurityEventListener.cs" />
+    <Compile Include="Diagnostics\Publish.cs" />
+    <Compile Include="Diagnostics\SecurityDoctor.cs" />
+    <Compile Include="Diagnostics\Events\RuntimePolicyEvent.cs" />
+    <Compile Include="Diagnostics\Events\ConfigurationEvent.cs" />
+    <Compile Include="Diagnostics\Events\RuntimeEvent.cs" />
+    <Compile Include="Configuration\SecurityProfile.cs" />
+    <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
+    <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
+    <Compile Include="Configuration\ViolationConfiguration.cs" />
+    <Compile Include="Diagnostics\SecurityEventListenerScanner.cs" />
+    <Compile Include="Internals\AssemblyExtensions.cs" />
+    <Compile Include="Internals\ControllerActionInfo.cs" />
+    <Compile Include="Configuration\ConventionConfiguration.cs" />
+    <Compile Include="Internals\ExceptionFactory.cs" />
+    <Compile Include="Internals\HttpContextRequestDescription.cs" />
+    <Compile Include="IConvention.cs" />
+    <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
+    <Compile Include="Internals\TypeExtensions.cs" />
+    <Compile Include="ISecurityRuntime.cs" />
+    <Compile Include="Policy\ILazySecurityPolicy.cs" />
+    <Compile Include="Internals\IRequestDescription.cs" />
+    <Compile Include="Policy\Contexts\MvcSecurityContext.cs" />
+    <Compile Include="Policy\LazySecurityPolicy.cs" />
+    <Compile Include="Policy\RequireAllRolesPolicy.cs" />
+    <Compile Include="Policy\DelegatePolicy.cs" />
+    <Compile Include="Policy\Contexts\DelegateSecurityContext.cs" />
+    <Compile Include="Policy\RequireAnyRolePolicy.cs" />
+    <Compile Include="Policy\Results\DelegatePolicyResult.cs" />
+    <Compile Include="Policy\SecurityPolicyBase.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsOfTypeConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerByNameConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\IPolicyViolationHandlerConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\LazyInstancePolicyViolationHandlerConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\LazyTypePolicyViolationHandlerConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyTypeToPolicyViolationHandlerInstanceConvention.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyTypeToPolicyViolationHandlerTypeConvention.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerFilterConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConvention.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerInstanceConvention.cs" />
+    <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerTypeConvention.cs" />
+    <Compile Include="Policy\ViolationHandlers\DelegatePolicyViolationHandler.cs" />
+    <Compile Include="Policy\Contexts\SecurityContextWrapper.cs" />
+    <Compile Include="Configuration\ProfileImport.cs" />
+    <Compile Include="Policy\ViolationHandlers\HttpUnauthorizedPolicyViolationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Configuration\RootConfiguration.cs" />
+    <Compile Include="Scanning\AssemblyScanner.cs" />
+    <Compile Include="ConfigurationExpression.cs" />
+    <Compile Include="Scanning\ScannerContext.cs" />
+    <Compile Include="Scanning\TypeScanners\ControllerTypeScanner.cs" />
+    <Compile Include="ConventionPolicyContainer.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Scanning\TypeScanners\ITypeScanner.cs" />
+    <Compile Include="Scanning\ProfileScanner.cs" />
+    <Compile Include="Scanning\TypeScanners\ProfileTypeScanner.cs" />
+    <Compile Include="SecurityRuntime.cs" />
+    <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
+    <Compile Include="IPolicyViolationHandlerSelector.cs" />
+    <Compile Include="ISecurityConfiguration.cs" />
+    <Compile Include="IPolicyAppender.cs" />
+    <Compile Include="ISecurityContext.cs" />
+    <Compile Include="ISecurityHandler.cs" />
+    <Compile Include="IPolicyViolationHandler.cs" />
+    <Compile Include="ISecurityServiceLocator.cs" />
+    <Compile Include="Diagnostics\IWhatDoIHaveBuilder.cs" />
+    <Compile Include="PolicyResult.cs" />
+    <Compile Include="PolicyViolationException.cs" />
+    <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
+    <Compile Include="SecurityConfiguration.cs" />
+    <Compile Include="Configuration\DefaultPolicyAppender.cs" />
+    <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
+    <Compile Include="Policy\IgnorePolicy.cs" />
+    <Compile Include="Policy\ISecurityPolicy.cs" />
+    <Compile Include="Policy\DenyAnonymousAccessPolicy.cs" />
+    <Compile Include="HandleSecurityAttribute.cs" />
+    <Compile Include="IPolicyContainer.cs" />
     <Compile Include="SecurityConfigurator.cs" />
+    <Compile Include="Policy\RequireRolePolicy.cs" />
+    <Compile Include="SecurityContext.cs" />
+    <Compile Include="SecurityHandler.cs" />
+    <Compile Include="PolicyContainer.cs" />
+    <Compile Include="PolicyContainerExtensions.cs" />
+    <Compile Include="Diagnostics\DefaultWhatDoIHaveBuilder.cs" />
+    <Compile Include="ServiceLocation\Container.cs" />
+    <Compile Include="Policy\ViolationHandlers\ExceptionPolicyViolationHandler.cs" />
+    <Compile Include="ServiceLocation\IContainer.cs" />
+    <Compile Include="ServiceLocation\IContainerSource.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\HttpContextLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\HttpSessionLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\HybridHttpContextLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\HybridHttpSessionLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\ILifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\IObjectCache.cs" />
+    <Compile Include="ServiceLocation\Lifecycle.cs" />
+    <Compile Include="ServiceLocation\LifecycleExtensions.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\NullObjectCache.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\ObjectCache.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\ThreadLocalStorageLifecycle.cs" />
+    <Compile Include="ServiceLocation\RegisteredObject.cs" />
+    <Compile Include="ServiceLocation\ServiceLocator.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\SingletonLifecycle.cs" />
+    <Compile Include="ServiceLocation\Lifecycles\TransientLifecycle.cs" />
+    <Compile Include="ServiceLocation\TypeNotRegisteredException.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

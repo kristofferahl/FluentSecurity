@@ -99,13 +99,13 @@
     <Compile Include="TestData\UserRole.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FluentSecurity.Mvc\FluentSecurity.Mvc.csproj">
+      <Project>{673f02ac-eeaf-4d65-9b0b-15d534ad7e82}</Project>
+      <Name>FluentSecurity.Mvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FluentSecurity.TestHelper\FluentSecurity.TestHelper.csproj">
       <Project>{F8E43851-6455-48F4-96DE-C3CB3E189123}</Project>
       <Name>FluentSecurity.TestHelper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FluentSecurity\FluentSecurity.csproj">
-      <Project>{673F02AC-EEAF-4D65-9B0B-15D534AD7E82}</Project>
-      <Name>FluentSecurity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
