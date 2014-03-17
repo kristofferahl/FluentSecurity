@@ -93,7 +93,6 @@
     <Compile Include="Diagnostics\SecurityEventListenerScanner.cs" />
     <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="Configuration\ConventionConfiguration.cs" />
-    <Compile Include="Internals\ExceptionFactory.cs" />
     <Compile Include="Internals\HttpContextRequestDescription.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />

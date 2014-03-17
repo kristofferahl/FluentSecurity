@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
@@ -43,7 +44,7 @@ namespace FluentSecurity
 		public IEnumerable<PolicyResult> EnforcePolicies(ISecurityContext context)
 		{
 			if (_policies.Count.Equals(0))
-				throw ExceptionFactory.CreateConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
+				throw new ConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
 			var defaultResultsCacheLifecycle = context.Runtime.DefaultResultsCacheLifecycle;
 			var cache = SecurityCache.CacheProvider.Invoke();

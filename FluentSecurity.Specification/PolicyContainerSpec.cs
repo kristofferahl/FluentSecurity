@@ -556,9 +556,6 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_throw_ConfigurationErrorsException_when_a_container_has_no_policies()
 		{
-			// Arrange
-			ExceptionFactory.RequestDescriptionProvider = () => TestDataFactory.CreateRequestDescription();
-
 			var context = TestDataFactory.CreateSecurityContext(false);
 			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 
