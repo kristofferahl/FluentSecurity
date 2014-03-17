@@ -42,7 +42,12 @@
     <Compile Include="Caching\Cache.cs" />
     <Compile Include="Caching\ICacheKeyProvider.cs" />
     <Compile Include="Caching\ISecurityCache.cs" />
+    <Compile Include="Diagnostics\AnonymousSecurityEventListener.cs" />
+    <Compile Include="Diagnostics\Events\ConfigurationEvent.cs" />
     <Compile Include="Diagnostics\Events\ISecurityEvent.cs" />
+    <Compile Include="Diagnostics\Events\RuntimeEvent.cs" />
+    <Compile Include="Diagnostics\Events\RuntimePolicyEvent.cs" />
+    <Compile Include="Diagnostics\Events\SecurityEvent.cs" />
     <Compile Include="Diagnostics\ISecurityEventListener.cs" />
     <Compile Include="Diagnostics\IWhatDoIHaveBuilder.cs" />
     <Compile Include="IConvention.cs" />

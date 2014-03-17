@@ -74,13 +74,8 @@
     <Compile Include="Caching\PolicyResultCacheExtensions.cs" />
     <Compile Include="Caching\SecurityCache.cs" />
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
-    <Compile Include="Diagnostics\AnonymousSecurityEventListener.cs" />
-    <Compile Include="Diagnostics\Events\SecurityEvent.cs" />
     <Compile Include="Diagnostics\Publish.cs" />
     <Compile Include="Diagnostics\SecurityDoctor.cs" />
-    <Compile Include="Diagnostics\Events\RuntimePolicyEvent.cs" />
-    <Compile Include="Diagnostics\Events\ConfigurationEvent.cs" />
-    <Compile Include="Diagnostics\Events\RuntimeEvent.cs" />
     <Compile Include="Configuration\SecurityProfile.cs" />
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
@@ -201,6 +196,7 @@
       <Name>FluentSecurity.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
