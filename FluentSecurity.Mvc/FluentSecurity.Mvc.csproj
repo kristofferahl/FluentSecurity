@@ -79,10 +79,8 @@
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="Policy\Contexts\MvcSecurityContext.cs" />
     <Compile Include="Policy\LazySecurityPolicy.cs" />
-    <Compile Include="Policy\RequireAllRolesPolicy.cs" />
     <Compile Include="Policy\DelegatePolicy.cs" />
     <Compile Include="Policy\Contexts\DelegateSecurityContext.cs" />
-    <Compile Include="Policy\RequireAnyRolePolicy.cs" />
     <Compile Include="Policy\Results\DelegatePolicyResult.cs" />
     <Compile Include="Policy\SecurityPolicyBase.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConvention.cs">
@@ -137,12 +135,8 @@
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
     <Compile Include="SecurityConfiguration.cs" />
     <Compile Include="Configuration\DefaultPolicyAppender.cs" />
-    <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
-    <Compile Include="Policy\IgnorePolicy.cs" />
-    <Compile Include="Policy\DenyAnonymousAccessPolicy.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />
     <Compile Include="SecurityConfigurator.cs" />
-    <Compile Include="Policy\RequireRolePolicy.cs" />
     <Compile Include="SecurityContext.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />

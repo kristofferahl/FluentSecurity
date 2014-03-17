@@ -59,6 +59,7 @@
     <Compile Include="Diagnostics\Publish.cs" />
     <Compile Include="Diagnostics\SecurityDoctor.cs" />
     <Compile Include="Diagnostics\SecurityEventListenerScanner.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Internals\AssemblyExtensions.cs" />
     <Compile Include="Internals\TypeExtensions.cs" />
@@ -69,8 +70,14 @@
     <Compile Include="ISecurityRuntime.cs" />
     <Compile Include="ISecurityServiceLocator.cs" />
     <Compile Include="PolicyResult.cs" />
+    <Compile Include="Policy\DenyAnonymousAccessPolicy.cs" />
+    <Compile Include="Policy\DenyAuthenticatedAccessPolicy.cs" />
+    <Compile Include="Policy\IgnorePolicy.cs" />
     <Compile Include="Policy\ILazySecurityPolicy.cs" />
     <Compile Include="Policy\ISecurityPolicy.cs" />
+    <Compile Include="Policy\RequireAllRolesPolicy.cs" />
+    <Compile Include="Policy\RequireAnyRolePolicy.cs" />
+    <Compile Include="Policy\RequireRolePolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanning\AssemblyScannerBase.cs" />
     <Compile Include="Scanning\CoreAssemblyScanner.cs" />
