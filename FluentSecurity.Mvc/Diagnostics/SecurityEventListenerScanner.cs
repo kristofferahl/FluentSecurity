@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluentSecurity.Core.Internals;
 using FluentSecurity.Scanning.TypeScanners;
-using FluentSecurity.Internals;
 
 namespace FluentSecurity.Diagnostics
 {

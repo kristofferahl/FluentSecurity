@@ -5,7 +5,7 @@ using System.Reflection;
 using FluentSecurity.Specification.TestData;
 using FluentSecurity.Specification.TestData.Controllers;
 using NUnit.Framework;
-using FluentSecurity.Internals;
+using FluentSecurity.Core.Internals;
 
 namespace FluentSecurity.Specification.Internals
 {

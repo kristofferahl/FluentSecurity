@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace FluentSecurity.Internals
+namespace FluentSecurity.Core.Internals
 {
-	internal static class AssemblyExtensions
+	public static class AssemblyExtensions
 	{
 		internal static Func<Assembly, IEnumerable<Type>> GetTypesProvider;
 
@@ -19,7 +19,7 @@ namespace FluentSecurity.Internals
 			GetTypesProvider = assembly => assembly.GetTypes();
 		}
 
-		internal static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
+		public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
 		{
 			if (assembly == null) throw new ArgumentNullException("assembly");
 			try
@@ -32,7 +32,7 @@ namespace FluentSecurity.Internals
 			}
 		}
 
-		internal static IEnumerable<Type> GetLoadableExportedTypes(this Assembly assembly)
+		public static IEnumerable<Type> GetLoadableExportedTypes(this Assembly assembly)
 		{
 			if (assembly == null) throw new ArgumentNullException("assembly");
 			try

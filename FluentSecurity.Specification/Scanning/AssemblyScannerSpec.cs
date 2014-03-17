@@ -51,7 +51,7 @@ namespace FluentSecurity.Specification.Scanning
 		{
 			// Arrange
 			var scanner = new AssemblyScanner();
-			const int expectedAssembliesCount = 3;
+			const int expectedAssembliesCount = 5;
 
 			// Act
 			scanner.AssembliesFromApplicationBaseDirectory(assembly => assembly.FullName.StartsWith("FluentSecurity."));
@@ -65,16 +65,17 @@ namespace FluentSecurity.Specification.Scanning
 		{
 			// Arrange
 			var scanner = new AssemblyScanner();
-			const int expectedAssembliesCount = 2;
+			const int expectedAssembliesCount = 3;
 
 			// Act
-			scanner.ExcludeAssembly(assembly => Path.GetFileNameWithoutExtension(assembly).Equals("FluentSecurity.TestHelper"));
+			scanner.ExcludeAssembly(assembly => Path.GetFileNameWithoutExtension(assembly).Contains(".Specification"));
 			scanner.AssembliesFromApplicationBaseDirectory(assembly => assembly.FullName.StartsWith("FluentSecurity."));
 
 			// Assert
 			Assert.That(scanner.Context.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
-			Assert.That(scanner.Context.AssembliesToScan.First().GetName().Name, Is.EqualTo("FluentSecurity.Specification"));
-			Assert.That(scanner.Context.AssembliesToScan.Last().GetName().Name, Is.EqualTo("FluentSecurity.TestHelper.Specification"));
+			Assert.That(scanner.Context.AssembliesToScan.ElementAt(0).GetName().Name, Is.EqualTo("FluentSecurity.Core"));
+			Assert.That(scanner.Context.AssembliesToScan.ElementAt(1).GetName().Name, Is.EqualTo("FluentSecurity.Mvc"));
+			Assert.That(scanner.Context.AssembliesToScan.ElementAt(2).GetName().Name, Is.EqualTo("FluentSecurity.TestHelper"));
 		}
 
 		[Test]
@@ -99,7 +100,7 @@ namespace FluentSecurity.Specification.Scanning
 		{
 			// Arrange
 			var scanner = new AssemblyScanner();
-			const int expectedAssembliesCount = 1;
+			const int expectedAssembliesCount = 3;
 
 			// Act
 			scanner.IncludeAssembly(assembly => Path.GetFileNameWithoutExtension(assembly).StartsWith("FluentSecurity."));
@@ -108,7 +109,9 @@ namespace FluentSecurity.Specification.Scanning
 
 			// Assert
 			Assert.That(scanner.Context.AssembliesToScan.Count(), Is.EqualTo(expectedAssembliesCount));
-			Assert.That(scanner.Context.AssembliesToScan.Single().GetName().Name, Is.EqualTo("FluentSecurity.TestHelper"));
+			Assert.That(scanner.Context.AssembliesToScan.ElementAt(0).GetName().Name, Is.EqualTo("FluentSecurity.Core"));
+			Assert.That(scanner.Context.AssembliesToScan.ElementAt(1).GetName().Name, Is.EqualTo("FluentSecurity.Mvc"));
+			Assert.That(scanner.Context.AssembliesToScan.ElementAt(2).GetName().Name, Is.EqualTo("FluentSecurity.TestHelper"));
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentSecurity.Configuration;
-using FluentSecurity.Internals;
+using FluentSecurity.Core.Internals;
 
 namespace FluentSecurity.Scanning.TypeScanners
 {
