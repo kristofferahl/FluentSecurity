@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -13,23 +12,17 @@ using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
-using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
-	public abstract class ConfigurationExpression
+	public abstract class ConfigurationExpression : ConfigurationExpressionBase<SecurityRuntime>
 	{
 		public AdvancedConfiguration Advanced { get; private set; }
 
-		internal SecurityRuntime Runtime { get; private set; }
-		
-		internal IPolicyAppender PolicyAppender { get; set; }
-
-		internal void Initialize(SecurityRuntime runtime)
+		internal new void Initialize(SecurityRuntime runtime)
 		{
-			Runtime = runtime;
+			base.Initialize(runtime);
 			Advanced = new AdvancedConfiguration(Runtime);
-			PolicyAppender = new DefaultPolicyAppender();
 		}
 
 		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
@@ -187,49 +180,6 @@ namespace FluentSecurity
 		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
 		{
 			return Runtime.AddPolicyContainer(new PolicyContainer(controllerName, actionName, PolicyAppender));
-		}
-
-		public void GetAuthenticationStatusFrom(Func<bool> authenticationExpression)
-		{
-			if (authenticationExpression == null)
-				throw new ArgumentNullException("authenticationExpression");
-
-			Runtime.IsAuthenticated = authenticationExpression;
-		}
-
-		public void GetRolesFrom(Func<IEnumerable<object>> rolesExpression)
-		{
-			if (rolesExpression == null)
-				throw new ArgumentNullException("rolesExpression");
-
-			if (Runtime.PolicyContainers.Any())
-				throw new ConfigurationErrorsException("You must set the rolesfunction before adding policies.");
-
-			Runtime.Roles = rolesExpression;
-		}
-
-		public void SetPolicyAppender(IPolicyAppender policyAppender)
-		{
-			if (policyAppender == null)
-				throw new ArgumentNullException("policyAppender");
-			
-			PolicyAppender = policyAppender;
-		}
-
-		public void ResolveServicesUsing(Func<Type, IEnumerable<object>> servicesLocator, Func<Type, object> singleServiceLocator = null)
-		{
-			if (servicesLocator == null)
-				throw new ArgumentNullException("servicesLocator");
-
-			ResolveServicesUsing(new ExternalServiceLocator(servicesLocator, singleServiceLocator));
-		}
-
-		public void ResolveServicesUsing(ISecurityServiceLocator securityServiceLocator)
-		{
-			if (securityServiceLocator == null)
-				throw new ArgumentNullException("securityServiceLocator");
-
-			Runtime.ExternalServiceLocator = securityServiceLocator;
 		}
 
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler

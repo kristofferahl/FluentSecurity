@@ -48,6 +48,7 @@
     <Compile Include="Caching\PolicyResultCacheKeyBuilder.cs" />
     <Compile Include="Caching\PolicyResultCacheStrategy.cs" />
     <Compile Include="Caching\SecurityCache.cs" />
+    <Compile Include="Configuration\ConfigurationExpressionBase.cs" />
     <Compile Include="Configuration\ConventionConfiguration.cs" />
     <Compile Include="Configuration\DefaultPolicyAppender.cs" />
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="SecurityConfigurator.cs" />
     <Compile Include="SecurityConfiguration.cs" />
     <Compile Include="SecurityContext.cs" />
+    <Compile Include="SecurityRuntimeBase.cs" />
     <Compile Include="ServiceLocation\Container.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />
