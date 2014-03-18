@@ -1,3 +1,4 @@
+using FluentSecurity.Configuration;
 using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity.Scanning
@@ -6,7 +7,7 @@ namespace FluentSecurity.Scanning
 	{
 		public void LookForProfiles()
 		{
-			With<ProfileTypeScanner>();
+			With<ProfileTypeScanner<SecurityProfile>>();
 		}
 	}
 }

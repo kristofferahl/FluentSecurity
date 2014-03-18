@@ -3,7 +3,7 @@ using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity.Configuration
 {
-	public abstract class SecurityProfile : ConfigurationExpression
+	public abstract class SecurityProfile : ConfigurationExpression, ISecurityProfile
 	{
 		public abstract void Configure();
 

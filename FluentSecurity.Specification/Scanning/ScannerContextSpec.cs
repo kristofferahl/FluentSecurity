@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FluentSecurity.Configuration;
 using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
 using NUnit.Framework;
@@ -93,7 +94,7 @@ namespace FluentSecurity.Specification.Scanning
 		{
 			// Arrange
 			var context = new ScannerContext();
-			var typeScanner = new ProfileTypeScanner();
+			var typeScanner = new ProfileTypeScanner<SecurityProfile>();
 
 			// Act
 			context.AddTypeScanner(typeScanner);

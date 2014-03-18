@@ -71,6 +71,7 @@
     <Compile Include="ISecurityConfiguration.cs" />
     <Compile Include="ISecurityContext.cs" />
     <Compile Include="ISecurityHandler.cs" />
+    <Compile Include="Configuration\ISecurityProfile.cs" />
     <Compile Include="ISecurityRuntime.cs" />
     <Compile Include="ISecurityServiceLocator.cs" />
     <Compile Include="PolicyResult.cs" />

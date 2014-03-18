@@ -7,9 +7,9 @@ using FluentSecurity.Core.Internals;
 
 namespace FluentSecurity.Scanning.TypeScanners
 {
-	internal class ProfileTypeScanner : ITypeScanner
+	internal class ProfileTypeScanner<TProfileType> : ITypeScanner where TProfileType : ISecurityProfile
 	{
-		public static readonly Type ProfileType = typeof(SecurityProfile);
+		private readonly Type _profileType = typeof(TProfileType);
 
 		public IEnumerable<Type> Scan(IEnumerable<Assembly> assemblies)
 		{
@@ -17,7 +17,7 @@ namespace FluentSecurity.Scanning.TypeScanners
 			foreach (var assembly in assemblies)
 			{
 				var profileTypes = assembly.GetLoadableExportedTypes()
-					.Where(type => ProfileType.IsAssignableFrom(type) && type != ProfileType)
+					.Where(type => _profileType.IsAssignableFrom(type) && type != _profileType)
 					.ToList();
 
 				results.AddRange(profileTypes);
