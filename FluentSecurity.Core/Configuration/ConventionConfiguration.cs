@@ -8,7 +8,7 @@ namespace FluentSecurity.Configuration
 	{
 		private readonly List<IConvention> _conventions = new List<IConvention>();
 
-		internal ConventionConfiguration(List<IConvention> conventions)
+		public ConventionConfiguration(List<IConvention> conventions)
 		{
 			_conventions = conventions;
 		}
