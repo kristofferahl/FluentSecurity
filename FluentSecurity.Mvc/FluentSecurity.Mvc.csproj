@@ -71,11 +71,9 @@
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
     <Compile Include="Configuration\MvcConfiguration.cs" />
     <Compile Include="Configuration\SecurityProfile.cs" />
-    <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
     <Compile Include="Configuration\ViolationConfiguration.cs" />
     <Compile Include="Configuration\ConventionConfiguration.cs" />
-    <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
     <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="Policy\MvcSecurityContext.cs" />
