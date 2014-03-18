@@ -16,18 +16,6 @@ namespace FluentSecurity
 {
 	public static class Extensions
 	{
-		/// <summary>
-		/// Gets a policycontainer matching the specified controller and actioname
-		/// </summary>
-		/// <param name="policyContainers">Policycontainers</param>
-		/// <param name="controllerName">The controllername</param>
-		/// <param name="actionName">The actionname</param>
-		/// <returns>A policycontainer</returns>
-		public static IPolicyContainer GetContainerFor(this IEnumerable<IPolicyContainer> policyContainers, string controllerName, string actionName)
-		{
-			return policyContainers.SingleOrDefault(x => x.ControllerName.ToLowerInvariant() == controllerName.ToLowerInvariant() && x.ActionName.ToLowerInvariant() == actionName.ToLowerInvariant());
-		}
-
 		///<summary>
 		/// Gets the controller name for the specified controller type
 		///</summary>
