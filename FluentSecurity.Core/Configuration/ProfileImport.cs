@@ -2,7 +2,7 @@ using System;
 
 namespace FluentSecurity.Configuration
 {
-	internal class ProfileImport
+	public class ProfileImport
 	{
 		public ProfileImport(Type type)
 		{

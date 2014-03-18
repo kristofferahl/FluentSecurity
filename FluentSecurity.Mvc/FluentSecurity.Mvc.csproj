@@ -115,7 +115,6 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerInstanceConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerTypeConvention.cs" />
     <Compile Include="Policy\Delegate\DelegatePolicyViolationHandler.cs" />
-    <Compile Include="Configuration\ProfileImport.cs" />
     <Compile Include="Policy\ViolationHandlers\HttpUnauthorizedPolicyViolationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConfigurationExpression.cs" />
