@@ -92,6 +92,7 @@
     <Compile Include="Scanning\CoreAssemblyScanner.cs" />
     <Compile Include="Scanning\ITypeScanner.cs" />
     <Compile Include="Scanning\ScannerContext.cs" />
+    <Compile Include="Scanning\TypeScanners\ControllerTypeScanner.cs" />
     <Compile Include="Scanning\TypeScanners\ProfileTypeScanner.cs" />
     <Compile Include="SecurityConfigurator.cs" />
     <Compile Include="SecurityConfiguration.cs" />

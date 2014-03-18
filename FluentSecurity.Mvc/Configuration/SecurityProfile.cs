@@ -11,7 +11,7 @@ namespace FluentSecurity.Configuration
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.Assembly(GetType().Assembly);
-			assemblyScanner.With<ControllerTypeScanner>();
+			assemblyScanner.With<MvcControllerTypeScanner>();
 			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes);

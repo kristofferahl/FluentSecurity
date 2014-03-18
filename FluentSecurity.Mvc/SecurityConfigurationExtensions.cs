@@ -14,7 +14,7 @@ namespace FluentSecurity
 		{
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.Assemblies(assemblies);
-			assemblyScanner.With<ControllerTypeScanner>();
+			assemblyScanner.With<MvcControllerTypeScanner>();
 
 			var controllerTypes = assemblyScanner.Scan();
 

@@ -19,7 +19,7 @@ namespace FluentSecurity.Specification.Scanning.TypeScanners
 			var expectedType = typeof(IController);
 
 			// Act
-			var scanner = new ControllerTypeScanner();
+			var scanner = new MvcControllerTypeScanner();
 
 			// Assert
 			Assert.That(scanner.ControllerType, Is.EqualTo(expectedType));
@@ -28,7 +28,7 @@ namespace FluentSecurity.Specification.Scanning.TypeScanners
 		[Test]
 		public void Should_throw_when_type_is_null()
 		{
-			Assert.Throws<ArgumentNullException>(() => new ControllerTypeScanner(null));
+			Assert.Throws<ArgumentNullException>(() => new MvcControllerTypeScanner(null));
 		}
 
 		[Test]
@@ -38,7 +38,7 @@ namespace FluentSecurity.Specification.Scanning.TypeScanners
 			var expectedType = typeof (AdminController);
 			
 			// Act
-			var scanner = new ControllerTypeScanner(expectedType);
+			var scanner = new MvcControllerTypeScanner(expectedType);
 
 			// Assert
 			Assert.That(scanner.ControllerType, Is.EqualTo(expectedType));
@@ -53,7 +53,7 @@ namespace FluentSecurity.Specification.Scanning.TypeScanners
 		public void Should_find_all_controllers()
 		{
 			// Arrange
-			var scanner = new ControllerTypeScanner();
+			var scanner = new MvcControllerTypeScanner();
 
 			// Act
 			var result = scanner.Scan(new[] { GetType().Assembly }).ToList();
@@ -66,7 +66,7 @@ namespace FluentSecurity.Specification.Scanning.TypeScanners
 		public void Should_find_all_controllers_inheriting_from_base_controller_including_base_controller()
 		{
 			// Arrange
-			var scanner = new ControllerTypeScanner(typeof(BaseController));
+			var scanner = new MvcControllerTypeScanner(typeof(BaseController));
 
 			// Act
 			var result = scanner.Scan(new[] { GetType().Assembly }).ToList();
@@ -81,7 +81,7 @@ namespace FluentSecurity.Specification.Scanning.TypeScanners
 		public void Should_find_all_controllers_inheriting_from_abstract_base_controller_excluding_abstract_base_controller()
 		{
 			// Arrange
-			var scanner = new ControllerTypeScanner(typeof(AbstractBaseController));
+			var scanner = new MvcControllerTypeScanner(typeof(AbstractBaseController));
 
 			// Act
 			var result = scanner.Scan(new[] { GetType().Assembly }).ToList();
