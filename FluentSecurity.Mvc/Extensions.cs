@@ -159,47 +159,6 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
-		/// Ensures we are working with the actual policy. Takes care of loading lazy policies.
-		/// </summary>
-		internal static ISecurityPolicy EnsureNonLazyPolicy(this ISecurityPolicy securityPolicy)
-		{
-			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
-			return lazySecurityPolicy != null
-				? lazySecurityPolicy.Load()
-				: securityPolicy;
-		}
-
-		/// <summary>
-		/// Ensures we are working with the expected policy type. Takes care of loading and casting lazy policies.
-		/// </summary>
-		internal static TSecurityPolicy EnsureNonLazyPolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
-		{
-			return securityPolicy.EnsureNonLazyPolicy() as TSecurityPolicy;
-		}
-
-		/// <summary>
-		/// Returns true if the policy is of the expected type. Takes care of checking for lazy policies.
-		/// </summary>
-		/// <param name="securityPolicy">The policy</param>
-		/// <returns>A boolean</returns>
-		internal static bool IsPolicyOf<TSecurityPolicy>(this ISecurityPolicy securityPolicy) where TSecurityPolicy : class, ISecurityPolicy
-		{
-			var isMatch = securityPolicy is TSecurityPolicy;
-			if (!isMatch) isMatch = securityPolicy.GetPolicyType() == typeof (TSecurityPolicy);
-			return isMatch;
-		}
-
-		/// <summary>
-		/// Returns true if the policy implements ICacheKeyProvider
-		/// </summary>
-		/// <param name="securityPolicy">The policy</param>
-		/// <returns>A boolean</returns>
-		internal static bool IsCacheKeyProvider(this ISecurityPolicy securityPolicy)
-		{
-			return typeof (ICacheKeyProvider).IsAssignableFrom(securityPolicy.GetPolicyType());
-		}
-
-		/// <summary>
 		/// Performs an action on each item
 		/// </summary>
 		internal static void Each<T>(this IEnumerable<T> items, Action<T> action)
@@ -207,8 +166,6 @@ namespace FluentSecurity
 			foreach (var item in items)
 				action(item);
 		}
-
-		
 
 		/// <summary>
 		/// Returns true if the value is null or empty
