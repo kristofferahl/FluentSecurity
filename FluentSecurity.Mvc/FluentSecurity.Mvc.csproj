@@ -128,7 +128,6 @@
     <Compile Include="SecurityRuntime.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
-    <Compile Include="Configuration\DefaultPolicyAppender.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />

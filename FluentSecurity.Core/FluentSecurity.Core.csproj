@@ -48,6 +48,7 @@
     <Compile Include="Caching\PolicyResultCacheKeyBuilder.cs" />
     <Compile Include="Caching\PolicyResultCacheStrategy.cs" />
     <Compile Include="Caching\SecurityCache.cs" />
+    <Compile Include="Configuration\DefaultPolicyAppender.cs" />
     <Compile Include="SecurityPolicyExtensions.cs" />
     <Compile Include="Diagnostics\AnonymousSecurityEventListener.cs" />
     <Compile Include="Diagnostics\Events\ConfigurationEvent.cs" />
