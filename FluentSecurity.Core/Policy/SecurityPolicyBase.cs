@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentSecurity.Core.Internals;
-using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.Policy
 {
@@ -13,7 +12,7 @@ namespace FluentSecurity.Policy
 		public PolicyResult Enforce(ISecurityContext securityContext)
 		{
 			var customContext =
-				TryGetFromContainer() ??
+				TryGetFromContainer(securityContext) ??
 				TryCreateSingleArgumentContext(securityContext) ??
 				TryCreateEmptyConstructorContext();
 
@@ -23,9 +22,11 @@ namespace FluentSecurity.Policy
 			return Enforce(customContext);
 		}
 
-		private static TSecurityContext TryGetFromContainer()
+		private static TSecurityContext TryGetFromContainer(ISecurityContext securityContext)
 		{
-			return ServiceLocator.Current.ResolveAll<TSecurityContext>().SingleOrDefault();
+			return securityContext.Runtime.ExternalServiceLocator != null
+				? securityContext.Runtime.ExternalServiceLocator.ResolveAll(typeof(TSecurityContext)).ToList().Cast<TSecurityContext>().SingleOrDefault()
+				: null;
 		}
 
 		private static TSecurityContext TryCreateEmptyConstructorContext()

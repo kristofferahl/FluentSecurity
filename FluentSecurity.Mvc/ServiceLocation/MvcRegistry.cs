@@ -9,10 +9,8 @@ namespace FluentSecurity.ServiceLocation
 {
 	public class MvcRegistry : IRegistry
 	{
-		public IContainer Configure()
+		public void Configure(IContainer container)
 		{
-			IContainer container = new Container(new MvcLifecycleResolver());
-
 			container.Register<ISecurityConfiguration>(ctx => SecurityConfiguration.Get<MvcConfiguration>());
 			container.Register<ISecurityHandler<ActionResult>>(ctx => new SecurityHandler(), Lifecycle.Singleton);
 
@@ -25,10 +23,6 @@ namespace FluentSecurity.ServiceLocation
 				));
 
 			container.Register<IWhatDoIHaveBuilder>(ctx => new DefaultWhatDoIHaveBuilder(), Lifecycle.Singleton);
-
-			container.SetPrimarySource(ctx => ctx.Resolve<ISecurityConfiguration>().Runtime.ExternalServiceLocator);
-
-			return container;
 		}
 	}
 }

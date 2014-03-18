@@ -1,6 +1,6 @@
 using System;
 using System.Web.Mvc;
-using FluentSecurity.ServiceLocation;
+using FluentSecurity.Configuration;
 
 namespace FluentSecurity
 {
@@ -9,7 +9,7 @@ namespace FluentSecurity
 	{
 		internal ISecurityHandler<ActionResult> Handler { get; private set; }
 
-		public HandleSecurityAttribute() : this(ServiceLocator.Current.Resolve<ISecurityHandler<ActionResult>>()) { }
+		public HandleSecurityAttribute() : this(SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityHandler<ActionResult>>()) { }
 
 		public HandleSecurityAttribute(ISecurityHandler<ActionResult> securityHandler)
 		{

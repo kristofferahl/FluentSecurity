@@ -1,4 +1,5 @@
 using FluentSecurity.Core;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.Configuration
 {
@@ -12,6 +13,16 @@ namespace FluentSecurity.Configuration
 		public ISecurityRuntime GetRuntime()
 		{
 			return Runtime;
+		}
+
+		public IRegistry GetRegistry()
+		{
+			return new MvcRegistry();
+		}
+
+		public ILifecycleResolver GetLifecycleResolver()
+		{
+			return new MvcLifecycleResolver();
 		}
 	}
 }

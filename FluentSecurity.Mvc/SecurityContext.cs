@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Dynamic;
+using FluentSecurity.Configuration;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
@@ -36,7 +37,7 @@ namespace FluentSecurity
 		{
 			get
 			{
-				return ServiceLocator.Current.Resolve<ISecurityContext>();
+				return SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
 			}
 		}
 

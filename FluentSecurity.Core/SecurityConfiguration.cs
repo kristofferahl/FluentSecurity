@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
@@ -42,15 +43,17 @@ namespace FluentSecurity
 			var configuration = new TConfiguration();
 			configurationExpression.Invoke(configuration);
 
+			ServiceLocator = new ServiceLocator(configuration);
 			Runtime = configuration.GetRuntime();
 		}
 
 		public ISecurityRuntime Runtime { get; private set; }
+		public IServiceLocator ServiceLocator { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get { return Runtime.PolicyContainers; } }
 
 		public string WhatDoIHave()
 		{
-			return ServiceLocation.ServiceLocator.Current.Resolve<IWhatDoIHaveBuilder>().WhatDoIHave(this);
+			return ServiceLocator.Resolve<IWhatDoIHaveBuilder>().WhatDoIHave(this);
 		}
 	}
 }

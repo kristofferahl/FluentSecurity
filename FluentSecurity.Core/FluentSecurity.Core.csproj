@@ -100,6 +100,7 @@
     <Compile Include="ServiceLocation\ILifecycleResolver.cs" />
     <Compile Include="ServiceLocation\IObjectCache.cs" />
     <Compile Include="ServiceLocation\IRegistry.cs" />
+    <Compile Include="ServiceLocation\IServiceLocator.cs" />
     <Compile Include="ServiceLocation\LifeCycle.cs" />
     <Compile Include="ServiceLocation\LifeCycles\NullObjectCache.cs" />
     <Compile Include="ServiceLocation\LifeCycles\ObjectCache.cs" />

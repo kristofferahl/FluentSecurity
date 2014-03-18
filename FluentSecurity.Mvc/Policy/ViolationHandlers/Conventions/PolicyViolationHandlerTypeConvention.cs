@@ -1,10 +1,11 @@
 using System;
+using FluentSecurity.Configuration;
 
 namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
 	public abstract class PolicyViolationHandlerTypeConvention : IPolicyViolationHandlerConvention
 	{
-		public Func<Type, object> PolicyViolationHandlerProvider = t => ServiceLocation.ServiceLocator.Current.Resolve(t);
+		public Func<Type, object> PolicyViolationHandlerProvider = t => SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve(t);
 
 		public abstract Type GetHandlerTypeFor(PolicyViolationException exception);
 

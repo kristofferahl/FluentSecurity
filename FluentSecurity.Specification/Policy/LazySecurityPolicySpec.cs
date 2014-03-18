@@ -143,7 +143,6 @@ namespace FluentSecurity.Specification.Policy
 		public void Should_load_and_enforce_policy_with_success_result()
 		{
 			// Arrange
-			SecurityConfigurator.Configure<MvcConfiguration>(configuraiton => {});
 			var lazySecurityPolicy = new LazySecurityPolicy<PolicyWithBaseClass>();
 			var context = new MockSecurityContext(isAuthenticated: true);
 

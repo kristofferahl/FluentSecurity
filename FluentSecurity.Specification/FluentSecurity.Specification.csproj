@@ -145,6 +145,7 @@
     <Compile Include="Scanning\ProfileScannerSpec.cs" />
     <Compile Include="SecurityModelSpec.cs" />
     <Compile Include="SecurityRuntimeSpec.cs" />
+    <Compile Include="ServiceLocation\ServiceLocatorBaseSpecification.cs" />
     <Compile Include="TestData\Controllers\BaseControllers.cs" />
     <Compile Include="TestData\MockConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelectorSpec.cs" />

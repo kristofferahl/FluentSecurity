@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Configuration;
 
 namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
 	public abstract class PolicyViolationHandlerFilterConvention : IPolicyViolationHandlerConvention
 	{
-		public Func<IEnumerable<IPolicyViolationHandler>> PolicyViolationHandlerProvider = () => ServiceLocation.ServiceLocator.Current.ResolveAll<IPolicyViolationHandler>();
+		public Func<IEnumerable<IPolicyViolationHandler>> PolicyViolationHandlerProvider = () => SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.ResolveAll<IPolicyViolationHandler>();
 
 		public abstract IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<IPolicyViolationHandler> policyViolationHandlers);
 		

@@ -2,9 +2,9 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
+using FluentSecurity.Configuration;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
-using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
@@ -30,7 +30,7 @@ namespace FluentSecurity
 					{
 						var result = results.First(x => x.ViolationOccured);
 						var policyViolationException = new PolicyViolationException(result, securityContext);
-						var violationHandlerSelector = ServiceLocator.Current.Resolve<IPolicyViolationHandlerSelector<ActionResult>>();
+						var violationHandlerSelector = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<IPolicyViolationHandlerSelector<ActionResult>>();
 						var matchingHandler = violationHandlerSelector.FindHandlerFor(policyViolationException) ?? new ExceptionPolicyViolationHandler();
 						Publish.RuntimeEvent(() => "Handling violation with {0}.".FormatWith(matchingHandler.GetType().FullName), securityContext);
 						return matchingHandler.Handle(policyViolationException);

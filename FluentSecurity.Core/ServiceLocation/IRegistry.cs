@@ -2,6 +2,6 @@ namespace FluentSecurity.ServiceLocation
 {
 	public interface IRegistry
 	{
-		IContainer Configure();
+		void Configure(IContainer container);
 	}
 }

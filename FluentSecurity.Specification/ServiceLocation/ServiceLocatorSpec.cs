@@ -13,21 +13,15 @@ namespace FluentSecurity.Specification.ServiceLocation
 {
 	[TestFixture]
 	[Category("ServiceLocatorSpec")]
-	public class When_creating_a_new_servicelocator
+	public class When_creating_a_new_servicelocator : ServiceLocatorBaseSpecification
 	{
 		private ServiceLocator _serviceLocator;
 
 		[SetUp]
 		public void SetUp()
 		{
-			// Arrange
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
-			{
-				configuration.GetAuthenticationStatusFrom(() => true);
-			});
-
-			// Act
-			_serviceLocator = new ServiceLocator();
+			// Arrange & Act
+			_serviceLocator = CreateServiceLocator(configuration => configuration.GetAuthenticationStatusFrom(() => true));
 		}
 
 		[Test]
@@ -89,14 +83,13 @@ namespace FluentSecurity.Specification.ServiceLocation
 
 	[TestFixture]
 	[Category("ServiceLocatorSpec")]
-	public class When_resolving_an_instance_of_ISecurityContext
+	public class When_resolving_an_instance_of_ISecurityContext : ServiceLocatorBaseSpecification
 	{
 		[Test]
 		public void Should_throw_when_no_authentication_status_mechanism_has_been_provided()
 		{
 			// Arrange
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => {});
-			var serviceLocator = new ServiceLocator();
+			var serviceLocator = CreateServiceLocator(configuration => {});
 
 			// Act & assert
 			Assert.Throws<ConfigurationErrorsException>(() => serviceLocator.Resolve<ISecurityContext>());
@@ -109,8 +102,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 			var expectedInstance = TestDataFactory.CreateSecurityContext(true);
 			FakeIoC.Reset();
 			FakeIoC.GetInstanceProvider = () => new List<object> { expectedInstance };
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
-			var serviceLocator = new ServiceLocator();
+			var serviceLocator = CreateServiceLocator(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
 
 			// Act
 			var instance = serviceLocator.Resolve<ISecurityContext>();
@@ -126,8 +118,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 			var expectedInstance = new DefaultWhatDoIHaveBuilder();
 			FakeIoC.Reset();
 			FakeIoC.GetInstanceProvider = () => new List<object> { expectedInstance };
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
-			var serviceLocator = new ServiceLocator();
+			var serviceLocator = CreateServiceLocator(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
 
 			// Act
 			var instance = serviceLocator.Resolve<IWhatDoIHaveBuilder>();
@@ -143,8 +134,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 			var expectedInstance = new DefaultWhatDoIHaveBuilder();
 			FakeIoC.Reset();
 			FakeIoC.GetInstanceProvider = () => new List<object> { expectedInstance };
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
-			var serviceLocator = new ServiceLocator();
+			var serviceLocator = CreateServiceLocator(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances, FakeIoC.GetInstance));
 
 			// Act
 			var instance = serviceLocator.Resolve(typeof(IWhatDoIHaveBuilder));
@@ -160,8 +150,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 			var expectedInstance = new DefaultWhatDoIHaveBuilder();
 			FakeIoC.Reset();
 			FakeIoC.GetAllInstancesProvider = () => new List<object> { expectedInstance };
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
-			var serviceLocator = new ServiceLocator();
+			var serviceLocator = CreateServiceLocator(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
 
 			// Act
 			var instances = serviceLocator.ResolveAll<IWhatDoIHaveBuilder>();
@@ -177,8 +166,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 			var expectedInstance = new DefaultWhatDoIHaveBuilder();
 			FakeIoC.Reset();
 			FakeIoC.GetAllInstancesProvider = () => new List<object> { expectedInstance };
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
-			var serviceLocator = new ServiceLocator();
+			var serviceLocator = CreateServiceLocator(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
 
 			// Act
 			var instances = serviceLocator.ResolveAll(typeof(IWhatDoIHaveBuilder));
