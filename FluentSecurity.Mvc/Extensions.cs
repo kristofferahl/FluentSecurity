@@ -61,17 +61,6 @@ namespace FluentSecurity
 		private static readonly Type ActionNameAttributeType = typeof(ActionNameAttribute);
 
 		/// <summary>
-		/// Gets the actual type of the ISecurityPolicy. Takes care of checking for lazy policies.
-		/// </summary>
-		public static Type GetPolicyType(this ISecurityPolicy securityPolicy)
-		{
-			var lazySecurityPolicy = securityPolicy as ILazySecurityPolicy;
-			return lazySecurityPolicy != null
-				? lazySecurityPolicy.PolicyType
-				: securityPolicy.GetType();
-		}
-
-		/// <summary>
 		/// Gets actionmethods for the specified controller type
 		/// </summary>
 		internal static IEnumerable<MethodInfo> GetActionMethods(this Type controllerType, Func<ControllerActionInfo, bool> actionFilter = null)
