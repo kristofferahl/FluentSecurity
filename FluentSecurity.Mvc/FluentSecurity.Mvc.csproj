@@ -124,7 +124,6 @@
     <Compile Include="ConventionPolicyContainer.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Scanning\ProfileScanner.cs" />
-    <Compile Include="Scanning\TypeScanners\ProfileTypeScanner.cs" />
     <Compile Include="SecurityConfigurationExtensions.cs" />
     <Compile Include="SecurityRuntime.cs" />
     <Compile Include="IPolicyViolationHandler.cs" />

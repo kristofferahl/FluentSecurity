@@ -7,7 +7,7 @@ using FluentSecurity.Core.Internals;
 
 namespace FluentSecurity.Scanning.TypeScanners
 {
-	internal class ProfileTypeScanner<TProfileType> : ITypeScanner where TProfileType : ISecurityProfile
+	public class ProfileTypeScanner<TProfileType> : ITypeScanner where TProfileType : ISecurityProfile
 	{
 		private readonly Type _profileType = typeof(TProfileType);
 
