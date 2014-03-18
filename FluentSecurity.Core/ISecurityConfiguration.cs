@@ -8,6 +8,7 @@ namespace FluentSecurity
 		ISecurityRuntime Runtime { get; }
 		IServiceLocator ServiceLocator { get; }
 		IEnumerable<IPolicyContainer> PolicyContainers { get; }
+		ISecurityContext CreateContext();
 		string WhatDoIHave();
 	}
 }

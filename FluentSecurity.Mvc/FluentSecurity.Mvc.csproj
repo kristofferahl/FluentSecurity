@@ -131,7 +131,6 @@
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerSelector.cs" />
     <Compile Include="Configuration\DefaultPolicyAppender.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />
-    <Compile Include="SecurityContext.cs" />
     <Compile Include="SecurityHandler.cs" />
     <Compile Include="PolicyContainerExtensions.cs" />
     <Compile Include="Policy\ViolationHandlers\ExceptionPolicyViolationHandler.cs" />

@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -92,6 +93,7 @@
     <Compile Include="Scanning\ScannerContext.cs" />
     <Compile Include="SecurityConfigurator.cs" />
     <Compile Include="SecurityConfiguration.cs" />
+    <Compile Include="SecurityContext.cs" />
     <Compile Include="ServiceLocation\Container.cs" />
     <Compile Include="ServiceLocation\ExternalServiceLocator.cs" />
     <Compile Include="ServiceLocation\IContainer.cs" />

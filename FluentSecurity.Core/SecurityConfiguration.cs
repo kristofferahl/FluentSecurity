@@ -51,6 +51,11 @@ namespace FluentSecurity
 		public IServiceLocator ServiceLocator { get; private set; }
 		public IEnumerable<IPolicyContainer> PolicyContainers { get { return Runtime.PolicyContainers; } }
 
+		public ISecurityContext CreateContext()
+		{
+			return SecurityContext.CreateFrom(this);
+		}
+
 		public string WhatDoIHave()
 		{
 			return ServiceLocator.Resolve<IWhatDoIHaveBuilder>().WhatDoIHave(this);
