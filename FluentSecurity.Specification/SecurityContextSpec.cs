@@ -12,16 +12,13 @@ namespace FluentSecurity.Specification
 	public class When_creating_a_security_context
 	{
 		[Test]
-		public void Should_throw_when_security_has_not_been_configured()
+		public void Should_throw_when_security_configuration_is_null()
 		{
 			// Arrange
 			SecurityConfigurator.Reset();
 
-			// Act
-			var exception = Assert.Throws<InvalidOperationException>(() => { var x = SecurityContext.Current; });
-
-			// Assert
-			Assert.That(exception.Message, Is.EqualTo("Security has not been configured!"));
+			// Act & Assert
+			Assert.Throws<ArgumentNullException>(() => SecurityContext.CreateFrom(null));
 		}
 
 		[Test]
@@ -31,14 +28,14 @@ namespace FluentSecurity.Specification
 			const bool status = true;
 			var roles = new object[3];
 			
-			SecurityConfigurator.Configure<MvcConfiguration>(c =>
+			var configuration = SecurityConfigurator.Configure<MvcConfiguration>(c =>
 			{
 				c.GetAuthenticationStatusFrom(() => status);
 				c.GetRolesFrom(() => roles);
 			});
 
 			// Act
-			var context = SecurityContext.Current;
+			var context = SecurityContext.CreateFrom(configuration);
 
 			// Assert
 			Assert.That(context.Id, Is.Not.EqualTo(Guid.Empty));
@@ -61,13 +58,13 @@ namespace FluentSecurity.Specification
 			    iocContext
 			};
 
-			SecurityConfigurator.Configure<MvcConfiguration>(c =>
+			var configuration = SecurityConfigurator.Configure<MvcConfiguration>(c =>
 			{
 				c.ResolveServicesUsing(FakeIoC.GetAllInstances);
 			});
 
 			// Act
-			var context = SecurityContext.Current;
+			var context = SecurityContext.CreateFrom(configuration);
 
 			// Assert
 			Assert.That(context.Data, Is.TypeOf(typeof(ExpandoObject)));

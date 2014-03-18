@@ -223,7 +223,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_modify_context_on_creation()
 		{
 			// Assert
-			var context = SecurityContext.Current;
+			var context = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
 			Assert.That(context.Data.Property1, Is.EqualTo("Value1"));
 			Assert.That(context.Data.Property2, Is.EqualTo("Value2"));
 		}

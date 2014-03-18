@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Dynamic;
-using FluentSecurity.Configuration;
-using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
@@ -33,36 +31,28 @@ namespace FluentSecurity
 			return Runtime.Roles != null ? Runtime.Roles.Invoke() : null;
 		}
 
-		public static ISecurityContext Current
-		{
-			get
-			{
-				return SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
-			}
-		}
-
 		internal static ISecurityContext CreateFrom(ISecurityConfiguration configuration)
 		{
 			ISecurityContext context = null;
 
-			if (configuration != null)
+			if (configuration == null)
+				throw new ArgumentNullException("configuration");
+
+			var externalServiceLocator = configuration.Runtime.ExternalServiceLocator;
+			if (externalServiceLocator != null)
+				context = externalServiceLocator.Resolve(typeof(ISecurityContext)) as ISecurityContext;
+
+			if (context == null)
 			{
-				var externalServiceLocator = configuration.Runtime.ExternalServiceLocator;
-				if (externalServiceLocator != null)
-					context = externalServiceLocator.Resolve(typeof(ISecurityContext)) as ISecurityContext;
+				if (configuration.Runtime.IsAuthenticated == null)
+					throw new ConfigurationErrorsException(
+						@"
+						The current configuration is invalid! Before using Fluent Security you must do one of the following.
+						1) Specify how to get the authentication status using GetAuthenticationStatusFrom().
+						2) Register an instance of ISecurityContext in your IoC-container and register your container using ResolveServicesUsing().
+						");
 
-				if (context == null)
-				{
-					if (configuration.Runtime.IsAuthenticated == null)
-						throw new ConfigurationErrorsException(
-							@"
-							The current configuration is invalid! Before using Fluent Security you must do one of the following.
-							1) Specify how to get the authentication status using GetAuthenticationStatusFrom().
-							2) Register an instance of ISecurityContext in your IoC-container and register your container using ResolveServicesUsing().
-							");
-
-					context = new SecurityContext(configuration.Runtime);
-				}
+				context = new SecurityContext(configuration.Runtime);
 			}
 
 			return context;

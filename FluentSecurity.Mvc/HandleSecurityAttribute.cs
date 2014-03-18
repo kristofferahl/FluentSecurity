@@ -21,7 +21,7 @@ namespace FluentSecurity
 			var actionName = filterContext.ActionDescriptor.ActionName;
 			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName;
 
-			var securityContext = SecurityContext.Current;
+			var securityContext = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
 			securityContext.Data.RouteValues = filterContext.RouteData.Values;
 
 			var overrideResult = Handler.HandleSecurityFor(controllerName, actionName, securityContext);

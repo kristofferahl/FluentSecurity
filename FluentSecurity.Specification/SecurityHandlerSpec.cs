@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using FluentSecurity.Configuration;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Diagnostics.Events;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Specification.Helpers;
@@ -66,16 +65,17 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_when_when_controllername_is_Blog_and_actionname_is_Index()
 		{
 			// Arrange
-			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", SecurityContext.Current));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", context));
 		}
 
 		[Test]
@@ -91,20 +91,21 @@ namespace FluentSecurity.Specification
 			var violationHandler = new DenyAnonymousAccessPolicyViolationHandler(expectedActionResult);
 			FakeIoC.GetAllInstancesProvider = () => new List<IPolicyViolationHandler>
 			{
-			    violationHandler
+				violationHandler
 			};
 
-			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.ResolveServicesUsing(FakeIoC.GetAllInstances);
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var result = securityHandler.HandleSecurityFor(controllerName, actionName, SecurityContext.Current);
+			var result = securityHandler.HandleSecurityFor(controllerName, actionName, context);
 
 			// Assert
 			Assert.That(result, Is.EqualTo(expectedActionResult));
@@ -135,16 +136,17 @@ namespace FluentSecurity.Specification
 
 			var events = new List<ISecurityEvent>();
 			SecurityDoctor.Register(events.Add);
-			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(controllerName, actionName, SecurityContext.Current));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(controllerName, actionName, context));
 			Assert.That(events.Any(e => e.Message == "Handling security for {0} action {1}.".FormatWith(controllerName, actionName)));
 			Assert.That(events.Any(e => e.Message == "Done enforcing policies. Success!"));
 		}
@@ -153,16 +155,17 @@ namespace FluentSecurity.Specification
 		public void Should_throw_when_the_user_is_anonymous()
 		{
 			// Arrange
-			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", SecurityContext.Current));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", context));
 			
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(DenyAnonymousAccessPolicy)));
@@ -184,34 +187,36 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_exception_when_the_user_is_authenticated_with_role_Owner()
 		{
 			// Arrange
-			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesIncludingOwner);
 				policy.For<BlogController>(x => x.DeletePost(0)).RequireAnyRole(UserRole.Owner);
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", SecurityContext.Current));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", context));
 		}
 
 		[Test]
 		public void Should_throw_when_the_user_is_anonymous()
 		{
 			// Arrange
-			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
 				policy.For<BlogController>(x => x.DeletePost(0)).RequireAnyRole(UserRole.Owner);
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", SecurityContext.Current));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", context));
 
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireAnyRolePolicy)));
@@ -222,17 +227,18 @@ namespace FluentSecurity.Specification
 		public void Should_throw_when_the_user_does_not_have_the_role_Owner()
 		{
 			// Arrange
-			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.GetRolesFrom(StaticHelper.GetRolesExcludingOwner);
 				policy.For<BlogController>(x => x.DeletePost(0)).RequireAnyRole(UserRole.Owner);
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Act
-			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", SecurityContext.Current));
+			var exception = Assert.Throws<PolicyViolationException>(() => securityHandler.HandleSecurityFor(NameHelper.Controller<BlogController>(), "DeletePost", context));
 
 			// Assert
 			Assert.That(exception.PolicyType, Is.EqualTo(typeof(RequireAnyRolePolicy)));
@@ -253,16 +259,17 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_throw_ConfigurationErrorsException_when_IgnoreMissingConfigurations_is_false()
 		{
-			SecurityConfigurator.Configure<MvcConfiguration>(policy =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(policy =>
 			{
 				policy.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				policy.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.Throws<ConfigurationErrorsException>(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action", SecurityContext.Current));
+			Assert.Throws<ConfigurationErrorsException>(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action", context));
 		}
 
 		[Test]
@@ -271,17 +278,18 @@ namespace FluentSecurity.Specification
 			// Arrange
 			var events = new List<ISecurityEvent>();
 			SecurityDoctor.Register(events.Add);
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsTrue);
 				configuration.Advanced.IgnoreMissingConfiguration();
 				configuration.For<BlogController>(x => x.Index()).DenyAnonymousAccess();
 			});
+			var context = SecurityContext.CreateFrom(config);
 
 			var securityHandler = new SecurityHandler();
 
 			// Act & Assert
-			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action", SecurityContext.Current));
+			Assert.DoesNotThrow(() => securityHandler.HandleSecurityFor("NonConfiguredController", "Action", context));
 			Assert.That(events.Any(e => e.Message == "Ignoring missing configuration."));
 		}
 	}

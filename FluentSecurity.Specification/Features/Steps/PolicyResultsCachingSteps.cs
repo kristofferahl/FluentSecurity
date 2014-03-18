@@ -74,12 +74,13 @@ namespace FluentSecurity.Specification.Features.Steps
 
 			var controllerName = typeof (BlogController).Namespace + "." + controller;
 			var container = SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers.GetContainerFor(controllerName, action);
+			var context = SecurityContext.CreateFrom(SecurityConfiguration.Get<MvcConfiguration>());
 			var policyType = GetPolicyType(policy);
 
 			ScenarioContext.Current.Set(policyType);
 			ScenarioContext.Current.Set(container);
 
-			container.EnforcePolicies(SecurityContext.Current);
+			container.EnforcePolicies(context);
 		}
 
 		[Then(@"it should cache result (.*)")]
@@ -105,7 +106,8 @@ namespace FluentSecurity.Specification.Features.Steps
 		{
 			var policyType = ScenarioContext.Current.Get<Type>();
 			var strategy = GetPolicyContainer().CacheStrategies.SingleOrDefault(x => x.PolicyType == policyType);
-			var cacheKey = PolicyResultCacheKeyBuilder.CreateFromStrategy(strategy, WriterPolicy, SecurityContext.Current);
+			var context = SecurityContext.CreateFrom(SecurityConfiguration.Get<MvcConfiguration>());
+			var cacheKey = PolicyResultCacheKeyBuilder.CreateFromStrategy(strategy, WriterPolicy, context);
 
 			VerifyCacheKey(cacheKey, controller, action, policy);
 		}
