@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FluentSecurity
 {
-	public static class Extensions
+	public static class EnumerableExtensions
 	{
 		/// <summary>
 		/// Ensures we are working with a list of T

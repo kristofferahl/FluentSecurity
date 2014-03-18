@@ -60,7 +60,7 @@
     <Compile Include="Diagnostics\Publish.cs" />
     <Compile Include="Diagnostics\SecurityDoctor.cs" />
     <Compile Include="Diagnostics\SecurityEventListenerScanner.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="IFluentConfiguration.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Internals\AssemblyExtensions.cs" />
