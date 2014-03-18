@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 namespace FluentSecurity.Internals
 {
@@ -9,11 +8,11 @@ namespace FluentSecurity.Internals
 		public string ActionName { get; private set; }
 		public Type ActionResultType { get; private set; }
 
-		internal ControllerActionInfo(Type controller, MethodInfo action)
+		public ControllerActionInfo(Type controller, string actionName, Type returnType)
 		{
 			ControllerType = controller;
-			ActionName = action.GetActionName();
-			ActionResultType = action.ReturnType;
+			ActionName = actionName;
+			ActionResultType = returnType;
 		}
 	}
 }

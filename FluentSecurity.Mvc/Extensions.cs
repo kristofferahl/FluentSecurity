@@ -61,7 +61,7 @@ namespace FluentSecurity
 					BindingFlags.Instance 
 				)
 				.Where(IsValidActionMethod)
-				.Where(action => actionFilter.Invoke(new ControllerActionInfo(controllerType, action)))
+				.Where(action => actionFilter.Invoke(new ControllerActionInfo(controllerType, action.GetActionName(), action.ReturnType)))
 				.ToList();
 		}
 
