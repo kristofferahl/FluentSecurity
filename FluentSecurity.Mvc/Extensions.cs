@@ -168,27 +168,6 @@ namespace FluentSecurity
 		}
 
 		/// <summary>
-		/// Returns true if the value is null or empty
-		/// </summary>
-		/// <param name="value">The value</param>
-		/// <returns>A boolean</returns>
-		internal static bool IsNullOrEmpty(this string value)
-		{
-			return String.IsNullOrEmpty(value);
-		}
-
-		/// <summary>
-		/// Returns a formatted string
-		/// </summary>
-		/// <param name="format">The format</param>
-		/// <param name="values">The values</param>
-		/// <returns>A formatted string</returns>
-		internal static string FormatWith(this string format, params object[] values)
-		{
-			return string.Format(format, values);
-		}
-
-		/// <summary>
 		/// Converts policies to a text
 		/// </summary>
 		/// <param name="policies">The policies</param>
