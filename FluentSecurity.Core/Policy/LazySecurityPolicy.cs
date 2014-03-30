@@ -12,6 +12,7 @@ namespace FluentSecurity.Policy
 
 		public ISecurityPolicy Load()
 		{
+			// TODO: Fix failing specs and implementation of LazySecurityPolicy
 			//var externalServiceLocator = Runtime.ExternalServiceLocator;
 			//if (externalServiceLocator != null)
 			//{
