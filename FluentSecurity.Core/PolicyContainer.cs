@@ -48,7 +48,7 @@ namespace FluentSecurity
 				throw new ConfigurationErrorsException("You must add at least 1 policy for controller {0} action {1}.".FormatWith(ControllerName, ActionName));
 
 			var defaultResultsCacheLifecycle = context.Runtime.DefaultResultsCacheLifecycle;
-			var cache = new SecurityCache(new MvcLifecycleResolver());
+			var cache = context.Runtime.Cache;
 			
 			var results = new List<PolicyResult>();
 			foreach (var securityPolicy in _policies.Select(NonLazyIfPolicyHasCacheKeyProvider()))
@@ -104,10 +104,10 @@ namespace FluentSecurity
 			PolicyAppender.UpdatePolicies(securityPolicy, _policies);
 
 			var policiesRemoved = policiesBeforeUpdate.Except(_policies).ToList();
-			policiesRemoved.Each(p => Publish.ConfigurationEvent(() => "- Removed policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
+			policiesRemoved.ForEach(p => Publish.ConfigurationEvent(() => "- Removed policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
 
 			var policiesAdded = _policies.Except(policiesBeforeUpdate).ToList();
-			policiesAdded.Each(p => Publish.ConfigurationEvent(() => "- Added policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
+			policiesAdded.ForEach(p => Publish.ConfigurationEvent(() => "- Added policy {0} [{1}].".FormatWith(p.GetPolicyType().FullName, p is ILazySecurityPolicy ? "Lazy" : "Instance")));
 
 			return this;
 		}

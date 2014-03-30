@@ -441,7 +441,7 @@ namespace FluentSecurity.Specification
 		{
 			// Arrange
 			var context = MockRepository.GenerateMock<ISecurityContext>();
-			context.Expect(x => x.Runtime).Return(TestDataFactory.CreateSecurityRuntime()).Repeat.Once();
+			context.Expect(x => x.Runtime).Return(TestDataFactory.CreateSecurityRuntime()).Repeat.Twice();
 			context.Expect(x => x.CurrentUserIsAuthenticated()).Return(true).Repeat.Once();
 			context.Expect(x => x.CurrentUserRoles()).Return(new List<object> { UserRole.Owner }.ToArray()).Repeat.Once();
 			context.Replay();

@@ -73,9 +73,7 @@
     <Compile Include="Configuration\SecurityProfile.cs" />
     <Compile Include="Configuration\ViolationHandlerConfiguration.cs" />
     <Compile Include="Configuration\ViolationConfiguration.cs" />
-    <Compile Include="PolicyContainer.cs" />
     <Compile Include="Policy\MvcSecurityContext.cs" />
-    <Compile Include="Policy\LazySecurityPolicy.cs" />
     <Compile Include="Policy\Delegate\DelegatePolicy.cs" />
     <Compile Include="Policy\Delegate\DelegateSecurityContext.cs" />
     <Compile Include="Policy\Delegate\DelegatePolicyResult.cs" />
