@@ -23,11 +23,13 @@ namespace FluentSecurity.Core
 		public Cache DefaultResultsCacheLifecycle { get; set; }
 		public Action<ISecurityContext> SecurityContextModifyer { get; set; }
 		public bool ShouldIgnoreMissingConfiguration { get; set; }
+		public ISecurityCache Cache { get; private set; }
 
-		protected SecurityRuntimeBase()
+		protected SecurityRuntimeBase(ISecurityCache cache)
 		{
+			Cache = cache;
 			ShouldIgnoreMissingConfiguration = false;
-			DefaultResultsCacheLifecycle = Cache.DoNotCache;
+			DefaultResultsCacheLifecycle = Caching.Cache.DoNotCache;;
 		}
 
 		public void ApplyConfiguration(Action<ConventionConfiguration> conventionConfiguration)

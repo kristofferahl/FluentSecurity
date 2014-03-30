@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 
@@ -7,6 +8,8 @@ namespace FluentSecurity
 {
 	public class SecurityRuntime : SecurityRuntimeBase
 	{
+		public SecurityRuntime(ISecurityCache cache) : base(cache) {}
+
 		public void ApplyConfiguration(Action<ViolationConfiguration> violationConfiguration)
 		{
 			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");

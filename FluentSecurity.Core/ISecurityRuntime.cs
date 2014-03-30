@@ -16,5 +16,6 @@ namespace FluentSecurity
 		Cache DefaultResultsCacheLifecycle { get; }
 		Action<ISecurityContext> SecurityContextModifyer { get; }
 		bool ShouldIgnoreMissingConfiguration { get; }
+		ISecurityCache Cache { get; }
 	}
 }

@@ -24,7 +24,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_conventions_for_default_PolicyViolationHandler_applied()
 		{
 			// Arrange
-			var securityModel = new SecurityRuntime();
+			var securityModel = TestDataFactory.CreateSecurityRuntime();
 
 			// Act
 			new AdvancedConfiguration(securityModel);
@@ -40,7 +40,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_not_add_duplicate_conventions()
 		{
 			// Arrange
-			var securityModel = new SecurityRuntime();
+			var securityModel = TestDataFactory.CreateSecurityRuntime();
 			new AdvancedConfiguration(securityModel);
 
 			// Act
@@ -62,7 +62,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_ignore_missing_configurations()
 		{
 			// Arrange
-			var model = new SecurityRuntime();
+			var model = TestDataFactory.CreateSecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
@@ -81,7 +81,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_default_policy_cache_lifecycle_set_to_PerHttpSession()
 		{
 			// Arrange
-			var model = new SecurityRuntime();
+			var model = TestDataFactory.CreateSecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
@@ -95,7 +95,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_default_policy_cache_lifecycle_set_to_PerHttpRequest()
 		{
 			// Arrange
-			var model = new SecurityRuntime();
+			var model = TestDataFactory.CreateSecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
@@ -109,7 +109,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_have_default_policy_cache_lifecycle_set_to_DoNotCache()
 		{
 			// Arrange
-			var model = new SecurityRuntime();
+			var model = TestDataFactory.CreateSecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act
@@ -128,7 +128,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_throw_when_action_is_null()
 		{
 			// Arrange
-			var model = new SecurityRuntime();
+			var model = TestDataFactory.CreateSecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 
 			// Act & Assert
@@ -139,7 +139,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_add_convention()
 		{
 			// Arrange
-			var model = new SecurityRuntime();
+			var model = TestDataFactory.CreateSecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 			var expectedConvention = new MockConvention();
 
@@ -154,7 +154,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_remove_convention()
 		{
 			// Arrange
-			var model = new SecurityRuntime();
+			var model = TestDataFactory.CreateSecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 			var convention = new MockConvention();
 			advancedConfiguration.Conventions(conventions => conventions.Add(convention));
@@ -171,7 +171,7 @@ namespace FluentSecurity.Specification.Configuration
 		public void Should_remove_matching_convention()
 		{
 			// Arrange
-			var model = new SecurityRuntime();
+			var model = TestDataFactory.CreateSecurityRuntime();
 			var advancedConfiguration = new AdvancedConfiguration(model);
 			Assert.That(model.Conventions.Any(c => c is FindByPolicyNameConvention), Is.True);
 
@@ -239,7 +239,7 @@ namespace FluentSecurity.Specification.Configuration
 		[SetUp]
 		public void SetUp()
 		{
-			_runtime = new SecurityRuntime();
+			_runtime = TestDataFactory.CreateSecurityRuntime();
 			_advancedConfiguration = new AdvancedConfiguration(_runtime);
 		}
 

@@ -20,7 +20,7 @@ namespace FluentSecurity.Specification.Helpers
 			Data = new ExpandoObject();
 			Data.RouteValues = routeValues;
 
-			Runtime = runtime ?? new SecurityRuntime();
+			Runtime = runtime ?? TestDataFactory.CreateSecurityRuntime();
 		}
 
 		public Guid Id { get; private set; }

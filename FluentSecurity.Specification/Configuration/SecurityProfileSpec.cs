@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using FluentSecurity.Configuration;
+using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Configuration
@@ -13,7 +14,7 @@ namespace FluentSecurity.Specification.Configuration
 		{
 			// Arrange
 			var profile = new ForAllControllersProfile();
-			profile.Initialize(new SecurityRuntime());
+			profile.Initialize(TestDataFactory.CreateSecurityRuntime());
 			var expectedNamespace = profile.GetType().Assembly.GetName().Name;
 
 			// Act

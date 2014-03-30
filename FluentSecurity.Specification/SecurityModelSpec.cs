@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using FluentSecurity.Caching;
+using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification
@@ -13,7 +14,7 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			_runtime = new SecurityRuntime();
+			_runtime = TestDataFactory.CreateSecurityRuntime();
 		}
 
 		[Test]

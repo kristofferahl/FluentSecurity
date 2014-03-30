@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 using FluentSecurity.Policy;
+using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.TestData;
 using Moq;
 
@@ -31,9 +33,9 @@ namespace FluentSecurity.Specification.Helpers
 			return context.Object;
 		}
 
-		public static ISecurityRuntime CreateSecurityRuntime()
+		public static SecurityRuntime CreateSecurityRuntime()
 		{
-			return new SecurityRuntime();
+			return new SecurityRuntime(new SecurityCache(new MvcLifecycleResolver()));
 		}
 
 		public static PolicyContainer CreateValidPolicyContainer()

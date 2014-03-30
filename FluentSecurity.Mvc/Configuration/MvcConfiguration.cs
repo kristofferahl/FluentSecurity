@@ -1,3 +1,4 @@
+using FluentSecurity.Caching;
 using FluentSecurity.Core;
 using FluentSecurity.ServiceLocation;
 
@@ -5,24 +6,31 @@ namespace FluentSecurity.Configuration
 {
 	public class MvcConfiguration : ConfigurationExpression, IFluentConfiguration
 	{
+		private readonly MvcLifecycleResolver _lifecycleResolver;
+		private readonly MvcRegistry _registry;
+		private readonly SecurityRuntime _runtime;
+
 		public MvcConfiguration()
 		{
-			Initialize(new SecurityRuntime());
+			_lifecycleResolver = new MvcLifecycleResolver();
+			_registry = new MvcRegistry();
+			_runtime = new SecurityRuntime(new SecurityCache(_lifecycleResolver));
+			Initialize(_runtime);
 		}
 
 		public ISecurityRuntime GetRuntime()
 		{
-			return Runtime;
+			return _runtime;
 		}
 
 		public IRegistry GetRegistry()
 		{
-			return new MvcRegistry();
+			return _registry;
 		}
 
 		public ILifecycleResolver GetLifecycleResolver()
 		{
-			return new MvcLifecycleResolver();
+			return _lifecycleResolver;
 		}
 	}
 }
