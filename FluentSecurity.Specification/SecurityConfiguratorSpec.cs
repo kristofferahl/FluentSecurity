@@ -46,20 +46,18 @@ namespace FluentSecurity.Specification
 	public class When_calling_reset_on_security_configurator
 	{
 		[Test]
-		public void Should_create_new_configuration_instance()
+		public void Should_create_a_new_correlation_id()
 		{
 			// Arrange
 			var configuration = MockRepository.GenerateMock<ISecurityConfiguration>();
 			SecurityConfigurator.SetConfiguration<MvcConfiguration>(configuration);
+			var previousCorrelationId = SecurityConfigurator.CorrelationId.ToString();
 
 			// Act
 			SecurityConfigurator.Reset();
 
 			// Assert
-			var exception = Assert.Throws<InvalidOperationException>(() => {
-				var x = SecurityConfiguration.Get<MvcConfiguration>();
-			});
-			Assert.That(exception.Message, Is.EqualTo("Security has not been configured!"));
+			Assert.That(previousCorrelationId, Is.Not.EqualTo(SecurityConfigurator.CorrelationId.ToString()));
 		}
 	}
 

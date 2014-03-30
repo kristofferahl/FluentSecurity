@@ -53,7 +53,6 @@ namespace FluentSecurity
 		{
 			lock (LockObject)
 			{
-				SecurityConfiguration.Reset();
 				CorrelationId = Guid.NewGuid();
 			}
 		}
