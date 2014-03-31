@@ -127,7 +127,7 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.AddPost()).RequireAnyRole(UserRole.Writer, UserRole.Publisher, UserRole.Owner);
 			});
 
-			_policyContainers = SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers;
+			_policyContainers = SecurityConfiguration.Get<MvcConfiguration>().Runtime.PolicyContainers;
 		}
 
 		[Test]
@@ -175,9 +175,10 @@ namespace FluentSecurity.Specification
 				configuration.For<BlogController>(x => x.Index());
 			});
 
-			Assert.That(SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers.Count(), Is.EqualTo(1));
-			Assert.That(SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers.First().ControllerName, Is.EqualTo(NameHelper.Controller<BlogController>()));
-			Assert.That(SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers.First().ActionName, Is.EqualTo("Index"));
+			var runtime = SecurityConfiguration.Get<MvcConfiguration>().Runtime;
+			Assert.That(runtime.PolicyContainers.Count(), Is.EqualTo(1));
+			Assert.That(runtime.PolicyContainers.First().ControllerName, Is.EqualTo(NameHelper.Controller<BlogController>()));
+			Assert.That(runtime.PolicyContainers.First().ActionName, Is.EqualTo("Index"));
 		}
 	}
 

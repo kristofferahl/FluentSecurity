@@ -27,7 +27,7 @@ namespace FluentSecurity.Specification
 			Because();
 
 			// Assert
-			var containers = _securityConfiguration.PolicyContainers.Count();
+			var containers = _securityConfiguration.Runtime.PolicyContainers.Count();
 			Assert.That(containers, Is.EqualTo(0));
 		}
 		

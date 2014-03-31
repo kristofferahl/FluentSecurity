@@ -73,7 +73,7 @@ namespace FluentSecurity.Specification.Features.Steps
 			EnsureConfigured();
 
 			var controllerName = typeof (BlogController).Namespace + "." + controller;
-			var container = SecurityConfiguration.Get<MvcConfiguration>().PolicyContainers.GetContainerFor(controllerName, action);
+			var container = SecurityConfiguration.Get<MvcConfiguration>().Runtime.PolicyContainers.GetContainerFor(controllerName, action);
 			var context = SecurityContext.CreateFrom(SecurityConfiguration.Get<MvcConfiguration>());
 			var policyType = GetPolicyType(policy);
 

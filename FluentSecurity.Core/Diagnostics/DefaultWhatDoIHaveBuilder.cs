@@ -14,7 +14,7 @@ namespace FluentSecurity.Diagnostics
 
 			builder.AppendLine().AppendLine().AppendLine("------------------------------------------------------------------------------------").AppendLine();
 
-			foreach (var policyContainer in configuration.PolicyContainers.OrderBy(x => x.ActionName).OrderBy(x => x.ControllerName))
+			foreach (var policyContainer in configuration.Runtime.PolicyContainers.OrderBy(x => x.ActionName).OrderBy(x => x.ControllerName))
 			{
 				builder.AppendFormat(
 					"{0} > {1}{2}",

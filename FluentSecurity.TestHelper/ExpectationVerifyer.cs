@@ -37,7 +37,7 @@ namespace FluentSecurity.TestHelper
 			var controllerName = expectationGroup.Controller.GetControllerName();
 			var actionName = expectationGroup.Action;
 			
-			var policyContainer = _configuration.PolicyContainers.GetContainerFor(controllerName, actionName);
+			var policyContainer = _configuration.Runtime.PolicyContainers.GetContainerFor(controllerName, actionName);
 
 			// TODO: Apply open/closed principle. Extract each verifyer into it's own class.
 			foreach (var expectation in expectationGroup.Expectations)

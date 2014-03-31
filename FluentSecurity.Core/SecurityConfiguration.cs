@@ -49,7 +49,6 @@ namespace FluentSecurity
 
 		public ISecurityRuntime Runtime { get; private set; }
 		public IServiceLocator ServiceLocator { get; private set; }
-		public IEnumerable<IPolicyContainer> PolicyContainers { get { return Runtime.PolicyContainers; } } // TODO: Remove property and use Runtime.PolicyContainers instead.
 
 		public ISecurityContext CreateContext()
 		{
