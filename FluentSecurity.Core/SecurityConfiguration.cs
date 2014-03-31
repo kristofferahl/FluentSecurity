@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.ServiceLocation;
@@ -9,7 +8,7 @@ namespace FluentSecurity
 {
 	public static class SecurityConfiguration
 	{
-		private static ConcurrentDictionary<string, ISecurityConfiguration> Configurations = new ConcurrentDictionary<string, ISecurityConfiguration>();
+		private static readonly ConcurrentDictionary<string, ISecurityConfiguration> Configurations = new ConcurrentDictionary<string, ISecurityConfiguration>();
 
 		public static ISecurityConfiguration Get<TConfiguration>() where TConfiguration : IFluentConfiguration
 		{
