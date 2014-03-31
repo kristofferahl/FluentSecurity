@@ -55,6 +55,7 @@ namespace FluentSecurity
 			return SecurityContext.CreateFrom(this);
 		}
 
+		// TODO: Make WhatDoIHave an extension method of ISecurityConfiguration as it is not a core feature anymore
 		public string WhatDoIHave()
 		{
 			return ServiceLocator.Resolve<IWhatDoIHaveBuilder>().WhatDoIHave(this);
