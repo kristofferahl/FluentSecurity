@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Core;
 using FluentSecurity.Policy;
 
 namespace FluentSecurity
@@ -10,6 +11,7 @@ namespace FluentSecurity
 	{
 		private readonly By _defaultCacheLevel;
 		private readonly IList<IPolicyContainerConfiguration> _policyContainers;
+		private ITypeFactory _typeFactory;
 
 		public ConventionPolicyContainer(IList<IPolicyContainerConfiguration> policyContainers, By defaultCacheLevel = By.Policy)
 		{
@@ -30,7 +32,8 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration<TSecurityPolicy> AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			return new PolicyContainerConfigurationWrapper<TSecurityPolicy>(AddPolicy(new LazySecurityPolicy<TSecurityPolicy>()));
+			var lazySecurityPolicy = _typeFactory.CreateLazySecurityPolicy<TSecurityPolicy>();
+			return new PolicyContainerConfigurationWrapper<TSecurityPolicy>(AddPolicy(lazySecurityPolicy));
 		}
 
 		public IPolicyContainerConfiguration RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
@@ -68,6 +71,11 @@ namespace FluentSecurity
 				policyContainer.ClearCacheStrategyFor<TSecurityPolicy>();
 
 			return this;
+		}
+
+		public void SetTypeFactory(ITypeFactory typeFactory)
+		{
+			_typeFactory = typeFactory;
 		}
 	}
 }

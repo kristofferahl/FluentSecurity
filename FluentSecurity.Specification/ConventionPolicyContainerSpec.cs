@@ -73,6 +73,7 @@ namespace FluentSecurity.Specification
 			};
 
 			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
+			conventionPolicyContainer.SetTypeFactory(new MvcTypeFactory());
 
 			// Act
 			conventionPolicyContainer.AddPolicy<DenyAnonymousAccessPolicy>();

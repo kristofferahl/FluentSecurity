@@ -174,7 +174,9 @@ namespace FluentSecurity
 					);
 			}
 
-			return new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
+			var policyContainer = new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
+			policyContainer.SetTypeFactory(Runtime.TypeFactory);
+			return policyContainer;
 		}
 
 		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)

@@ -54,6 +54,7 @@
     <Compile Include="Configuration\IPolicyContainerConfiguration.cs" />
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ProfileImport.cs" />
+    <Compile Include="ConventionPolicyContainer.cs" />
     <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="ITypeFactory.cs" />
     <Compile Include="PolicyContainer.cs" />
