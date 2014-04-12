@@ -55,6 +55,7 @@
     <Compile Include="Configuration\PolicyContainerConfigurationWrapper.cs" />
     <Compile Include="Configuration\ProfileImport.cs" />
     <Compile Include="Internals\ControllerActionInfo.cs" />
+    <Compile Include="ITypeFactory.cs" />
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="SecurityPolicyExtensions.cs" />
     <Compile Include="Diagnostics\AnonymousSecurityEventListener.cs" />
