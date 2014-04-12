@@ -8,7 +8,7 @@ namespace FluentSecurity
 {
 	public class SecurityRuntime : SecurityRuntimeBase
 	{
-		public SecurityRuntime(ISecurityCache cache) : base(cache) {}
+		public SecurityRuntime(ISecurityCache cache, ITypeFactory typeFactory) : base(cache, typeFactory) {}
 
 		public void ApplyConfiguration(Action<ViolationConfiguration> violationConfiguration)
 		{

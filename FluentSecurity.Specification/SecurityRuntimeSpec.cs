@@ -100,7 +100,7 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			Runtime = new SecurityRuntime(new SecurityCache(new MvcLifecycleResolver()));
+			Runtime = new SecurityRuntime(new SecurityCache(new MvcLifecycleResolver()), new MvcTypeFactory());
 		}
 	}
 }

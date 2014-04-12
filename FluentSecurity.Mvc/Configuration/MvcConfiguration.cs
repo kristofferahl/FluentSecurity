@@ -14,7 +14,7 @@ namespace FluentSecurity.Configuration
 		{
 			_lifecycleResolver = new MvcLifecycleResolver();
 			_registry = new MvcRegistry();
-			_runtime = new SecurityRuntime(new SecurityCache(_lifecycleResolver));
+			_runtime = new SecurityRuntime(new SecurityCache(_lifecycleResolver), new MvcTypeFactory());
 
 			Initialize(_runtime);
 		}

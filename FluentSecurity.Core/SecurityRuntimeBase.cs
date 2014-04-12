@@ -24,10 +24,12 @@ namespace FluentSecurity.Core
 		public Action<ISecurityContext> SecurityContextModifyer { get; set; }
 		public bool ShouldIgnoreMissingConfiguration { get; set; }
 		public ISecurityCache Cache { get; private set; }
+		public ITypeFactory TypeFactory { get; private set; }
 
-		protected SecurityRuntimeBase(ISecurityCache cache)
+		protected SecurityRuntimeBase(ISecurityCache cache, ITypeFactory typeFactory)
 		{
 			Cache = cache;
+			TypeFactory = typeFactory;
 			ShouldIgnoreMissingConfiguration = false;
 			DefaultResultsCacheLifecycle = Caching.Cache.DoNotCache;;
 		}
