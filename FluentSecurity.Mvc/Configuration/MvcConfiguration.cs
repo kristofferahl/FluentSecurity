@@ -15,20 +15,21 @@ namespace FluentSecurity.Configuration
 			_lifecycleResolver = new MvcLifecycleResolver();
 			_registry = new MvcRegistry();
 			_runtime = new SecurityRuntime(new SecurityCache(_lifecycleResolver));
+
 			Initialize(_runtime);
 		}
 
-		public ISecurityRuntime GetRuntime()
+		ISecurityRuntime IFluentConfiguration.GetRuntime()
 		{
 			return _runtime;
 		}
 
-		public IRegistry GetRegistry()
+		IRegistry IFluentConfiguration.GetRegistry()
 		{
 			return _registry;
 		}
 
-		public ILifecycleResolver GetLifecycleResolver()
+		ILifecycleResolver IFluentConfiguration.GetLifecycleResolver()
 		{
 			return _lifecycleResolver;
 		}
