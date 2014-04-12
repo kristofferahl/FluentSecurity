@@ -33,17 +33,5 @@ namespace FluentSecurity
 			
 			profileImport.MarkCompleted();
 		}
-
-		public PolicyContainer AddPolicyContainer(PolicyContainer policyContainer)
-		{
-			if (policyContainer == null) throw new ArgumentNullException("policyContainer");
-
-			var existingContainer = PolicyContainers.GetContainerFor(policyContainer.ControllerName, policyContainer.ActionName);
-			if (existingContainer != null) return (PolicyContainer) existingContainer;
-
-			_policyContainers.Add(policyContainer);
-
-			return policyContainer;
-		}
 	}
 }

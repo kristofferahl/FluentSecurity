@@ -38,5 +38,17 @@ namespace FluentSecurity.Core
 			var configuration = new ConventionConfiguration(_conventions);
 			conventionConfiguration.Invoke(configuration);
 		}
+
+		public PolicyContainer AddPolicyContainer(PolicyContainer policyContainer)
+		{
+			if (policyContainer == null) throw new ArgumentNullException("policyContainer");
+
+			var existingContainer = PolicyContainers.GetContainerFor(policyContainer.ControllerName, policyContainer.ActionName);
+			if (existingContainer != null) return (PolicyContainer) existingContainer;
+
+			_policyContainers.Add(policyContainer);
+
+			return policyContainer;
+		}
 	}
 }
