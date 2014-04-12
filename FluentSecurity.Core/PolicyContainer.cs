@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy;
@@ -17,6 +18,7 @@ namespace FluentSecurity
 		internal IPolicyAppender PolicyAppender;
 		internal readonly List<PolicyResultCacheStrategy> CacheStrategies;
 
+		private ITypeFactory _typeFactory;
 		private readonly IList<ISecurityPolicy> _policies;
 
 		public PolicyContainer(string controllerName, string actionName, IPolicyAppender policyAppender)
@@ -114,7 +116,8 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration<TSecurityPolicy> AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			return new PolicyContainerConfigurationWrapper<TSecurityPolicy>(AddPolicy(new LazySecurityPolicy<TSecurityPolicy>()));
+			var lazySecurityPolicy = _typeFactory.CreateLazySecurityPolicy<TSecurityPolicy>();
+			return new PolicyContainerConfigurationWrapper<TSecurityPolicy>(AddPolicy(lazySecurityPolicy));
 		}
 
 		public IPolicyContainerConfiguration RemovePolicy<TSecurityPolicy>(Func<TSecurityPolicy, bool> predicate = null) where TSecurityPolicy : class, ISecurityPolicy
@@ -192,6 +195,12 @@ namespace FluentSecurity
 		public override string ToString()
 		{
 			return String.Format("{0} - {1} - {2}", base.ToString(), ControllerName, ActionName);
+		}
+
+		public void SetTypeFactory(ITypeFactory typeFactory)
+		{
+			// TODO: Move this to the constructor
+			_typeFactory = typeFactory;
 		}
 	}
 }

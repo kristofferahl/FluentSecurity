@@ -40,18 +40,18 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static PolicyContainer CreateValidPolicyContainer()
 		{
-			return new PolicyContainer(
-				ValidControllerName,
-				ValidActionName,
-				CreateValidPolicyAppender());
+			return CreateValidPolicyContainer(ValidControllerName, ValidActionName);
 		}
 
 		public static PolicyContainer CreateValidPolicyContainer(string controllerName, string actionName)
 		{
-			return new PolicyContainer(
-				controllerName ?? ValidControllerName,
-				actionName ?? ValidActionName,
-				CreateValidPolicyAppender());
+			var policyContainer = new PolicyContainer(
+				controllerName,
+				actionName,
+				CreateValidPolicyAppender()
+				);
+			policyContainer.SetTypeFactory(new MvcTypeFactory());
+			return policyContainer;
 		}
 
 		public static SecurityConfiguration<MvcConfiguration> CreateValidSecurityConfiguration()

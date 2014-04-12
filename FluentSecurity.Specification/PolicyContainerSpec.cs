@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
@@ -446,7 +445,7 @@ namespace FluentSecurity.Specification
 			context.Expect(x => x.CurrentUserRoles()).Return(new List<object> { UserRole.Owner }.ToArray()).Repeat.Once();
 			context.Replay();
 			
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(new TestPolicy());
 
 			// Act
@@ -471,7 +470,7 @@ namespace FluentSecurity.Specification
 			var policy = new Mock<ISecurityPolicy>();
 			policy.Setup(x => x.Enforce(It.Is<ISecurityContext>(c => c.CurrentUserIsAuthenticated() == isAuthenticated && c.CurrentUserRoles() == roles))).Returns(PolicyResult.CreateSuccessResult(policy.Object));
 
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(policy.Object);
 
 			// Act
@@ -493,7 +492,7 @@ namespace FluentSecurity.Specification
 			var policy = new Mock<ISecurityPolicy>();
 			policy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateFailureResult(policy.Object, failureOccured));
 
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(policy.Object);
 
 			// Act
@@ -517,7 +516,7 @@ namespace FluentSecurity.Specification
 			var secondPolicy = new Mock<ISecurityPolicy>();
 			secondPolicy.Setup(x => x.Enforce(It.IsAny<ISecurityContext>())).Returns(PolicyResult.CreateSuccessResult(secondPolicy.Object));
 
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(firstPolicy.Object).AddPolicy(secondPolicy.Object);
 
 			// Act
@@ -541,7 +540,7 @@ namespace FluentSecurity.Specification
 
 			var thirdPolicy = new TestPolicy();
 
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(firstPolicy).AddPolicy(secondPolicy.Object).AddPolicy(thirdPolicy);
 
 			// Act
@@ -595,7 +594,7 @@ namespace FluentSecurity.Specification
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
 			});
 			var context = new MockSecurityContext();
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy<LazyLoadedPolicy>();
 
 			// Act
@@ -625,7 +624,7 @@ namespace FluentSecurity.Specification
 				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
 			});
 			var context = new MockSecurityContext(runtime: SecurityConfiguration.Get<MvcConfiguration>().Runtime);
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy<LazyLoadedPolicy>();
 
 			// Act
@@ -654,7 +653,7 @@ namespace FluentSecurity.Specification
 				configuration.ResolveServicesUsing(FakeIoC.GetAllInstances);
 			});
 			var context = new MockSecurityContext();
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy<LazyLoadedPolicyWithCacheKey>();
 
 			// Act
@@ -685,7 +684,7 @@ namespace FluentSecurity.Specification
 				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
 			});
 			var context = new MockSecurityContext(runtime: SecurityConfiguration.Get<MvcConfiguration>().Runtime);
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy<LazyLoadedPolicyWithCacheKey>();
 
 			// Act
@@ -716,7 +715,7 @@ namespace FluentSecurity.Specification
 				configuration.Advanced.SetDefaultResultsCacheLifecycle(Cache.PerHttpRequest);
 			});
 			var context = new MockSecurityContext(runtime: SecurityConfiguration.Get<MvcConfiguration>().Runtime);
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy<LazyLoadedPolicyWithCacheKey>();
 
 			// Act
@@ -782,7 +781,7 @@ namespace FluentSecurity.Specification
 			var context = TestDataFactory.CreateSecurityContext(false);
 			context.Runtime.As<SecurityRuntime>().DefaultResultsCacheLifecycle = Cache.DoNotCache;
 			var firstPolicy = new IgnorePolicy();			
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(firstPolicy);
 
 			// Act
@@ -806,7 +805,7 @@ namespace FluentSecurity.Specification
 			var context = TestDataFactory.CreateSecurityContext(false);
 			context.Runtime.As<SecurityRuntime>().DefaultResultsCacheLifecycle = Cache.PerHttpRequest;
 			var firstPolicy = new IgnorePolicy();
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(firstPolicy);
 
 			// Act
@@ -837,7 +836,7 @@ namespace FluentSecurity.Specification
 			var context = TestDataFactory.CreateSecurityContext(false);
 			context.Runtime.As<SecurityRuntime>().DefaultResultsCacheLifecycle = Cache.PerHttpSession;
 			var firstPolicy = new IgnorePolicy();
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(firstPolicy);
 
 			// Act
@@ -868,7 +867,7 @@ namespace FluentSecurity.Specification
 			const string expectedControllerName = "Controller1";
 			const string expectedActionName = "Action1";
 
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer.Cache<RequireAnyRolePolicy>(expectedLifecycle);
@@ -889,7 +888,7 @@ namespace FluentSecurity.Specification
 			const string expectedControllerName = "Controller1";
 			const string expectedActionName = "Action1";
 
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer.AddPolicy<RequireAnyRolePolicy>().DoNotCache();
@@ -910,7 +909,7 @@ namespace FluentSecurity.Specification
 			const string expectedControllerName = "Controller2";
 			const string expectedActionName = "Action2";
 			
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer.Cache<RequireAnyRolePolicy>(expectedLifecycle);
@@ -931,7 +930,7 @@ namespace FluentSecurity.Specification
 			const string expectedControllerName = "Controller2";
 			const string expectedActionName = "Action2";
 
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer.AddPolicy<RequireAnyRolePolicy>().CachePerHttpRequest();
@@ -952,7 +951,7 @@ namespace FluentSecurity.Specification
 			const string expectedControllerName = "Controller3";
 			const string expectedActionName = "Action3";
 
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer.Cache<RequireAnyRolePolicy>(expectedLifecycle);
@@ -973,7 +972,7 @@ namespace FluentSecurity.Specification
 			const string expectedControllerName = "Controller3";
 			const string expectedActionName = "Action3";
 
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer.AddPolicy<RequireAnyRolePolicy>().CachePerHttpSession();
@@ -994,7 +993,7 @@ namespace FluentSecurity.Specification
 			const string expectedControllerName = "Controller4";
 			const string expectedActionName = "Action4";
 
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer.Cache<DenyAnonymousAccessPolicy>(expectedLifecycle);
@@ -1014,7 +1013,7 @@ namespace FluentSecurity.Specification
 			// Arrange
 			const string expectedControllerName = "Controller5";
 			const string expectedActionName = "Action5";
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer
@@ -1046,7 +1045,7 @@ namespace FluentSecurity.Specification
 			const Cache expectedLifecycle = Cache.PerHttpSession;
 			const string expectedControllerName = "Controller6";
 			const string expectedActionName = "Action6";
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer
@@ -1071,7 +1070,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_policyresult_cache_strategy_for_RequireAnyRolePolicy_with_level_set_to_ControllerAction()
 		{
 			const By expectedLevel = By.ControllerAction;
-			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer("Controller", "Action");
 
 			// Act
 			policyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest, expectedLevel);
@@ -1085,7 +1084,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_policyresult_cache_strategy_for_RequireAnyRolePolicy_with_level_set_to_Controller()
 		{
 			const By expectedLevel = By.Controller;
-			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer("Controller", "Action");
 
 			// Act
 			policyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest, expectedLevel);
@@ -1099,7 +1098,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_policyresult_cache_strategy_for_RequireAnyRolePolicy_with_level_set_to_Policy()
 		{
 			const By expectedLevel = By.Policy;
-			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer("Controller", "Action");
 
 			// Act
 			policyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest, expectedLevel);
@@ -1113,7 +1112,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_policyresult_cache_strategy_for_Policy_T_with_lifecycle_set_to_DoNotCache_and_level_set_to_ControllerAction()
 		{
 			const By expectedLevel = By.ControllerAction;
-			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer("Controller", "Action");
 
 			// Act
 			policyContainer.AddPolicy<RequireAnyRolePolicy>().DoNotCache(expectedLevel);
@@ -1129,7 +1128,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_policyresult_cache_strategy_for_Policy_T_with_lifecycle_set_to_PerHttpRequest_and_level_set_to_Controller()
 		{
 			const By expectedLevel = By.Controller;
-			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer("Controller", "Action");
 
 			// Act
 			policyContainer.AddPolicy<RequireAnyRolePolicy>().CachePerHttpRequest(expectedLevel);
@@ -1145,7 +1144,7 @@ namespace FluentSecurity.Specification
 		public void Should_add_policyresult_cache_strategy_for_Policy_T_with_lifecycle_set_to_PerHttpSession_and_level_set_to_Policy()
 		{
 			const By expectedLevel = By.Policy;
-			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer("Controller", "Action");
 
 			// Act
 			policyContainer.AddPolicy<RequireAnyRolePolicy>().CachePerHttpSession(expectedLevel);
@@ -1164,7 +1163,7 @@ namespace FluentSecurity.Specification
 			const Cache expectedLifecycle = Cache.PerHttpSession;
 			const string expectedControllerName = "Controller6";
 			const string expectedActionName = "Action6";
-			var policyContainer = new PolicyContainer(expectedControllerName, expectedActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer(expectedControllerName, expectedActionName);
 
 			// Act
 			policyContainer
@@ -1188,7 +1187,7 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_clear_all_cache_strategies()
 		{
-			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer("Controller", "Action");
 			policyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest);
 
 			// Act
@@ -1201,7 +1200,7 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_clear_all_cache_strategies_for_policy()
 		{
-			var policyContainer = new PolicyContainer("Controller", "Action", TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer("Controller", "Action");
 			policyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest);
 			policyContainer.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest);
 
@@ -1227,7 +1226,7 @@ namespace FluentSecurity.Specification
 			var context = TestDataFactory.CreateSecurityContext(false);
 			context.Runtime.As<SecurityRuntime>().DefaultResultsCacheLifecycle = defaultCacheLifecycle;
 			var securityPolicy = new IgnorePolicy();
-			var policyContainer = new PolicyContainer(TestDataFactory.ValidControllerName, TestDataFactory.ValidActionName, TestDataFactory.CreateValidPolicyAppender());
+			var policyContainer = TestDataFactory.CreateValidPolicyContainer();
 			policyContainer.AddPolicy(securityPolicy).Cache<IgnorePolicy>(specifiedCacheLifecycle);
 
 			// Act
