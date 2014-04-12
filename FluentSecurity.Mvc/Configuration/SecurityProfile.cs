@@ -5,6 +5,11 @@ namespace FluentSecurity.Configuration
 {
 	public abstract class SecurityProfile : ConfigurationExpression, ISecurityProfile
 	{
+		void ISecurityProfile.Initialize(ISecurityRuntime runtime)
+		{
+			Initialize((SecurityRuntime) runtime);
+		}
+
 		public abstract void Configure();
 
 		public override IPolicyContainerConfiguration ForAllControllers()

@@ -41,6 +41,22 @@ namespace FluentSecurity.Core
 			conventionConfiguration.Invoke(configuration);
 		}
 
+		public void ApplyConfiguration<TSecurityProfile>(TSecurityProfile profileConfiguration) where TSecurityProfile : ISecurityProfile
+		{
+			if (profileConfiguration == null) throw new ArgumentNullException("profileConfiguration");
+
+			var profileType = profileConfiguration.GetType();
+			if (_profiles.Any(pi => pi.Type == profileType)) return;
+
+			var profileImport = new ProfileImport(profileType);
+			_profiles.Add(profileImport);
+
+			profileConfiguration.Initialize(this);
+			profileConfiguration.Configure();
+
+			profileImport.MarkCompleted();
+		}
+
 		public PolicyContainer AddPolicyContainer(PolicyContainer policyContainer)
 		{
 			if (policyContainer == null) throw new ArgumentNullException("policyContainer");
