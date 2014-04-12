@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentSecurity.Configuration;
 using FluentSecurity.Core.Internals;
 
 namespace FluentSecurity.Policy
@@ -12,13 +13,12 @@ namespace FluentSecurity.Policy
 
 		public ISecurityPolicy Load()
 		{
-			// TODO: Fix failing specs and implementation of LazySecurityPolicy
-			//var externalServiceLocator = Runtime.ExternalServiceLocator;
-			//if (externalServiceLocator != null)
-			//{
-			//	var securityPolicy = externalServiceLocator.Resolve(PolicyType) as ISecurityPolicy;
-			//	if (securityPolicy != null) return securityPolicy;
-			//}
+			var externalServiceLocator = SecurityConfiguration.Get<MvcConfiguration>().Runtime.ExternalServiceLocator;
+			if (externalServiceLocator != null)
+			{
+				var securityPolicy = externalServiceLocator.Resolve(PolicyType) as ISecurityPolicy;
+				if (securityPolicy != null) return securityPolicy;
+			}
 
 			return PolicyType.HasEmptyConstructor()
 				? (ISecurityPolicy)Activator.CreateInstance<TSecurityPolicy>()
