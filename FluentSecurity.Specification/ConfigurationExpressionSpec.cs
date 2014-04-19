@@ -370,6 +370,36 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConfigurationExpressionSpec")]
+	public class When_adding_a_conventionpolicycontainter_for_controller_with_nonaction_actions
+	{
+	[Test]
+		public void Should_not_have_policycontainer_for_actions_marked_as_NonAction()
+		{
+		// Arrange
+			var configurationExpression = new RootConfiguration();
+			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+
+			// Act
+			configurationExpression.For<NonActionController>();
+
+			// Assert
+			var policyContainers = configurationExpression.Runtime.PolicyContainers;
+
+			Assert.That(configurationExpression.Runtime.PolicyContainers.Count(), Is.EqualTo(0));
+		}
+		
+		private class NonActionController : Controller
+		{
+			[NonAction]
+			public ActionResult SomeAction()
+			{
+				return null;
+			}
+		}
+	}
+	
+	[TestFixture]
+	[Category("ConfigurationExpressionSpec")]
 	public class When_adding_a_conventionpolicycontainter_for_controller_with_aliased_action
 	{
 		[Test]

@@ -31,3 +31,6 @@ _ReSharper*/
 NCover*.lic
 *.*.dotCover
 *.DotSettings
+
+#SharpDevelop files
+*.sdsettings
