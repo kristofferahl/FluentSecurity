@@ -92,7 +92,18 @@ namespace FluentSecurity
 			return
 				methodInfo.ReturnType.IsControllerActionReturnType() &&
 				!methodInfo.IsSpecialName &&
-				!methodInfo.IsDeclaredBy<Controller>();
+				!methodInfo.IsDeclaredBy<Controller>() &&
+				!methodInfo.HasAttribute<NonActionAttribute>();
+		}
+		
+		/// <summary>
+		/// Returns true if the passed method has the attribute of type TAttribute
+		/// </summary>
+		/// <param name="methodInfo">MethodInfo of the method to verify</param>
+		/// <returns></returns>
+		internal static bool HasAttribute<TAttribute>(this MethodInfo methodInfo) where TAttribute:Attribute
+		{
+			return methodInfo.GetCustomAttributes(typeof(TAttribute), false).Any();
 		}
 
 		/// <summary>
