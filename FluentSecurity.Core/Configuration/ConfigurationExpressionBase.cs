@@ -8,13 +8,19 @@ using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
-	public abstract class ConfigurationExpressionBase<TSecurityRuntime> where TSecurityRuntime : SecurityRuntimeBase
+	public abstract class ConfigurationExpressionBase<TSecurityRuntime, TAdvancedConfiguration>
+		where TSecurityRuntime : SecurityRuntimeBase
+		where TAdvancedConfiguration : AdvancedConfigurationBase<TSecurityRuntime>
 	{
+		// TODO: Should advanced configuration be available for ISecurityProfile's???
+		public TAdvancedConfiguration Advanced { get; protected set; }
+
 		public TSecurityRuntime Runtime { get; protected set; }
 		public IPolicyAppender PolicyAppender { get; protected set; }
 
-		protected void Initialize(TSecurityRuntime runtime)
+		protected void Initialize(TSecurityRuntime runtime, TAdvancedConfiguration advanced)
 		{
+			Advanced = advanced;
 			Runtime = runtime;
 			PolicyAppender = new DefaultPolicyAppender();
 		}

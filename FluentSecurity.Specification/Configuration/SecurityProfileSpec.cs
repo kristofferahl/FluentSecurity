@@ -14,7 +14,7 @@ namespace FluentSecurity.Specification.Configuration
 		{
 			// Arrange
 			var profile = new ForAllControllersProfile();
-			profile.Initialize(TestDataFactory.CreateSecurityRuntime());
+			((ISecurityProfile)profile).Initialize(TestDataFactory.CreateSecurityRuntime());
 			var expectedNamespace = profile.GetType().Assembly.GetName().Name;
 
 			// Act

@@ -15,14 +15,11 @@ using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity
 {
-	public abstract class ConfigurationExpression : ConfigurationExpressionBase<SecurityRuntime>
+	public abstract class ConfigurationExpression : ConfigurationExpressionBase<SecurityRuntime, AdvancedConfiguration>
 	{
-		public AdvancedConfiguration Advanced { get; private set; }
-
-		internal new void Initialize(SecurityRuntime runtime)
+		protected void Initialize(SecurityRuntime runtime)
 		{
-			base.Initialize(runtime);
-			Advanced = new AdvancedConfiguration(Runtime);
+			Initialize(runtime, new AdvancedConfiguration(runtime));
 		}
 
 		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller

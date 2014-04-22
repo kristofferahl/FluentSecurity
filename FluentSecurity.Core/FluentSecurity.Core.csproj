@@ -48,6 +48,7 @@
     <Compile Include="Caching\PolicyResultCacheKeyBuilder.cs" />
     <Compile Include="Caching\PolicyResultCacheStrategy.cs" />
     <Compile Include="Caching\SecurityCache.cs" />
+    <Compile Include="Configuration\AdvancedConfigurationBase.cs" />
     <Compile Include="Configuration\ConfigurationExpressionBase.cs" />
     <Compile Include="Configuration\ConventionConfiguration.cs" />
     <Compile Include="Configuration\DefaultPolicyAppender.cs" />
