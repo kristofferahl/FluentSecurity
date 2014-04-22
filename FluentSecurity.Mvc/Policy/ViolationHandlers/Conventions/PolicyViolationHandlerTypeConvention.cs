@@ -14,8 +14,8 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 			var type = GetHandlerTypeFor(exception);
 			if (type != null)
 			{
-				if (typeof(IPolicyViolationHandler).IsAssignableFrom(type))
-					return PolicyViolationHandlerProvider.Invoke(type) as IPolicyViolationHandler;
+				if (typeof(ISecurityPolicyViolationHandler).IsAssignableFrom(type))
+					return PolicyViolationHandlerProvider.Invoke(type) as ISecurityPolicyViolationHandler;
 			}
 			return null;
 		}

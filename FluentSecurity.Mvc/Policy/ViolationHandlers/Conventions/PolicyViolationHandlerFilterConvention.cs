@@ -7,9 +7,9 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
 	public abstract class PolicyViolationHandlerFilterConvention : IPolicyViolationHandlerConvention
 	{
-		public Func<IEnumerable<IPolicyViolationHandler>> PolicyViolationHandlerProvider = () => SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.ResolveAll<IPolicyViolationHandler>();
+		public Func<IEnumerable<ISecurityPolicyViolationHandler>> PolicyViolationHandlerProvider = () => SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.ResolveAll<ISecurityPolicyViolationHandler>();
 
-		public abstract IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<IPolicyViolationHandler> policyViolationHandlers);
+		public abstract ISecurityPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<ISecurityPolicyViolationHandler> policyViolationHandlers);
 		
 		public object GetHandlerFor(PolicyViolationException exception)
 		{

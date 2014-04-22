@@ -5,13 +5,13 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
 	public class FindDefaultPolicyViolationHandlerByNameConvention : PolicyViolationHandlerFilterConvention
 	{
-		public override IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<IPolicyViolationHandler> policyViolationHandlers)
+		public override ISecurityPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<ISecurityPolicyViolationHandler> policyViolationHandlers)
 		{
 			var matchingHandler = policyViolationHandlers.SingleOrDefault(HandlerIsDefaultPolicyViolationHandler);
 			return matchingHandler;
 		}
 
-		private static bool HandlerIsDefaultPolicyViolationHandler(IPolicyViolationHandler handler)
+		private static bool HandlerIsDefaultPolicyViolationHandler(ISecurityPolicyViolationHandler handler)
 		{
 			var actualHandlerName = handler.GetType().Name;
 			return actualHandlerName == "DefaultPolicyViolationHandler";

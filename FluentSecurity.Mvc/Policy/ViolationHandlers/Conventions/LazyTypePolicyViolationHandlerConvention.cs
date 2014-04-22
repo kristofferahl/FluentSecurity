@@ -2,7 +2,7 @@ using System;
 
 namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
-	public abstract class LazyTypePolicyViolationHandlerConvention<TPolicyViolationHandler> : PolicyViolationHandlerTypeConvention where TPolicyViolationHandler : class, IPolicyViolationHandler
+	public abstract class LazyTypePolicyViolationHandlerConvention<TPolicyViolationHandler> : PolicyViolationHandlerTypeConvention where TPolicyViolationHandler : class, ISecurityPolicyViolationHandler
 	{
 		public Func<PolicyResult, bool> Predicate { get; private set; }
 

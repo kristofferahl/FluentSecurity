@@ -2,7 +2,7 @@ using System;
 
 namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
-	public abstract class LazyInstancePolicyViolationHandlerConvention<TPolicyViolationHandler> : IPolicyViolationHandlerConvention where TPolicyViolationHandler : class, IPolicyViolationHandler
+	public abstract class LazyInstancePolicyViolationHandlerConvention<TPolicyViolationHandler> : IPolicyViolationHandlerConvention where TPolicyViolationHandler : class, ISecurityPolicyViolationHandler
 	{
 		private readonly Func<TPolicyViolationHandler> _policyViolationHandlerFactory;
 
