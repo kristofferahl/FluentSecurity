@@ -4,7 +4,7 @@ using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class ViolationConfiguration
+	public class ViolationConfiguration<TSecurityPolicyViolationHandler> where TSecurityPolicyViolationHandler : ISecurityPolicyViolationHandler
 	{
 		private readonly ConventionConfiguration _conventionConfiguration;
 
@@ -35,14 +35,14 @@ namespace FluentSecurity.Configuration
 				);
 		}
 
-		public ViolationHandlerConfiguration<TSecurityPolicy> Of<TSecurityPolicy>() where TSecurityPolicy : class, ISecurityPolicy
+		public ViolationHandlerConfiguration<TSecurityPolicy, TSecurityPolicyViolationHandler> Of<TSecurityPolicy>() where TSecurityPolicy : class, ISecurityPolicy
 		{
-			return new ViolationHandlerConfiguration<TSecurityPolicy>(this);
+			return new ViolationHandlerConfiguration<TSecurityPolicy, TSecurityPolicyViolationHandler>(this);
 		}
 
-		public ViolationHandlerConfiguration Of(Func<PolicyResult, bool> predicate)
+		public ViolationHandlerConfiguration<TSecurityPolicyViolationHandler> Of(Func<PolicyResult, bool> predicate)
 		{
-			return new ViolationHandlerConfiguration(this, predicate);
+			return new ViolationHandlerConfiguration<TSecurityPolicyViolationHandler>(this, predicate);
 		}
 	}
 }

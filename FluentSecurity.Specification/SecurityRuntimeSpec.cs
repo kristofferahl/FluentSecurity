@@ -58,7 +58,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_when_null()
 		{
 			// Arrange
-			Action<ViolationConfiguration> configuration = null;
+			Action<ViolationConfiguration<IPolicyViolationHandler>> configuration = null;
 
 			// Act & Assert
 			Assert.Throws<ArgumentNullException>(() => Runtime.ApplyConfiguration(configuration));

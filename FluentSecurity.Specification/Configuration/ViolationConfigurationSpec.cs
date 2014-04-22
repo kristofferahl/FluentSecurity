@@ -17,7 +17,7 @@ namespace FluentSecurity.Specification.Configuration
 		[Test]
 		public void Should_throw_when_conventions_is_null()
 		{
-			Assert.Throws<ArgumentNullException>(() => new ViolationConfiguration(null));
+			Assert.Throws<ArgumentNullException>(() => new ViolationConfiguration<IPolicyViolationHandler>(null));
 		}
 	}
 

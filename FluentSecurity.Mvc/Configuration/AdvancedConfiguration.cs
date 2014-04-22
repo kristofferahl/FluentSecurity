@@ -18,7 +18,7 @@ namespace FluentSecurity.Configuration
 			}
 		}
 
-		public void Violations(Action<ViolationConfiguration> violationConfiguration)
+		public void Violations(Action<ViolationConfiguration<IPolicyViolationHandler>> violationConfiguration)
 		{
 			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
 			Runtime.ApplyConfiguration(violationConfiguration);

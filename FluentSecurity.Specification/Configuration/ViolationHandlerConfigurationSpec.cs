@@ -15,25 +15,25 @@ namespace FluentSecurity.Specification.Configuration
 	[Category("ViolationHandlerConfigurationSpec")]
 	public class When_creating_a_ViolationHandlerConfiguration
 	{
-		private readonly ViolationConfiguration _validConfiguration = TestDataFactory.CreatedValidViolationConfiguration();
+		private readonly ViolationConfiguration<IPolicyViolationHandler> _validConfiguration = TestDataFactory.CreatedValidViolationConfiguration();
 		private readonly Func<PolicyResult, bool> _validPredicate = x => true;
 
 		[Test]
 		public void Should_throw_when_configuration_is_null()
 		{
-			Assert.Throws<ArgumentNullException>(() => new ViolationHandlerConfiguration(null, _validPredicate));
+			Assert.Throws<ArgumentNullException>(() => new ViolationHandlerConfiguration<IPolicyViolationHandler>(null, _validPredicate));
 		}
 
 		[Test]
 		public void Should_throw_when_predicate_is_null()
 		{
-			Assert.Throws<ArgumentNullException>(() => new ViolationHandlerConfiguration(_validConfiguration, null));
+			Assert.Throws<ArgumentNullException>(() => new ViolationHandlerConfiguration<IPolicyViolationHandler>(_validConfiguration, null));
 		}
 
 		[Test]
 		public void Should_not_throw_when_ViolationConfiguration_is_not_null()
 		{
-			Assert.DoesNotThrow(() => new ViolationHandlerConfiguration(_validConfiguration, _validPredicate));
+			Assert.DoesNotThrow(() => new ViolationHandlerConfiguration<IPolicyViolationHandler>(_validConfiguration, _validPredicate));
 		}
 	}
 
@@ -41,18 +41,18 @@ namespace FluentSecurity.Specification.Configuration
 	[Category("ViolationHandlerConfigurationSpec")]
 	public class When_creating_a_ViolationHandlerConfiguration_of_T
 	{
-		private readonly ViolationConfiguration _validConfiguration = TestDataFactory.CreatedValidViolationConfiguration();
+		private readonly ViolationConfiguration<IPolicyViolationHandler> _validConfiguration = TestDataFactory.CreatedValidViolationConfiguration();
 
 		[Test]
 		public void Should_throw_when_configuration_is_null()
 		{
-			Assert.Throws<ArgumentNullException>(() => new ViolationHandlerConfiguration<IgnorePolicy>(null));
+			Assert.Throws<ArgumentNullException>(() => new ViolationHandlerConfiguration<IgnorePolicy, IPolicyViolationHandler>(null));
 		}
 
 		[Test]
 		public void Should_not_throw_when_configuration_is_not_null()
 		{
-			Assert.DoesNotThrow(() => new ViolationHandlerConfiguration<IgnorePolicy>(_validConfiguration));
+			Assert.DoesNotThrow(() => new ViolationHandlerConfiguration<IgnorePolicy, IPolicyViolationHandler>(_validConfiguration));
 		}
 	}
 
@@ -65,7 +65,7 @@ namespace FluentSecurity.Specification.Configuration
 		{
 			// Arrange
 			var violationConfiguration = TestDataFactory.CreatedValidViolationConfiguration();
-			var configuration = new ViolationHandlerConfiguration(violationConfiguration, x => true);
+			var configuration = new ViolationHandlerConfiguration<IPolicyViolationHandler>(violationConfiguration, x => true);
 
 			// Act & assert
 			Assert.Throws<ArgumentNullException>(() => configuration.IsHandledBy<DefaultPolicyViolationHandler>(null));
@@ -78,7 +78,7 @@ namespace FluentSecurity.Specification.Configuration
 			Func<PolicyResult, bool> expectedPredicate = x => true;
 			var conventions = new List<IConvention>();
 			var violationConfiguration  = TestDataFactory.CreatedValidViolationConfiguration(conventions);
-			var configuration = new ViolationHandlerConfiguration(violationConfiguration, expectedPredicate);
+			var configuration = new ViolationHandlerConfiguration<IPolicyViolationHandler>(violationConfiguration, expectedPredicate);
 
 			// Act
 			configuration.IsHandledBy<DefaultPolicyViolationHandler>();
@@ -94,7 +94,7 @@ namespace FluentSecurity.Specification.Configuration
 			Func<PolicyResult, bool> expectedPredicate = x => true;
 			var conventions = new List<IConvention>();
 			var violationConfiguration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
-			var configuration = new ViolationHandlerConfiguration(violationConfiguration, expectedPredicate);
+			var configuration = new ViolationHandlerConfiguration<IPolicyViolationHandler>(violationConfiguration, expectedPredicate);
 
 			// Act
 			configuration.IsHandledBy(() => new DefaultPolicyViolationHandler());
@@ -113,7 +113,7 @@ namespace FluentSecurity.Specification.Configuration
 		{
 			// Arrange
 			var violationConfiguration = TestDataFactory.CreatedValidViolationConfiguration();
-			var configuration = new ViolationHandlerConfiguration<IgnorePolicy>(violationConfiguration);
+			var configuration = new ViolationHandlerConfiguration<IgnorePolicy, IPolicyViolationHandler>(violationConfiguration);
 
 			// Act & assert
 			Assert.Throws<ArgumentNullException>(() => configuration.IsHandledBy<DefaultPolicyViolationHandler>(null));
@@ -125,7 +125,7 @@ namespace FluentSecurity.Specification.Configuration
 			// Arrange
 			var conventions = new List<IConvention>();
 			var violationConfiguration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
-			var configuration = new ViolationHandlerConfiguration<IgnorePolicy>(violationConfiguration);
+			var configuration = new ViolationHandlerConfiguration<IgnorePolicy, IPolicyViolationHandler>(violationConfiguration);
 
 			// Act
 			configuration.IsHandledBy<DefaultPolicyViolationHandler>();
@@ -140,7 +140,7 @@ namespace FluentSecurity.Specification.Configuration
 			// Arrange
 			var conventions = new List<IConvention>();
 			var violationConfiguration = TestDataFactory.CreatedValidViolationConfiguration(conventions);
-			var configuration = new ViolationHandlerConfiguration<IgnorePolicy>(violationConfiguration);
+			var configuration = new ViolationHandlerConfiguration<IgnorePolicy, IPolicyViolationHandler>(violationConfiguration);
 
 			// Act
 			configuration.IsHandledBy(() => new DefaultPolicyViolationHandler());

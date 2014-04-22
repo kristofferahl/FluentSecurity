@@ -75,10 +75,10 @@ namespace FluentSecurity.Specification.Helpers
 			return configurationExpression;
 		}
 
-		public static ViolationConfiguration CreatedValidViolationConfiguration(List<IConvention> conventions = null)
+		public static ViolationConfiguration<IPolicyViolationHandler> CreatedValidViolationConfiguration(List<IConvention> conventions = null)
 		{
 			if (conventions == null) conventions = new List<IConvention>();
-			return new ViolationConfiguration(new ConventionConfiguration(conventions));
+			return new ViolationConfiguration<IPolicyViolationHandler>(new ConventionConfiguration(conventions));
 		}
 
 		public static DefaultPolicyAppender CreateValidPolicyAppender()

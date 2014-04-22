@@ -4,47 +4,47 @@ using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.Configuration
 {
-	public class ViolationHandlerConfiguration<TSecurityPolicy> : ViolationHandlerConfigurationBase where TSecurityPolicy : class, ISecurityPolicy
+	public class ViolationHandlerConfiguration<TSecurityPolicy, TSecurityPolicyViolationHandler> : ViolationHandlerConfigurationBase<TSecurityPolicyViolationHandler> where TSecurityPolicy : class, ISecurityPolicy where TSecurityPolicyViolationHandler : ISecurityPolicyViolationHandler
 	{
-		internal ViolationHandlerConfiguration(ViolationConfiguration violationConfiguration) : base(violationConfiguration) {}
+		internal ViolationHandlerConfiguration(ViolationConfiguration<TSecurityPolicyViolationHandler> violationConfiguration) : base(violationConfiguration) {}
 
-		public void IsHandledBy<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
+		public void IsHandledBy<TPolicyViolationHandler>() where TPolicyViolationHandler : class, TSecurityPolicyViolationHandler
 		{
 			ViolationConfiguration.AddConvention(new PolicyTypeToPolicyViolationHandlerTypeConvention<TSecurityPolicy, TPolicyViolationHandler>());
 		}
 
-		public void IsHandledBy<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandlerFactory) where TPolicyViolationHandler : class, IPolicyViolationHandler
+		public void IsHandledBy<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandlerFactory) where TPolicyViolationHandler : class, TSecurityPolicyViolationHandler
 		{
 			ViolationConfiguration.AddConvention(new PolicyTypeToPolicyViolationHandlerInstanceConvention<TSecurityPolicy, TPolicyViolationHandler>(policyViolationHandlerFactory));
 		}
 	}
 
-	public class ViolationHandlerConfiguration : ViolationHandlerConfigurationBase
+	public class ViolationHandlerConfiguration<TSecurityPolicyViolationHandler> : ViolationHandlerConfigurationBase<TSecurityPolicyViolationHandler> where TSecurityPolicyViolationHandler : ISecurityPolicyViolationHandler
 	{
 		public Func<PolicyResult, bool> Predicate { get; private set; }
 
-		internal ViolationHandlerConfiguration(ViolationConfiguration violationConfiguration, Func<PolicyResult, bool> predicate) : base(violationConfiguration)
+		internal ViolationHandlerConfiguration(ViolationConfiguration<TSecurityPolicyViolationHandler> violationConfiguration, Func<PolicyResult, bool> predicate) : base(violationConfiguration)
 		{
 			if (predicate == null) throw new ArgumentNullException("predicate");
 			Predicate = predicate;
 		}
 
-		public void IsHandledBy<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
+		public void IsHandledBy<TPolicyViolationHandler>() where TPolicyViolationHandler : class, ISecurityPolicyViolationHandler
 		{
 			ViolationConfiguration.AddConvention(new PredicateToPolicyViolationHandlerTypeConvention<TPolicyViolationHandler>(Predicate));
 		}
 
-		public void IsHandledBy<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandlerFactory) where TPolicyViolationHandler : class, IPolicyViolationHandler
+		public void IsHandledBy<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandlerFactory) where TPolicyViolationHandler : class, ISecurityPolicyViolationHandler
 		{
 			ViolationConfiguration.AddConvention(new PredicateToPolicyViolationHandlerInstanceConvention<TPolicyViolationHandler>(policyViolationHandlerFactory, Predicate));
 		}
 	}
 
-	public abstract class ViolationHandlerConfigurationBase
+	public abstract class ViolationHandlerConfigurationBase<TSecurityPolicyViolationHandler> where TSecurityPolicyViolationHandler : ISecurityPolicyViolationHandler
 	{
-		protected ViolationConfiguration ViolationConfiguration { get; private set; }
+		protected ViolationConfiguration<TSecurityPolicyViolationHandler> ViolationConfiguration { get; private set; }
 
-		internal ViolationHandlerConfigurationBase(ViolationConfiguration violationConfiguration)
+		internal ViolationHandlerConfigurationBase(ViolationConfiguration<TSecurityPolicyViolationHandler> violationConfiguration)
 		{
 			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
 			ViolationConfiguration = violationConfiguration;
