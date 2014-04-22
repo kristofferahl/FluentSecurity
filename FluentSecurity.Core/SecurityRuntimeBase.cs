@@ -41,6 +41,14 @@ namespace FluentSecurity.Core
 			conventionConfiguration.Invoke(configuration);
 		}
 
+		public void ApplyConfiguration<TSecurityPolicyViolationHandler>(Action<ViolationConfiguration<TSecurityPolicyViolationHandler>> violationConfiguration) where TSecurityPolicyViolationHandler : ISecurityPolicyViolationHandler
+		{
+			if (violationConfiguration == null) throw new ArgumentNullException("violationConfiguration");
+			var conventionsConfiguration = new ConventionConfiguration(_conventions);
+			var configuration = new ViolationConfiguration<TSecurityPolicyViolationHandler>(conventionsConfiguration);
+			violationConfiguration.Invoke(configuration);
+		}
+
 		public void ApplyConfiguration<TSecurityProfile>(TSecurityProfile profileConfiguration) where TSecurityProfile : ISecurityProfile
 		{
 			if (profileConfiguration == null) throw new ArgumentNullException("profileConfiguration");
