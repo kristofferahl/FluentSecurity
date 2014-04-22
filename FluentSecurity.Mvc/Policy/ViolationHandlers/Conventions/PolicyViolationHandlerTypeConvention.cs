@@ -9,7 +9,7 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 
 		public abstract Type GetHandlerTypeFor(PolicyViolationException exception);
 
-		public IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception)
+		public object GetHandlerFor(PolicyViolationException exception)
 		{
 			var type = GetHandlerTypeFor(exception);
 			if (type != null)

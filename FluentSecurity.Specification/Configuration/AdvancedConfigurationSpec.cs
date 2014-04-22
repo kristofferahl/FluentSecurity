@@ -295,7 +295,7 @@ namespace FluentSecurity.Specification.Configuration
 				ExpectedIndex = expectedIndex;
 			}
 
-			public IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception)
+			public object GetHandlerFor(PolicyViolationException exception)
 			{
 				throw new NotImplementedException();
 			}

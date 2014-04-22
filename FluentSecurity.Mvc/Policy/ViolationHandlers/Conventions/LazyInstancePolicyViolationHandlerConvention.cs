@@ -19,7 +19,7 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 			Predicate = predicate;
 		}
 
-		public IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception)
+		public object GetHandlerFor(PolicyViolationException exception)
 		{
 			return Predicate.Invoke(exception.PolicyResult) ? _policyViolationHandlerFactory.Invoke() : null;
 		}

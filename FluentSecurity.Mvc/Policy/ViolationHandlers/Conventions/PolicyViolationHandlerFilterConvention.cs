@@ -11,7 +11,7 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 
 		public abstract IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<IPolicyViolationHandler> policyViolationHandlers);
 		
-		public IPolicyViolationHandler GetHandlerFor(PolicyViolationException exception)
+		public object GetHandlerFor(PolicyViolationException exception)
 		{
 			var policyViolationHandlers = PolicyViolationHandlerProvider.Invoke().ToList();
 			return GetHandlerFor(exception, policyViolationHandlers);

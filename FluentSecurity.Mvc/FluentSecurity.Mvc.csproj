@@ -91,9 +91,6 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\FindDefaultPolicyViolationHandlerByNameConvention.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Policy\ViolationHandlers\Conventions\IPolicyViolationHandlerConvention.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Policy\ViolationHandlers\Conventions\LazyInstancePolicyViolationHandlerConvention.cs">
       <SubType>Code</SubType>
     </Compile>

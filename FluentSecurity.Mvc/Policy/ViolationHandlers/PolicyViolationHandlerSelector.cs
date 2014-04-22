@@ -29,7 +29,7 @@ namespace FluentSecurity.Policy.ViolationHandlers
 					return "Finding policy violation handler using convention {0}.".FormatWith(conventionName);
 				}, exception.SecurityContext);
 
-				matchingHandler = convention.GetHandlerFor(exception);
+				matchingHandler = (IPolicyViolationHandler) convention.GetHandlerFor(exception);
 
 				if (matchingHandler != null)
 				{
