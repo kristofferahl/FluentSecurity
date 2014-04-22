@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentSecurity.Core.Internals;
 using FluentSecurity.WebApi;
+using FluentSecurity.WebApi.Configuration;
 
 namespace FluentSecurity.Policy
 {

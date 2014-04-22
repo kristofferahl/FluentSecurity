@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using FluentSecurity.Diagnostics;
+using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
 
 namespace FluentSecurity.WebApi

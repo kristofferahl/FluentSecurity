@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using FluentSecurity.WebApi.Configuration;
 
 namespace FluentSecurity.WebApi
 {

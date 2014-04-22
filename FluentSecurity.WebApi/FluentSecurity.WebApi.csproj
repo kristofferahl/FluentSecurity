@@ -68,7 +68,7 @@
     <Compile Include="WebApiLifecycleResolver.cs" />
     <Compile Include="WebApiSecurityRuntime.cs" />
     <Compile Include="WebApiSecurityHandler.cs" />
-    <Compile Include="WebApiConfiguration.cs" />
+    <Compile Include="Configuration\WebApiConfiguration.cs" />
     <Compile Include="WebApiTypeFactory.cs" />
   </ItemGroup>
   <ItemGroup>

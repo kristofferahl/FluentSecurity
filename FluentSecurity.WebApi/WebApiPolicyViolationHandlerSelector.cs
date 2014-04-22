@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
 
 namespace FluentSecurity.WebApi

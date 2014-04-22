@@ -2,7 +2,7 @@ using FluentSecurity.Caching;
 using FluentSecurity.Core;
 using FluentSecurity.ServiceLocation;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.Configuration
 {
 	public class WebApiConfiguration : WebApiConfigurationExpression, IFluentConfiguration
 	{

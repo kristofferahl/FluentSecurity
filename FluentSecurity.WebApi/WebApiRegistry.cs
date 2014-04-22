@@ -3,6 +3,7 @@ using System.Linq;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.ServiceLocation;
+using FluentSecurity.WebApi.Configuration;
 
 namespace FluentSecurity.WebApi
 {
