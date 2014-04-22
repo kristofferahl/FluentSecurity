@@ -7,7 +7,7 @@ namespace FluentSecurity.WebApi
 	{
 		public ILazySecurityPolicy CreateLazySecurityPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			throw new System.NotImplementedException();
+			return new LazySecurityPolicy<TSecurityPolicy>();
 		}
 	}
 }

@@ -55,6 +55,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />
     <Compile Include="LifecycleExtensions.cs" />
+    <Compile Include="Policy\LazySecurityPolicy.cs" />
     <Compile Include="Scanning\TypeScanners\WebApiControllerTypeScanner.cs" />
     <Compile Include="Scanning\WebApiAssemblyScanner.cs" />
     <Compile Include="WebApiConfigurationExpression.cs" />
