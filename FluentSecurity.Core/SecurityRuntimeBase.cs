@@ -8,9 +8,9 @@ namespace FluentSecurity.Core
 {
 	public abstract class SecurityRuntimeBase : ISecurityRuntime
 	{
-		protected readonly List<ProfileImport> _profiles = new List<ProfileImport>();
-		protected readonly List<IPolicyContainer> _policyContainers = new List<IPolicyContainer>();
-		protected readonly List<IConvention> _conventions = new List<IConvention>();
+		private readonly List<ProfileImport> _profiles = new List<ProfileImport>();
+		private readonly List<IPolicyContainer> _policyContainers = new List<IPolicyContainer>();
+		private readonly List<IConvention> _conventions = new List<IConvention>();
 
 		public Func<bool> IsAuthenticated { get; internal set; }
 		public Func<IEnumerable<object>> Roles { get; internal set; }
