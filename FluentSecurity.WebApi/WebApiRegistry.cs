@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentSecurity.Diagnostics;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.WebApi
@@ -17,7 +18,7 @@ namespace FluentSecurity.WebApi
 			//container.Register<IWebApiPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), Lifecycle.Singleton);
 
 			container.Register<IPolicyViolationHandlerSelector<object>>(ctx => new WebApiPolicyViolationHandlerSelector(
-				//ctx.Resolve<ISecurityConfiguration>().Runtime.Conventions.OfType<IPolicyViolationHandlerConvention>()
+				ctx.Resolve<ISecurityConfiguration>().Runtime.Conventions.OfType<IPolicyViolationHandlerConvention>()
 				));
 
 			container.Register<IWhatDoIHaveBuilder>(ctx => new DefaultWhatDoIHaveBuilder(), Lifecycle.Singleton);
