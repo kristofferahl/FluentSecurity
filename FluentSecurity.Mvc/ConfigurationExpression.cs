@@ -17,7 +17,7 @@ namespace FluentSecurity
 {
 	public abstract class ConfigurationExpression : ConfigurationExpressionBase<SecurityRuntime, AdvancedConfiguration>
 	{
-		protected void Initialize(SecurityRuntime runtime)
+		internal void Initialize(SecurityRuntime runtime)
 		{
 			Initialize(runtime, new AdvancedConfiguration(runtime));
 		}
