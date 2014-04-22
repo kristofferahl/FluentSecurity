@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 
 namespace FluentSecurity.WebApi.Configuration
 {
@@ -10,8 +11,8 @@ namespace FluentSecurity.WebApi.Configuration
 			{
 				Conventions(conventions =>
 				{
-					//conventions.Add(new FindByPolicyNameConvention());
-					//conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
+					conventions.Add(new FindByPolicyNameConvention());
+					conventions.Add(new FindDefaultPolicyViolationHandlerByNameConvention());
 				});
 			}
 		}
