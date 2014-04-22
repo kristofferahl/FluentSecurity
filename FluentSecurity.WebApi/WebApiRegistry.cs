@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.WebApi.Configuration;
+using FluentSecurity.WebApi.Policy.ViolationHandlers;
 
 namespace FluentSecurity.WebApi
 {
