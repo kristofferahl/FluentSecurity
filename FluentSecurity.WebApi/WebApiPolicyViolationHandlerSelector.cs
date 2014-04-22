@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
@@ -28,6 +29,11 @@ namespace FluentSecurity.WebApi
 					var conventionName = convention.ToString();
 					return "Finding policy violation handler using convention {0}.".FormatWith(conventionName);
 				}, exception.SecurityContext);
+
+				if (convention is IServiceLocatorDependent)
+				{
+					((IServiceLocatorDependent)convention).Inject(SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator);
+				}
 
 				matchingHandler = (IWebApiPolicyViolationHandler) convention.GetHandlerFor(exception);
 

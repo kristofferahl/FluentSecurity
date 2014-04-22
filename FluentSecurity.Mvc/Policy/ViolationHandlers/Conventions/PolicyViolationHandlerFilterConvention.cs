@@ -1,20 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentSecurity.Configuration;
+using FluentSecurity.Core;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
-	public abstract class PolicyViolationHandlerFilterConvention : IPolicyViolationHandlerConvention
+	public abstract class PolicyViolationHandlerFilterConvention : IPolicyViolationHandlerConvention, IServiceLocatorDependent
 	{
-		public Func<IEnumerable<ISecurityPolicyViolationHandler>> PolicyViolationHandlerProvider = () => SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.ResolveAll<ISecurityPolicyViolationHandler>();
+		private Func<IEnumerable<ISecurityPolicyViolationHandler>> _policyViolationHandlerProvider;
 
 		public abstract ISecurityPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<ISecurityPolicyViolationHandler> policyViolationHandlers);
 		
 		public object GetHandlerFor(PolicyViolationException exception)
 		{
-			var policyViolationHandlers = PolicyViolationHandlerProvider.Invoke().ToList();
+			var policyViolationHandlers = _policyViolationHandlerProvider.Invoke().ToList();
 			return GetHandlerFor(exception, policyViolationHandlers);
+		}
+
+		public void Inject(IServiceLocator serviceLocator)
+		{
+			_policyViolationHandlerProvider = serviceLocator.ResolveAll<ISecurityPolicyViolationHandler>;
 		}
 	}
 }

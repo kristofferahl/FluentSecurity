@@ -1,11 +1,12 @@
 using System;
-using FluentSecurity.Configuration;
+using FluentSecurity.Core;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
-	public abstract class PolicyViolationHandlerTypeConvention : IPolicyViolationHandlerConvention
+	public abstract class PolicyViolationHandlerTypeConvention : IPolicyViolationHandlerConvention, IServiceLocatorDependent
 	{
-		public Func<Type, object> PolicyViolationHandlerProvider = t => SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve(t);
+		private Func<Type, object> _policyViolationHandlerProvider;
 
 		public abstract Type GetHandlerTypeFor(PolicyViolationException exception);
 
@@ -15,9 +16,15 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 			if (type != null)
 			{
 				if (typeof(ISecurityPolicyViolationHandler).IsAssignableFrom(type))
-					return PolicyViolationHandlerProvider.Invoke(type) as ISecurityPolicyViolationHandler;
+					return _policyViolationHandlerProvider.Invoke(type) as ISecurityPolicyViolationHandler;
 			}
 			return null;
+		}
+
+
+		public void Inject(IServiceLocator serviceLocator)
+		{
+			_policyViolationHandlerProvider = serviceLocator.Resolve;
 		}
 	}
 }

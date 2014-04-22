@@ -1,7 +1,9 @@
 ﻿using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
@@ -15,10 +17,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		[SetUp]
 		public void SetUp()
 		{
-			_convention = new FindByPolicyNameConvention
-			{
-				PolicyViolationHandlerProvider = () => TestDataFactory.CreatePolicyViolationHandlers()
-			};
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.ResolveAll<ISecurityPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
+			_convention = new FindByPolicyNameConvention();
+			_convention.Inject(serviceLocator.Object);
 		}
 
 		[Test]

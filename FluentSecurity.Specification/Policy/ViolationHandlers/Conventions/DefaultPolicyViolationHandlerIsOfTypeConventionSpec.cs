@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentSecurity.Configuration;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
@@ -17,9 +20,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		{
 			// Arrange
 			var expectedHandler = new Handler1();
-			FakeIoC.GetAllInstancesProvider = () => new List<object> { expectedHandler };
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.ResolveServicesUsing(FakeIoC.GetAllInstances));
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.Resolve(It.IsAny<Type>())).Returns(expectedHandler);
 			var convention = new DefaultPolicyViolationHandlerIsOfTypeConvention<Handler1>();
+			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
@@ -34,8 +38,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		{
 			// Arrange
 			var expectedHandler = new Handler1();
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.Resolve(It.IsAny<Type>())).Returns(expectedHandler);
 			var convention = new DefaultPolicyViolationHandlerIsOfTypeConvention<Handler1>();
-			convention.PolicyViolationHandlerProvider = t => expectedHandler;
+			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
@@ -50,8 +56,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		{
 			// Arrange
 			var expectedHandler = new Handler2();
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.Resolve(It.IsAny<Type>())).Returns(expectedHandler);
 			var convention = new DefaultPolicyViolationHandlerIsOfTypeConvention<Handler2>();
-			convention.PolicyViolationHandlerProvider = t => expectedHandler;
+			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act

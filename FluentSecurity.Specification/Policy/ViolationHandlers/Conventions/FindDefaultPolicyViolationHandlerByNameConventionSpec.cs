@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
@@ -15,10 +17,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		public void Should_return_null_when_no_handler_is_a_match()
 		{
 			// Arrange
-			var convention = new FindDefaultPolicyViolationHandlerByNameConvention
-			{
-				PolicyViolationHandlerProvider = () => new List<IPolicyViolationHandler>()
-			};
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.ResolveAll<ISecurityPolicyViolationHandler>()).Returns(new List<IPolicyViolationHandler>());
+			var convention = new FindDefaultPolicyViolationHandlerByNameConvention();
+			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
@@ -32,10 +34,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		public void Should_return_DefaultPolicyViolationHandler_for_RequireAnyRolePolicy()
 		{
 			// Arrange
-			var convention = new FindDefaultPolicyViolationHandlerByNameConvention
-			{
-				PolicyViolationHandlerProvider = () => TestDataFactory.CreatePolicyViolationHandlers()
-			};
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.ResolveAll<ISecurityPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
+			var convention = new FindDefaultPolicyViolationHandlerByNameConvention();
+			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new RequireAnyRolePolicy("Role"));
 
 			// Act
@@ -49,10 +51,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		public void Should_return_DefaultPolicyViolationHandler_for_RequireAllRolesPolicy()
 		{
 			// Arrange
-			var convention = new FindDefaultPolicyViolationHandlerByNameConvention
-			{
-				PolicyViolationHandlerProvider = () => TestDataFactory.CreatePolicyViolationHandlers()
-			};
+			var convention = new FindDefaultPolicyViolationHandlerByNameConvention();
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.ResolveAll<ISecurityPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
+			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new RequireAllRolesPolicy("Role"));
 
 			// Act

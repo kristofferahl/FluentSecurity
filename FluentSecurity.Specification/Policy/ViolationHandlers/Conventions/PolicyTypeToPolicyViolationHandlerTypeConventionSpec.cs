@@ -1,7 +1,10 @@
-﻿using FluentSecurity.Policy;
+﻿using System;
+using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
+using Moq;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
@@ -14,8 +17,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		public void Should_return_handler_when_policy_type_is_match()
 		{
 			// Arrange
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.Resolve(It.IsAny<Type>())).Returns(new DefaultPolicyViolationHandler());
 			var convention = new PolicyTypeToPolicyViolationHandlerTypeConvention<DenyAnonymousAccessPolicy, DefaultPolicyViolationHandler>();
-			convention.PolicyViolationHandlerProvider = t => new DefaultPolicyViolationHandler();
+			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new DenyAnonymousAccessPolicy());
 
 			// Act
@@ -29,8 +34,10 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		public void Should_return_handler_when_policy_type_is_not_match()
 		{
 			// Arrange
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.Resolve(It.IsAny<Type>())).Returns(new DefaultPolicyViolationHandler());
 			var convention = new PolicyTypeToPolicyViolationHandlerTypeConvention<DenyAnonymousAccessPolicy, DefaultPolicyViolationHandler>();
-			convention.PolicyViolationHandlerProvider = t => new DefaultPolicyViolationHandler();
+			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
