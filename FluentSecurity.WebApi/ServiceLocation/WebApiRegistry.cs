@@ -5,7 +5,7 @@ using FluentSecurity.ServiceLocation;
 using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.ServiceLocation
 {
 	public class WebApiRegistry : IRegistry
 	{

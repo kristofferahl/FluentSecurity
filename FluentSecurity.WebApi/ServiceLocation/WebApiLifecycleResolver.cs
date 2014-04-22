@@ -1,7 +1,7 @@
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.ServiceLocation.LifeCycles;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.ServiceLocation
 {
 	public class WebApiLifecycleResolver : ILifecycleResolver
 	{

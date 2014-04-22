@@ -2,7 +2,7 @@ using System;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.ServiceLocation.LifeCycles;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.ServiceLocation
 {
 	internal static class LifecycleExtensions
 	{

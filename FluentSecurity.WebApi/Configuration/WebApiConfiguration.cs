@@ -1,6 +1,7 @@
 using FluentSecurity.Caching;
 using FluentSecurity.Core;
 using FluentSecurity.ServiceLocation;
+using FluentSecurity.WebApi.ServiceLocation;
 
 namespace FluentSecurity.WebApi.Configuration
 {
