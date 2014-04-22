@@ -8,7 +8,7 @@ namespace FluentSecurity.Configuration
 	{
 		private readonly ConventionConfiguration _conventionConfiguration;
 
-		internal ViolationConfiguration(ConventionConfiguration conventionConfiguration)
+		public ViolationConfiguration(ConventionConfiguration conventionConfiguration)
 		{
 			if (conventionConfiguration == null) throw new ArgumentNullException("conventionConfiguration");
 			_conventionConfiguration = conventionConfiguration;
