@@ -60,6 +60,7 @@
     <Compile Include="ITypeFactory.cs" />
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\IPolicyViolationHandlerConvention.cs" />
+    <Compile Include="IServiceLocatorDependent.cs" />
     <Compile Include="SecurityPolicyExtensions.cs" />
     <Compile Include="Diagnostics\AnonymousSecurityEventListener.cs" />
     <Compile Include="Diagnostics\Events\ConfigurationEvent.cs" />
