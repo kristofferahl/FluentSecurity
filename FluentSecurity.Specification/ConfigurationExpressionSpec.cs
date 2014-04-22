@@ -375,9 +375,8 @@ namespace FluentSecurity.Specification
 	[Test]
 		public void Should_not_have_policycontainer_for_actions_marked_as_NonAction()
 		{
-		// Arrange
-			var configurationExpression = new RootConfiguration();
-			configurationExpression.GetAuthenticationStatusFrom(StaticHelper.IsAuthenticatedReturnsFalse);
+			// Arrange
+			var configurationExpression = TestDataFactory.CreateValidConfigurationExpression();
 
 			// Act
 			configurationExpression.For<NonActionController>();
