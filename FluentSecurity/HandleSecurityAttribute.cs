@@ -6,7 +6,7 @@ using FluentSecurity.ServiceLocation;
 namespace FluentSecurity
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-	public class HandleSecurityAttribute : AuthorizeAttribute, IAuthorizationFilter
+	public class HandleSecurityAttribute : AuthorizeAttribute
 	{
 		internal ISecurityHandler Handler { get; private set; }
 
