@@ -106,17 +106,22 @@ task Pack -depends Test {
 	
 	create_directory $fluentDir
 	
-	copy-item "$outputDir\FluentSecurity.Core.dll" $fluentDir
-	copy-item "$outputDir\FluentSecurity.Mvc.dll" $fluentDir
-	copy-item "$outputDir\FluentSecurity.TestHelper.dll" $fluentDir
+	copy-item "$sourceDir\FluentSecurity.Core\bin\$configuration\FluentSecurity.Core.dll" $fluentDir
+	copy-item "$sourceDir\FluentSecurity.Mvc\bin\$configuration\FluentSecurity.Mvc.dll" $fluentDir
+	copy-item "$sourceDir\FluentSecurity.WebApi\bin\$configuration\FluentSecurity.WebApi.dll" $fluentDir
+	copy-item "$sourceDir\FluentSecurity.TestHelper\bin\$configuration\FluentSecurity.TestHelper.dll" $fluentDir
 	copy-item "$rootDir\License.txt" $fluentDir
 	copy-item "$rootDir\Readme.md" $fluentDir
 	
-	get-content "$buildDir\NuGet\FluentSecurity.nuspec" | % { $_ -replace "@CURRENT-VERSION@", $buildLabel -replace "@ARTIFACT-PATH@", $fluentDir } | set-content "$buildDir\FluentSecurity.nuspec"
+	get-content "$buildDir\NuGet\FluentSecurity.Core.nuspec" | % { $_ -replace "@CURRENT-VERSION@", $buildLabel -replace "@ARTIFACT-PATH@", $fluentDir } | set-content "$buildDir\FluentSecurity.Core.nuspec"
+	get-content "$buildDir\NuGet\FluentSecurity.Mvc.nuspec" | % { $_ -replace "@CURRENT-VERSION@", $buildLabel -replace "@ARTIFACT-PATH@", $fluentDir } | set-content "$buildDir\FluentSecurity.Mvc.nuspec"
+	get-content "$buildDir\NuGet\FluentSecurity.WebApi.nuspec" | % { $_ -replace "@CURRENT-VERSION@", $buildLabel -replace "@ARTIFACT-PATH@", $fluentDir } | set-content "$buildDir\FluentSecurity.WebApi.nuspec"
 	get-content "$buildDir\NuGet\FluentSecurity.TestHelper.nuspec" | % { $_ -replace "@CURRENT-VERSION@", $buildLabel -replace "@ARTIFACT-PATH@", $fluentDir } | set-content "$buildDir\FluentSecurity.TestHelper.nuspec"
 	
 	exec {
-		nuget_exe pack "$buildDir\FluentSecurity.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
+		nuget_exe pack "$buildDir\FluentSecurity.Core.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
+		nuget_exe pack "$buildDir\FluentSecurity.Mvc.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
+		nuget_exe pack "$buildDir\FluentSecurity.WebApi.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
 		nuget_exe pack "$buildDir\FluentSecurity.TestHelper.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
 	}
 	

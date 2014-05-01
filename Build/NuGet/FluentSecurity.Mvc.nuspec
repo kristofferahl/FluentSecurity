@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+		<id>FluentSecurity.Mvc</id>
+		<version>@CURRENT-VERSION@</version>
+		<authors>Kristoffer Ahl</authors>
+		<owners>Kristoffer Ahl</owners>
+		<projectUrl>http://www.fluentsecurity.net/</projectUrl>
+		<licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<iconUrl>https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-128x128.png</iconUrl>
+		<description>Fluent security configuration for ASP.NET MVC</description>
+		<tags>asp.net mvc security .net40</tags>
+		<dependencies>
+			<dependency id="FluentSecurity.Core" version="[2,3)" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="@ARTIFACT-PATH@\FluentSecurity.Mvc.dll" target="lib\net40" />
+		<file src="@ARTIFACT-PATH@\**\*.txt" />
+		<file src="@ARTIFACT-PATH@\**\*.md" />
+	</files>
+</package>
