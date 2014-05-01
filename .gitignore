@@ -3,8 +3,7 @@
 /Build/Reports
 /Build/Output
 /Build/CodeCoverage
-/Build/FluentSecurity.TestHelper.nuspec
-/Build/FluentSecurity.nuspec
+/Build/FluentSecurity.*.nuspec
 /Packages/*
 !/Packages/repositories.config
 SharedAssemblyInfo.cs
