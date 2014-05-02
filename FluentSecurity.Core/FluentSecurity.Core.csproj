@@ -61,6 +61,7 @@
     <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="ITypeFactory.cs" />
     <Compile Include="PolicyContainer.cs" />
+    <Compile Include="PolicyContainerConfigurationExtensions.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsOfTypeConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\FindByPolicyNameConvention.cs" />
