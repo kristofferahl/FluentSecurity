@@ -59,6 +59,8 @@
     <Compile Include="Policy\WebApiSecurityContext.cs" />
     <Compile Include="Scanning\TypeScanners\WebApiControllerTypeScanner.cs" />
     <Compile Include="Scanning\WebApiAssemblyScanner.cs" />
+    <Compile Include="WebApiActionNameResolver.cs" />
+    <Compile Include="WebApiActionResolver.cs" />
     <Compile Include="WebApiConfigurationExpression.cs" />
     <Compile Include="Policy\ViolationHandlers\WebApiPolicyViolationHandlerSelector.cs" />
     <Compile Include="Scanning\WebApiProfileScanner.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Policy\ViolationHandlers\IWebApiPolicyViolationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocation\WebApiLifecycleResolver.cs" />
+    <Compile Include="WebApiControllerNameResolver.cs" />
     <Compile Include="WebApiSecurityRuntime.cs" />
     <Compile Include="WebApiSecurityHandler.cs" />
     <Compile Include="Configuration\WebApiConfiguration.cs" />
