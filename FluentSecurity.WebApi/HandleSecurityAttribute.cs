@@ -26,9 +26,21 @@ namespace FluentSecurity.WebApi
 
 			var securityContext = SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
 			securityContext.Data.RouteValues = actionContext.RequestContext.RouteData.Values;
+			securityContext.Data.ActionContext = actionContext;
 
 			var overrideResult = Handler.HandleSecurityFor(controllerName, actionName, securityContext);
-			if (overrideResult != null) actionContext.Response.Content = new ObjectContent(overrideResult.GetType(), overrideResult, new JsonMediaTypeFormatter());
+			if (overrideResult != null)
+			{
+				var httpResponseMessage = overrideResult as HttpResponseMessage;
+				if (httpResponseMessage != null)
+				{
+					actionContext.Response = httpResponseMessage;
+				}
+				else
+				{
+					actionContext.Response.Content = new ObjectContent(overrideResult.GetType(), overrideResult, new JsonMediaTypeFormatter());
+				}
+			}
 		}
 	}
 }
