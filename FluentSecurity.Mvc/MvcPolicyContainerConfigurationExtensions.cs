@@ -6,7 +6,7 @@ using FluentSecurity.Policy.Contexts;
 
 namespace FluentSecurity
 {
-	public static class PolicyContainerExtensions
+	public static class MvcPolicyContainerConfigurationExtensions
 	{
 		public static IPolicyContainerConfiguration DelegatePolicy(this IPolicyContainerConfiguration policyContainer, string uniqueName, Func<DelegateSecurityContext, PolicyResult> policyDelegate, Func<PolicyViolationException, ActionResult> violationHandlerDelegate = null)
 		{
