@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using FluentSecurity.Core;
 using FluentSecurity.WebApi.Configuration;
 
 namespace FluentSecurity.WebApi
@@ -21,8 +22,11 @@ namespace FluentSecurity.WebApi
 
 		public override void OnAuthorization(HttpActionContext actionContext)
 		{
-			var actionName = actionContext.ActionDescriptor.ActionName;
-			var controllerName = actionContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName;
+			var controllerNameResolver = SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<IControllerNameResolver<HttpActionContext>>();
+			var actionNameResolver = SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<IActionNameResolver<HttpActionContext>>();
+
+			var controllerName = controllerNameResolver.Resolve(actionContext);
+			var actionName = actionNameResolver.Resolve(actionContext);
 
 			var securityContext = SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
 			securityContext.Data.RouteValues = actionContext.RequestContext.RouteData.Values;

@@ -1,6 +1,7 @@
 using System;
 using System.Web.Mvc;
 using FluentSecurity.Configuration;
+using FluentSecurity.Core;
 
 namespace FluentSecurity
 {
@@ -18,8 +19,11 @@ namespace FluentSecurity
 
 		public void OnAuthorization(AuthorizationContext filterContext)
 		{
-			var actionName = filterContext.ActionDescriptor.ActionName;
-			var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType.FullName;
+			var controllerNameResolver = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<IControllerNameResolver<AuthorizationContext>>();
+			var actionNameResolver = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<IActionNameResolver<AuthorizationContext>>();
+
+			var controllerName = controllerNameResolver.Resolve(filterContext);
+			var actionName = actionNameResolver.Resolve(filterContext);
 
 			var securityContext = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
 			securityContext.Data.RouteValues = filterContext.RouteData.Values;
