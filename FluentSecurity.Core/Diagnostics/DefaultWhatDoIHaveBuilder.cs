@@ -10,6 +10,8 @@ namespace FluentSecurity.Diagnostics
 		{
 			var builder = new StringBuilder();
 
+			builder.AppendFormat("Runtime: {0}", configuration.Runtime.GetType().Name).AppendLine();
+
 			builder.AppendFormat("Ignore missing configuration: {0}", configuration.Runtime.ShouldIgnoreMissingConfiguration);
 
 			builder.AppendLine().AppendLine().AppendLine("------------------------------------------------------------------------------------").AppendLine();

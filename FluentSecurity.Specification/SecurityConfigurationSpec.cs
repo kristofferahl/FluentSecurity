@@ -74,7 +74,8 @@ namespace FluentSecurity.Specification
 		[Test]
 		public void Should_return_the_current_configuration()
 		{
-			const string expectedOutput = @"Ignore missing configuration: True
+			const string expectedOutput = @"Runtime: SecurityRuntime
+Ignore missing configuration: True
 
 ------------------------------------------------------------------------------------
 
