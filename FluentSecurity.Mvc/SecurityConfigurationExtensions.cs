@@ -30,7 +30,7 @@ namespace FluentSecurity
 			if (unconfiguredActions.Any())
 			{
 				var errorMessageBuilder = new StringBuilder();
-				unconfiguredActions.Each(a =>
+				unconfiguredActions.ForEach(a =>
 					errorMessageBuilder.AppendLine("- Security has not been configured for {0} action {1}.".FormatWith(a.ControllerName, a.ActionName))
 				);
 				throw new ConfigurationErrorsException(errorMessageBuilder.ToString());

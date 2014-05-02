@@ -18,7 +18,7 @@ namespace FluentSecurity.TestHelper
 				if (matchingExpectationGroups.Any())
 				{
 					foreach (var expectationGroup in matchingExpectationGroups)
-						expectationExpression.Expectations.Each(expectationGroup.ApplyExpectation);
+						expectationExpression.Expectations.ToList().ForEach(expectationGroup.ApplyExpectation);
 				}
 				else
 				{
@@ -38,14 +38,14 @@ namespace FluentSecurity.TestHelper
 				var actionMethods = expectationExpression.Controller.GetActionMethods();
 				foreach (var expectationGroup in actionMethods.Select(actionMethod => new ExpectationGroup(expectationExpression.Controller, actionMethod.GetActionName())))
 				{
-					expectationExpression.Expectations.Each(expectationGroup.ApplyExpectation);
+					expectationExpression.Expectations.ToList().ForEach(expectationGroup.ApplyExpectation);
 					groups.Add(expectationGroup);
 				}
 			}
 			else
 			{
 				var expectationGroup = new ExpectationGroup(expectationExpression.Controller, expectationExpression.Action);
-				expectationExpression.Expectations.Each(expectationGroup.ApplyExpectation);
+				expectationExpression.Expectations.ToList().ForEach(expectationGroup.ApplyExpectation);
 				groups.Add(expectationGroup);
 			}
 

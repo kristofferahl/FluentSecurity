@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
-using FluentSecurity.Caching;
 using FluentSecurity.Core.Internals;
 using FluentSecurity.Internals;
-using FluentSecurity.Policy;
 
 namespace FluentSecurity
 {
@@ -144,15 +141,6 @@ namespace FluentSecurity
 				return (standardRoute.DataTokens["area"] as string) ?? string.Empty;
 			}
 			return string.Empty;
-		}
-
-		/// <summary>
-		/// Performs an action on each item
-		/// </summary>
-		internal static void Each<T>(this IEnumerable<T> items, Action<T> action)
-		{
-			foreach (var item in items)
-				action(item);
 		}
 	}
 }
