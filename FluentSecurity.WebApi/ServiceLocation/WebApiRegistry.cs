@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Web.Http.Controllers;
+using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.ServiceLocation;
@@ -15,6 +17,16 @@ namespace FluentSecurity.WebApi.ServiceLocation
 			container.Register<ISecurityHandler<object>>(ctx => new WebApiSecurityHandler(), Lifecycle.Singleton);
 
 			container.Register<ISecurityContext>(ctx => ctx.Resolve<ISecurityConfiguration>().CreateContext());
+
+			var controllerNameResolver = new WebApiControllerNameResolver();
+			var actionNameResolver = new WebApiActionNameResolver();
+			var actionResolver = new WebApiActionResolver(actionNameResolver);
+
+			container.Register<IControllerNameResolver<HttpActionContext>>(ctx => controllerNameResolver, Lifecycle.Singleton);
+			container.Register<IControllerNameResolver>(ctx => controllerNameResolver, Lifecycle.Singleton);
+			container.Register<IActionNameResolver<HttpActionContext>>(ctx => actionNameResolver, Lifecycle.Singleton);
+			container.Register<IActionNameResolver>(ctx => actionNameResolver, Lifecycle.Singleton);
+			container.Register<IActionResolver>(ctx => actionResolver, Lifecycle.Singleton);
 
 			//container.Register<IWebApiPolicyViolationHandler>(ctx => new DelegatePolicyViolationHandler(ctx.ResolveAll<IPolicyViolationHandler>()), Lifecycle.Singleton);
 
