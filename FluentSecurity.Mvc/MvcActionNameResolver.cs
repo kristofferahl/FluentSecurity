@@ -11,18 +11,18 @@ namespace FluentSecurity
 	{
 		private static readonly Type ActionNameAttributeType = typeof(ActionNameAttribute);
 
-		public string Resolve(AuthorizationContext context)
+		public virtual string Resolve(AuthorizationContext context)
 		{
 			return context.ActionDescriptor.ActionName;
 		}
 
-		public string Resolve(LambdaExpression actionExpression)
+		public virtual string Resolve(LambdaExpression actionExpression)
 		{
 			var actionMethod = actionExpression.GetActionMethodInfo();
 			return Resolve(actionMethod);
 		}
 
-		public string Resolve(MethodInfo actionMethod)
+		public virtual string Resolve(MethodInfo actionMethod)
 		{
 			if (Attribute.IsDefined(actionMethod, ActionNameAttributeType))
 			{

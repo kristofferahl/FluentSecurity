@@ -6,12 +6,12 @@ namespace FluentSecurity
 {
 	public class MvcControllerNameResolver : IControllerNameResolver<AuthorizationContext>
 	{
-		public string Resolve(AuthorizationContext context)
+		public virtual string Resolve(AuthorizationContext context)
 		{
 			return Resolve(context.ActionDescriptor.ControllerDescriptor.ControllerType);
 		}
 
-		public string Resolve(Type controllerType)
+		public virtual string Resolve(Type controllerType)
 		{
 			return controllerType.FullName;
 		}

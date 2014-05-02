@@ -6,12 +6,12 @@ namespace FluentSecurity.WebApi
 {
 	public class WebApiControllerNameResolver : IControllerNameResolver<HttpActionContext>
 	{
-		public string Resolve(HttpActionContext actionContext)
+		public virtual string Resolve(HttpActionContext actionContext)
 		{
 			return Resolve(actionContext.ActionDescriptor.ControllerDescriptor.ControllerType);
 		}
 
-		public string Resolve(Type controllerType)
+		public virtual string Resolve(Type controllerType)
 		{
 			return controllerType.FullName;
 		}

@@ -19,7 +19,7 @@ namespace FluentSecurity
 			_actionNameResolver = actionNameResolver;
 		}
 
-		public IEnumerable<MethodInfo> ActionMethods(Type controllerType, Func<ControllerActionInfo, bool> actionFilter)
+		public virtual IEnumerable<MethodInfo> ActionMethods(Type controllerType, Func<ControllerActionInfo, bool> actionFilter)
 		{
 			if (actionFilter == null) actionFilter = info => true;
 
