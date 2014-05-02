@@ -154,20 +154,5 @@ namespace FluentSecurity
 			foreach (var item in items)
 				action(item);
 		}
-
-		/// <summary>
-		/// Converts policies to a text
-		/// </summary>
-		/// <param name="policies">The policies</param>
-		/// <returns>A string of policies</returns>
-		internal static string ToText(this IEnumerable<ISecurityPolicy> policies)
-		{
-			var builder = new StringBuilder();
-			foreach (var policy in policies)
-			{
-				builder.AppendFormat("\r\n\t{0}", policy);
-			}
-			return builder.ToString();
-		}
 	}
 }
