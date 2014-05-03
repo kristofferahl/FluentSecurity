@@ -15,6 +15,7 @@ namespace FluentSecurity
 		// TODO: Should advanced configuration be available for ISecurityProfile's???
 		public TAdvancedConfiguration Advanced { get; protected set; }
 
+		// TODO: Hide the Runtime property from configuration
 		public TSecurityRuntime Runtime { get; protected set; }
 		public IPolicyAppender PolicyAppender { get; protected set; }
 
