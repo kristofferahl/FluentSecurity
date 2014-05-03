@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using FluentSecurity.Core;
 using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
 
@@ -12,6 +13,10 @@ namespace FluentSecurity
 	{
 		public static void AssertAllActionsAreConfigured(this ISecurityConfiguration configuration, Assembly[] assemblies)
 		{
+			var controllerNameResolver = configuration.ServiceLocator.Resolve<IControllerNameResolver>();
+			var actionNameResolver = configuration.ServiceLocator.Resolve<IActionNameResolver>();
+			var actionResolver = configuration.ServiceLocator.Resolve<IActionResolver>();
+
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.Assemblies(assemblies);
 			assemblyScanner.With<MvcControllerTypeScanner>();
@@ -20,9 +25,9 @@ namespace FluentSecurity
 
 			var unconfiguredActions = (
 				from c in controllerTypes
-				from a in c.GetActionMethods()
-				let actionName = a.GetActionName()
-				let controllerName = c.GetControllerName()
+				from a in actionResolver.ActionMethods(c)
+				let actionName = actionNameResolver.Resolve(a)
+				let controllerName = controllerNameResolver.Resolve(c)
 				where configuration.Runtime.PolicyContainers.GetContainerFor(controllerName, actionName) == null
 				select new { ControllerName = controllerName, ActionName = actionName }
 				).ToList();
