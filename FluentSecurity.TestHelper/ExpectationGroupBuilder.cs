@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Core;
 
 namespace FluentSecurity.TestHelper
 {
 	public class ExpectationGroupBuilder : IExpectationGroupBuilder
 	{
+		private readonly IActionResolver _actionResolver;
+
+		public ExpectationGroupBuilder(IActionResolver actionResolver)
+		{
+			_actionResolver = actionResolver;
+		}
+
 		public IEnumerable<ExpectationGroup> Build(IEnumerable<ExpectationExpression> expectationsExpressions)
 		{
 			if (expectationsExpressions == null) throw new ArgumentNullException("expectationsExpressions");
@@ -30,13 +38,13 @@ namespace FluentSecurity.TestHelper
 			return groups;
 		}
 
-		private static IEnumerable<ExpectationGroup> CreateExpectationGroupsFor(ExpectationExpression expectationExpression)
+		private IEnumerable<ExpectationGroup> CreateExpectationGroupsFor(ExpectationExpression expectationExpression)
 		{
 			var groups = new List<ExpectationGroup>();
-			if (String.IsNullOrEmpty(expectationExpression.Action))
+			if (expectationExpression.Action == null)
 			{
-				var actionMethods = expectationExpression.Controller.GetActionMethods();
-				foreach (var expectationGroup in actionMethods.Select(actionMethod => new ExpectationGroup(expectationExpression.Controller, actionMethod.GetActionName())))
+				var actionMethods = _actionResolver.ActionMethods(expectationExpression.Controller);
+				foreach (var expectationGroup in actionMethods.Select(actionMethod => new ExpectationGroup(expectationExpression.Controller, actionMethod)))
 				{
 					expectationExpression.Expectations.ToList().ForEach(expectationGroup.ApplyExpectation);
 					groups.Add(expectationGroup);
@@ -54,7 +62,7 @@ namespace FluentSecurity.TestHelper
 
 		private static IEnumerable<ExpectationGroup> GetMatchingExpectationGroups(IEnumerable<ExpectationGroup> expectations, ExpectationExpression expectationExpression)
 		{
-			if (String.IsNullOrEmpty(expectationExpression.Action))
+			if (expectationExpression.Action == null)
 			{
 				return expectations.Where(expectation =>
 					expectation.Controller == expectationExpression.Controller

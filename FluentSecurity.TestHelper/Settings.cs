@@ -1,4 +1,5 @@
 using System;
+using FluentSecurity.Core;
 
 namespace FluentSecurity.TestHelper
 {
@@ -6,18 +7,13 @@ namespace FluentSecurity.TestHelper
 	{
 		static Settings()
 		{
-			SetDefaults();
+			DefaultExpectationViolationHandler = configuration => new DefaultExpectationViolationHandler();
+			DefaultExpectationGroupBuilder = configuration => new ExpectationGroupBuilder(configuration.ServiceLocator.Resolve<IActionResolver>());
+			DefaultExpectationVerifyer = (configuration, handler) => new ExpectationVerifyer(configuration, handler);
 		}
 
-		private static void SetDefaults()
-		{
-			DefaultExpectationViolationHandler = new DefaultExpectationViolationHandler();
-			DefaultExpectationGroupBuilder = new ExpectationGroupBuilder();
-			DefaultExpectationVerifyerConstructor = (configuration, handler) => new ExpectationVerifyer(configuration, handler);
-		}
-
-		public static Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> DefaultExpectationVerifyerConstructor { get; set; }
-		public static IExpectationViolationHandler DefaultExpectationViolationHandler { get; set; }
-		public static IExpectationGroupBuilder DefaultExpectationGroupBuilder { get; set; }
+		public static Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> DefaultExpectationVerifyer { get; set; }
+		public static Func<ISecurityConfiguration, IExpectationViolationHandler> DefaultExpectationViolationHandler { get; set; }
+		public static Func<ISecurityConfiguration, IExpectationGroupBuilder> DefaultExpectationGroupBuilder { get; set; }
 	}
 }

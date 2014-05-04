@@ -16,7 +16,7 @@ namespace FluentSecurity.TestHelper.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			_expectationGroup = new ExpectationGroup(typeof(AdminController), "Login");
+			_expectationGroup = new ExpectationGroup(typeof(AdminController), typeof(AdminController).GetMethod("Login"));
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_have_action_set_to_Login()
 		{
-			Assert.That(_expectationGroup.Action, Is.EqualTo("Login"));
+			Assert.That(_expectationGroup.Action, Is.EqualTo(typeof(AdminController).GetMethod("Login")));
 		}
 
 		[Test]
@@ -47,7 +47,7 @@ namespace FluentSecurity.TestHelper.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			_expectationGroup = new ExpectationGroup(typeof(AdminController), "Login");
+			_expectationGroup = new ExpectationGroup(typeof(AdminController), typeof(AdminController).GetMethod("Login"));
 		}
 
 		[Test]

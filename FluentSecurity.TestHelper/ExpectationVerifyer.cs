@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentSecurity.Core;
 using FluentSecurity.TestHelper.Expectations;
 
 namespace FluentSecurity.TestHelper
@@ -8,6 +9,8 @@ namespace FluentSecurity.TestHelper
 	{
 		private readonly ISecurityConfiguration _configuration;
 		private readonly IExpectationViolationHandler _expectationViolationHandler;
+		private readonly IControllerNameResolver _controllerNameResolver;
+		private readonly IActionNameResolver _actionNameResolver;
 
 		public ExpectationVerifyer(ISecurityConfiguration configuration, IExpectationViolationHandler expectationViolationHandler)
 		{
@@ -16,6 +19,9 @@ namespace FluentSecurity.TestHelper
 
 			_configuration = configuration;
 			_expectationViolationHandler = expectationViolationHandler;
+
+			_controllerNameResolver = _configuration.ServiceLocator.Resolve<IControllerNameResolver>();
+			_actionNameResolver = _configuration.ServiceLocator.Resolve<IActionNameResolver>();
 		}
 
 		private List<ExpectationResult> ExpectationResults { get; set; }
@@ -34,8 +40,8 @@ namespace FluentSecurity.TestHelper
 
 		private void VerifyExpectationsOf(ExpectationGroup expectationGroup)
 		{
-			var controllerName = expectationGroup.Controller.GetControllerName();
-			var actionName = expectationGroup.Action;
+			var controllerName = _controllerNameResolver.Resolve(expectationGroup.Controller);
+			var actionName = _actionNameResolver.Resolve(expectationGroup.Action);
 			
 			var policyContainer = _configuration.Runtime.PolicyContainers.GetContainerFor(controllerName, actionName);
 

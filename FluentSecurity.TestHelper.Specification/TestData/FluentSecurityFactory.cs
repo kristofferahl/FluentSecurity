@@ -61,9 +61,9 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			return SecurityConfiguration.Get<MvcConfiguration>();
 		}
 
-		public static PolicyExpectations CreatePolicyExpectations()
+		public static PolicyExpectations CreatePolicyExpectations(ISecurityConfiguration configuration)
 		{
-			var policyExpectations = new PolicyExpectations();
+			var policyExpectations = new PolicyExpectations(configuration);
 			
 			policyExpectations.For<SampleController>(x => x.Index()).Has<DenyAuthenticatedAccessPolicy>();
 			policyExpectations.For<SampleController>(x => x.List()).Has<DenyAnonymousAccessPolicy>();
@@ -84,9 +84,9 @@ namespace FluentSecurity.TestHelper.Specification.TestData
 			return policyExpectations;
 		}
 
-		public static IEnumerable<ExpectationGroup> CreateExpectationsGroups()
+		public static IEnumerable<ExpectationGroup> CreateExpectationsGroups(ISecurityConfiguration configuration)
 		{
-			return CreatePolicyExpectations().ExpectationGroups;
+			return CreatePolicyExpectations(configuration).BuildExpectationGroups();
 		}
 	}
 }

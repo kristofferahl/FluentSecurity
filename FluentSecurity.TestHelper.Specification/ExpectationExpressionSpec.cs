@@ -57,9 +57,9 @@ namespace FluentSecurity.TestHelper.Specification
 		}
 
 		[Test]
-		public void Should_have_action_set_to_null()
+		public void Should_have_action_set_to_login()
 		{
-			Assert.That(_expectationExpression.Action, Is.EqualTo("Login"));
+			Assert.That(_expectationExpression.Action, Is.EqualTo(typeof(AdminController).GetMethod("Login")));
 		}
 
 		[Test]
@@ -119,25 +119,6 @@ namespace FluentSecurity.TestHelper.Specification
 			Assert.That(_expectationExpression.Expectations.Count(), Is.EqualTo(2));
 		}
 	}
-	
-	[TestFixture]
-	[Category("ExpectationExpressionSpec")]
-	public class When_creating_an_expectation_expression_for_SampleController_AliasedAction
-	{
-		private ExpectationExpression<SampleController> _expectationExpression;
-
-		[SetUp]
-		public void SetUp()
-		{
-			_expectationExpression = new ExpectationExpression<SampleController>(x => x.ActualAction());
-		}
-
-		[Test]
-		public void Should_resolve_actual_action_to_aliased_action()
-		{
-			Assert.That(_expectationExpression.Action, Is.EqualTo("AliasedAction"));
-		}
-	}
 
 	[TestFixture]
 	[Category("ExpectationExpressionSpec")]
@@ -161,7 +142,7 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_have_action_set_to_LongRunningAction()
 		{
-			Assert.That(_expectationExpression.Action, Is.EqualTo("LongRunningAction"));
+			Assert.That(_expectationExpression.Action, Is.EqualTo(typeof(TaskController).GetMethod("LongRunningAction")));
 		}
 
 		[Test]
@@ -193,7 +174,7 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_have_action_set_to_LongRunningAction()
 		{
-			Assert.That(_expectationExpression.Action, Is.EqualTo("LongRunningJsonAction"));
+			Assert.That(_expectationExpression.Action, Is.EqualTo(typeof(TaskController).GetMethod("LongRunningJsonAction")));
 		}
 
 		[Test]
@@ -225,7 +206,7 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_have_action_set_to_VoidAction()
 		{
-			Assert.That(_expectationExpression.Action, Is.EqualTo("VoidAction"));
+			Assert.That(_expectationExpression.Action, Is.EqualTo(typeof(SampleController).GetMethod("VoidAction")));
 		}
 
 		[Test]

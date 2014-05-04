@@ -65,7 +65,7 @@ namespace FluentSecurity.TestHelper.Specification
 			expectationViolationHandler.Setup(x => x.Handle(It.IsAny<string>())).Returns(ExpectationResult.CreateSuccessResult);
 
 			var expectationVerifyer = new ExpectationVerifyer(configuration, expectationViolationHandler.Object);
-			var expectationGroups = FluentSecurityFactory.CreateExpectationsGroups();
+			var expectationGroups = FluentSecurityFactory.CreateExpectationsGroups(configuration);
 
 			// Act
 			var expectationResults = expectationVerifyer.VerifyExpectationsOf(expectationGroups);
@@ -85,7 +85,7 @@ namespace FluentSecurity.TestHelper.Specification
 			expectationViolationHandler.Setup(x => x.Handle(It.IsAny<string>())).Returns(ExpectationResult.CreateSuccessResult);
 
 			var expectationVerifyer = new ExpectationVerifyer(configuration, expectationViolationHandler.Object);
-			var expectationGroups = FluentSecurityFactory.CreateExpectationsGroups();
+			var expectationGroups = FluentSecurityFactory.CreateExpectationsGroups(configuration);
 
 			// Act
 			var expectationResults = expectationVerifyer.VerifyExpectationsOf(expectationGroups);
@@ -105,7 +105,7 @@ namespace FluentSecurity.TestHelper.Specification
 			expectationViolationHandler.Setup(x => x.Handle(It.IsAny<string>())).Returns(ExpectationResult.CreateSuccessResult);
 
 			var expectationVerifyer = new ExpectationVerifyer(configuration, expectationViolationHandler.Object);
-			var expectationGroups = FluentSecurityFactory.CreateExpectationsGroups();
+			var expectationGroups = FluentSecurityFactory.CreateExpectationsGroups(configuration);
 
 			// Act
 			var expectationResults = expectationVerifyer.VerifyExpectationsOf(expectationGroups);
@@ -123,11 +123,11 @@ namespace FluentSecurity.TestHelper.Specification
 
 			var expectationViolationHandler = new DefaultExpectationViolationHandler();
 			var expectationVerifyer = new ExpectationVerifyer(configuration, expectationViolationHandler);
-			var policyExpectations = new PolicyExpectations();
+			var policyExpectations = new PolicyExpectations(configuration);
 			policyExpectations.For<AdminController>(x => x.Login()).Has<DelegatePolicy>(p => p.Name == "LoginPolicy");
 
 			// Act
-			var expectationResults = expectationVerifyer.VerifyExpectationsOf(policyExpectations.ExpectationGroups);
+			var expectationResults = expectationVerifyer.VerifyExpectationsOf(policyExpectations.BuildExpectationGroups());
 
 			// Assert
 			Assert.That(expectationResults.Count(), Is.EqualTo(1));

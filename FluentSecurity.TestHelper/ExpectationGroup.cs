@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FluentSecurity.TestHelper.Expectations;
 
 namespace FluentSecurity.TestHelper
@@ -9,7 +10,7 @@ namespace FluentSecurity.TestHelper
 	{
 		private readonly IList<IExpectation> _expectations;
 
-		public ExpectationGroup(Type controller, string action)
+		public ExpectationGroup(Type controller, MethodInfo action)
 		{
 			Controller = controller;
 			Action = action;
@@ -18,7 +19,7 @@ namespace FluentSecurity.TestHelper
 		}
 
 		public Type Controller { get; private set; }
-		public string Action { get; private set; }
+		public MethodInfo Action { get; private set; }
 
 		public IEnumerable<IExpectation> Expectations
 		{

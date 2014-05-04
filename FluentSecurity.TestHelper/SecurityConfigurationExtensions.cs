@@ -10,10 +10,10 @@ namespace FluentSecurity.TestHelper
 			if (configuration == null) throw new ArgumentNullException("configuration");
 			if (expectationExpression == null) throw new ArgumentNullException("expectationExpression");
 			
-			var policyExpectationsExpression = new PolicyExpectationsExpression();
+			var policyExpectationsExpression = new PolicyExpectationsExpression(configuration);
 			expectationExpression(policyExpectationsExpression);
 			var policyExpectations = policyExpectationsExpression.Expectations;
-			return policyExpectations.VerifyAll(configuration);
+			return policyExpectations.VerifyAll();
 		}
 
 		public static IEnumerable<ExpectationResult> Verify<TController>(this ISecurityConfiguration configuration, Action<PolicyExpectationsExpression<TController>> expectationExpression)
@@ -21,10 +21,10 @@ namespace FluentSecurity.TestHelper
 			if (configuration == null) throw new ArgumentNullException("configuration");
 			if (expectationExpression == null) throw new ArgumentNullException("expectationExpression");
 
-			var policyExpectationsExpression = new PolicyExpectationsExpression<TController>();
+			var policyExpectationsExpression = new PolicyExpectationsExpression<TController>(configuration);
 			expectationExpression(policyExpectationsExpression);
 			var policyExpectations = policyExpectationsExpression.Expectations;
-			return policyExpectations.VerifyAll(configuration);
+			return policyExpectations.VerifyAll();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentSecurity.Core;
 using FluentSecurity.TestHelper.Specification.TestData;
 using NUnit.Framework;
 
@@ -10,10 +11,18 @@ namespace FluentSecurity.TestHelper.Specification
 	[Category("ExpectationGroupBuilderSpec")]
 	public class When_building_expecations
 	{
+		private IActionResolver _actionResolver;
+
+		[SetUp]
+		public void Setup()
+		{
+			_actionResolver = new MvcActionResolver(new MvcActionNameResolver());
+		}
+
 		[Test]
 		public void Should_throw_when_expressions_are_null()
 		{
-			var expectationBuilder = new ExpectationGroupBuilder();
+			var expectationBuilder = new ExpectationGroupBuilder(_actionResolver);
 			Assert.Throws<ArgumentNullException>(() => expectationBuilder.Build(null));
 		}
 
@@ -22,7 +31,7 @@ namespace FluentSecurity.TestHelper.Specification
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression>();
-			var expecationBuilder = new ExpectationGroupBuilder();
+			var expecationBuilder = new ExpectationGroupBuilder(_actionResolver);
 
 			// Act
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);
@@ -36,7 +45,7 @@ namespace FluentSecurity.TestHelper.Specification
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression> { new ExpectationExpression<AdminController>(x => x.Login()) };
-			var expecationBuilder = new ExpectationGroupBuilder();
+			var expecationBuilder = new ExpectationGroupBuilder(_actionResolver);
 
 			// Act
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);
@@ -50,7 +59,7 @@ namespace FluentSecurity.TestHelper.Specification
 		{
 			// Arrange
 			var expecatationExpressions = new List<ExpectationExpression> { new ExpectationExpression<AdminController>() };
-			var expecationBuilder = new ExpectationGroupBuilder();
+			var expecationBuilder = new ExpectationGroupBuilder(_actionResolver);
 
 			// Act
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);
@@ -68,7 +77,7 @@ namespace FluentSecurity.TestHelper.Specification
 				new ExpectationExpression<AdminController>(),
 				new ExpectationExpression<AdminController>(x => x.Login())
 			};
-			var expecationBuilder = new ExpectationGroupBuilder();
+			var expecationBuilder = new ExpectationGroupBuilder(_actionResolver);
 
 			// Act
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);
@@ -86,7 +95,7 @@ namespace FluentSecurity.TestHelper.Specification
 				new ExpectationExpression<AdminController>(),
 				new ExpectationExpression<SampleController>(x => x.Index())
 			};
-			var expecationBuilder = new ExpectationGroupBuilder();
+			var expecationBuilder = new ExpectationGroupBuilder(_actionResolver);
 
 			// Act
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);
@@ -104,7 +113,7 @@ namespace FluentSecurity.TestHelper.Specification
 				new ExpectationExpression<AdminController>(),
 				new ExpectationExpression<SampleController>()
 			};
-			var expecationBuilder = new ExpectationGroupBuilder();
+			var expecationBuilder = new ExpectationGroupBuilder(_actionResolver);
 
 			// Act
 			var expectationGroups = expecationBuilder.Build(expecatationExpressions);

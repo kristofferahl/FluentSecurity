@@ -63,11 +63,11 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_verify_expectations_for_aliased_action()
 		{
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration  => configuration.For<SampleController>(a => a.ActualAction()).DenyAnonymousAccess());
-			var policyExpectations = new PolicyExpectations();
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(configuration  => configuration.For<SampleController>(a => a.ActualAction()).DenyAnonymousAccess());
+			var policyExpectations = new PolicyExpectations(config);
 			
 			policyExpectations.For<SampleController>(a => a.ActualAction()).Has<DenyAnonymousAccessPolicy>();
-			var results = policyExpectations.VerifyAll(SecurityConfiguration.Get<MvcConfiguration>());
+			var results = policyExpectations.VerifyAll();
 			
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}
@@ -75,11 +75,11 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_verify_expectations_for_aliased_action_using_convention_expectations()
 		{
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.For<SampleController>().DenyAnonymousAccess());
-			var policyExpectations = new PolicyExpectations();
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.For<SampleController>().DenyAnonymousAccess());
+			var policyExpectations = new PolicyExpectations(config);
 			
 			policyExpectations.For<SampleController>().Has<DenyAnonymousAccessPolicy>();
-			var results = policyExpectations.VerifyAll(SecurityConfiguration.Get<MvcConfiguration>());
+			var results = policyExpectations.VerifyAll();
 
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}
@@ -87,11 +87,11 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_verify_expectations_for_void_action()
 		{
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.For<SampleController>(a => a.VoidAction()).DenyAnonymousAccess());
-			var policyExpectations = new PolicyExpectations();
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.For<SampleController>(a => a.VoidAction()).DenyAnonymousAccess());
+			var policyExpectations = new PolicyExpectations(config);
 
 			policyExpectations.For<SampleController>(a => a.VoidAction()).Has<DenyAnonymousAccessPolicy>();
-			var results = policyExpectations.VerifyAll(SecurityConfiguration.Get<MvcConfiguration>());
+			var results = policyExpectations.VerifyAll();
 
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}
@@ -99,11 +99,11 @@ namespace FluentSecurity.TestHelper.Specification
 		[Test]
 		public void Should_verify_expectations_for_void_action_using_convention_expectations()
 		{
-			SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.For<SampleController>().DenyAnonymousAccess());
-			var policyExpectations = new PolicyExpectations();
+			var config = SecurityConfigurator.Configure<MvcConfiguration>(configuration => configuration.For<SampleController>().DenyAnonymousAccess());
+			var policyExpectations = new PolicyExpectations(config);
 
 			policyExpectations.For<SampleController>().Has<DenyAnonymousAccessPolicy>();
-			var results = policyExpectations.VerifyAll(SecurityConfiguration.Get<MvcConfiguration>());
+			var results = policyExpectations.VerifyAll();
 
 			Assert.That(results.Valid(), results.ErrorMessages());
 		}

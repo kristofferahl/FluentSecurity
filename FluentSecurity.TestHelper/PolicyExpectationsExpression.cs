@@ -5,9 +5,9 @@ namespace FluentSecurity.TestHelper
 {
 	public class PolicyExpectationsExpression
 	{
-		public PolicyExpectationsExpression()
+		public PolicyExpectationsExpression(ISecurityConfiguration configuration)
 		{
-			Expectations = new PolicyExpectations();
+			Expectations = new PolicyExpectations(configuration);
 		}
 
 		internal PolicyExpectations Expectations { get; private set; }
@@ -30,9 +30,9 @@ namespace FluentSecurity.TestHelper
 
 	public class PolicyExpectationsExpression<TController>
 	{
-		public PolicyExpectationsExpression()
+		public PolicyExpectationsExpression(ISecurityConfiguration configuration)
 		{
-			Expectations = new PolicyExpectations();
+			Expectations = new PolicyExpectations(configuration);
 		}
 
 		internal PolicyExpectations Expectations { get; private set; }

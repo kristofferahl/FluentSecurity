@@ -6,35 +6,39 @@ namespace FluentSecurity.TestHelper
 {
 	public class PolicyExpectations
 	{
+		private readonly ISecurityConfiguration _configuration;
 		private readonly IList<ExpectationExpression> _expectationsExpressions;
 		
-		public PolicyExpectations()
+		public PolicyExpectations(ISecurityConfiguration configuration)
 		{
+			if (configuration == null) throw new ArgumentNullException("configuration");
+
+			_configuration = configuration;
 			_expectationsExpressions = new List<ExpectationExpression>();
 
-			ConstructExpectationVerifyerUsing(Settings.DefaultExpectationVerifyerConstructor);
-			SetExpectationGroupBuilder(Settings.DefaultExpectationGroupBuilder);
-			SetExpectationViolationHandler(Settings.DefaultExpectationViolationHandler);
+			Using(Settings.DefaultExpectationVerifyer);
+			Using(Settings.DefaultExpectationGroupBuilder);
+			Using(Settings.DefaultExpectationViolationHandler);
 		}
 
-		public void ConstructExpectationVerifyerUsing(Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> expectationVerifyerProvider)
+		public void Using(Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> expectationVerifyerProvider)
 		{
 			ExpectationVerifyerProvider = expectationVerifyerProvider;
 		}
 
-		public void SetExpectationViolationHandler(IExpectationViolationHandler expectationViolationHandler)
+		public void Using(Func<ISecurityConfiguration, IExpectationViolationHandler> expectationViolationHandler)
 		{
-			ExpectationViolationHandler = expectationViolationHandler;
+			ExpectationViolationHandlerProvider = expectationViolationHandler;
 		}
 
-		public void SetExpectationGroupBuilder(IExpectationGroupBuilder expectationGroupBuilder)
+		public void Using(Func<ISecurityConfiguration, IExpectationGroupBuilder> expectationGroupBuilder)
 		{
-			ExpectationGroupBuilder = expectationGroupBuilder;
+			ExpectationGroupBuilderProvider = expectationGroupBuilder;
 		}
 
 		internal Func<ISecurityConfiguration, IExpectationViolationHandler, IExpectationVerifyer> ExpectationVerifyerProvider { get; private set; }
-		internal IExpectationViolationHandler ExpectationViolationHandler { get; private set; }
-		internal IExpectationGroupBuilder ExpectationGroupBuilder { get; private set; }
+		internal Func<ISecurityConfiguration, IExpectationViolationHandler> ExpectationViolationHandlerProvider { get; private set; }
+		internal Func<ISecurityConfiguration, IExpectationGroupBuilder> ExpectationGroupBuilderProvider { get; private set; }
 
 		public ExpectationExpression<TController> For<TController>()
 		{
@@ -57,15 +61,20 @@ namespace FluentSecurity.TestHelper
 			return expression;
 		}
 
-		public IEnumerable<ExpectationResult> VerifyAll(ISecurityConfiguration configuration)
+		public IEnumerable<ExpectationResult> VerifyAll()
 		{
-			if (configuration == null) throw new ArgumentNullException("configuration");
-			return ExpectationVerifyerProvider(configuration, ExpectationViolationHandler).VerifyExpectationsOf(ExpectationGroups);
+			var expectationViolationHandler = ExpectationViolationHandlerProvider(_configuration);
+			var expectationVerifyer = ExpectationVerifyerProvider(_configuration, expectationViolationHandler);
+
+			var expectationGroups = BuildExpectationGroups();
+
+			return expectationVerifyer.VerifyExpectationsOf(expectationGroups);
 		}
 
-		internal IEnumerable<ExpectationGroup> ExpectationGroups
+		public IEnumerable<ExpectationGroup> BuildExpectationGroups()
 		{
-			get { return ExpectationGroupBuilder.Build(_expectationsExpressions); }
+			var expectationGroupBuilder = ExpectationGroupBuilderProvider(_configuration);
+			return expectationGroupBuilder.Build(_expectationsExpressions);
 		}
 	}
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using FluentSecurity.TestHelper.Expectations;
+using FluentSecurity.Core.Internals;
 
 namespace FluentSecurity.TestHelper
 {
@@ -15,13 +17,13 @@ namespace FluentSecurity.TestHelper
 		public ExpectationExpression(Expression<Func<TController, object>> actionExpression) : this()
 		{
 			if (actionExpression != null)
-				Action = actionExpression.GetActionName();
+				Action = actionExpression.GetActionMethodInfo();
 		}
 
 		public ExpectationExpression(Expression<Action<TController>> actionExpression) : this()
 		{
 			if (actionExpression != null)
-				Action = actionExpression.GetActionName();
+				Action = actionExpression.GetActionMethodInfo();
 		}
 	}
 
@@ -30,7 +32,7 @@ namespace FluentSecurity.TestHelper
 		private readonly IList<IExpectation> _expectations;
 
 		internal Type Controller { get; set; }
-		internal string Action { get; set; }
+		internal MethodInfo Action { get; set; }
 
 		internal IEnumerable<IExpectation> Expectations
 		{
