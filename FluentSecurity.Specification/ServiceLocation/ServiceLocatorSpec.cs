@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using FluentSecurity.Configuration;
+using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.ServiceLocation;
@@ -64,6 +65,33 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Assert
 			VerifyHasOneSingletonOf<IWhatDoIHaveBuilder, DefaultWhatDoIHaveBuilder>();
+		}
+
+		[Test]
+		public void Should_have_single_singleton_instance_of_IControllerNameResolver()
+		{
+			// Assert
+			VerifyHasOneSingletonOf<IControllerNameResolver, MvcControllerNameResolver>();
+			VerifyHasOneSingletonOf<IControllerNameResolver<AuthorizationContext>, MvcControllerNameResolver>();
+
+			Assert.That(_serviceLocator.Resolve<IControllerNameResolver>(), Is.EqualTo(_serviceLocator.Resolve<IControllerNameResolver<AuthorizationContext>>()));
+		}
+
+		[Test]
+		public void Should_have_single_singleton_instance_of_IActionNameResolver()
+		{
+			// Assert
+			VerifyHasOneSingletonOf<IActionNameResolver, MvcActionNameResolver>();
+			VerifyHasOneSingletonOf<IActionNameResolver<AuthorizationContext>, MvcActionNameResolver>();
+
+			Assert.That(_serviceLocator.Resolve<IActionNameResolver>(), Is.EqualTo(_serviceLocator.Resolve<IActionNameResolver<AuthorizationContext>>()));
+		}
+
+		[Test]
+		public void Should_have_single_singleton_instance_of_IActionResolver()
+		{
+			// Assert
+			VerifyHasOneSingletonOf<IActionResolver, MvcActionResolver>();
 		}
 
 		private void VerifyHasOneSingletonOf<TInterface, TDefaultInstance>()
