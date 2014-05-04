@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="Configuration\AdvancedConfiguration.cs" />
     <Compile Include="Configuration\WebApiSecurityProfile.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="HandleSecurityAttribute.cs" />
     <Compile Include="ServiceLocation\LifecycleExtensions.cs" />
     <Compile Include="Policy\LazySecurityPolicy.cs" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Http;
 using FluentSecurity.Core;
+using FluentSecurity.Core.Internals;
 using FluentSecurity.Internals;
 
 namespace FluentSecurity.WebApi
@@ -31,7 +32,7 @@ namespace FluentSecurity.WebApi
 				.ToList();
 		}
 
-		private static bool IsValidActionMethod(MethodInfo methodInfo)
+		public static bool IsValidActionMethod(MethodInfo methodInfo)
 		{
 			return
 				IsControllerActionReturnType(methodInfo.ReturnType) &&
@@ -39,7 +40,7 @@ namespace FluentSecurity.WebApi
 				!methodInfo.IsDeclaredBy<ApiController>();
 		}
 
-		private static bool IsControllerActionReturnType(Type returnType)
+		public static bool IsControllerActionReturnType(Type returnType)
 		{
 			// TODO: Ensure the controller return type is valid
 			return true;
