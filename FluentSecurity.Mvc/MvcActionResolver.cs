@@ -33,7 +33,7 @@ namespace FluentSecurity
 				.ToList();
 		}
 
-		private static bool IsValidActionMethod(MethodInfo methodInfo)
+		public static bool IsValidActionMethod(MethodInfo methodInfo)
 		{
 			return
 				IsControllerActionReturnType(methodInfo.ReturnType) &&
@@ -42,7 +42,7 @@ namespace FluentSecurity
 				!methodInfo.HasAttribute<NonActionAttribute>();
 		}
 
-		private static bool IsControllerActionReturnType(Type returnType)
+		public static bool IsControllerActionReturnType(Type returnType)
 		{
 			return
 			(

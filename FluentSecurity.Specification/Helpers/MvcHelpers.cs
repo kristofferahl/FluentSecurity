@@ -10,8 +10,8 @@ namespace FluentSecurity.Specification.Helpers
 	{
 		public static AuthorizationContext GetAuthorizationContextFor<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
 		{
-			var controllerName = typeof(TController).GetControllerName();
-			var actionName = actionExpression.GetActionName();
+			var controllerName = new MvcControllerNameResolver().Resolve(typeof(TController));
+			var actionName = new MvcActionNameResolver().Resolve(actionExpression);
 
 			var filterContext = MockRepository.GenerateMock<AuthorizationContext>();
 
@@ -33,16 +33,6 @@ namespace FluentSecurity.Specification.Helpers
 			filterContext.Replay();
 
 			return filterContext;
-		}
-
-		private static string GetControllerName(this Type controllerType)
-		{
-			return controllerType.Name.Replace("Controller", string.Empty);
-		}
-
-		private static string GetActionName(this LambdaExpression actionExpression)
-		{
-			return ((MethodCallExpression)actionExpression.Body).Method.GetActionName();
 		}
 	}
 }

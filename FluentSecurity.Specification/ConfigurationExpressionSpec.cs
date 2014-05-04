@@ -854,7 +854,7 @@ namespace FluentSecurity.Specification
 				{
 					Assert.That(x.ControllerType, Is.Not.Null);
 					Assert.That(x.ActionName, Is.Not.Empty);
-					Assert.True(x.ActionResultType.IsControllerActionReturnType());
+					Assert.True(MvcActionResolver.IsControllerActionReturnType(x.ActionResultType));
 					return false;
 				}));
 

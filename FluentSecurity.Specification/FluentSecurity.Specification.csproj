@@ -125,6 +125,8 @@
     <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="Caching\PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="Internals\TypeExtensionsSpec.cs" />
+    <Compile Include="Mvc\MvcActionNameResolver.cs" />
+    <Compile Include="Mvc\MvcActionResolverSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="Policy\Contexts\SecurityContextWrapperSpec.cs" />
     <Compile Include="Policy\RequireAnyRolePolicySpec.cs" />
@@ -144,6 +146,7 @@
     <Compile Include="Scanning\TypeScanners\ControllerTypeScannerSpec.cs" />
     <Compile Include="Scanning\ProfileScannerSpec.cs" />
     <Compile Include="SecurityModelSpec.cs" />
+    <Compile Include="SecurityPolicyExtensionsSpec.cs" />
     <Compile Include="SecurityRuntimeSpec.cs" />
     <Compile Include="ServiceLocation\ServiceLocatorBaseSpecification.cs" />
     <Compile Include="TestData\Controllers\BaseControllers.cs" />
@@ -174,7 +177,7 @@
     <Compile Include="TestData\DefaultPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAuthenticatedAccessPolicyViolationHandler.cs" />
     <Compile Include="TestData\DenyAnonymousAccessPolicyViolationHandler.cs" />
-    <Compile Include="ExtensionsSpecs.cs" />
+    <Compile Include="EnumberableExtensionsSpec.cs" />
     <Compile Include="PolicyViolationExceptionSpec.cs" />
     <Compile Include="Helpers\FakeIoC.cs" />
     <Compile Include="SecurityConfiguratorSpec.cs" />
