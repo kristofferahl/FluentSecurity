@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Core;
 using FluentSecurity.Core.Internals;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
@@ -17,23 +18,32 @@ namespace FluentSecurity
 {
 	public abstract class ConfigurationExpression : ConfigurationExpressionBase<SecurityRuntime, AdvancedConfiguration>
 	{
+		// TODO: Figure out a way to get these instances from the service locator
+		private IControllerNameResolver _controllerNameResolver;
+		private IActionResolver _actionResolver;
+		private IActionNameResolver _actionNameResolver;
+
 		internal void Initialize(SecurityRuntime runtime)
 		{
 			Initialize(runtime, new AdvancedConfiguration(runtime));
+
+			_controllerNameResolver = new MvcControllerNameResolver();
+			_actionNameResolver = new MvcActionNameResolver();
+			_actionResolver = new MvcActionResolver(_actionNameResolver);
 		}
 
 		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> actionExpression) where TController : Controller
 		{
-			var controllerName = typeof(TController).GetControllerName();
-			var actionName = actionExpression.GetActionName();
+			var controllerName = _controllerNameResolver.Resolve(typeof(TController));
+			var actionName = _actionNameResolver.Resolve(actionExpression);
 
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
 
 		public IPolicyContainerConfiguration For<TController>(Expression<Action<TController>> actionExpression) where TController : Controller
 		{
-			var controllerName = typeof(TController).GetControllerName();
-			var actionName = actionExpression.GetActionName();
+			var controllerName = _controllerNameResolver.Resolve(typeof(TController));
+			var actionName = _actionNameResolver.Resolve(actionExpression);
 
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
@@ -75,7 +85,7 @@ namespace FluentSecurity
 		public IPolicyContainerConfiguration ForAllControllersInheriting<TController>(Expression<Func<TController, object>> actionExpression, params Assembly[] assemblies) where TController : Controller
 		{
 			if (actionExpression == null) throw new ArgumentNullException("actionExpression");
-			var actionName = actionExpression.GetActionName();
+			var actionName = _actionNameResolver.Resolve(actionExpression);
 			return ForAllControllersInheriting<TController>(action => action == actionName, assemblies);
 		}
 
@@ -163,11 +173,11 @@ namespace FluentSecurity
 			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)
 			{
-				var controllerName = controllerType.GetControllerName();
-				var actionMethods = controllerType.GetActionMethods(actionFilter);
+				var controllerName = _controllerNameResolver.Resolve(controllerType);
+				var actionMethods = _actionResolver.ActionMethods(controllerType, actionFilter);
 
 				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.GetActionName()))
+					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, _actionNameResolver.Resolve(actionMethod)))
 					);
 			}
 

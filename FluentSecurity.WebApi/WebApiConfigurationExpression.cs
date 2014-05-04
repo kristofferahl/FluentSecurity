@@ -8,7 +8,6 @@ using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
-using FluentSecurity.Policy;
 using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Scanning;
 using FluentSecurity.WebApi.Scanning.TypeScanners;
@@ -17,23 +16,32 @@ namespace FluentSecurity.WebApi
 {
 	public abstract class WebApiConfigurationExpression : ConfigurationExpressionBase<WebApiSecurityRuntime, AdvancedConfiguration>
 	{
+		// TODO: Figure out a way to get these instances from the service locator
+		private IControllerNameResolver _controllerNameResolver;
+		private IActionResolver _actionResolver;
+		private IActionNameResolver _actionNameResolver;
+
 		internal void Initialize(WebApiSecurityRuntime runtime)
 		{
 			Initialize(runtime, new AdvancedConfiguration(runtime));
+
+			_controllerNameResolver = new WebApiControllerNameResolver();
+			_actionNameResolver = new WebApiActionNameResolver();
+			_actionResolver = new WebApiActionResolver(_actionNameResolver);
 		}
 
 		public IPolicyContainerConfiguration For<TController>(Expression<Func<TController, object>> actionExpression) where TController : ApiController
 		{
-			var controllerName = typeof(TController).GetControllerName();
-			var actionName = actionExpression.GetActionName();
+			var controllerName = _controllerNameResolver.Resolve(typeof(TController));
+			var actionName = _actionNameResolver.Resolve(actionExpression);
 
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
 
 		public IPolicyContainerConfiguration For<TController>(Expression<Action<TController>> actionExpression) where TController : ApiController
 		{
-			var controllerName = typeof(TController).GetControllerName();
-			var actionName = actionExpression.GetActionName();
+			var controllerName = _controllerNameResolver.Resolve(typeof(TController));
+			var actionName = _actionNameResolver.Resolve(actionExpression);
 
 			return AddPolicyContainerFor(controllerName, actionName);
 		}
@@ -87,11 +95,11 @@ namespace FluentSecurity.WebApi
 			var policyContainers = new List<IPolicyContainerConfiguration>();
 			foreach (var controllerType in controllerTypes)
 			{
-				var controllerName = controllerType.GetControllerName();
-				var actionMethods = controllerType.GetActionMethods(actionFilter);
+				var controllerName = _controllerNameResolver.Resolve(controllerType);
+				var actionMethods = _actionResolver.ActionMethods(controllerType, actionFilter);
 
 				policyContainers.AddRange(
-					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, actionMethod.GetActionName()))
+					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, _actionNameResolver.Resolve(actionMethod)))
 					);
 			}
 
