@@ -1,10 +1,10 @@
-using FluentSecurity.Caching;
 using FluentSecurity.Core;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.WebApi
 {
 	public class WebApiSecurityRuntime : SecurityRuntimeBase
 	{
-		public WebApiSecurityRuntime(ISecurityCache cache, ITypeFactory typeFactory) : base(cache, typeFactory) {}
+		public WebApiSecurityRuntime(IContainer container) : base(container) {}
 	}
 }

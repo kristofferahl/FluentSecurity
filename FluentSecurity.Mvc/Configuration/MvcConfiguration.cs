@@ -1,4 +1,3 @@
-using FluentSecurity.Caching;
 using FluentSecurity.Core;
 using FluentSecurity.ServiceLocation;
 
@@ -14,7 +13,7 @@ namespace FluentSecurity.Configuration
 			_container = new Container(new MvcLifecycleResolver());
 			new MvcRegistry().Configure(_container);
 
-			_runtime = new SecurityRuntime(_container.Resolve<ISecurityCache>(), _container.Resolve<ITypeFactory>());
+			_runtime = new SecurityRuntime(_container);
 
 			Initialize(_runtime);
 		}

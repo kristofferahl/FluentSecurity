@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
-using FluentSecurity.ServiceLocation;
+using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
 
 namespace FluentSecurity.Specification
@@ -100,7 +100,7 @@ namespace FluentSecurity.Specification
 		[SetUp]
 		public void SetUp()
 		{
-			Runtime = new SecurityRuntime(new SecurityCache(new MvcLifecycleResolver()), new MvcTypeFactory());
+			Runtime = TestDataFactory.CreateSecurityRuntime();
 		}
 	}
 }

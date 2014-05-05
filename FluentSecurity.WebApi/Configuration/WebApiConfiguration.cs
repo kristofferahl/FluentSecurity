@@ -1,4 +1,3 @@
-using FluentSecurity.Caching;
 using FluentSecurity.Core;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.WebApi.ServiceLocation;
@@ -15,7 +14,7 @@ namespace FluentSecurity.WebApi.Configuration
 			_container = new Container(new WebApiLifecycleResolver());
 			new WebApiRegistry().Configure(_container);
 
-			_runtime = new WebApiSecurityRuntime(_container.Resolve<ISecurityCache>(), _container.Resolve<ITypeFactory>());
+			_runtime = new WebApiSecurityRuntime(_container);
 
 			Initialize(_runtime);
 		}

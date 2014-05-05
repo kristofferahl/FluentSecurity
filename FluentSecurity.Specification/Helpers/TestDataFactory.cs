@@ -35,7 +35,9 @@ namespace FluentSecurity.Specification.Helpers
 
 		public static SecurityRuntime CreateSecurityRuntime()
 		{
-			return new SecurityRuntime(new SecurityCache(new MvcLifecycleResolver()), new MvcTypeFactory());
+			var container = new Container(new MvcLifecycleResolver());
+			new MvcRegistry().Configure(container);
+			return new SecurityRuntime(container);
 		}
 
 		public static PolicyContainer CreateValidPolicyContainer()

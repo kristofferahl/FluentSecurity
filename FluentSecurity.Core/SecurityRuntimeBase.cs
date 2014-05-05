@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.Core
 {
@@ -23,13 +24,22 @@ namespace FluentSecurity.Core
 		public Cache DefaultResultsCacheLifecycle { get; set; }
 		public Action<ISecurityContext> SecurityContextModifyer { get; set; }
 		public bool ShouldIgnoreMissingConfiguration { get; set; }
-		public ISecurityCache Cache { get; private set; }
-		public ITypeFactory TypeFactory { get; private set; }
 
-		protected SecurityRuntimeBase(ISecurityCache cache, ITypeFactory typeFactory)
+		public ISecurityCache Cache
 		{
-			Cache = cache;
-			TypeFactory = typeFactory;
+			get { return Container.Resolve<ISecurityCache>(); }
+		}
+
+		public ITypeFactory TypeFactory
+		{
+			get { return Container.Resolve<ITypeFactory>(); }
+		}
+
+		public IContainer Container { get; private set; }
+
+		protected SecurityRuntimeBase(IContainer container)
+		{
+			Container = container;
 			ShouldIgnoreMissingConfiguration = false;
 			DefaultResultsCacheLifecycle = Caching.Cache.DoNotCache;;
 		}
