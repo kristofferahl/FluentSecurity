@@ -4,9 +4,11 @@ using FluentSecurity.Caching;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.Scanning.TypeScanners;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
+using FluentSecurity.WebApi.Scanning.TypeScanners;
 
 namespace FluentSecurity.WebApi.ServiceLocation
 {
@@ -22,10 +24,12 @@ namespace FluentSecurity.WebApi.ServiceLocation
 			container.Register<ISecurityCache>(ctx => new SecurityCache(ctx.Resolve<ILifecycleResolver>()), Lifecycle.Singleton);
 			container.Register<ITypeFactory>(ctx => new WebApiTypeFactory(), Lifecycle.Singleton);
 
+			var controllerTypeScanner = new WebApiControllerTypeScanner();
 			var controllerNameResolver = new WebApiControllerNameResolver();
 			var actionNameResolver = new WebApiActionNameResolver();
 			var actionResolver = new WebApiActionResolver(actionNameResolver);
 
+			container.Register<ControllerTypeScanner>(ctx => controllerTypeScanner);
 			container.Register<IControllerNameResolver<HttpActionContext>>(ctx => controllerNameResolver, Lifecycle.Singleton);
 			container.Register<IControllerNameResolver>(ctx => controllerNameResolver, Lifecycle.Singleton);
 			container.Register<IActionNameResolver<HttpActionContext>>(ctx => actionNameResolver, Lifecycle.Singleton);

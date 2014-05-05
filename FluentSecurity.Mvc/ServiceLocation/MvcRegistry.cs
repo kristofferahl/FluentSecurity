@@ -6,6 +6,7 @@ using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity.ServiceLocation
 {
@@ -21,10 +22,12 @@ namespace FluentSecurity.ServiceLocation
 			container.Register<ISecurityCache>(ctx => new SecurityCache(ctx.Resolve<ILifecycleResolver>()), Lifecycle.Singleton);
 			container.Register<ITypeFactory>(ctx => new MvcTypeFactory(), Lifecycle.Singleton);
 
+			var controllerTypeScanner = new MvcControllerTypeScanner();
 			var controllerNameResolver = new MvcControllerNameResolver();
 			var actionNameResolver = new MvcActionNameResolver();
 			var actionResolver = new MvcActionResolver(actionNameResolver);
 
+			container.Register<ControllerTypeScanner>(ctx => controllerTypeScanner);
 			container.Register<IControllerNameResolver<AuthorizationContext>>(ctx => controllerNameResolver, Lifecycle.Singleton);
 			container.Register<IControllerNameResolver>(ctx => controllerNameResolver, Lifecycle.Singleton);
 			container.Register<IActionNameResolver<AuthorizationContext>>(ctx => actionNameResolver, Lifecycle.Singleton);
