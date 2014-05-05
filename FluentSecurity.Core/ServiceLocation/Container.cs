@@ -15,6 +15,7 @@ namespace FluentSecurity.ServiceLocation
 		public Container(ILifecycleResolver lifecycleResolver)
 		{
 			_lifecycleResolver = lifecycleResolver;
+			Register<ILifecycleResolver>(ctx => lifecycleResolver, Lifecycle.Singleton);
 		}
 
 		public void Register<TTypeToResolve>(Func<IContainer, object> instanceExpression, Lifecycle lifecycle)
