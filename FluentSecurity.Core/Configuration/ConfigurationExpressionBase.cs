@@ -66,7 +66,8 @@ namespace FluentSecurity
 			if (securityServiceLocator == null)
 				throw new ArgumentNullException("securityServiceLocator");
 
-			Runtime.ExternalServiceLocator = securityServiceLocator;
+			Runtime.Container.SetPrimarySource(ctx => securityServiceLocator);
+			Runtime.ExternalServiceLocator = securityServiceLocator; // TODO: Evaluate the need for this. We should be able to check how many sources the IContainer has. 1 equals no external servicelocator, 2 equals 1 external servicelocator.
 		}
 	}
 }
