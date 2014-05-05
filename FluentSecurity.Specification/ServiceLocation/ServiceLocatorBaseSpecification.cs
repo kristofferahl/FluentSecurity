@@ -22,7 +22,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public ServiceLocator CreateServiceLocator(Action<MvcConfiguration> modifyer)
 		{
 			var config = ConfigureSecurity(modifyer);
-			return new ServiceLocator(config);
+			return new ServiceLocator(config.GetContainer());
 		}
 	}
 }

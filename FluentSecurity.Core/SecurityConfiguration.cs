@@ -42,7 +42,7 @@ namespace FluentSecurity
 			var configuration = new TConfiguration();
 			configurationExpression.Invoke(configuration);
 
-			ServiceLocator = new ServiceLocator(configuration);
+			ServiceLocator = new ServiceLocator(configuration.GetContainer());
 			Runtime = configuration.GetRuntime();
 		}
 

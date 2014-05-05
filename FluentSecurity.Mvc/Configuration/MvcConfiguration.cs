@@ -6,15 +6,15 @@ namespace FluentSecurity.Configuration
 {
 	public class MvcConfiguration : ConfigurationExpression, IFluentConfiguration
 	{
-		private readonly MvcLifecycleResolver _lifecycleResolver;
-		private readonly MvcRegistry _registry;
 		private readonly SecurityRuntime _runtime;
+		private readonly IContainer _container;
 
 		public MvcConfiguration()
 		{
-			_lifecycleResolver = new MvcLifecycleResolver();
-			_registry = new MvcRegistry();
-			_runtime = new SecurityRuntime(new SecurityCache(_lifecycleResolver), new MvcTypeFactory());
+			_container = new Container(new MvcLifecycleResolver());
+			new MvcRegistry().Configure(_container);
+
+			_runtime = new SecurityRuntime(_container.Resolve<ISecurityCache>(), _container.Resolve<ITypeFactory>());
 
 			Initialize(_runtime);
 		}
@@ -24,14 +24,9 @@ namespace FluentSecurity.Configuration
 			return _runtime;
 		}
 
-		IRegistry IFluentConfiguration.GetRegistry()
+		IContainer IFluentConfiguration.GetContainer()
 		{
-			return _registry;
-		}
-
-		ILifecycleResolver IFluentConfiguration.GetLifecycleResolver()
-		{
-			return _lifecycleResolver;
+			return _container;
 		}
 	}
 }

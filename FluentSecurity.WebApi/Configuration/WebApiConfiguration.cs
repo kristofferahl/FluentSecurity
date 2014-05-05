@@ -7,32 +7,27 @@ namespace FluentSecurity.WebApi.Configuration
 {
 	public class WebApiConfiguration : WebApiConfigurationExpression, IFluentConfiguration
 	{
-		private readonly WebApiLifecycleResolver _lifecycleResolver;
-		private readonly WebApiRegistry _registry;
-		private readonly WebApiSecurityRuntime _rutime;
+		private readonly WebApiSecurityRuntime _runtime;
+		private readonly IContainer _container;
 
 		public WebApiConfiguration()
 		{
-			_lifecycleResolver = new WebApiLifecycleResolver();
-			_registry = new WebApiRegistry();
-			_rutime = new WebApiSecurityRuntime(new SecurityCache(_lifecycleResolver), new WebApiTypeFactory());
+			_container = new Container(new WebApiLifecycleResolver());
+			new WebApiRegistry().Configure(_container);
 
-			Initialize(_rutime);
+			_runtime = new WebApiSecurityRuntime(_container.Resolve<ISecurityCache>(), _container.Resolve<ITypeFactory>());
+
+			Initialize(_runtime);
 		}
 
 		ISecurityRuntime IFluentConfiguration.GetRuntime()
 		{
-			return _rutime;
+			return _runtime;
 		}
 
-		IRegistry IFluentConfiguration.GetRegistry()
+		IContainer IFluentConfiguration.GetContainer()
 		{
-			return _registry;
-		}
-
-		ILifecycleResolver IFluentConfiguration.GetLifecycleResolver()
-		{
-			return _lifecycleResolver;
+			return _container;
 		}
 	}
 }

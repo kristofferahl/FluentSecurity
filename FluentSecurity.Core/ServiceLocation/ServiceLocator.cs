@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FluentSecurity.Core;
 
 namespace FluentSecurity.ServiceLocation
 {
@@ -8,15 +7,8 @@ namespace FluentSecurity.ServiceLocation
 	{
 		private readonly IContainer _container;
 
-		public ServiceLocator(IFluentConfiguration configuration)
+		public ServiceLocator(IContainer container)
 		{
-			var lifecycleResolver = configuration.GetLifecycleResolver();
-			var registry = configuration.GetRegistry();
-			var runtime = configuration.GetRuntime();
-
-			var container = new Container(lifecycleResolver);
-			registry.Configure(container);
-			container.SetPrimarySource(ctx => runtime.ExternalServiceLocator);
 			_container = container;
 		}
 
