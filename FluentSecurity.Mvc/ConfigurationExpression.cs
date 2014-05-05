@@ -188,7 +188,9 @@ namespace FluentSecurity
 
 		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
 		{
-			return Runtime.AddPolicyContainer(new PolicyContainer(controllerName, actionName, PolicyAppender));
+			var policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
+			policyContainer.SetTypeFactory(Runtime.TypeFactory);
+			return Runtime.AddPolicyContainer(policyContainer);
 		}
 
 		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IPolicyViolationHandler
