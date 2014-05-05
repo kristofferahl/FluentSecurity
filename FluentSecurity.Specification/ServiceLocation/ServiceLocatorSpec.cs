@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
+using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
@@ -85,6 +86,20 @@ namespace FluentSecurity.Specification.ServiceLocation
 			VerifyHasOneSingletonOf<IActionNameResolver<AuthorizationContext>, MvcActionNameResolver>();
 
 			Assert.That(_serviceLocator.Resolve<IActionNameResolver>(), Is.EqualTo(_serviceLocator.Resolve<IActionNameResolver<AuthorizationContext>>()));
+		}
+
+		[Test]
+		public void Should_have_single_singleton_instance_of_ISecurityCache()
+		{
+			// Assert
+			VerifyHasOneSingletonOf<ISecurityCache, SecurityCache>();
+		}
+
+		[Test]
+		public void Should_have_single_singleton_instance_of_ITypeFactory()
+		{
+			// Assert
+			VerifyHasOneSingletonOf<ITypeFactory, MvcTypeFactory>();
 		}
 
 		[Test]

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
@@ -16,6 +17,9 @@ namespace FluentSecurity.ServiceLocation
 			container.Register<ISecurityHandler<ActionResult>>(ctx => new SecurityHandler(), Lifecycle.Singleton);
 
 			container.Register<ISecurityContext>(ctx => ctx.Resolve<ISecurityConfiguration>().CreateContext());
+
+			container.Register<ISecurityCache>(ctx => new SecurityCache(ctx.Resolve<ILifecycleResolver>()), Lifecycle.Singleton);
+			container.Register<ITypeFactory>(ctx => new MvcTypeFactory(), Lifecycle.Singleton);
 
 			var controllerNameResolver = new MvcControllerNameResolver();
 			var actionNameResolver = new MvcActionNameResolver();
