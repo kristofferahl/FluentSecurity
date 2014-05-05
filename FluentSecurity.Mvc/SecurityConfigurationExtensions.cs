@@ -16,10 +16,11 @@ namespace FluentSecurity
 			var controllerNameResolver = configuration.ServiceLocator.Resolve<IControllerNameResolver>();
 			var actionNameResolver = configuration.ServiceLocator.Resolve<IActionNameResolver>();
 			var actionResolver = configuration.ServiceLocator.Resolve<IActionResolver>();
+			var controlleTypeScanner = configuration.ServiceLocator.Resolve<ControllerTypeScanner>();
 
 			var assemblyScanner = new AssemblyScanner();
 			assemblyScanner.Assemblies(assemblies);
-			assemblyScanner.With<MvcControllerTypeScanner>();
+			assemblyScanner.With(controlleTypeScanner);
 
 			var controllerTypes = assemblyScanner.Scan();
 
