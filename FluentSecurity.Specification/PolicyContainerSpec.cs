@@ -577,6 +577,12 @@ namespace FluentSecurity.Specification
 	[Category("PolicyContainerSpec")]
 	public class When_enforcing_lazy_policies
 	{
+		[SetUp]
+		public void SetUp()
+		{
+			FakeIoC.Reset();
+		}
+
 		[Test]
 		public void Should_load_lazy_policy_exactly_twice_during_execution_with_caching_off()
 		{
@@ -610,13 +616,8 @@ namespace FluentSecurity.Specification
 		public void Should_load_lazy_policy_exactly_once_during_execution_and_caching_on()
 		{
 			// Arrange
-			var callsToContainer = 0;
 			var policy = new LazyLoadedPolicy();
-			FakeIoC.GetAllInstancesProvider = () =>
-			{
-				callsToContainer++;
-				return new List<object> { policy };
-			};
+			FakeIoC.GetAllInstancesProvider = () => new List<object> { policy };
 			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
@@ -632,7 +633,7 @@ namespace FluentSecurity.Specification
 			policyContainer.EnforcePolicies(context);
 
 			// Assert
-			Assert.That(callsToContainer, Is.EqualTo(1));
+			Assert.That(FakeIoC.CallStack.Count(t => t.IsAssignableFrom(typeof(LazyLoadedPolicy))), Is.EqualTo(1));
 			Assert.That(policy.EnforceCallCount, Is.EqualTo(1), "Did not call enforce the expected amount of times");
 		}
 
@@ -670,13 +671,8 @@ namespace FluentSecurity.Specification
 		public void Should_load_lazy_policy_with_cache_key_exactly_twice_during_execution_with_caching_on()
 		{
 			// Arrange
-			var callsToContainer = 0;
 			var policy = new LazyLoadedPolicyWithCacheKey();
-			FakeIoC.GetAllInstancesProvider = () =>
-			{
-				callsToContainer++;
-				return new List<object> { policy };
-			};
+			FakeIoC.GetAllInstancesProvider = () => new List<object> { policy };
 			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
@@ -692,7 +688,7 @@ namespace FluentSecurity.Specification
 			policyContainer.EnforcePolicies(context);
 
 			// Assert
-			Assert.That(callsToContainer, Is.EqualTo(2));
+			Assert.That(FakeIoC.CallStack.Count(t => t.IsAssignableFrom(typeof(LazyLoadedPolicyWithCacheKey))), Is.EqualTo(2));
 			Assert.That(policy.CacheKeyCallCount, Is.EqualTo(2), "Did not get the custom cache key the expected amount of times");
 			Assert.That(policy.EnforceCallCount, Is.EqualTo(1), "Did not call enforce the expected amount of times");
 		}
@@ -701,13 +697,8 @@ namespace FluentSecurity.Specification
 		public void Should_enforce_lazy_policy_with_cache_key_exactly_twice_during_execution_with_caching_on()
 		{
 			// Arrange
-			var callsToContainer = 0;
 			var policy = new LazyLoadedPolicyWithCacheKey();
-			FakeIoC.GetAllInstancesProvider = () =>
-			{
-				callsToContainer++;
-				return new List<object> { policy };
-			};
+			FakeIoC.GetAllInstancesProvider = () => new List<object> { policy };
 			SecurityConfigurator.Configure<MvcConfiguration>(configuration =>
 			{
 				configuration.GetAuthenticationStatusFrom(TestDataFactory.ValidIsAuthenticatedFunction);
@@ -729,7 +720,7 @@ namespace FluentSecurity.Specification
 			policyContainer.EnforcePolicies(context);
 
 			// Assert
-			Assert.That(callsToContainer, Is.EqualTo(5));
+			Assert.That(FakeIoC.CallStack.Count(t => t.IsAssignableFrom(typeof(LazyLoadedPolicyWithCacheKey))), Is.EqualTo(5));
 			Assert.That(policy.CacheKeyCallCount, Is.EqualTo(5), "Did not get the custom cache key the expected amount of times");
 			Assert.That(policy.EnforceCallCount, Is.EqualTo(2), "Did not call enforce the expected amount of times");
 		}
