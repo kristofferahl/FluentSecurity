@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Web.Http;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 using FluentSecurity.Core;
+using FluentSecurity.Core.Internals;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
+using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.WebApi.Configuration;
+using FluentSecurity.WebApi.Policy.ViolationHandlers;
 using FluentSecurity.WebApi.Scanning;
 using FluentSecurity.WebApi.Scanning.TypeScanners;
 
@@ -63,6 +67,82 @@ namespace FluentSecurity.WebApi
 			return CreateConventionPolicyContainerFor(controllerTypes);
 		}
 
+		public IPolicyContainerConfiguration ForAllControllersInAssembly(params Assembly[] assemblies)
+		{
+			var assemblyScanner = new WebApiAssemblyScanner();
+			assemblyScanner.Assemblies(assemblies);
+			assemblyScanner.With<WebApiControllerTypeScanner>();
+			var controllerTypes = assemblyScanner.Scan();
+
+			return CreateConventionPolicyContainerFor(controllerTypes);
+		}
+
+		public IPolicyContainerConfiguration ForAllControllersInAssemblyContainingType<TType>()
+		{
+			var assembly = typeof (TType).Assembly;
+			return ForAllControllersInAssembly(assembly);
+		}
+
+		public IPolicyContainerConfiguration ForAllControllersInheriting<TController>(Expression<Func<TController, object>> actionExpression, params Assembly[] assemblies) where TController : ApiController
+		{
+			if (actionExpression == null) throw new ArgumentNullException("actionExpression");
+			var actionName = _actionNameResolver().Resolve(actionExpression);
+			return ForAllControllersInheriting<TController>(action => action == actionName, assemblies);
+		}
+
+		public IPolicyContainerConfiguration ForAllControllersInheriting<TController>(params Assembly[] assemblies) where TController : ApiController
+		{
+			Func<string, bool> actionFilter = actionName => true;
+			return ForAllControllersInheriting<TController>(actionFilter, assemblies);
+		}
+
+		private IPolicyContainerConfiguration ForAllControllersInheriting<TController>(Func<string, bool> actionFilter, IEnumerable<Assembly> assemblies) where TController : ApiController
+		{
+			var controllerType = typeof (TController);
+
+			var assembliesToScan = assemblies.ToList();
+			if (!assembliesToScan.Any())
+				assembliesToScan.Add(controllerType.Assembly);
+
+			var assemblyScanner = new WebApiAssemblyScanner();
+			assemblyScanner.Assemblies(assembliesToScan);
+			assemblyScanner.With(new WebApiControllerTypeScanner(controllerType));
+			var controllerTypes = assemblyScanner.Scan();
+
+			Func<ControllerActionInfo, bool> filter = info => actionFilter.Invoke(info.ActionName);
+
+			return CreateConventionPolicyContainerFor(controllerTypes, filter);
+		}
+
+		public IPolicyContainerConfiguration ForAllControllersInNamespaceContainingType<TType>()
+		{
+			var assembly = typeof (TType).Assembly;
+
+			var assemblyScanner = new WebApiAssemblyScanner();
+			assemblyScanner.Assembly(assembly);
+			assemblyScanner.With<WebApiControllerTypeScanner>();
+			assemblyScanner.IncludeNamespaceContainingType<TType>();
+			var controllerTypes = assemblyScanner.Scan();
+
+			return CreateConventionPolicyContainerFor(controllerTypes);
+		}
+
+		public IPolicyContainerConfiguration ForActionsMatching(Func<ControllerActionInfo, bool> actionFilter, params Assembly[] assemblies)
+		{
+			var assemblyScanner = new WebApiAssemblyScanner();
+			var assembliesToScan = assemblies.ToList();
+
+			if (assembliesToScan.Any())
+				assemblyScanner.Assemblies(assemblies);
+			else
+				assemblyScanner.TheCallingAssembly();
+
+			assemblyScanner.With<WebApiControllerTypeScanner>();
+			var controllerTypes = assemblyScanner.Scan();
+
+			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
+		}
+
 		public void Scan(Action<WebApiProfileScanner> scan)
 		{
 			Publish.ConfigurationEvent(() => "Scanning for profiles");
@@ -112,6 +192,32 @@ namespace FluentSecurity.WebApi
 			var policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
 			policyContainer.SetTypeFactory(Runtime.TypeFactory);
 			return Runtime.AddPolicyContainer(policyContainer);
+		}
+
+		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>() where TPolicyViolationHandler : class, IWebApiPolicyViolationHandler
+		{
+			RemoveDefaultPolicyViolationHandlerConventions();
+			Advanced.Conventions(conventions =>
+				conventions.Add(new DefaultPolicyViolationHandlerIsOfTypeConvention<TPolicyViolationHandler>())
+				);
+		}
+
+		public void DefaultPolicyViolationHandlerIs<TPolicyViolationHandler>(Func<TPolicyViolationHandler> policyViolationHandler) where TPolicyViolationHandler : class, IWebApiPolicyViolationHandler
+		{
+			RemoveDefaultPolicyViolationHandlerConventions();
+			Advanced.Conventions(conventions =>
+				conventions.Add(new DefaultPolicyViolationHandlerIsInstanceConvention<TPolicyViolationHandler>(policyViolationHandler))
+				);
+		}
+
+		private void RemoveDefaultPolicyViolationHandlerConventions()
+		{
+			Advanced.Conventions(conventions =>
+			{
+				conventions.RemoveAll(c => c is FindDefaultPolicyViolationHandlerByNameConvention);
+				conventions.RemoveAll(c => c.IsMatchForGenericType(typeof (DefaultPolicyViolationHandlerIsOfTypeConvention<>)));
+				conventions.RemoveAll(c => c.IsMatchForGenericType(typeof (DefaultPolicyViolationHandlerIsInstanceConvention<>)));
+			});
 		}
 	}
 }

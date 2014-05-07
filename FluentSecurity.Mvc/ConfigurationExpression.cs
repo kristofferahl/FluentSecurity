@@ -129,8 +129,8 @@ namespace FluentSecurity
 		{
 			var assemblyScanner = new AssemblyScanner();
 			var assembliesToScan = assemblies.ToList();
-			
-			if (assembliesToScan.Any()) 
+
+			if (assembliesToScan.Any())
 				assemblyScanner.Assemblies(assemblies);
 			else
 				assemblyScanner.TheCallingAssembly();
@@ -185,7 +185,7 @@ namespace FluentSecurity
 			return policyContainer;
 		}
 
-		private PolicyContainer AddPolicyContainerFor(string controllerName, string actionName)
+		private IPolicyContainerConfiguration AddPolicyContainerFor(string controllerName, string actionName)
 		{
 			var policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
 			policyContainer.SetTypeFactory(Runtime.TypeFactory);
