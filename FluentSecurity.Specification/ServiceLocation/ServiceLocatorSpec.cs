@@ -7,6 +7,7 @@ using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
+using FluentSecurity.Scanning.TypeScanners;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
 using NUnit.Framework;
@@ -89,6 +90,20 @@ namespace FluentSecurity.Specification.ServiceLocation
 		}
 
 		[Test]
+		public void Should_have_single_singleton_instance_of_IActionResolver()
+		{
+			// Assert
+			VerifyHasOneSingletonOf<IActionResolver, MvcActionResolver>();
+		}
+
+		[Test]
+		public void Should_have_single_singleton_instance_of_ControllerTypeScanner()
+		{
+			// Assert
+			VerifyHasOneSingletonOf<ControllerTypeScanner, MvcControllerTypeScanner>();
+		}
+
+		[Test]
 		public void Should_have_single_singleton_instance_of_ISecurityCache()
 		{
 			// Assert
@@ -100,13 +115,6 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Assert
 			VerifyHasOneSingletonOf<ITypeFactory, MvcTypeFactory>();
-		}
-
-		[Test]
-		public void Should_have_single_singleton_instance_of_IActionResolver()
-		{
-			// Assert
-			VerifyHasOneSingletonOf<IActionResolver, MvcActionResolver>();
 		}
 
 		private void VerifyHasOneSingletonOf<TInterface, TDefaultInstance>()
