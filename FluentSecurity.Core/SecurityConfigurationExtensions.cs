@@ -3,11 +3,10 @@ using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using FluentSecurity.Core;
 using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
 
-namespace FluentSecurity
+namespace FluentSecurity.Core
 {
 	public static class SecurityConfigurationExtensions
 	{
@@ -18,7 +17,7 @@ namespace FluentSecurity
 			var actionResolver = configuration.ServiceLocator.Resolve<IActionResolver>();
 			var controlleTypeScanner = configuration.ServiceLocator.Resolve<ControllerTypeScanner>();
 
-			var assemblyScanner = new AssemblyScanner();
+			var assemblyScanner = new CoreAssemblyScanner();
 			assemblyScanner.Assemblies(assemblies);
 			assemblyScanner.With(controlleTypeScanner);
 
