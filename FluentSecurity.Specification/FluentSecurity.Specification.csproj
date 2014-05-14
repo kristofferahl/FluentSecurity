@@ -125,7 +125,7 @@
     <Compile Include="Helpers\MockSecurityContext.cs" />
     <Compile Include="Caching\PolicyResultCacheKeyBuilderSpec.cs" />
     <Compile Include="Internals\TypeExtensionsSpec.cs" />
-    <Compile Include="Mvc\MvcActionNameResolver.cs" />
+    <Compile Include="Mvc\MvcActionNameResolverSpec.cs" />
     <Compile Include="Mvc\MvcActionResolverSpec.cs" />
     <Compile Include="PolicyResultSpec.cs" />
     <Compile Include="Policy\Contexts\SecurityContextWrapperSpec.cs" />
