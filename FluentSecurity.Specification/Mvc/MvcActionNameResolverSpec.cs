@@ -29,7 +29,7 @@ namespace FluentSecurity.Specification.Mvc
 			var actionDescriptor = new ReflectedActionDescriptor(method, expectedActionName, controllerDescriptor);
 			var context = new AuthorizationContext { ActionDescriptor = actionDescriptor };
 
-			// Arrange
+			// Act
 			var name = _actionNameResolver.Resolve(context);
 
 			// Assert
@@ -47,7 +47,7 @@ namespace FluentSecurity.Specification.Mvc
 			var actionDescriptor = new ReflectedActionDescriptor(method, expectedActionName, controllerDescriptor);
 			var context = new AuthorizationContext { ActionDescriptor = actionDescriptor };
 
-			// Arrange
+			// Act
 			var name = _actionNameResolver.Resolve(context);
 
 			// Assert
@@ -65,7 +65,7 @@ namespace FluentSecurity.Specification.Mvc
 			var actionDescriptor = new ReflectedActionDescriptor(method, expectedActionName, controllerDescriptor);
 			var context = new AuthorizationContext { ActionDescriptor = actionDescriptor };
 
-			// Arrange
+			// Act
 			var name = _actionNameResolver.Resolve(context);
 
 			// Assert
@@ -80,7 +80,7 @@ namespace FluentSecurity.Specification.Mvc
 			var controllerType = typeof(TestController);
 			var method = controllerType.GetMethod(expectedActionName);
 
-			// Arrange
+			// Act
 			var name = _actionNameResolver.Resolve(method);
 
 			// Assert
@@ -95,7 +95,7 @@ namespace FluentSecurity.Specification.Mvc
 			var controllerType = typeof(TestController);
 			var method = controllerType.GetMethod(expectedActionName);
 
-			// Arrange
+			// Act
 			var name = _actionNameResolver.Resolve(method);
 
 			// Assert
@@ -110,7 +110,7 @@ namespace FluentSecurity.Specification.Mvc
 			var controllerType = typeof(TestController);
 			var method = controllerType.GetMethod("ActualAction");
 
-			// Arrange
+			// Act
 			var name = _actionNameResolver.Resolve(method);
 
 			// Assert
