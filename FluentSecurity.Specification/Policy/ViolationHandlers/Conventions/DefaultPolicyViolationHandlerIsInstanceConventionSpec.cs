@@ -30,7 +30,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
-			var handler = convention.GetHandlerFor(exception);
+			var handler = convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.Null);
@@ -44,7 +44,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
-			var handler = convention.GetHandlerFor(exception);
+			var handler = convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.InstanceOf<Handler1>());
@@ -58,14 +58,28 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
-			var handler = convention.GetHandlerFor(exception);
+			var handler = convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.InstanceOf<Handler2>());
 		}
 
+		[Test]
+		public void Should_throw_when_Handler3_does_not_implement_IPolicyViolationHandler()
+		{
+			// Arrange
+			var convention = new DefaultPolicyViolationHandlerIsInstanceConvention<Handler3>(() => new Handler3());
+			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
+
+			// Act & Assert
+			var result = Assert.Throws<Exception>(() => convention.GetHandlerFor<IPolicyViolationHandler>(exception));
+			Assert.That(result.Message, Is.EqualTo("The violation handler FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsInstanceConvention+Handler3 does not implement the interface FluentSecurity.IPolicyViolationHandler!"));
+		}
+
 		public class Handler1 : DefaultPolicyViolationHandler {}
 
 		public class Handler2 : DefaultPolicyViolationHandler {}
+
+		public class Handler3 : ISecurityPolicyViolationHandler {}
 	}
 }

@@ -24,7 +24,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new DenyAnonymousAccessPolicy());
 
 			// Act
-			var handler = convention.GetHandlerFor(exception);
+			var handler = convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.InstanceOf<DefaultPolicyViolationHandler>());
@@ -41,7 +41,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
-			var handler = convention.GetHandlerFor(exception);
+			var handler = convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.Null);

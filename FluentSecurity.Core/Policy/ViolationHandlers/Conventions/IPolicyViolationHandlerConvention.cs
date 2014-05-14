@@ -4,6 +4,6 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
 	public interface IPolicyViolationHandlerConvention : IConvention
 	{
-		object GetHandlerFor(PolicyViolationException exception);
+		object GetHandlerFor<TPolicyViolationHandler>(PolicyViolationException exception) where TPolicyViolationHandler : ISecurityPolicyViolationHandler;
 	}
 }

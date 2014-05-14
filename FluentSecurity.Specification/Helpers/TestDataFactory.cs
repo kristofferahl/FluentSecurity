@@ -40,6 +40,14 @@ namespace FluentSecurity.Specification.Helpers
 			return new SecurityRuntime(container);
 		}
 
+		public static IServiceLocator CreateServiceLocator(Func<Type, object> resolve, Func<Type, IEnumerable<object>> resolveAll)
+		{
+			var serviceLocator = new Mock<IServiceLocator>();
+			serviceLocator.Setup(x => x.Resolve(It.IsAny<Type>())).Returns(resolve);
+			serviceLocator.Setup(x => x.ResolveAll(It.IsAny<Type>())).Returns(resolveAll);
+			return serviceLocator.Object;
+		}
+
 		public static PolicyContainer CreateValidPolicyContainer()
 		{
 			return CreateValidPolicyContainer(ValidControllerName, ValidActionName);

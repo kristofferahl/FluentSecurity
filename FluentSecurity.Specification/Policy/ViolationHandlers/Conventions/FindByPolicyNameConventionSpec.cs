@@ -18,7 +18,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		public void SetUp()
 		{
 			var serviceLocator = new Mock<IServiceLocator>();
-			serviceLocator.Setup(x => x.ResolveAll<ISecurityPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
+			serviceLocator.Setup(x => x.ResolveAll<IPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
 			_convention = new FindByPolicyNameConvention();
 			_convention.Inject(serviceLocator.Object);
 		}
@@ -30,7 +30,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
-			var handler = _convention.GetHandlerFor(exception);
+			var handler = _convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.Null);
@@ -43,7 +43,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new DenyAnonymousAccessPolicy());
 
 			// Act
-			var handler = _convention.GetHandlerFor(exception);
+			var handler = _convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.InstanceOf<DenyAnonymousAccessPolicyViolationHandler>());
@@ -56,7 +56,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new DenyAuthenticatedAccessPolicy());
 
 			// Act
-			var handler = _convention.GetHandlerFor(exception);
+			var handler = _convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.InstanceOf<DenyAuthenticatedAccessPolicyViolationHandler>());

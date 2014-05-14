@@ -36,7 +36,7 @@ namespace FluentSecurity.Policy.ViolationHandlers
 					((IServiceLocatorDependent)convention).Inject(SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator);
 				}
 
-				matchingHandler = (IPolicyViolationHandler) convention.GetHandlerFor(exception);
+				matchingHandler = (IPolicyViolationHandler) convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 				if (matchingHandler != null)
 				{

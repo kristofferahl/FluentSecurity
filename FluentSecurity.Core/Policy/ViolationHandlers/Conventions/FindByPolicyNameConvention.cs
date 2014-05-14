@@ -5,7 +5,7 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 {
 	public class FindByPolicyNameConvention : PolicyViolationHandlerFilterConvention
 	{
-		public override ISecurityPolicyViolationHandler GetHandlerFor(PolicyViolationException exception, IEnumerable<ISecurityPolicyViolationHandler> policyViolationHandlers)
+		public override ISecurityPolicyViolationHandler GetHandlerFor<TViolationHandlerType>(PolicyViolationException exception, IEnumerable<TViolationHandlerType> policyViolationHandlers)
 		{
 			var matchingHandler = policyViolationHandlers.SingleOrDefault(handler => HandlerIsMatchForPolicyName(handler, exception));
 			return matchingHandler;

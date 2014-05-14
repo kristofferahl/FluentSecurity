@@ -13,7 +13,7 @@ namespace FluentSecurity.Specification.TestData
 			_handlerToReturn = handlerToReturn;
 		}
 
-		public object GetHandlerFor(PolicyViolationException exception)
+		public object GetHandlerFor<TViolationHandlerType>(PolicyViolationException exception) where TViolationHandlerType : ISecurityPolicyViolationHandler
 		{
 			WasCalled = true;
 			return _handlerToReturn;

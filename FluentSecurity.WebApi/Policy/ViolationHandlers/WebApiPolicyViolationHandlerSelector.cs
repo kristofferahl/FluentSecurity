@@ -35,7 +35,7 @@ namespace FluentSecurity.WebApi.Policy.ViolationHandlers
 					((IServiceLocatorDependent)convention).Inject(SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator);
 				}
 
-				matchingHandler = (IWebApiPolicyViolationHandler) convention.GetHandlerFor(exception);
+				matchingHandler = (IWebApiPolicyViolationHandler) convention.GetHandlerFor<IWebApiPolicyViolationHandler>(exception);
 
 				if (matchingHandler != null)
 				{

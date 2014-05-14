@@ -18,13 +18,13 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		{
 			// Arrange
 			var serviceLocator = new Mock<IServiceLocator>();
-			serviceLocator.Setup(x => x.ResolveAll<ISecurityPolicyViolationHandler>()).Returns(new List<IPolicyViolationHandler>());
+			serviceLocator.Setup(x => x.ResolveAll<IPolicyViolationHandler>()).Returns(new List<IPolicyViolationHandler>());
 			var convention = new FindDefaultPolicyViolationHandlerByNameConvention();
 			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act
-			var handler = convention.GetHandlerFor(exception);
+			var handler = convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.Null);
@@ -35,13 +35,13 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 		{
 			// Arrange
 			var serviceLocator = new Mock<IServiceLocator>();
-			serviceLocator.Setup(x => x.ResolveAll<ISecurityPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
+			serviceLocator.Setup(x => x.ResolveAll<IPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
 			var convention = new FindDefaultPolicyViolationHandlerByNameConvention();
 			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new RequireAnyRolePolicy("Role"));
 
 			// Act
-			var handler = convention.GetHandlerFor(exception);
+			var handler = convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.InstanceOf<DefaultPolicyViolationHandler>());
@@ -53,12 +53,12 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			// Arrange
 			var convention = new FindDefaultPolicyViolationHandlerByNameConvention();
 			var serviceLocator = new Mock<IServiceLocator>();
-			serviceLocator.Setup(x => x.ResolveAll<ISecurityPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
+			serviceLocator.Setup(x => x.ResolveAll<IPolicyViolationHandler>()).Returns(TestDataFactory.CreatePolicyViolationHandlers());
 			convention.Inject(serviceLocator.Object);
 			var exception = TestDataFactory.CreateExceptionFor(new RequireAllRolesPolicy("Role"));
 
 			// Act
-			var handler = convention.GetHandlerFor(exception);
+			var handler = convention.GetHandlerFor<IPolicyViolationHandler>(exception);
 
 			// Assert
 			Assert.That(handler, Is.InstanceOf<DefaultPolicyViolationHandler>());
