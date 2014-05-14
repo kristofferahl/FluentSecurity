@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection.Emit;
 using System.Web.Mvc;
 using NUnit.Framework;
 
@@ -18,7 +19,106 @@ namespace FluentSecurity.Specification.Mvc
 		}
 
 		[Test]
-		public void Should_handle_UnaryExpression()
+		public void Should_resolve_action_name_UnaryExpression_from_AuthorizationContext()
+		{
+			// Arrange
+			const string expectedActionName = "UnaryExpression";
+			var controllerType = typeof(TestController);
+			var controllerDescriptor = new ReflectedControllerDescriptor(controllerType);
+			var method = controllerType.GetMethod(expectedActionName);
+			var actionDescriptor = new ReflectedActionDescriptor(method, expectedActionName, controllerDescriptor);
+			var context = new AuthorizationContext { ActionDescriptor = actionDescriptor };
+
+			// Arrange
+			var name = _actionNameResolver.Resolve(context);
+
+			// Assert
+			Assert.That(name, Is.EqualTo(expectedActionName));
+		}
+
+		[Test]
+		public void Should_resolve_action_name_InstanceMethodCallExpression_from_AuthorizationContext()
+		{
+			// Arrange
+			const string expectedActionName = "InstanceMethodCallExpression";
+			var controllerType = typeof (TestController);
+			var controllerDescriptor = new ReflectedControllerDescriptor(controllerType);
+			var method = controllerType.GetMethod(expectedActionName);
+			var actionDescriptor = new ReflectedActionDescriptor(method, expectedActionName, controllerDescriptor);
+			var context = new AuthorizationContext { ActionDescriptor = actionDescriptor };
+
+			// Arrange
+			var name = _actionNameResolver.Resolve(context);
+
+			// Assert
+			Assert.That(name, Is.EqualTo(expectedActionName));
+		}
+
+		[Test]
+		public void Should_resolve_action_name_AliasAction_from_AuthorizationContext()
+		{
+			// Arrange
+			const string expectedActionName = "AliasAction";
+			var controllerType = typeof(TestController);
+			var controllerDescriptor = new ReflectedControllerDescriptor(controllerType);
+			var method = controllerType.GetMethod("ActualAction");
+			var actionDescriptor = new ReflectedActionDescriptor(method, expectedActionName, controllerDescriptor);
+			var context = new AuthorizationContext { ActionDescriptor = actionDescriptor };
+
+			// Arrange
+			var name = _actionNameResolver.Resolve(context);
+
+			// Assert
+			Assert.That(name, Is.EqualTo(expectedActionName));
+		}
+
+		[Test]
+		public void Should_resolve_action_name_UnaryExpression_from_MethodInfo()
+		{
+			// Arrange
+			const string expectedActionName = "UnaryExpression";
+			var controllerType = typeof(TestController);
+			var method = controllerType.GetMethod(expectedActionName);
+
+			// Arrange
+			var name = _actionNameResolver.Resolve(method);
+
+			// Assert
+			Assert.That(name, Is.EqualTo(expectedActionName));
+		}
+
+		[Test]
+		public void Should_resolve_action_name_InstanceMethodCallExpression_from_MethodInfo()
+		{
+			// Arrange
+			const string expectedActionName = "InstanceMethodCallExpression";
+			var controllerType = typeof(TestController);
+			var method = controllerType.GetMethod(expectedActionName);
+
+			// Arrange
+			var name = _actionNameResolver.Resolve(method);
+
+			// Assert
+			Assert.That(name, Is.EqualTo(expectedActionName));
+		}
+
+		[Test]
+		public void Should_resolve_action_name_AliasAction_from_MethodInfo()
+		{
+			// Arrange
+			const string expectedActionName = "AliasAction";
+			var controllerType = typeof(TestController);
+			var method = controllerType.GetMethod("ActualAction");
+
+			// Arrange
+			var name = _actionNameResolver.Resolve(method);
+
+			// Assert
+			Assert.That(name, Is.EqualTo(expectedActionName));
+		}
+
+		[Test]
+		public void Should_resolve_action_name_UnaryExpression_from_LambdaExpression()
 		{
 			// Arrange
 			Expression<Func<TestController, object>> expression = x => x.UnaryExpression();
@@ -31,7 +131,7 @@ namespace FluentSecurity.Specification.Mvc
 		}
 
 		[Test]
-		public void Should_handle_InstanceMethodCallExpression()
+		public void Should_resolve_action_name_InstanceMethodCallExpression_from_LambdaExpression()
 		{
 			// Arrange
 			Expression<Func<TestController, object>> expression = x => x.InstanceMethodCallExpression();
@@ -44,7 +144,7 @@ namespace FluentSecurity.Specification.Mvc
 		}
 
 		[Test]
-		public void Should_consider_ActionNameAttibute()
+		public void Should_resolve_action_name_ActualAction_from_LambdaExpression()
 		{
 			// Arrange
 			Expression<Func<TestController, object>> expression = x => x.ActualAction();
@@ -56,7 +156,7 @@ namespace FluentSecurity.Specification.Mvc
 			Assert.That(name, Is.EqualTo("AliasAction"));
 		}
 
-		private class TestController
+		private class TestController : Controller
 		{
 			public Boolean UnaryExpression()
 			{
