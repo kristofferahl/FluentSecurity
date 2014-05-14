@@ -149,7 +149,6 @@
     <Compile Include="ServiceLocation\LifeCycles\ThreadLocalStorageLifecycle.cs" />
     <Compile Include="ServiceLocation\LifeCycles\TransientLifecycle.cs" />
     <Compile Include="ServiceLocation\RegisteredObject.cs" />
-    <Compile Include="ServiceLocation\RegistryTypeScanner.cs" />
     <Compile Include="ServiceLocation\ServiceLocator.cs" />
     <Compile Include="ServiceLocation\TypeNotRegisteredException.cs" />
     <Compile Include="StringExtensions.cs" />
