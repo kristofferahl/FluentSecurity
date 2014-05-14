@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentSecurity.Core.Policy.ViolationHandlers;
 using FluentSecurity.Policy;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.ServiceLocation;
@@ -79,7 +80,7 @@ namespace FluentSecurity.Specification.Policy.ViolationHandlers.Conventions
 			var exception = TestDataFactory.CreateExceptionFor(new IgnorePolicy());
 
 			// Act & Assert
-			var result = Assert.Throws<Exception>(() => convention.GetHandlerFor<IPolicyViolationHandler>(exception));
+			var result = Assert.Throws<PolicyViolationHandlerConversionException>(() => convention.GetHandlerFor<IPolicyViolationHandler>(exception));
 			Assert.That(result.Message, Is.EqualTo("The violation handler FluentSecurity.Specification.Policy.ViolationHandlers.Conventions.When_getting_a_PolicyViolationHandler_using_DefaultPolicyViolationHandlerIsOfTypeConvention+Handler3 does not implement the interface FluentSecurity.IPolicyViolationHandler!"));
 		}
 

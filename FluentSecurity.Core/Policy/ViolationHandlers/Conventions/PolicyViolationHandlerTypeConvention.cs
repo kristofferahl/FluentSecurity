@@ -1,5 +1,6 @@
 using System;
 using FluentSecurity.Core;
+using FluentSecurity.Core.Policy.ViolationHandlers;
 using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity.Policy.ViolationHandlers.Conventions
@@ -16,11 +17,10 @@ namespace FluentSecurity.Policy.ViolationHandlers.Conventions
 			if (type != null)
 			{
 				var instance = _policyViolationHandlerProvider.Invoke(type) as ISecurityPolicyViolationHandler;
+
 				if (instance != null && !(instance is TViolationHandlerType))
-				{
-					// TODO: Create and throw custom exception related to violation handler type conversion
-					throw new Exception(String.Format("The violation handler {0} does not implement the interface {1}!", instance.GetType(), typeof(TViolationHandlerType).FullName));
-				}
+					throw new PolicyViolationHandlerConversionException(instance.GetType(), typeof(TViolationHandlerType));
+
 				return instance;
 			}
 			return null;

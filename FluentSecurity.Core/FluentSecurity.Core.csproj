@@ -81,6 +81,7 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\PolicyViolationHandlerTypeConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerInstanceConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerTypeConvention.cs" />
+    <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerConversionException.cs" />
     <Compile Include="SecurityConfigurationExtensions.cs" />
     <Compile Include="SecurityPolicyExtensions.cs" />
     <Compile Include="Diagnostics\AnonymousSecurityEventListener.cs" />
