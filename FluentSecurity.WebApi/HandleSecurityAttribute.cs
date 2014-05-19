@@ -29,7 +29,6 @@ namespace FluentSecurity.WebApi
 			var actionName = actionNameResolver.Resolve(actionContext);
 
 			var securityContext = SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
-			securityContext.Data.RouteValues = actionContext.RequestContext.RouteData.Values;
 			securityContext.Data.ActionContext = actionContext;
 
 			var overrideResult = Handler.HandleSecurityFor(controllerName, actionName, securityContext);
