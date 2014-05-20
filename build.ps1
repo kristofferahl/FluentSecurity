@@ -1,7 +1,7 @@
 properties {
 	$product		= 'FluentSecurity'
-	$version		= '2.1.0'
-	$label			= ''
+	$version		= '3.0.0'
+	$label			= 'alpha0'
 	$configuration	= 'release'
 	$useVerbose		= $false
 
