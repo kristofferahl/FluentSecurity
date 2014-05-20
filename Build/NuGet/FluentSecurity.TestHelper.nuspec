@@ -12,7 +12,7 @@
 		<description>Test helpers for FluentSecurity</description>
 		<tags>asp.net mvc .net40 security test</tags>
 		<dependencies>
-			<dependency id="FluentSecurity.Core" version="[2,3)" />
+			<dependency id="FluentSecurity.Core" version="@CURRENT-VERSION@" />
 		</dependencies>
 	</metadata>
 	<files>

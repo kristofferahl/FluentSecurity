@@ -12,7 +12,7 @@
 		<description>Fluent security configuration for ASP.NET MVC</description>
 		<tags>asp.net mvc security .net40</tags>
 		<dependencies>
-			<dependency id="FluentSecurity.Core" version="[2,3)" />
+			<dependency id="FluentSecurity.Core" version="@CURRENT-VERSION@" />
 		</dependencies>
 	</metadata>
 	<files>

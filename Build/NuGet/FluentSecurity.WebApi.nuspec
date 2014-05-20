@@ -9,10 +9,10 @@
 		<licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<iconUrl>https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-128x128.png</iconUrl>
-		<description>Fluent security configuration for ASP.NET WebAPI</description>
+		<description>Fluent security configuration for ASP.NET Web API</description>
 		<tags>asp.net webapi security .net40</tags>
 		<dependencies>
-			<dependency id="FluentSecurity.Core" version="[2,3)" />
+			<dependency id="FluentSecurity.Core" version="@CURRENT-VERSION@" />
 		</dependencies>
 	</metadata>
 	<files>
