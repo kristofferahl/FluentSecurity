@@ -20,7 +20,7 @@ properties {
 	$mygetApiKey = $null
 	$nugetApiKey = $null
 	
-	$copyright		= 'Copyright (c) 2009-2013, Kristoffer Ahl'
+	$copyright		= 'Copyright (c) 2009-2014, Kristoffer Ahl'
 	
 	$setupMessage	= 'Executed Setup!'
 	$cleanMessage	= 'Executed Clean!'
