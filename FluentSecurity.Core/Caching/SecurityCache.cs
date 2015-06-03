@@ -17,7 +17,7 @@ namespace FluentSecurity.Caching
 			return (T) objectCache.Get(cacheKey);
 		}
 
-		public void Store<T>(T item, string cacheKey, Lifecycle lifecycle)
+		public void Set<T>(T item, string cacheKey, Lifecycle lifecycle)
 		{
 			var cache = _lifecycleResolver.Resolve(lifecycle).FindCache();
 			cache.Set(cacheKey, item);

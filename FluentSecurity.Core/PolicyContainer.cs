@@ -65,7 +65,7 @@ namespace FluentSecurity
 					if (result == null)
 					{
 						result = policy.Enforce(context);
-						cache.Store(result, cacheKey, strategy.CacheLifecycle.ToLifecycle());
+						cache.Set(result, cacheKey, strategy.CacheLifecycle.ToLifecycle());
 					}
 					else result.Cached = true;
 					return result;
