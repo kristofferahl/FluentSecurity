@@ -7,6 +7,8 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 			return null;
 		}
 
+		public void Add(object key, object instance) {}
+
 		public void Set(object key, object instance) {}
 		
 		public void Clear() {}

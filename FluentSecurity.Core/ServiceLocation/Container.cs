@@ -91,7 +91,7 @@ namespace FluentSecurity.ServiceLocation
 			if (instance == null)
 			{
 				instance = registeredObject.CreateInstance(this);
-				lifecycleCache.Set(registeredObject.InstanceKey, instance);
+				lifecycleCache.Add(registeredObject.InstanceKey, instance);
 			}
 
 			return instance;

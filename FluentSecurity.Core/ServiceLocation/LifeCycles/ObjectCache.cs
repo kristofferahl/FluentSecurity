@@ -20,7 +20,7 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 			return hasInstance ? _objects[key] : null;
 		}
 
-		public void Set(object key, object instance)
+		public void Add(object key, object instance)
 		{
 			if (instance == null) return;
 
@@ -29,6 +29,13 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 				var message = string.Format("An instance of type {1} is already in the cache with the key {0}.", key, instance.GetType().FullName);
 				throw new ArgumentException(message, "key");
 			}
+
+			_objects[key] = instance;
+		}
+
+		public void Set(object key, object instance)
+		{
+			if (instance == null) return;
 
 			_objects[key] = instance;
 		}
