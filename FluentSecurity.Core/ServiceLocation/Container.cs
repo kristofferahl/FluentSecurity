@@ -8,6 +8,8 @@ namespace FluentSecurity.ServiceLocation
 	// http://timross.wordpress.com/2010/01/21/creating-a-simple-ioc-container/
 	public class Container : IContainer
 	{
+		private static readonly object LockObject = new object();
+
 		private readonly ILifecycleResolver _lifecycleResolver;
 		private IContainerSource _primarySource;
 		private readonly IList<RegisteredObject> _registeredObjects = new List<RegisteredObject>();
@@ -90,8 +92,15 @@ namespace FluentSecurity.ServiceLocation
 			
 			if (instance == null)
 			{
-				instance = registeredObject.CreateInstance(this);
-				lifecycleCache.Add(registeredObject.InstanceKey, instance);
+				lock (LockObject)
+				{
+					instance = lifecycleCache.Get(registeredObject.InstanceKey);
+					if (instance == null)
+					{
+						instance = registeredObject.CreateInstance(this);
+						lifecycleCache.Add(registeredObject.InstanceKey, instance);
+					}
+				}
 			}
 
 			return instance;
