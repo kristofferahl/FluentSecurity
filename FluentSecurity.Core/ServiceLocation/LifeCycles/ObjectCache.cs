@@ -23,10 +23,10 @@ namespace FluentSecurity.ServiceLocation.LifeCycles
 		public void Set(object key, object instance)
 		{
 			if (instance == null) return;
-	
+
 			if (Has(key))
 			{
-				var message = string.Format("An instance for key {0} is already in the cache.", key);
+				var message = string.Format("An instance of type {1} is already in the cache with the key {0}.", key, instance.GetType().FullName);
 				throw new ArgumentException(message, "key");
 			}
 
