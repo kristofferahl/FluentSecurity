@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using FluentSecurity.ServiceLocation;
 using NUnit.Framework;
 
@@ -182,6 +185,76 @@ namespace FluentSecurity.Specification.ServiceLocation
 
 			// Assert
 			Assert.That(instance, Is.EqualTo(expectedInstances));
+		}
+
+		[Test]
+		public void Should_not_throw_when_requesting_the_same_instance_multiple_times_from_different_threads()
+		{
+			// Arrange
+			const int resolveCount = 100;
+			const int itterations = 1000;
+			var exceptions = new List<Exception>();
+
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+
+			// Act
+			for (var i = 0; i < itterations; i++) { exceptions.AddRange(RequestInstanceScopedAs(Lifecycle.Transient, resolveCount)); }
+			for (var i = 0; i < itterations; i++) { exceptions.AddRange(RequestInstanceScopedAs(Lifecycle.HybridHttpContext, resolveCount)); }
+			for (var i = 0; i < itterations; i++) { exceptions.AddRange(RequestInstanceScopedAs(Lifecycle.HybridHttpSession, resolveCount)); }
+			for (var i = 0; i < itterations; i++) { exceptions.AddRange(RequestInstanceScopedAs(Lifecycle.Singleton, resolveCount)); }
+
+			// Assert
+			const int totalAmountOfResolvedInstances = (resolveCount * itterations) * 4; // 4 is the number of unique lifecycle scopes (transient, singleton etc)
+			Trace.WriteLine(String.Format("Resolved {0} instances in {1}ms.", totalAmountOfResolvedInstances, stopwatch.ElapsedMilliseconds));
+
+			foreach (var exception in exceptions)
+			{
+				Trace.WriteLine(exception.Message);
+			}
+
+			Assert.AreEqual(exceptions.Count, 0);
+		}
+
+		private static IEnumerable<Exception> RequestInstanceScopedAs(Lifecycle lifecycle, int times)
+		{
+			IContainer container = new Container(new MvcLifecycleResolver());
+			container.Register<ITypeToResolve>(ctx => new ConcreteType(), lifecycle);
+
+			var waitCount = times;
+			var sync = new object();
+			var resetEvent = new ManualResetEvent(false);
+			var exceptions = new ConcurrentBag<Exception>();
+
+			for (var i = 0; i < times; i++)
+			{
+				ThreadPool.QueueUserWorkItem(state =>
+				{
+					try
+					{
+						var instance = container.Resolve<ITypeToResolve>();
+					}
+					catch (Exception e)
+					{
+						exceptions.Add(e);
+					}
+					finally
+					{
+						lock (sync)
+						{
+							waitCount--;
+							if (waitCount <= 0)
+							{
+								resetEvent.Set();
+							}
+						}
+					}
+				});
+			}
+
+			while (!resetEvent.WaitOne()) {}
+
+			return exceptions;
 		}
 
 		public interface ITypeToResolve {}
