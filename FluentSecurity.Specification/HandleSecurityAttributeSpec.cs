@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentSecurity.Configuration;
+using FluentSecurity.Core;
 using FluentSecurity.Specification.Helpers;
 using FluentSecurity.Specification.TestData;
 using Moq;
@@ -29,17 +30,42 @@ namespace FluentSecurity.Specification
 	[Category("HandleSecurityAttributeSpec")]
 	public class When_creating_a_new_HandleSecurityAttribute_using_the_overloaded_constructor
 	{
+		private HandleSecurityAttribute _attribute;
+		private Mock<ISecurityHandler<ActionResult>> _securityHandler;
+		private Mock<IControllerNameResolver<AuthorizationContext>> _controllerNameResolver;
+		private Mock<IActionNameResolver<AuthorizationContext>> _actionNameResolver;
+
+		[SetUp]
+		public void SetUp()
+		{
+			// Arrange
+			_securityHandler = new Mock<ISecurityHandler<ActionResult>>();
+			_controllerNameResolver = new Mock<IControllerNameResolver<AuthorizationContext>>();
+			_actionNameResolver = new Mock<IActionNameResolver<AuthorizationContext>>();
+
+			// Act
+			_attribute = new HandleSecurityAttribute(_securityHandler.Object, _controllerNameResolver.Object, _actionNameResolver.Object);
+		}
+
 		[Test]
 		public void Should_have_SecurityHandler_set()
 		{
-			// Arrange
-			var securityHandler = new Mock<ISecurityHandler<ActionResult>>();
-
-			// Act
-			var attribute = new HandleSecurityAttribute(securityHandler.Object);
-
 			// Assert
-			Assert.That(attribute.Handler, Is.EqualTo(securityHandler.Object));
+			Assert.That(_attribute.Handler, Is.EqualTo(_securityHandler.Object));
+		}
+
+		[Test]
+		public void Should_have_ControllerNameResolver_set()
+		{
+			// Assert
+			Assert.That(_attribute.ControllerNameResolver, Is.EqualTo(_controllerNameResolver.Object));
+		}
+
+		[Test]
+		public void Should_have_ActionNameResolver_set()
+		{
+			// Assert
+			Assert.That(_attribute.ActionNameResolver, Is.EqualTo(_actionNameResolver.Object));
 		}
 	}
 
@@ -48,11 +74,19 @@ namespace FluentSecurity.Specification
 	public class When_executing_OnActionExecuting
 	{
 		private MockSecurityContext _securityContext;
+		private Mock<IControllerNameResolver<AuthorizationContext>> _controllerNameResolver;
+		private Mock<IActionNameResolver<AuthorizationContext>> _actionNameResolver;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_securityContext = new MockSecurityContext();
+			_controllerNameResolver = new Mock<IControllerNameResolver<AuthorizationContext>>();
+			_actionNameResolver = new Mock<IActionNameResolver<AuthorizationContext>>();
+
+			_controllerNameResolver.Setup(x => x.Resolve(It.IsAny<AuthorizationContext>())).Returns(NameHelper.Controller<BlogController>());
+			_actionNameResolver.Setup(x => x.Resolve(It.IsAny<AuthorizationContext>())).Returns("Index");
+
 			FakeIoC.GetAllInstancesProvider = () => new List<object>
 			{
 				_securityContext
@@ -70,7 +104,7 @@ namespace FluentSecurity.Specification
 			// Arrange
 			var securityHandler = new Mock<ISecurityHandler<ActionResult>>();
 
-			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object, _controllerNameResolver.Object, _actionNameResolver.Object);
 			var filterContext = MvcHelpers.GetAuthorizationContextFor<BlogController>(x => x.Index());
 
 			// Act
@@ -78,7 +112,7 @@ namespace FluentSecurity.Specification
 
 			// Assert
 			Assert.That(filterContext.Result, Is.Null);
-			securityHandler.Verify(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", _securityContext), Times.Exactly(1));
+			securityHandler.Verify(x => x.HandleSecurityFor(NameHelper.Controller<BlogController>(), "Index", _securityContext), Times.Exactly(1));
 		}
 
 		[Test]
@@ -87,7 +121,7 @@ namespace FluentSecurity.Specification
 			// Arrange
 			var securityHandler = new Mock<ISecurityHandler<ActionResult>>();
 
-			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object, _controllerNameResolver.Object, _actionNameResolver.Object);
 			var filterContext = MvcHelpers.GetAuthorizationContextFor<BlogController>(x => x.Index());
 
 			// Act
@@ -116,9 +150,17 @@ namespace FluentSecurity.Specification
 			var expectedResult = new ViewResult { ViewName = "SomeViewName" };
 
 			var securityHandler = new Mock<ISecurityHandler<ActionResult>>();
-			securityHandler.Setup(x => x.HandleSecurityFor(typeof(BlogController).FullName, "Index", It.IsAny<ISecurityContext>())).Returns(expectedResult);
+			var controllerNameResolver = new Mock<IControllerNameResolver<AuthorizationContext>>();
+			var actionNameResolver = new Mock<IActionNameResolver<AuthorizationContext>>();
 
-			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object);
+			var controllerName = NameHelper.Controller<BlogController>();
+			const string actionName = "Index";
+
+			securityHandler.Setup(x => x.HandleSecurityFor(controllerName, actionName, It.IsAny<ISecurityContext>())).Returns(expectedResult);
+			controllerNameResolver.Setup(x => x.Resolve(It.IsAny<AuthorizationContext>())).Returns(controllerName);
+			actionNameResolver.Setup(x => x.Resolve(It.IsAny<AuthorizationContext>())).Returns(actionName);
+
+			var handleSecurityAttribute = new HandleSecurityAttribute(securityHandler.Object, controllerNameResolver.Object, actionNameResolver.Object);
 			var filterContext = MvcHelpers.GetAuthorizationContextFor<BlogController>(x => x.Index());
 
 			// Act

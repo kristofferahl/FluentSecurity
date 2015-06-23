@@ -9,21 +9,26 @@ namespace FluentSecurity
 	public class HandleSecurityAttribute : Attribute, IAuthorizationFilter
 	{
 		internal ISecurityHandler<ActionResult> Handler { get; private set; }
+		internal IControllerNameResolver<AuthorizationContext> ControllerNameResolver { get; private set; }
+		internal IActionNameResolver<AuthorizationContext> ActionNameResolver { get; private set; }
 
-		public HandleSecurityAttribute() : this(SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityHandler<ActionResult>>()) { }
+		public HandleSecurityAttribute() : this(
+			SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityHandler<ActionResult>>(),
+			SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<IControllerNameResolver<AuthorizationContext>>(),
+			SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<IActionNameResolver<AuthorizationContext>>()
+			) {}
 
-		public HandleSecurityAttribute(ISecurityHandler<ActionResult> securityHandler)
+		public HandleSecurityAttribute(ISecurityHandler<ActionResult> securityHandler, IControllerNameResolver<AuthorizationContext> controllerNameResolver, IActionNameResolver<AuthorizationContext> actionNameResolver)
 		{
 			Handler = securityHandler;
+			ControllerNameResolver = controllerNameResolver;
+			ActionNameResolver = actionNameResolver;
 		}
 
 		public void OnAuthorization(AuthorizationContext filterContext)
 		{
-			var controllerNameResolver = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<IControllerNameResolver<AuthorizationContext>>();
-			var actionNameResolver = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<IActionNameResolver<AuthorizationContext>>();
-
-			var controllerName = controllerNameResolver.Resolve(filterContext);
-			var actionName = actionNameResolver.Resolve(filterContext);
+			var controllerName = ControllerNameResolver.Resolve(filterContext);
+			var actionName = ActionNameResolver.Resolve(filterContext);
 
 			var securityContext = SecurityConfiguration.Get<MvcConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
 			securityContext.Data.RouteValues = filterContext.RouteData.Values;

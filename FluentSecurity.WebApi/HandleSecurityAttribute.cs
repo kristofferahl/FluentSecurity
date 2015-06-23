@@ -12,21 +12,26 @@ namespace FluentSecurity.WebApi
 	public class HandleSecurityAttribute : AuthorizationFilterAttribute
 	{
 		internal ISecurityHandler<object> Handler { get; private set; }
+		internal IControllerNameResolver<HttpActionContext> ControllerNameResolver { get; private set; }
+		internal IActionNameResolver<HttpActionContext> ActionNameResolver { get; private set; }
 
-		public HandleSecurityAttribute() : this(SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<ISecurityHandler<object>>()) { }
+		public HandleSecurityAttribute() : this(
+			SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<ISecurityHandler<object>>(),
+			SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<IControllerNameResolver<HttpActionContext>>(),
+			SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<IActionNameResolver<HttpActionContext>>()
+			) {}
 
-		public HandleSecurityAttribute(ISecurityHandler<object> securityHandler)
+		public HandleSecurityAttribute(ISecurityHandler<object> securityHandler, IControllerNameResolver<HttpActionContext> controllerNameResolver, IActionNameResolver<HttpActionContext> actionNameResolver)
 		{
 			Handler = securityHandler;
+			ControllerNameResolver = controllerNameResolver;
+			ActionNameResolver = actionNameResolver;
 		}
 
 		public override void OnAuthorization(HttpActionContext actionContext)
 		{
-			var controllerNameResolver = SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<IControllerNameResolver<HttpActionContext>>();
-			var actionNameResolver = SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<IActionNameResolver<HttpActionContext>>();
-
-			var controllerName = controllerNameResolver.Resolve(actionContext);
-			var actionName = actionNameResolver.Resolve(actionContext);
+			var controllerName = ControllerNameResolver.Resolve(actionContext);
+			var actionName = ActionNameResolver.Resolve(actionContext);
 
 			var securityContext = SecurityConfiguration.Get<WebApiConfiguration>().ServiceLocator.Resolve<ISecurityContext>();
 			securityContext.Data.ActionContext = actionContext;
