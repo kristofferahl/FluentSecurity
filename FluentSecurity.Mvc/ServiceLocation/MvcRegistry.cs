@@ -31,7 +31,7 @@ namespace FluentSecurity.ServiceLocation
 			var actionNameResolver = new MvcActionNameResolver();
 			var actionResolver = new MvcActionResolver(actionNameResolver);
 
-			container.Register<ControllerTypeScanner>(ctx => controllerTypeScanner);
+			container.Register<IControllerTypeScanner>(ctx => controllerTypeScanner);
 			container.Register<IControllerNameResolver<AuthorizationContext>>(ctx => controllerNameResolver, Lifecycle.Singleton);
 			container.Register<IControllerNameResolver>(ctx => controllerNameResolver, Lifecycle.Singleton);
 			container.Register<IActionNameResolver<AuthorizationContext>>(ctx => actionNameResolver, Lifecycle.Singleton);

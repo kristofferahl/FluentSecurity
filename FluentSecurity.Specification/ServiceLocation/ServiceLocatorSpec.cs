@@ -115,7 +115,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_have_single_singleton_instance_of_ControllerTypeScanner()
 		{
 			// Assert
-			VerifyHasOneSingletonOf<ControllerTypeScanner, MvcControllerTypeScanner>();
+			VerifyHasOneSingletonOf<IControllerTypeScanner, MvcControllerTypeScanner>();
 		}
 
 		[Test]

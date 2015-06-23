@@ -34,7 +34,7 @@ namespace FluentSecurity.WebApi.ServiceLocation
 			var actionNameResolver = new WebApiActionNameResolver();
 			var actionResolver = new WebApiActionResolver(actionNameResolver);
 
-			container.Register<ControllerTypeScanner>(ctx => controllerTypeScanner);
+			container.Register<IControllerTypeScanner>(ctx => controllerTypeScanner);
 			container.Register<IControllerNameResolver<HttpActionContext>>(ctx => controllerNameResolver, Lifecycle.Singleton);
 			container.Register<IControllerNameResolver>(ctx => controllerNameResolver, Lifecycle.Singleton);
 			container.Register<IActionNameResolver<HttpActionContext>>(ctx => actionNameResolver, Lifecycle.Singleton);

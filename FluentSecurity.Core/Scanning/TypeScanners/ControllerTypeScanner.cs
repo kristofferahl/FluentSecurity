@@ -6,7 +6,7 @@ using FluentSecurity.Core.Internals;
 
 namespace FluentSecurity.Scanning.TypeScanners
 {
-	public abstract class ControllerTypeScanner : ITypeScanner
+	public abstract class ControllerTypeScanner : IControllerTypeScanner
 	{
 		public Type ControllerType { get; private set; }
 
