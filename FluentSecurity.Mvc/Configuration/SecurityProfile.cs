@@ -14,7 +14,7 @@ namespace FluentSecurity.Configuration
 
 		public override IPolicyContainerConfiguration ForAllControllers()
 		{
-			var assemblyScanner = new AssemblyScanner();
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.Assembly(GetType().Assembly);
 			assemblyScanner.With<MvcControllerTypeScanner>();
 			var controllerTypes = assemblyScanner.Scan();

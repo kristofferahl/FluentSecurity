@@ -11,6 +11,7 @@ using FluentSecurity.Core.Internals;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.Scanning;
 using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
 using FluentSecurity.WebApi.Scanning;
@@ -59,7 +60,7 @@ namespace FluentSecurity.WebApi
 
 		public virtual IPolicyContainerConfiguration ForAllControllers()
 		{
-			var assemblyScanner = new WebApiAssemblyScanner();
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.TheCallingAssembly();
 			assemblyScanner.With<WebApiControllerTypeScanner>();
 			var controllerTypes = assemblyScanner.Scan();
@@ -69,7 +70,7 @@ namespace FluentSecurity.WebApi
 
 		public IPolicyContainerConfiguration ForAllControllersInAssembly(params Assembly[] assemblies)
 		{
-			var assemblyScanner = new WebApiAssemblyScanner();
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.Assemblies(assemblies);
 			assemblyScanner.With<WebApiControllerTypeScanner>();
 			var controllerTypes = assemblyScanner.Scan();
@@ -104,7 +105,7 @@ namespace FluentSecurity.WebApi
 			if (!assembliesToScan.Any())
 				assembliesToScan.Add(controllerType.Assembly);
 
-			var assemblyScanner = new WebApiAssemblyScanner();
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.Assemblies(assembliesToScan);
 			assemblyScanner.With(new WebApiControllerTypeScanner(controllerType));
 			var controllerTypes = assemblyScanner.Scan();
@@ -118,7 +119,7 @@ namespace FluentSecurity.WebApi
 		{
 			var assembly = typeof (TType).Assembly;
 
-			var assemblyScanner = new WebApiAssemblyScanner();
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.Assembly(assembly);
 			assemblyScanner.With<WebApiControllerTypeScanner>();
 			assemblyScanner.IncludeNamespaceContainingType<TType>();
@@ -129,7 +130,7 @@ namespace FluentSecurity.WebApi
 
 		public IPolicyContainerConfiguration ForActionsMatching(Func<ControllerActionInfo, bool> actionFilter, params Assembly[] assemblies)
 		{
-			var assemblyScanner = new WebApiAssemblyScanner();
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			var assembliesToScan = assemblies.ToList();
 
 			if (assembliesToScan.Any())
