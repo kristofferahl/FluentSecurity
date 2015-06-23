@@ -8,9 +8,9 @@ using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity.Scanning
 {
-	public abstract class AssemblyScannerBase
+	public abstract class AssemblyScannerBase : IAssemblyScanner
 	{
-		public ScannerContext Context { get; private set; }
+		internal ScannerContext Context { get; private set; }
 
 		protected AssemblyScannerBase()
 		{

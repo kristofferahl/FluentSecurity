@@ -31,7 +31,7 @@ namespace FluentSecurity.Diagnostics
 
 		public bool ScannedForEventListeners { get; private set; }
 		public bool ScanForEventListenersOnConfigure { get; set; }
-		public Action<AssemblyScannerBase> EventListenerScannerSetup { get; set; }
+		public Action<IAssemblyScanner> EventListenerScannerSetup { get; set; }
 		public IList<ISecurityEventListener> Listeners { get; private set; }
 
 		public SecurityDoctor()
