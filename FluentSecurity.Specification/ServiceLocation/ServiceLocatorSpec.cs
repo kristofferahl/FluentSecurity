@@ -7,6 +7,7 @@ using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
+using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
@@ -25,6 +26,13 @@ namespace FluentSecurity.Specification.ServiceLocation
 		{
 			// Arrange & Act
 			_serviceLocator = CreateServiceLocator(configuration => configuration.GetAuthenticationStatusFrom(() => true));
+		}
+
+		[Test]
+		public void Should_have_single_transient_instance_of_IAssemblyScanner()
+		{
+			// Assert
+			VerifyHasOneTransientOf<IAssemblyScanner, AssemblyScanner>();
 		}
 
 		[Test]

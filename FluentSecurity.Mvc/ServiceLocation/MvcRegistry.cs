@@ -6,6 +6,7 @@ using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
 using FluentSecurity.Policy.ViolationHandlers;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
+using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity.ServiceLocation
@@ -14,6 +15,8 @@ namespace FluentSecurity.ServiceLocation
 	{
 		public void Configure(IContainer container)
 		{
+			container.Register<IAssemblyScanner>(ctx => new AssemblyScanner(), Lifecycle.Transient);
+
 			container.Register<ISecurityConfiguration>(ctx => SecurityConfiguration.Get<MvcConfiguration>());
 			container.Register<ISecurityHandler<ActionResult>>(ctx => new SecurityHandler(), Lifecycle.Singleton);
 
