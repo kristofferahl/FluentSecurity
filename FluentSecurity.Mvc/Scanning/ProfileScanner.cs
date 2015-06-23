@@ -3,7 +3,7 @@ using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity.Scanning
 {
-	public class ProfileScanner : AssemblyScanner
+	public class ProfileScanner : AssemblyScanner, IProfileAssemblyScanner
 	{
 		public void LookForProfiles()
 		{

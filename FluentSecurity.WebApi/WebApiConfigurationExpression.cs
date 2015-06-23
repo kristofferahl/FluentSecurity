@@ -14,7 +14,6 @@ using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
 using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
-using FluentSecurity.WebApi.Scanning;
 using FluentSecurity.WebApi.Scanning.TypeScanners;
 
 namespace FluentSecurity.WebApi
@@ -144,10 +143,10 @@ namespace FluentSecurity.WebApi
 			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
 		}
 
-		public void Scan(Action<WebApiProfileScanner> scan)
+		public void Scan(Action<IProfileAssemblyScanner> scan)
 		{
-			Publish.ConfigurationEvent(() => "Scanning for profiles");
-			var profileScanner = new WebApiProfileScanner();
+			var profileScanner = Runtime.Container.Resolve<IProfileAssemblyScanner>();
+			Publish.ConfigurationEvent(() => String.Format("Scanning for profiles using {0}.", profileScanner.GetType().FullName));
 			scan.Invoke(profileScanner);
 			var profiles = profileScanner.Scan().ToList();
 			profiles.ForEach(ApplyProfile);

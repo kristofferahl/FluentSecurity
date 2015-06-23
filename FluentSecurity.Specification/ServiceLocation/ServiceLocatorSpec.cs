@@ -36,6 +36,13 @@ namespace FluentSecurity.Specification.ServiceLocation
 		}
 
 		[Test]
+		public void Should_have_single_transient_instance_of_IProfileAssemblyScanner()
+		{
+			// Assert
+			VerifyHasOneTransientOf<IProfileAssemblyScanner, ProfileScanner>();
+		}
+
+		[Test]
 		public void Should_have_single_singleton_instance_of_ISecurityConfiguration()
 		{
 			// Assert
