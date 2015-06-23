@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Web.Mvc;
 using System.Web.Routing;
-using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 using FluentSecurity.Policy;
@@ -58,9 +57,9 @@ namespace FluentSecurity.Specification.Helpers
 			var policyContainer = new PolicyContainer(
 				controllerName,
 				actionName,
-				CreateValidPolicyAppender()
+				CreateValidPolicyAppender(),
+				CreateLazySecurityPolicyFactory()
 				);
-			policyContainer.SetTypeFactory(new MvcLazySecurityPolicyFactory());
 			return policyContainer;
 		}
 
@@ -94,6 +93,11 @@ namespace FluentSecurity.Specification.Helpers
 		public static DefaultPolicyAppender CreateValidPolicyAppender()
 		{
 			return new DefaultPolicyAppender();
+		}
+
+		public static ILazySecurityPolicyFactory CreateLazySecurityPolicyFactory()
+		{
+			return new MvcLazySecurityPolicyFactory();
 		}
 
 		public static PolicyResult CreatePolicyResultFailure()

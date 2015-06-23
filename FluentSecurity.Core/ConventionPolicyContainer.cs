@@ -9,16 +9,20 @@ namespace FluentSecurity
 {
 	public class ConventionPolicyContainer : IPolicyContainerConfiguration
 	{
-		private readonly By _defaultCacheLevel;
 		private readonly IList<IPolicyContainerConfiguration> _policyContainers;
-		private ILazySecurityPolicyFactory _typeFactory;
+		private readonly ILazySecurityPolicyFactory _lazySecurityPolicyFactory;
+		private readonly By _defaultCacheLevel;
 
-		public ConventionPolicyContainer(IList<IPolicyContainerConfiguration> policyContainers, By defaultCacheLevel = By.Policy)
+		public ConventionPolicyContainer(IList<IPolicyContainerConfiguration> policyContainers, ILazySecurityPolicyFactory lazySecurityPolicyFactory, By defaultCacheLevel = By.Policy)
 		{
 			if (policyContainers == null)
 				throw new ArgumentNullException("policyContainers", "A list of policycontainers was not provided");
+
+			if (lazySecurityPolicyFactory == null)
+				throw new ArgumentNullException("lazySecurityPolicyFactory", "An instance of ILazySecurityPolicyFactory was not provided");
 			
 			_policyContainers = policyContainers;
+			_lazySecurityPolicyFactory = lazySecurityPolicyFactory;
 			_defaultCacheLevel = defaultCacheLevel;
 		}
 
@@ -32,7 +36,7 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration<TSecurityPolicy> AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			var lazySecurityPolicy = _typeFactory.Create<TSecurityPolicy>();
+			var lazySecurityPolicy = _lazySecurityPolicyFactory.Create<TSecurityPolicy>();
 			return new PolicyContainerConfigurationWrapper<TSecurityPolicy>(AddPolicy(lazySecurityPolicy));
 		}
 
@@ -71,11 +75,6 @@ namespace FluentSecurity
 				policyContainer.ClearCacheStrategyFor<TSecurityPolicy>();
 
 			return this;
-		}
-
-		public void SetTypeFactory(ILazySecurityPolicyFactory typeFactory)
-		{
-			_typeFactory = typeFactory;
 		}
 	}
 }

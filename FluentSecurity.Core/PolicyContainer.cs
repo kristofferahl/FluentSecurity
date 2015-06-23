@@ -7,21 +7,19 @@ using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
 using FluentSecurity.Core;
 using FluentSecurity.Diagnostics;
-using FluentSecurity.Internals;
 using FluentSecurity.Policy;
-using FluentSecurity.ServiceLocation;
 
 namespace FluentSecurity
 {
 	public class PolicyContainer : IPolicyContainer, IPolicyContainerConfiguration
 	{
-		internal IPolicyAppender PolicyAppender;
-		internal readonly List<PolicyResultCacheStrategy> CacheStrategies;
+		internal IPolicyAppender PolicyAppender { get; private set; }
+		internal ILazySecurityPolicyFactory LazySecurityPolicyFactory { get; private set; }
+		internal List<PolicyResultCacheStrategy> CacheStrategies { get; private set; }
 
-		private ILazySecurityPolicyFactory _typeFactory;
 		private readonly IList<ISecurityPolicy> _policies;
 
-		public PolicyContainer(string controllerName, string actionName, IPolicyAppender policyAppender)
+		public PolicyContainer(string controllerName, string actionName, IPolicyAppender policyAppender, ILazySecurityPolicyFactory lazySecurityPolicyFactory)
 		{
 			if (controllerName.IsNullOrEmpty())
 				throw new ArgumentException("Controllername must not be null or empty!", "controllerName");
@@ -32,12 +30,16 @@ namespace FluentSecurity
 			if (policyAppender == null)
 				throw new ArgumentNullException("policyAppender");
 
+			if (lazySecurityPolicyFactory == null)
+				throw new ArgumentNullException("lazySecurityPolicyFactory");
+
 			_policies = new List<ISecurityPolicy>();
 
 			ControllerName = controllerName;
 			ActionName = actionName;
 			
 			PolicyAppender = policyAppender;
+			LazySecurityPolicyFactory = lazySecurityPolicyFactory;
 			CacheStrategies = new List<PolicyResultCacheStrategy>();
 		}
 
@@ -116,7 +118,7 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration<TSecurityPolicy> AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			var lazySecurityPolicy = _typeFactory.Create<TSecurityPolicy>();
+			var lazySecurityPolicy = LazySecurityPolicyFactory.Create<TSecurityPolicy>();
 			return new PolicyContainerConfigurationWrapper<TSecurityPolicy>(AddPolicy(lazySecurityPolicy));
 		}
 
@@ -195,12 +197,6 @@ namespace FluentSecurity
 		public override string ToString()
 		{
 			return String.Format("{0} - {1} - {2}", base.ToString(), ControllerName, ActionName);
-		}
-
-		public void SetTypeFactory(ILazySecurityPolicyFactory typeFactory)
-		{
-			// TODO: Move this to the constructor
-			_typeFactory = typeFactory;
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace FluentSecurity.Core
 			get { return Container.Resolve<ISecurityCache>(); }
 		}
 
-		public ILazySecurityPolicyFactory TypeFactory
+		public ILazySecurityPolicyFactory LazySecurityPolicyFactory
 		{
 			get { return Container.Resolve<ILazySecurityPolicyFactory>(); }
 		}

@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using FluentSecurity.Caching;
 using FluentSecurity.Configuration;
+using FluentSecurity.Core;
 using FluentSecurity.Policy;
 using FluentSecurity.ServiceLocation;
 using FluentSecurity.Specification.Helpers;
@@ -22,6 +23,7 @@ namespace FluentSecurity.Specification
 		private string _validControllerName;
 		private string _validActionName;
 		private IPolicyAppender _validPolicyAppender;
+		private ILazySecurityPolicyFactory _validLazySecurityPolicyFactory;
 
 		[SetUp]
 		public void SetUp()
@@ -29,13 +31,14 @@ namespace FluentSecurity.Specification
 			_validControllerName = TestDataFactory.ValidControllerName;
 			_validActionName = TestDataFactory.ValidActionName;
 			_validPolicyAppender = TestDataFactory.CreateValidPolicyAppender();
+			_validLazySecurityPolicyFactory = TestDataFactory.CreateLazySecurityPolicyFactory();
 		}
 
 		[Test]
 		public void Should_throw_ArgumentException_when_the_controllername_is_null()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(null, _validActionName, _validPolicyAppender)
+				new PolicyContainer(null, _validActionName, _validPolicyAppender, _validLazySecurityPolicyFactory)
 			);
 		}
 
@@ -43,7 +46,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_controllername_is_empty()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(string.Empty, _validActionName, _validPolicyAppender)
+				new PolicyContainer(string.Empty, _validActionName, _validPolicyAppender, _validLazySecurityPolicyFactory)
 			);
 		}
 
@@ -51,7 +54,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_actionname_is_null()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(_validControllerName, null, _validPolicyAppender)
+				new PolicyContainer(_validControllerName, null, _validPolicyAppender, _validLazySecurityPolicyFactory)
 			);
 		}
 
@@ -59,7 +62,7 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentException_when_actionname_is_empty()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				new PolicyContainer(_validControllerName, string.Empty, _validPolicyAppender)
+				new PolicyContainer(_validControllerName, string.Empty, _validPolicyAppender, _validLazySecurityPolicyFactory)
 			);
 		}
 
@@ -71,7 +74,19 @@ namespace FluentSecurity.Specification
 
 			// Act & Assert
 			Assert.Throws<ArgumentNullException>(() =>
-				new PolicyContainer(_validControllerName, _validActionName, policyAppender)
+				new PolicyContainer(_validControllerName, _validActionName, policyAppender, _validLazySecurityPolicyFactory)
+			);
+		}
+
+		[Test]
+		public void Should_throw_ArgumentException_when_lazy_security_policy_factory_is_null()
+		{
+			// Arrange
+			const ILazySecurityPolicyFactory lazySecurityPolicyFactory = null;
+
+			// Act & Assert
+			Assert.Throws<ArgumentNullException>(() =>
+				new PolicyContainer(_validControllerName, _validActionName, _validPolicyAppender, lazySecurityPolicyFactory)
 			);
 		}
 	}
@@ -83,6 +98,7 @@ namespace FluentSecurity.Specification
 		private IPolicyAppender _expectedPolicyAppender = new DefaultPolicyAppender();
 		private string _expectedControllerName = "SomeController";
 		private string _expectedActionName = "SomeAction";
+		private ILazySecurityPolicyFactory _expectedLazySecurityPolicyFactory;
 
 		[SetUp]
 		public void SetUp()
@@ -90,11 +106,12 @@ namespace FluentSecurity.Specification
 			_expectedControllerName = TestDataFactory.ValidControllerName;
 			_expectedActionName = TestDataFactory.ValidActionName;
 			_expectedPolicyAppender = TestDataFactory.CreateValidPolicyAppender();
+			_expectedLazySecurityPolicyFactory = TestDataFactory.CreateLazySecurityPolicyFactory();
 		}
 
 		private IPolicyContainer Because()
 		{
-			return new PolicyContainer(_expectedControllerName, _expectedActionName, _expectedPolicyAppender);
+			return new PolicyContainer(_expectedControllerName, _expectedActionName, _expectedPolicyAppender, _expectedLazySecurityPolicyFactory);
 		}
 
 		[Test]
@@ -118,13 +135,23 @@ namespace FluentSecurity.Specification
 		}
 
 		[Test]
-		public void Should_have_PolicyAppender_set_to_DefaultPolicyAppender()
+		public void Should_have_PolicyAppender_set()
 		{
 			// Act
 			var policyContainer = (PolicyContainer) Because();
 
 			// Assert
 			Assert.That(policyContainer.PolicyAppender, Is.EqualTo(_expectedPolicyAppender));
+		}
+
+		[Test]
+		public void Should_have_LazySecurityPolicyFactory_set()
+		{
+			// Act
+			var policyContainer = (PolicyContainer)Because();
+
+			// Assert
+			Assert.That(policyContainer.LazySecurityPolicyFactory, Is.EqualTo(_expectedLazySecurityPolicyFactory));
 		}
 
 		[Test]

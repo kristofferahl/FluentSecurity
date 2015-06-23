@@ -193,15 +193,13 @@ namespace FluentSecurity.WebApi
 					);
 			}
 
-			var policyContainer = new ConventionPolicyContainer(policyContainers, defaultCacheLevel);
-			policyContainer.SetTypeFactory(Runtime.TypeFactory);
+			var policyContainer = new ConventionPolicyContainer(policyContainers, Runtime.LazySecurityPolicyFactory, defaultCacheLevel);
 			return policyContainer;
 		}
 
 		private IPolicyContainerConfiguration AddPolicyContainerFor(string controllerName, string actionName)
 		{
-			var policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender);
-			policyContainer.SetTypeFactory(Runtime.TypeFactory);
+			var policyContainer = new PolicyContainer(controllerName, actionName, PolicyAppender, Runtime.LazySecurityPolicyFactory);
 			return Runtime.AddPolicyContainer(policyContainer);
 		}
 

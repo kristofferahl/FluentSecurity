@@ -19,7 +19,15 @@ namespace FluentSecurity.Specification
 		public void Should_throw_ArgumentNullException_when_policycontainers_is_null()
 		{
 			Assert.Throws<ArgumentNullException>(() =>
-				new ConventionPolicyContainer(null)
+				new ConventionPolicyContainer(null, TestDataFactory.CreateLazySecurityPolicyFactory())
+			);
+		}
+
+		[Test]
+		public void Should_throw_ArgumentNullException_when_lazysecuritypolictfactory_is_null()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				new ConventionPolicyContainer(new List<IPolicyContainerConfiguration>(), null)
 			);
 		}
 
@@ -27,14 +35,14 @@ namespace FluentSecurity.Specification
 		public void Should_not_throw_when_policycontainers_is_empty()
 		{
 			Assert.DoesNotThrow(() =>
-				new ConventionPolicyContainer(new List<IPolicyContainerConfiguration>())
+				new ConventionPolicyContainer(new List<IPolicyContainerConfiguration>(), TestDataFactory.CreateLazySecurityPolicyFactory())
 			);
 		}
 	}
 
 	[TestFixture]
 	[Category("ConventionPolicyContainerSpec")]
-	public class When_adding_a_policy_to_a_conventionpolicycontainer
+	public class When_adding_a_policy_to_a_conventionpolicycontainer : ConventionPolicyContainerSpecBase
 	{
 		[Test]
 		public void Should_add_policy_to_policycontainers()
@@ -48,7 +56,7 @@ namespace FluentSecurity.Specification
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
+			var conventionPolicyContainer = CreateConventionPolicyContainer(policyContainers);
 			var policy = new DenyAnonymousAccessPolicy();
 
 			// Act
@@ -72,8 +80,7 @@ namespace FluentSecurity.Specification
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
-			conventionPolicyContainer.SetTypeFactory(new MvcLazySecurityPolicyFactory());
+			var conventionPolicyContainer = CreateConventionPolicyContainer(policyContainers);
 
 			// Act
 			conventionPolicyContainer.AddPolicy<DenyAnonymousAccessPolicy>();
@@ -87,7 +94,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConventionPolicyContainerSpec")]
-	public class When_removing_a_policies_from_a_conventionpolicycontainer
+	public class When_removing_a_policies_from_a_conventionpolicycontainer : ConventionPolicyContainerSpecBase
 	{
 		[Test]
 		public void Should_delegate_work_to_policycontainers()
@@ -104,7 +111,7 @@ namespace FluentSecurity.Specification
 				policyContainer3.Object,
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers);
+			var conventionPolicyContainer = CreateConventionPolicyContainer(policyContainers);
 
 			// Act
 			conventionPolicyContainer.RemovePolicy<SomePolicy>();
@@ -126,7 +133,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConventionPolicyContainerSpec")]
-	public class When_setting_the_cache_lifecycle_for_a_policy_on_a_conventionpolicycontainer
+	public class When_setting_the_cache_lifecycle_for_a_policy_on_a_conventionpolicycontainer : ConventionPolicyContainerSpecBase
 	{
 		[Test]
 		public void Should_add_policyresult_cache_strategy_to_policycontainers()
@@ -140,7 +147,7 @@ namespace FluentSecurity.Specification
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList(), By.Controller);
+			var conventionPolicyContainer = CreateConventionPolicyContainer(policyContainers, By.Controller);
 			const Cache expectedLifecycle = Cache.PerHttpRequest;
 			var expectedType = typeof(DenyAnonymousAccessPolicy);
 
@@ -163,7 +170,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("ConventionPolicyContainerSpec")]
-	public class When_setting_the_cache_lifecycle_and_cache_level_for_a_policy_on_a_conventionpolicycontainer
+	public class When_setting_the_cache_lifecycle_and_cache_level_for_a_policy_on_a_conventionpolicycontainer : ConventionPolicyContainerSpecBase
 	{
 		[Test]
 		public void Should_add_policyresult_cache_strategy_to_policycontainers()
@@ -177,7 +184,7 @@ namespace FluentSecurity.Specification
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
+			var conventionPolicyContainer = CreateConventionPolicyContainer(policyContainers);
 			const Cache expectedLifecycle = Cache.PerHttpRequest;
 			const By expectedLevel = By.ControllerAction;
 			var expectedType = typeof(DenyAnonymousAccessPolicy);
@@ -201,7 +208,7 @@ namespace FluentSecurity.Specification
 
 	[TestFixture]
 	[Category("PolicyContainerSpec")]
-	public class When_clearing_the_cache_strategies_of_a_conventionpolicycontainer
+	public class When_clearing_the_cache_strategies_of_a_conventionpolicycontainer : ConventionPolicyContainerSpecBase
 	{
 		[Test]
 		public void Should_clear_all_cache_strategies()
@@ -214,7 +221,7 @@ namespace FluentSecurity.Specification
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
+			var conventionPolicyContainer = CreateConventionPolicyContainer(policyContainers);
 			conventionPolicyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest);
 
 			// Act
@@ -238,7 +245,7 @@ namespace FluentSecurity.Specification
 				TestDataFactory.CreateValidPolicyContainer(controllerName, "AddPost")
 			};
 
-			var conventionPolicyContainer = new ConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList());
+			var conventionPolicyContainer = CreateConventionPolicyContainer(policyContainers);
 			conventionPolicyContainer.Cache<RequireAnyRolePolicy>(Cache.PerHttpRequest);
 			conventionPolicyContainer.Cache<RequireAllRolesPolicy>(Cache.PerHttpRequest);
 
@@ -250,6 +257,23 @@ namespace FluentSecurity.Specification
 			Assert.That(containers[0].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
 			Assert.That(containers[1].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
 			Assert.That(containers[2].CacheStrategies.Single().PolicyType, Is.EqualTo(typeof(RequireAllRolesPolicy)));
+		}
+	}
+
+	public abstract class ConventionPolicyContainerSpecBase
+	{
+		public ConventionPolicyContainer CreateConventionPolicyContainer(IList<PolicyContainer> policyContainers, By defaultCacheLevel = By.Policy)
+		{
+			return CreateConventionPolicyContainer(policyContainers.Cast<IPolicyContainerConfiguration>().ToList(), defaultCacheLevel);
+		}
+
+		protected ConventionPolicyContainer CreateConventionPolicyContainer(IList<IPolicyContainerConfiguration> policyContainers, By defaultCacheLevel = By.Policy)
+		{
+			return new ConventionPolicyContainer(
+				policyContainers,
+				TestDataFactory.CreateLazySecurityPolicyFactory(),
+				defaultCacheLevel
+				);
 		}
 	}
 }
