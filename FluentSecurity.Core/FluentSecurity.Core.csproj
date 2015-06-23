@@ -83,6 +83,7 @@
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerConversionException.cs" />
     <Compile Include="Scanning\IAssemblyScanner.cs" />
     <Compile Include="Scanning\IProfileAssemblyScanner.cs" />
+    <Compile Include="Scanning\TypeScanners\IControllerTypeScanner.cs" />
     <Compile Include="SecurityConfigurationExtensions.cs" />
     <Compile Include="SecurityPolicyExtensions.cs" />
     <Compile Include="Diagnostics\AnonymousSecurityEventListener.cs" />
