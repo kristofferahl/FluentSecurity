@@ -58,8 +58,10 @@ namespace FluentSecurity
 		public virtual IPolicyContainerConfiguration ForAllControllers()
 		{
 			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			assemblyScanner.TheCallingAssembly();
-			assemblyScanner.With<MvcControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes);
@@ -68,8 +70,10 @@ namespace FluentSecurity
 		public IPolicyContainerConfiguration ForAllControllersInAssembly(params Assembly[] assemblies)
 		{
 			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			assemblyScanner.Assemblies(assemblies);
-			assemblyScanner.With<MvcControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes);
@@ -96,15 +100,18 @@ namespace FluentSecurity
 
 		private IPolicyContainerConfiguration ForAllControllersInheriting<TController>(Func<string, bool> actionFilter, IEnumerable<Assembly> assemblies) where TController : Controller
 		{
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			var controllerType = typeof (TController);
+			controllerTypeScanner.SetControllerType(controllerType);
 
 			var assembliesToScan = assemblies.ToList();
 			if (!assembliesToScan.Any())
 				assembliesToScan.Add(controllerType.Assembly);
 
-			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.Assemblies(assembliesToScan);
-			assemblyScanner.With(new MvcControllerTypeScanner(controllerType));
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			Func<ControllerActionInfo, bool> filter = info => actionFilter.Invoke(info.ActionName);
@@ -114,11 +121,13 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration ForAllControllersInNamespaceContainingType<TType>()
 		{
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			var assembly = typeof (TType).Assembly;
 
-			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.Assembly(assembly);
-			assemblyScanner.With<MvcControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			assemblyScanner.IncludeNamespaceContainingType<TType>();
 			var controllerTypes = assemblyScanner.Scan();
 
@@ -128,6 +137,8 @@ namespace FluentSecurity
 		public IPolicyContainerConfiguration ForActionsMatching(Func<ControllerActionInfo, bool> actionFilter, params Assembly[] assemblies)
 		{
 			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			var assembliesToScan = assemblies.ToList();
 
 			if (assembliesToScan.Any())
@@ -135,7 +146,7 @@ namespace FluentSecurity
 			else
 				assemblyScanner.TheCallingAssembly();
 
-			assemblyScanner.With<MvcControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);

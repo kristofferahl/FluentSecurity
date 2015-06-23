@@ -1,6 +1,6 @@
 ﻿using FluentSecurity.Configuration;
 using FluentSecurity.Scanning;
-using FluentSecurity.WebApi.Scanning.TypeScanners;
+using FluentSecurity.Scanning.TypeScanners;
 
 namespace FluentSecurity.WebApi.Configuration
 {
@@ -16,8 +16,10 @@ namespace FluentSecurity.WebApi.Configuration
 		public override IPolicyContainerConfiguration ForAllControllers()
 		{
 			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			assemblyScanner.Assembly(GetType().Assembly);
-			assemblyScanner.With<WebApiControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes);

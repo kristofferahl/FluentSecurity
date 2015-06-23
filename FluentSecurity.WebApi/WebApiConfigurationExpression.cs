@@ -12,9 +12,9 @@ using FluentSecurity.Diagnostics;
 using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
+using FluentSecurity.Scanning.TypeScanners;
 using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
-using FluentSecurity.WebApi.Scanning.TypeScanners;
 
 namespace FluentSecurity.WebApi
 {
@@ -60,8 +60,10 @@ namespace FluentSecurity.WebApi
 		public virtual IPolicyContainerConfiguration ForAllControllers()
 		{
 			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			assemblyScanner.TheCallingAssembly();
-			assemblyScanner.With<WebApiControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes);
@@ -70,8 +72,10 @@ namespace FluentSecurity.WebApi
 		public IPolicyContainerConfiguration ForAllControllersInAssembly(params Assembly[] assemblies)
 		{
 			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			assemblyScanner.Assemblies(assemblies);
-			assemblyScanner.With<WebApiControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes);
@@ -98,15 +102,18 @@ namespace FluentSecurity.WebApi
 
 		private IPolicyContainerConfiguration ForAllControllersInheriting<TController>(Func<string, bool> actionFilter, IEnumerable<Assembly> assemblies) where TController : ApiController
 		{
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			var controllerType = typeof (TController);
+			controllerTypeScanner.SetControllerType(controllerType);
 
 			var assembliesToScan = assemblies.ToList();
 			if (!assembliesToScan.Any())
 				assembliesToScan.Add(controllerType.Assembly);
 
-			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.Assemblies(assembliesToScan);
-			assemblyScanner.With(new WebApiControllerTypeScanner(controllerType));
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			Func<ControllerActionInfo, bool> filter = info => actionFilter.Invoke(info.ActionName);
@@ -116,11 +123,13 @@ namespace FluentSecurity.WebApi
 
 		public IPolicyContainerConfiguration ForAllControllersInNamespaceContainingType<TType>()
 		{
+			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			var assembly = typeof (TType).Assembly;
 
-			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
 			assemblyScanner.Assembly(assembly);
-			assemblyScanner.With<WebApiControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			assemblyScanner.IncludeNamespaceContainingType<TType>();
 			var controllerTypes = assemblyScanner.Scan();
 
@@ -130,6 +139,8 @@ namespace FluentSecurity.WebApi
 		public IPolicyContainerConfiguration ForActionsMatching(Func<ControllerActionInfo, bool> actionFilter, params Assembly[] assemblies)
 		{
 			var assemblyScanner = Runtime.Container.Resolve<IAssemblyScanner>();
+			var controllerTypeScanner = Runtime.Container.Resolve<IControllerTypeScanner>();
+
 			var assembliesToScan = assemblies.ToList();
 
 			if (assembliesToScan.Any())
@@ -137,7 +148,7 @@ namespace FluentSecurity.WebApi
 			else
 				assemblyScanner.TheCallingAssembly();
 
-			assemblyScanner.With<WebApiControllerTypeScanner>();
+			assemblyScanner.With(controllerTypeScanner);
 			var controllerTypes = assemblyScanner.Scan();
 
 			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
