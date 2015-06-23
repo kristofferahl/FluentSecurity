@@ -16,8 +16,8 @@ namespace FluentSecurity.Core
 			var actionNameResolver = configuration.ServiceLocator.Resolve<IActionNameResolver>();
 			var actionResolver = configuration.ServiceLocator.Resolve<IActionResolver>();
 			var controlleTypeScanner = configuration.ServiceLocator.Resolve<IControllerTypeScanner>();
+			var assemblyScanner = configuration.ServiceLocator.Resolve<IAssemblyScanner>();
 
-			var assemblyScanner = new CoreAssemblyScanner();
 			assemblyScanner.Assemblies(assemblies);
 			assemblyScanner.With(controlleTypeScanner);
 
