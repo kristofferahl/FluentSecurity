@@ -70,7 +70,7 @@
     <Compile Include="WebApiSecurityRuntime.cs" />
     <Compile Include="WebApiSecurityHandler.cs" />
     <Compile Include="Configuration\WebApiConfiguration.cs" />
-    <Compile Include="WebApiTypeFactory.cs" />
+    <Compile Include="WebApiLazySecurityPolicyFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentSecurity.Core\FluentSecurity.Core.csproj">

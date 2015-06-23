@@ -24,7 +24,7 @@ namespace FluentSecurity.ServiceLocation
 			container.Register<ISecurityContext>(ctx => ctx.Resolve<ISecurityConfiguration>().CreateContext());
 
 			container.Register<ISecurityCache>(ctx => new SecurityCache(ctx.Resolve<ILifecycleResolver>()), Lifecycle.Singleton);
-			container.Register<ITypeFactory>(ctx => new MvcTypeFactory(), Lifecycle.Singleton);
+			container.Register<ILazySecurityPolicyFactory>(ctx => new MvcLazySecurityPolicyFactory(), Lifecycle.Singleton);
 
 			var controllerTypeScanner = new MvcControllerTypeScanner();
 			var controllerNameResolver = new MvcControllerNameResolver();

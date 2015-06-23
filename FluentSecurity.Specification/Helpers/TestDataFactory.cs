@@ -60,7 +60,7 @@ namespace FluentSecurity.Specification.Helpers
 				actionName,
 				CreateValidPolicyAppender()
 				);
-			policyContainer.SetTypeFactory(new MvcTypeFactory());
+			policyContainer.SetTypeFactory(new MvcLazySecurityPolicyFactory());
 			return policyContainer;
 		}
 

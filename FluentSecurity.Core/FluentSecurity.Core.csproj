@@ -63,7 +63,7 @@
     <Compile Include="Internals\ControllerActionInfo.cs" />
     <Compile Include="Internals\LambdaExpressionExtensions.cs" />
     <Compile Include="Internals\MethodInfoExtensions.cs" />
-    <Compile Include="ITypeFactory.cs" />
+    <Compile Include="ILazySecurityPolicyFactory.cs" />
     <Compile Include="PolicyContainer.cs" />
     <Compile Include="PolicyContainerConfigurationExtensions.cs" />
     <Compile Include="Policy\ViolationHandlers\Conventions\DefaultPolicyViolationHandlerIsInstanceConvention.cs" />

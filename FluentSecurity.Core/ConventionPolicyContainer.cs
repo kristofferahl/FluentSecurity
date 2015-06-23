@@ -11,7 +11,7 @@ namespace FluentSecurity
 	{
 		private readonly By _defaultCacheLevel;
 		private readonly IList<IPolicyContainerConfiguration> _policyContainers;
-		private ITypeFactory _typeFactory;
+		private ILazySecurityPolicyFactory _typeFactory;
 
 		public ConventionPolicyContainer(IList<IPolicyContainerConfiguration> policyContainers, By defaultCacheLevel = By.Policy)
 		{
@@ -32,7 +32,7 @@ namespace FluentSecurity
 
 		public IPolicyContainerConfiguration<TSecurityPolicy> AddPolicy<TSecurityPolicy>() where TSecurityPolicy : ISecurityPolicy
 		{
-			var lazySecurityPolicy = _typeFactory.CreateLazySecurityPolicy<TSecurityPolicy>();
+			var lazySecurityPolicy = _typeFactory.Create<TSecurityPolicy>();
 			return new PolicyContainerConfigurationWrapper<TSecurityPolicy>(AddPolicy(lazySecurityPolicy));
 		}
 
@@ -73,7 +73,7 @@ namespace FluentSecurity
 			return this;
 		}
 
-		public void SetTypeFactory(ITypeFactory typeFactory)
+		public void SetTypeFactory(ILazySecurityPolicyFactory typeFactory)
 		{
 			_typeFactory = typeFactory;
 		}

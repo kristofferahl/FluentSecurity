@@ -129,7 +129,7 @@ namespace FluentSecurity.Specification.ServiceLocation
 		public void Should_have_single_singleton_instance_of_ITypeFactory()
 		{
 			// Assert
-			VerifyHasOneSingletonOf<ITypeFactory, MvcTypeFactory>();
+			VerifyHasOneSingletonOf<ILazySecurityPolicyFactory, MvcLazySecurityPolicyFactory>();
 		}
 
 		private void VerifyHasOneSingletonOf<TInterface, TDefaultInstance>()

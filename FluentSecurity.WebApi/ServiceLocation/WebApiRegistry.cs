@@ -27,7 +27,7 @@ namespace FluentSecurity.WebApi.ServiceLocation
 			container.Register<ISecurityContext>(ctx => ctx.Resolve<ISecurityConfiguration>().CreateContext());
 
 			container.Register<ISecurityCache>(ctx => new SecurityCache(ctx.Resolve<ILifecycleResolver>()), Lifecycle.Singleton);
-			container.Register<ITypeFactory>(ctx => new WebApiTypeFactory(), Lifecycle.Singleton);
+			container.Register<ILazySecurityPolicyFactory>(ctx => new WebApiLazySecurityPolicyFactory(), Lifecycle.Singleton);
 
 			var controllerTypeScanner = new WebApiControllerTypeScanner();
 			var controllerNameResolver = new WebApiControllerNameResolver();
