@@ -1,8 +1,7 @@
 using FluentSecurity.Core;
 using FluentSecurity.Policy;
-using FluentSecurity.WebApi.Policy;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.Policy
 {
 	public class WebApiLazySecurityPolicyFactory : ILazySecurityPolicyFactory
 	{
