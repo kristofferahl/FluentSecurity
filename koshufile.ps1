@@ -21,13 +21,6 @@ properties {
 	$nugetApiKey = $null
 
 	$copyright		= 'Copyright (c) 2009-2014, Kristoffer Ahl'
-
-	$setupMessage	= 'Executed Setup!'
-	$cleanMessage	= 'Executed Clean!'
-	$compileMessage	= 'Executed Compile!'
-	$testMessage	= 'Executed Test!'
-	$packMessage	= 'Executed Pack!'
-	$deployMessage	= 'Executed Deploy!'
 }
 
 task default -depends Test
@@ -53,16 +46,17 @@ task Run {
 	# SemVer : 2.0.0+build.3 | 2.0.0
 	# NuGet  : 2.0.0-build3 | 2.0.0
 
-	Write-Host "Product:        $product" -fore Yellow
-	Write-Host "Version:        $version" -fore Yellow
-	Write-Host "Label:          $label" -fore Yellow
-	Write-Host "Build version:  $buildVersion" -fore Yellow
-	Write-Host "Build label:    $buildLabel" -fore Yellow
-	Write-Host "Branch:         $branch" -fore Yellow
+	write-host "Product:        $product" -fore yellow
+	write-host "Version:        $version" -fore yellow
+	write-host "Label:          $label" -fore yellow
+	write-host "Build version:  $buildVersion" -fore yellow
+	write-host "Build label:    $buildLabel" -fore yellow
+	write-host "Branch:         $branch" -fore yellow
 }
 
 task Setup -depends Run {
 	nuget_exe install ".nuget\packages.config" -outputdirectory "packages"
+
 	generate_assemblyinfo `
 		-file "$sourceDir\SharedAssemblyInfo.cs" `
 		-description "$product ($configuration)" `
@@ -73,7 +67,6 @@ task Setup -depends Run {
 		-buildLabel $buildLabel `
 		-clsCompliant "false" `
 		-copyright $copyright
-	$setupMessage
 }
 
 task Clean {
@@ -83,17 +76,14 @@ task Clean {
 	create_directory $artifactsDir
 	create_directory $outputDir
 	create_directory $reportsDir
-	$cleanMessage
 }
 
 task Compile -depends Setup, Clean {
 	build_solution "$sourceDir\$product.sln"
-	$compileMessage
 }
 
 task Test -depends Compile {
 	run_tests $outputDir "*.Specification.dll" $dotCover
-	$testMessage
 }
 
 task Pack -depends Test {
@@ -121,8 +111,6 @@ task Pack -depends Test {
 		nuget_exe pack "$buildDir\FluentSecurity.WebApi.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
 		nuget_exe pack "$buildDir\FluentSecurity.TestHelper.nuspec" -OutputDirectory "$artifactsDir\$artifactsName"
 	}
-
-	$packMessage
 }
 
 task Deploy -depends Pack {
@@ -148,8 +136,6 @@ task Deploy -depends Pack {
 			nuget_exe push $_.FullName -apikey $apiKey -source $feed
 		}
 	}
-
-	$deployMessage
 }
 
 task ? -Description "Help" {
@@ -190,11 +176,11 @@ using System.Runtime.InteropServices;
 	$dir = [System.IO.Path]::GetDirectoryName($file)
 	if ([System.IO.Directory]::Exists($dir) -eq $false)
 	{
-		Write-Host "Creating directory $dir"
+		write-host "Creating directory $dir"
 		[System.IO.Directory]::CreateDirectory($dir)
 	}
 
-	Write-Host "Generating assembly info file: $file"
+	write-host "Generating assembly info file: $file"
 	out-file -filePath $file -encoding UTF8 -inputObject $asmInfo
 }
 
