@@ -1,9 +1,8 @@
 ﻿using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
 using FluentSecurity.WebApi.Configuration;
-using FluentSecurity.WebApi.Scanning;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.Scanning
 {
 	public class WebApiProfileScanner : WebApiAssemblyScanner, IProfileAssemblyScanner
 	{

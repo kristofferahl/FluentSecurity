@@ -1,9 +1,9 @@
 ﻿using System;
 using FluentSecurity.Core.Internals;
-using FluentSecurity.WebApi;
+using FluentSecurity.Policy;
 using FluentSecurity.WebApi.Configuration;
 
-namespace FluentSecurity.Policy
+namespace FluentSecurity.WebApi.Policy
 {
 	public class LazySecurityPolicy<TSecurityPolicy> : ILazySecurityPolicy where TSecurityPolicy : ISecurityPolicy
 	{
