@@ -1,3 +1,3 @@
 @echo off
-powershell -NoProfile -ExecutionPolicy Bypass .\koshu.ps1 build.ps1 run
+powershell -NoProfile -ExecutionPolicy Bypass .\koshu.ps1 build.ps1
 pause
