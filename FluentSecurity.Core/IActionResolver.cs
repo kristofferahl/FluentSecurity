@@ -7,6 +7,6 @@ namespace FluentSecurity.Core
 {
 	public interface IActionResolver
 	{
-		IEnumerable<MethodInfo> ActionMethods(Type controllerType, Func<ControllerActionInfo, bool> actionFilter = null);
+		IEnumerable<MethodInfo> Resolve(Type controllerType, Func<ControllerActionInfo, bool> actionFilter = null);
 	}
 }

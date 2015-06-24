@@ -184,7 +184,7 @@ namespace FluentSecurity
 			foreach (var controllerType in controllerTypes)
 			{
 				var controllerName = _controllerNameResolver().Resolve(controllerType);
-				var actionMethods = _actionResolver().ActionMethods(controllerType, actionFilter);
+				var actionMethods = _actionResolver().Resolve(controllerType, actionFilter);
 
 				policyContainers.AddRange(
 					actionMethods.Select(actionMethod => AddPolicyContainerFor(controllerName, _actionNameResolver().Resolve(actionMethod)))

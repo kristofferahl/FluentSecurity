@@ -25,7 +25,7 @@ namespace FluentSecurity.Core
 
 			var unconfiguredActions = (
 				from c in controllerTypes
-				from a in actionResolver.ActionMethods(c)
+				from a in actionResolver.Resolve(c)
 				let actionName = actionNameResolver.Resolve(a)
 				let controllerName = controllerNameResolver.Resolve(c)
 				where configuration.Runtime.PolicyContainers.GetContainerFor(controllerName, actionName) == null
