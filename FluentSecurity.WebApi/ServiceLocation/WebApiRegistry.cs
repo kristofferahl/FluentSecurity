@@ -19,7 +19,7 @@ namespace FluentSecurity.WebApi.ServiceLocation
 		public void Configure(IContainer container)
 		{
 			container.Register<IAssemblyScanner>(ctx => new WebApiAssemblyScanner(), Lifecycle.Transient);
-			container.Register<IProfileAssemblyScanner>(ctx => new WebApiProfileScanner(), Lifecycle.Transient);
+			container.Register<IProfileAssemblyScanner>(ctx => new WebApiProfileAssemblyScanner(), Lifecycle.Transient);
 
 			container.Register<ISecurityConfiguration>(ctx => SecurityConfiguration.Get<WebApiConfiguration>());
 			container.Register<ISecurityHandler<object>>(ctx => new WebApiSecurityHandler(), Lifecycle.Singleton);

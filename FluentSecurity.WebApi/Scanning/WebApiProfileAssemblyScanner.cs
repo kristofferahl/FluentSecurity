@@ -4,7 +4,7 @@ using FluentSecurity.WebApi.Configuration;
 
 namespace FluentSecurity.WebApi.Scanning
 {
-	public class WebApiProfileScanner : WebApiAssemblyScanner, IProfileAssemblyScanner
+	public class WebApiProfileAssemblyScanner : WebApiAssemblyScanner, IProfileAssemblyScanner
 	{
 		public void LookForProfiles()
 		{

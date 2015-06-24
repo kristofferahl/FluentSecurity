@@ -60,7 +60,7 @@
     <Compile Include="WebApiActionResolver.cs" />
     <Compile Include="Configuration\WebApiConfigurationExpression.cs" />
     <Compile Include="Policy\ViolationHandlers\WebApiPolicyViolationHandlerSelector.cs" />
-    <Compile Include="Scanning\WebApiProfileScanner.cs" />
+    <Compile Include="Scanning\WebApiProfileAssemblyScanner.cs" />
     <Compile Include="ServiceLocation\WebApiRegistry.cs" />
     <Compile Include="Policy\ViolationHandlers\ExceptionPolicyViolationHandler.cs" />
     <Compile Include="Policy\ViolationHandlers\IWebApiPolicyViolationHandler.cs" />
