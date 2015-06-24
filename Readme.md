@@ -1,5 +1,7 @@
 # ![Fluent Security](https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-100x100.png)
 
+[![Join the chat at https://gitter.im/kristofferahl/FluentSecurity](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kristofferahl/FluentSecurity?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Website
 http://www.fluentsecurity.net/
 
