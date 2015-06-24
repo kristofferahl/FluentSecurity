@@ -4,7 +4,7 @@ using System.Web.Http.Controllers;
 using FluentSecurity.Core;
 using FluentSecurity.Core.Internals;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.Resolvers
 {
 	public class WebApiActionNameResolver : IActionNameResolver<HttpActionContext>
 	{

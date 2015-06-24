@@ -10,6 +10,7 @@ using FluentSecurity.ServiceLocation;
 using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
+using FluentSecurity.WebApi.Resolvers;
 using FluentSecurity.WebApi.Scanning;
 using FluentSecurity.WebApi.Scanning.TypeScanners;
 

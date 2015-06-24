@@ -7,7 +7,7 @@ using FluentSecurity.Core;
 using FluentSecurity.Core.Internals;
 using FluentSecurity.Internals;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.Resolvers
 {
 	public class WebApiActionResolver : IActionResolver
 	{
