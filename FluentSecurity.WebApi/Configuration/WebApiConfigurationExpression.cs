@@ -13,10 +13,9 @@ using FluentSecurity.Internals;
 using FluentSecurity.Policy.ViolationHandlers.Conventions;
 using FluentSecurity.Scanning;
 using FluentSecurity.Scanning.TypeScanners;
-using FluentSecurity.WebApi.Configuration;
 using FluentSecurity.WebApi.Policy.ViolationHandlers;
 
-namespace FluentSecurity.WebApi
+namespace FluentSecurity.WebApi.Configuration
 {
 	public abstract class WebApiConfigurationExpression : ConfigurationExpressionBase<WebApiSecurityRuntime, AdvancedConfiguration>
 	{
