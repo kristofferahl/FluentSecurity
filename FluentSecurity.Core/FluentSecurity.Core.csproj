@@ -82,7 +82,9 @@
     <Compile Include="Policy\ViolationHandlers\Conventions\PredicateToPolicyViolationHandlerTypeConvention.cs" />
     <Compile Include="Policy\ViolationHandlers\PolicyViolationHandlerConversionException.cs" />
     <Compile Include="Scanning\IAssemblyScanner.cs" />
+    <Compile Include="Scanning\IAssemblyScannerConfiguration.cs" />
     <Compile Include="Scanning\IProfileAssemblyScanner.cs" />
+    <Compile Include="Scanning\IProfileAssemblyScannerConfiguration.cs" />
     <Compile Include="Scanning\TypeScanners\IControllerTypeScanner.cs" />
     <Compile Include="SecurityConfigurationExtensions.cs" />
     <Compile Include="SecurityPolicyExtensions.cs" />

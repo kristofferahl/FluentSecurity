@@ -1,7 +1,4 @@
 namespace FluentSecurity.Scanning
 {
-	public interface IProfileAssemblyScanner : IAssemblyScanner
-	{
-		void LookForProfiles();
-	}
+	public interface IProfileAssemblyScanner : IProfileAssemblyScannerConfiguration, IAssemblyScanner {}
 }

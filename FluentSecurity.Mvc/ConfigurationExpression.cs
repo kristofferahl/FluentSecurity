@@ -152,7 +152,7 @@ namespace FluentSecurity
 			return CreateConventionPolicyContainerFor(controllerTypes, actionFilter);
 		}
 
-		public void Scan(Action<IProfileAssemblyScanner> scan)
+		public void Scan(Action<IProfileAssemblyScannerConfiguration> scan)
 		{
 			var profileScanner = Runtime.Container.Resolve<IProfileAssemblyScanner>();
 			Publish.ConfigurationEvent(() => String.Format("Scanning for profiles using {0}.", profileScanner.GetType().FullName));
