@@ -1,10 +1,7 @@
 # ![Fluent Security](https://github.com/kristofferahl/FluentSecurity/raw/master/Documents/Fluent-Security-Logo-100x100.png)
 
-## Website
-http://www.fluentsecurity.net/
-
 ## Documentation
-See the Wiki for [documentation of Fluent Security](http://www.fluentsecurity.net/wiki/)
+See the Wiki for [documentation of Fluent Security](https://github.com/kristofferahl/FluentSecurity/wiki)
 
 ## Source code
 https://github.com/kristofferahl/FluentSecurity
@@ -16,7 +13,7 @@ This build is targeted against the ASP.NET MVC 3. To open the solution you need 
 Before starting your work you must run 'build-local.cmd' to generate the SharedAssemblyInfo.cs file and to make sure everything is working as expected on your system.
 
 ## Contributing
-http://www.fluentsecurity.net/wiki/Contributing
+https://github.com/kristofferahl/FluentSecurity/wiki/Contributing
 
 ## License
 MIT (http://opensource.org/licenses/mit-license.php)
